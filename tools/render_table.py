@@ -98,6 +98,11 @@ SHA2FILE = {}
 SHA2CERT = {}
 SHA2EXT = {}      # table/EXTERNAL.csv: arrays kept in a public deposit
 DERIVED_COUNT = [0]   # lines of table/derived.csv
+DERIVED = {}          # (t, v) -> lines of table/derived.csv, shown under the rungs of that pair
+DERIVED_LAWS = {"fuse": "fusing symbols", "derive": "deriving a strength", "add1": "adding one column",
+                "comp": "composition", "CK": "Chateauneuf-Kreher doubling", "CMTW34": "CMTW 2006, Theorem 3.4",
+                "kRoux": "k-ary Roux", "PCT": "Power CT", "DP2": "direct product", "OD": "ordered design",
+                "SM": "Shokri and Moura"}
 CERT_URL = "https://raw.githubusercontent.com/chrispbsmolen/ca-tools/main/table/certificates/"
 LOG_URL = REPO_URL + "/blob/main/table/VERIFICATION_LOG.md"
 ARRAY_URL = "https://raw.githubusercontent.com/chrispbsmolen/ca-tools/main/table/arrays/"
@@ -601,10 +606,12 @@ def render(rows, manifest, date):
         nver = sum(1 for _, _, _, e in steps if any(r["tier"] == "VERIFIED" for r in e))
         scr = [r for r in rs if r["tier"] == "SCREENED" and row_key(r) not in verified_sha]
         dis = {(r["k"], r["N"]): r for r in rs if r["tier"] == "DISPUTED"}
-        H.append("<details><summary>t = %d, v = %d: %d rungs, %d verified%s%s</summary>"
+        der = sorted(DERIVED.get((t, v), []), key=lambda d: int(d["k"]))
+        H.append("<details><summary>t = %d, v = %d: %d rungs, %d verified%s%s%s</summary>"
                  % (t, v, len(steps), nver,
                     ", %d screened" % len(scr) if scr else "",
-                    ", %d disputed" % len(dis) if dis else ""))
+                    ", %d disputed" % len(dis) if dis else "",
+                    ", %d derived sizes" % len(der) if der else ""))
         H.append("<table><thead><tr><th class=n>k</th><th class=n>N</th>"
                  "<th>evidence</th></tr></thead><tbody>")
         # Columns past the baseline's range for this (t, v): the table holds only what was
@@ -636,6 +643,15 @@ def render(rows, manifest, date):
                         ("<i>%s</i>; " % html.escape(construction_of(r)) if construction_of(r) else "")
                         + html.escape(r["source_detail"]), stamp_html(r),
                         (", " + constant_rows_of(r)) if constant_rows_of(r) else ""))
+        for d in der:
+            H.append("<tr><td class=n>%s</td><td class=n>%s</td><td class=ev>"
+                     "<span class=\"tag lit\">derived</span>%s: %s<span class=stamp>a size that follows from "
+                     "this table by a published construction, with no array on file; not counted as best "
+                     "known (%s); <a href=\"derived.html\">the derived sizes page</a></span></td></tr>"
+                     % (d["k"], d["N"], html.escape(DERIVED_LAWS.get(d["law"], d["law"])),
+                        html.escape(d["arithmetic"]),
+                        "the table's best at this k is %s" % d["lookup_N"] if d["lookup_N"]
+                        else "the table has no entry this wide"))
         H.append("</tbody></table></details>")
     if REFS_USED:
         H.append("<h2 id=references>Works the table builds on</h2>")
@@ -677,7 +693,9 @@ def main():
     dp = os.path.join(a.table_dir, "derived.csv")
     if os.path.exists(dp):
         with open(dp, newline="", encoding="utf-8") as f:
-            DERIVED_COUNT[0] = sum(1 for _ in csv.DictReader(f))
+            for d in csv.DictReader(f):
+                DERIVED_COUNT[0] += 1
+                DERIVED.setdefault((int(d["t"]), int(d["v"])), []).append(d)
     xp = os.path.join(a.table_dir, "EXTERNAL.csv")
     if os.path.exists(xp):
         with open(xp, newline="", encoding="utf-8") as f:
