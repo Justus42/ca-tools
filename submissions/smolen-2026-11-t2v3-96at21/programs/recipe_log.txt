@@ -1,0 +1,37 @@
+/home/claude/ca-tools/submissions/smolen-2026-11-t2v3-96at21/programs/orbN.c: In function 'main':
+/home/claude/ca-tools/submissions/smolen-2026-11-t2v3-96at21/programs/orbN.c:24:135: warning: ignoring return value of 'fscanf' declared with attribute 'warn_unused_result' [-Wunused-result]
+   24 |   while(1){ El e; int ok=1; for(int r=0;r<N;r++){ if(fscanf(f,"%d",&v)!=1){ok=0;break;} e.p[r]=v;} if(!ok)break; for(int x=0;x<3;x++){fscanf(f,"%d",&v);e.s[x]=v;} gens[ngen++]=e; }
+      |                                                                                                                                       ^~~~~~~~~~~~~~~~~
+group order 108
+self-compatible normalized columns 6483, orbit reps 183
+  stabilizer 3 (orbit 36): 180 reps
+  stabilizer 108 (orbit 1): 3 reps
+N 21 K 73 pool 71194 nodes 192186987
+n 71194 edges 246433797 density 0.0972
+it 1 clique 1
+it 2 clique 2
+it 3 clique 3
+it 4 clique 4
+it 5 clique 5
+it 6 clique 6
+it 7 clique 7
+it 8 clique 8
+it 9 clique 9
+it 10 clique 10
+it 11 clique 11
+it 12 clique 12
+it 13 clique 13
+it 14 clique 14
+it 15 clique 15
+it 17 clique 16
+it 19 clique 17
+it 102 clique 18
+it 168 clique 19
+it 185 clique 20
+it 218 clique 21
+it 227 clique 22
+it 269 clique 23
+best 23
+bf6897378a8b881ae21532e3a21722c9662824431c00be7d878ff6ba6029ac6b  a21_73.txt
+87e91241e07abfa904f35efa35d24199edb07f6a2ac92f73515b044524d1d313  CA_21_2_96_3.txt
+output in /tmp/tmp.K8ok88gryv
