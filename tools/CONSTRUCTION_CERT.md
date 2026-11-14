@@ -152,6 +152,33 @@ check passes, 1 when a check fails (each failure is printed as `FAIL [check] mes
 malformed certificate. It also prints the species table, the certificate's own sha256, and N, k
 and the array sha256.
 
+## Following a certificate in R
+
+`tools/powercz.R` builds the array of a powercz-1 certificate with a Reed-Solomon family in R, in
+four steps that can be read off the certificate:
+
+1. The columns are the polynomials c_0 + c_1 x + ... + c_{e-1} x^{e-1} over GF(q) (`field`), in
+   lexicographic order of (c_0, ..., c_{e-1}) with c_0 most significant.
+2. Every entry of `family.rows` has a `point`. The value of that row in a column is the polynomial
+   evaluated at the point; the point "inf" gives the coefficient c_{e-1}.
+3. A column taking a `forbidden` value in any row is deleted. The values left in a row are
+   renumbered 0, 1, ... in increasing order. `column_limit`, if present, keeps the first so many
+   columns.
+4. Every row names an `ingredient`, an array with one column for each value of the row. Block i of
+   the result is that ingredient with its column h placed in every column whose value in row i is
+   h. The blocks are stacked in the order of the rows.
+
+```
+source("tools/powercz.R")
+A <- powercz("table/constructions/powercz/CA_216_4_1368_2.cert.json")
+dim(A)                      # 216 1368
+```
+
+The script needs the package jsonlite. With the package digest it also compares the sha256 of the
+array's canonical text with `expected.array_sha256`. It builds the array only; the hypotheses of
+the proof are checked by `construction_cert.py`. On 2026-11-14 it rebuilt all 12 powercz-1
+certificates in `table/constructions/` with the recorded sha256.
+
 ## The four arrays
 
 Certificates in `table/constructions/powercz/` (with the five ingredient files they use), made from our
