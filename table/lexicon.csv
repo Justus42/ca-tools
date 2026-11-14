@@ -1,0 +1,67 @@
+order,pattern,family
+1,^$,other
+2,^Dwyer CA_Database,DWYER
+3,^Power N-CT,powerNCT
+4,^Power CZ,powerCZ
+5,^(Partial )?Roux doubling,rouxDoubling
+6,^Words over (the five )?row blocks of the Power CT,groupOrbit
+7,^Power CT,powerCT
+8,^Direct product generalized,dpGeneralized
+9,^Profile product|^product of Colbourn and Torres-Jimenez|^Product of Colbourn and Torres-Jimenez|^generalized direct product|^Generalized direct product|^This project's own product array,profileProduct
+10,^Direct product,dpCA
+11,^PCAx|^PCA product|^product of partitioned,pcaCA
+12,^Recursive Bose construction.*partitioned,recBoseCA_PCA
+13,^Recursive Bose construction,recBoseCA_CA
+14,^Column extension|^One column added to|^column extension|^Frozen-core extension,columnExtension
+15,"^One column added \(Colbourn, Keri",CKRS
+16,"^(Classic )?[Pp]ost-optimi[sz]ation|^row deletion|^Row deletion|^Delete a run|^Iterative row deletion|^CA\(\d+;\d+,\d+,\d+\): row deletion",postop
+17,^Colbourn-Martirosyan-TVT-Walker,CMTW
+18,^Martirosyan-TVT,MTVT
+19,^Martirosyan-Colbourn,MC
+20,^Cohen-Colbourn-Ling,CCL
+21,^[Oo]rdered design,ODbasedCA
+22,^Add \d+ factors,add1
+23,^Add a factor|^Add Factor,addFactor
+24,^Add a symbol,addSymbol
+25,^Derive from|^derived from,derive
+26,^Augment OA|^extended OA,augmentOA
+27,^Projection of a Bose,projBoseCA
+28,^projection|^double proj,projection
+29,^Fusion of a Bose|^Fusing symbols,fuseBoseCA
+30,^perfect hash family,PHF
+31,Restricted SCPHF|restricted SCPHF|^SCPHF|^Sherwood|^Singer|^two-row Sherwood|^two-orbit Singer|^\d+-orbit Singer|^expansion of a sequence covering,scphfCA
+32,CPHF|covering perfect hash family,cphfCA
+33,^Cyclotom|^cyclotom,CYCLOTOMY
+34,Paley|paley,PALEY
+35,^Kleitman|^KSK,KSK
+36,"^CA Extender|^Torres-Jimenez, Acevedo-Juarez and Avila-George",CAEX
+37,^Torres-Jimenez binary array|^Torres Jimenez$|^Torres-Jimenez$,TJ
+38,^IPOG-F \(NIST,NIST
+39,"^SIPO|^array of Wagner, Kampel and Simos",WKS
+40,^IPOGF|^MIPOG|^Brick by Brick,IPO
+41,^Chateauneuf-Kreher doubling,CK_doublingCA
+42,^Chateauneuf-Kreher NRB|^Chateauneuf-Colbourn-Kreher,CK_NRB
+43,^Fix \d+ symbols \(LCDST\),CS_LCDST
+44,^Fix \d+ symbols \(Meagher|[Cc]over starter of Meagher,CS_MS
+45,"[Cc]over starter of Colbourn, Martirosyan",CS_CMMSSY
+46,"^Fix \d+ symbols \(Colbourn\)|^[Cc]over starter \(Colbourn, ?Torres",CS_LCDST
+47,^Cyclic.*\(Colbourn-Keri\)|^Cyclic \(Colbourn\)|^cover starter of Colbourn and Keri|^Hadamard \(Colbourn-Keri\),CS_CK
+48,"^cross-sum \(CKRS\)|^simulated annealing \(CKRS\)|^Steiner system \(CKRS\)|^array of Colbourn, Keri|^Two strength-\d halves",CKRS
+49,^Composition of alphabets|^composition,compositCA
+50,^Raaphorst-Moura-Stevens,RMScopiesCA
+51,"^Construction of Colbourn, Ingalls",CIJSSS
+52,Shokri,ShokriMoura
+53,^orthogonal array|^Orthogonal array|^Bush|^OA\(q,SCA_Busht
+54,^Construction function of the R package CAs,miscCA
+55,^degree-\d polynomial|^poly\d|hyperoval|^elliptic two-block|^genus-\d|^OA-jump|^near-CPHF|^own construction \(poly,polynomial
+56,^Density,density
+57,^simulated annealing|^Simulated annealing|^affine-layer,annealing
+58,^tabu search,tabu
+59,^SAT,SAT
+60,^[Tt]wo-stage|^tower|^SBSTT,twoStage
+61,^Ji-Li-Yin|^Li-Ji-Yin|^Ji-Yin|^Xu-Ji-Dong|Transversal Design,transversalDesign
+62,^weight-class|^even-weight|^Johnson-Entringer,weightClass
+63,PGL|PSL|AGL|^Cyclic array|^Block-cyclic|^Twisted block-cyclic|^Group-orbit|^Array invariant|^Column-orbit|^Union of \d+ cosets|^One-starter cyclic|^Constant rows plus the orbits|^Orbit search|^Annealing over row orbits|^Search over rows invariant|^Complement-doubled circulant,groupOrbit
+64,^CA_\d+_\d+_\d+_\d+_\w+\.txt \(C\. Smolen,postop
+65,^this project's CA\(.*row eli,postop
+66,^Sloane$|^Special \(Yan Jun\)$,other

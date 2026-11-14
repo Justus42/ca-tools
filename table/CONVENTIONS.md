@@ -1,4 +1,4 @@
-# Conventions of the covering array table (version 1.7, November 2026)
+# Conventions of the covering array table (version 1.8, November 2026)
 
 Parts that describe files not built yet say "will" or "planned". Anything that changes what the CAs package
 reads is announced to its author before it goes live (section 5).
@@ -332,19 +332,21 @@ the frame file only.
 
 ## 8. Labels and workings
 
-- `lexicon.csv` will map every construction text to a short family label, with columns label
-  (a pattern over the construction text), family, cas_label (the CAs spelling where one exists),
-  builds_on, meaning, basis. It is built from the keyword patterns already in
-  `table/references.csv`, so the two cannot drift apart. Corrections are welcome by issue or email.
-- `families.csv` will be the closed list of family labels. It starts from the 31 CAs labels
-  with the CAs spellings (KSK, PALEY, CAEX, CYCLOTOMY, CKRS, powerCT, DWYER, NIST, WKS, CK_doublingCA,
-  dpCA, ODbasedCA, pcaCA, cphfCA, scphfCA and the others), and adds the families that list does
-  not cover (for example powerCZ, power N-CT, Roux-type, perfect hash family,
-  Martirosyan-Tran Van Trung, Sherwood affine CPHF, Shokri-Moura, RMS extension, SBSTT, IPOG-F
-  post-optimization, the search methods). The 530 construction texts backfilled on 2026-10-20 from
-  catalogue descriptions get basis "from the catalogue".
-- Family appears in the frame file and the machine files, not (yet) in `ca_table.csv`, because the
-  list will change while it is being agreed.
+- `lexicon.csv` maps every construction text to a family. It is an ordered list of patterns over the
+  construction text (columns order, pattern, family), and the first pattern that matches gives the
+  family. Trailing steps in a text (fuse, a post-optimization) do not change the family.
+  `tools/lexicon.py` gives the family of a text and checks that every construction text of
+  `ca_table.csv` is placed. Corrections are welcome by issue or email.
+- `families.csv` is the list of families (columns family, cas_label, kind, meaning). It starts from
+  the 31 labels of CAs with the CAs spellings (KSK, PALEY, CAEX, CYCLOTOMY, CKRS, powerCT, DWYER, NIST,
+  WKS, CK_doublingCA, dpCA, ODbasedCA, pcaCA, cphfCA, scphfCA and the others), and adds the families
+  that list does not cover (for example powerCZ, powerNCT, the Roux-type families CMTW, MTVT, MC and
+  CCL, PHF, ShokriMoura, groupOrbit, postop and the search methods), with cas_label empty. Where a
+  family carries a CAs label, the texts placed in it are the ones this table reads as that
+  construction; it does not say that CAs builds each of those arrays.
+- The frame file carries the family of each line in its column family (the family of the line's
+  construction text; for a derived line, of its source). `ca_table.csv` has no family column,
+  because the list will change while it is being agreed.
 - Working grammar: unary steps after the source label, LABEL:step:step in the order applied (for
   example Sherwood covering perfect hash family (affine):fuse:fuse, with fuse, derive and add1; the
   order may mix them, which CAs's own labels do not, section 6). add1 has a second input but is
@@ -444,3 +446,6 @@ the frame file only.
   array that get points to. A line whose array is lent by a tied VERIFIED row now carries that array's count
   (it was empty), and a line whose array is given by a covering perfect hash family carries a lower bound
   (basis lower_bound). No other rule changed.
+- Version 1.8 (November 2026). Section 8: the label list exists. `families.csv` lists the families (the 31
+  labels of CAs first) and `lexicon.csv` places every construction text in one of them. The column family of the frame file, empty
+  until now, is filled. No rule changed.

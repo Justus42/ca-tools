@@ -1,0 +1,63 @@
+family,cas_label,kind,meaning
+KSK,KSK,direct,"Strength 2, 2 levels, optimal (Kleitman and Spencer 1973; Katona 1973)"
+PALEY,PALEY,direct,"Binary arrays from Paley matrices and quadratic residues, also doubled or with rows removed"
+CAEX,CAEX,search,"Strength 2 arrays of the CA Extender (Torres-Jimenez, Acevedo-Juarez and Avila-George 2021)"
+CYCLOTOMY,CYCLOTOMY,direct,"Cyclotomic vectors over GF(q) (Colbourn 2010), all variants"
+CKRS,CKRS,data,"Arrays and methods of Colbourn, Keri, Rivas Soriano and Schlage-Puchta 2010 (cross-sum, Steiner system, their annealing)"
+RMScopiesCA,RMScopiesCA,direct,"Raaphorst, Moura and Stevens 2014, strength 3 from finite fields, with its extensions"
+miscCA,miscCA,data,Single arrays stored in CAs; no rows of the table use this as a family
+recBoseCA_PCA,recBoseCA_PCA,recursive,Recursive Bose construction in partitioned form
+recBoseCA_CA,recBoseCA_CA,recursive,Recursive Bose construction
+SCA_Busht,SCA_Busht,direct,"Orthogonal arrays of index one (Bush, Bose), also the ones the tables call orthogonal array"
+fuseBoseCA,fuseBoseCA,direct,"Fusion of a Bose orthogonal array (Colbourn, Keri, Rivas Soriano and Schlage-Puchta 2010)"
+fuseBushtCA,fuseBushtCA,direct,Fusion of a Bush orthogonal array; in this table written as orthogonal array with fuse steps
+projBoseCA,projBoseCA,direct,Projection of a Bose orthogonal array (Colbourn 2008)
+compositCA,compositCA,recursive,Composition of alphabets: product of arrays on v1 and v2 levels
+WKS,WKS,data,"Strength 6 binary arrays of Wagner, Kampel and Simos (IPO based)"
+CS_MS,CS_MS,direct,"Cover starters of Meagher and Stevens 2005, with fixed symbols"
+CS_LCDST,CS_LCDST,direct,"Cover starters of Lobb, Colbourn, Danziger, Stevens and Torres-Jimenez 2012, with fixed symbols"
+CS_CK,CS_CK,direct,Cyclic binary arrays of Colbourn and Keri 2009
+powerCT,powerCT,recursive,"Power construction of Colbourn and Torres-Jimenez 2010 (Power CT), with truncation codes"
+DWYER,DWYER,data,"Arrays of Dwyer's CA_Database, with his method code"
+NIST,NIST,data,Arrays of the NIST covering array library (IPOG-F)
+TJ,TJ,data,Binary arrays of Torres-Jimenez
+CK_doublingCA,CK_doublingCA,recursive,"Doubling of Chateauneuf and Kreher 2002, strength 3"
+CK_NRB,CK_NRB,direct,"Chateauneuf, Colbourn and Kreher 1999, group construction from a starter"
+FullFactorial,FullFactorial,direct,All v^k rows; no rows of the table use this as a family
+CS_CMMSSY,CS_CMMSSY,direct,"Cover starters of Colbourn, Martirosyan, Mullen, Shasha, Sherwood and Yucas 2006"
+ODbasedCA,ODbasedCA,direct,"Ordered design construction of Cohen, Colbourn and Ling"
+pcaCA,pcaCA,recursive,"Product of partitioned covering arrays (PCA x PCA), strength 2"
+dpCA,dpCA,recursive,"Direct product, strength 2"
+scphfCA,scphfCA,direct,"Expansion of a Sherwood covering perfect hash family (SCPHF), every way of finding the family"
+cphfCA,cphfCA,direct,"Expansion of a covering perfect hash family (CPHF), every way of finding the family"
+dpGeneralized,,recursive,"Direct product generalized (Colbourn and Torres-Jimenez 2013, Section 4); which product each cited row used is not recorded"
+profileProduct,,recursive,"Product from profiles of covering arrays (Colbourn and Torres-Jimenez 2013), named corollary given in the text"
+powerNCT,,recursive,Power N-CT in Colbourn's tables; the hash family sizes are not published
+powerCZ,,recursive,Power construction of Colbourn and Zhou 2012 with quilted ingredients (Power CZ)
+PHF,,recursive,Perfect hash family construction (strength t array on the symbols of a PHF)
+CMTW,,recursive,"Roux-type constructions of Colbourn, Martirosyan, Trung and Walker 2006"
+MTVT,,recursive,"Roux-type constructions of Martirosyan and Tran Van Trung 2004, with the variant"
+MC,,recursive,Martirosyan and Colbourn 2005
+CCL,,recursive,"Cohen, Colbourn and Ling 2008 (strength 3 from two strength 2 arrays)"
+add1,,recursive,"Add factors: CAN(t,k,v) <= CAN(t,k-1,v) + v(v-1) CAN(t-2,k-2,v), applied once or more"
+addFactor,,recursive,"Add a factor, other forms (Add a factor, Add Factor SO)"
+addSymbol,,recursive,Add a symbol
+derive,,recursive,Derive from an array of higher strength
+augmentOA,,direct,"Augment an orthogonal array (Colbourn tables: Augment OA, extended OA)"
+projection,,direct,Projection and double projection (Colbourn 2008) where the table does not name a Bose array
+transversalDesign,,direct,"Incomplete and holey transversal designs; difference matrix constructions of Ji, Yin, Li, Xu, Dong"
+density,,search,Density algorithms (Bryce and Colbourn; Colbourn cyclic forms)
+groupOrbit,,search,"Arrays invariant under a group: PGL, PSL, AGL, cyclic and block-cyclic orbits, column-orbit arrays, coset unions"
+ShokriMoura,,direct,"Constructions of Shokri and Moura 2025 and Shokri, Moura and Stevens (q-plication, truncated Moebius planes, recursive strength 4)"
+polynomial,,direct,"Polynomial and two-block constructions of Bai XunDi's preprints (degree-3 polynomials, hyperoval, elliptic, genus two, orthogonal array jump)"
+weightClass,,direct,Binary vectors of chosen weights (Johnson and Entringer; even weight vectors)
+CIJSSS,,direct,"Colbourn, Ingalls, Jedwab, Saaltink, Smith and Stevens 2024, from a pair of orthogoval affine planes"
+rouxDoubling,,recursive,"Roux doubling of a stored array, whole or partial, with rows re-searched"
+annealing,,search,"Simulated annealing, every author"
+tabu,,search,"Tabu search, every author"
+SAT,,search,Exact search by a SAT solver
+IPO,,search,"IPO family algorithms outside the NIST library (IPOG-F with post-optimization, MIPOG, Brick by Brick)"
+twoStage,,search,"Two-stage methods (Sarkar and Colbourn; two-stage annealing), tower, SBSTT"
+columnExtension,,search,"Columns added to a stored array at fixed N, by search"
+postop,,search,Post-optimization as the method of record: rows deleted and the array repaired
+other,,,"Single cited rows with a name and no description (Sloane, Special (Yan Jun)), and rows with no construction text"

@@ -82,7 +82,8 @@ every counted row at k' >= k). The columns (CONVENTIONS.md, section 7):
                       quoted as CSV quotes it (R read.csv reads it whole). A source row whose label
                       is empty, contains " || " or ends in ':fuse', ':derive' or ':add1' is written
                       by its id instead (frame_label; also in constructions_all of a row line).
-  family              empty for now (the family list of section 8 does not exist yet)
+  family              the family of the construction text (table/families.csv, by the patterns of
+                      table/lexicon.csv; section 8)
   constructions_all   every counted row reaching N at the step, in headline order, separated by
                       " || "; for a derived step every working reaching N, each in the label form
   ids_all             the ids of the same rows, in the same order, separated by ";"; for a derived
@@ -138,6 +139,8 @@ import time
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(REPO, "table"))
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import lexicon  # noqa: E402
 from ca_table import counted  # noqa: E402  (the one definition of the counted rows)
 
 FRAME_HEADER = ["t", "v", "k", "N", "basis", "tier", "id", "constant_rows", "constant_rows_basis",
@@ -649,6 +652,10 @@ def build(table_dir):
                           named.get("entered") or "", ctx.generated])
             stats["get_" + get] += 1
         stats["colbourn_steps"] += len(colb_steps)
+    fam_col, con_col = FRAME_HEADER.index("family"), FRAME_HEADER.index("construction")
+    pats = lexicon.load()[1]
+    for ln in lines:                                  # the family of the line's construction (section 8)
+        ln[fam_col] = lexicon.family(ln[con_col], pats) or ""
     return lines, stats, ctx
 
 

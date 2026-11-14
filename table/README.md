@@ -170,6 +170,13 @@ the array files and these documents agree.
   program could not be built). Whether an array splits into the
   blocks a product construction needs (its partition profile) is not
   computed; it is recorded only when the construction states it.
+- `families.csv` and `lexicon.csv` (since 2026-11-14) - the label list.
+  `families.csv` lists the families of constructions, the 31 labels of the R
+  package CAs first with their CAs spelling, then the families CAs has no
+  label for. `lexicon.csv` is an ordered list of patterns over the
+  construction text; the first that matches gives the family
+  (`python3 tools/lexicon.py "text"`, and `--count` for rows per family).
+  Edited by hand; corrections are welcome by issue or email.
 - `derived.csv` - generated, never edited by hand: sizes that follow from the
   counted rows by published constructions (fusing symbols, deriving a strength,
   adding one column (t >= 3), composition, Chateauneuf-Kreher doubling, CMTW Thm 3.4, k-ary Roux with Yin's
