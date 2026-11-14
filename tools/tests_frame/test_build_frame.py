@@ -610,9 +610,10 @@ def test_get_from_tied_verified():
     fr, _ = frame(rows, manifest=[["CA_40_2_12_5.txt", 2, 5, 12, 40, "equals_best", sha, "S7", "", "", 2]])
     l = one(fr, 2, 5, 12)
     check(l and l["id"] == "t2-v5-k12-1" and l["tier"] == "CITED" and l["construction"] == "cited label"
-          and l["get"] == "file" and l["get_ref"] == "table/arrays/CA_40_2_12_5.txt" and l["constant_rows"] == ""
-          and l["ids_all"] == "t2-v5-k12-1;t2-v5-k12-2",
-          "a CITED named row with get none takes get and get_ref from the tied VERIFIED row; id stays the CITED row")
+          and l["get"] == "file" and l["get_ref"] == "table/arrays/CA_40_2_12_5.txt" and l["constant_rows"] == "2"
+          and l["constant_rows_basis"] == "exact" and l["ids_all"] == "t2-v5-k12-1;t2-v5-k12-2",
+          "a CITED named row with get none takes get, get_ref and the constant rows of that array from the tied "
+          "VERIFIED row; id stays the CITED row")
     l = one(fr, 2, 5, 14)
     check(l and l["get"] == "none" and l["get_ref"] == "", "a CITED row with no tied array: get none")
 

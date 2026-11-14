@@ -568,8 +568,10 @@ where the named row's array is (file, deposit, certificate, construction, cas,
 url, none) and give its path, link, URL, R call or rebuild command. When the
 named row has none (a CITED row is named first among ties) but another counted
 VERIFIED row tied at the same step has an array, get and get_ref are those of the
-first such row in the tie order below; id, tier and construction stay those of the
-named row, and the row lending the array is in ids_all. A
+first such row in the tie order below, and constant_rows and constant_rows_basis
+describe that array; id, tier and construction stay those of the
+named row, and the row lending the array is in ids_all. For an array given by a
+covering perfect hash family constant_rows is a lower bound (basis lower_bound). A
 certificate's rebuild command runs the program cphfcheck from the repository
 root, which is shipped as C source: build it first with
 `gcc -O3 -fopenmp -o tools/cphf/cphfcheck tools/cphf/cphfcheck.c` (on macOS,

@@ -49,8 +49,11 @@ every counted row at k' >= k). The columns (CONVENTIONS.md, section 7):
                       source row and the ingredient row of each add1 step): CITED if one of them is
                       CITED, else VERIFIED
   id                  the id of the named row (below); empty for a derived step, which is not a row
-  constant_rows       the exact count of the named row's array (table/MANIFEST.csv), or empty
-  constant_rows_basis exact where constant_rows is filled, else empty
+  constant_rows       the number of constant rows of the array that get points to: the exact count of
+                      a stored array (table/MANIFEST.csv), or a guaranteed lower bound for an array
+                      given by a covering perfect hash family (q for an affine expansion, 1 for a
+                      plain one); empty where it is not known
+  constant_rows_basis exact or lower_bound where constant_rows is filled, else empty
   get                 where the named row's array is: file (table/arrays), deposit (table/EXTERNAL.csv),
                       certificate (table/certificates), construction (table/constructions), cas (a
                       function of the CAs package that the row names), url (the NIST library, Dwyer's
@@ -59,7 +62,8 @@ every counted row at k' >= k). The columns (CONVENTIONS.md, section 7):
                       point to, and every derived step: a derived size is not an array in hand).
                       One exception: when the named row has none but another counted VERIFIED row
                       tied at the same step (same t, v, k, N) has an array, get and get_ref are
-                      taken from the first such row in headline order; id, tier, constant_rows and
+                      taken from the first such row in headline order, and so are constant_rows and
+                      constant_rows_basis (they describe the array that get points to); id, tier and
                       construction stay those of the named row, and that row is in ids_all.
   get_ref             the locator: the file path, the deposit link, the URL, the R call, or the
                       command that rebuilds the array; empty when get is none
@@ -260,17 +264,31 @@ class Context:
         return "none", ""
 
     def constant_rows(self, r, get):
+        """(count, basis) for the array that get points to: the exact count of a stored array
+        (table/MANIFEST.csv), or a guaranteed lower bound for an array given by a covering perfect
+        hash family: its affine expansion holds the q constant runs, its plain expansion the all-zero
+        run, and a symbol written as another (fuse a>b) keeps that run constant."""
         if get == "file":
             c = self.man[r["array_sha256"]].get("constant_rows") or ""
             if c.isdigit():
                 return c, "exact"
+        if get == "certificate":
+            c = self.cert_of(r)
+            exp = (c.get("expansion") or "smc-1") if c is not None else ""
+            m = re.match(r"^CPHF\((\d+); (\d+), (\d+), (\d+)\)", (c.get("family") or "") if c is not None else "")
+            if exp == "smc-1-affine" and m:
+                return m.group(3), "lower_bound"
+            if exp == "smc-1" or re.match(r"^smc-1(-affine)?\+fuse \d+>\d+$", exp):
+                return "1", "lower_bound"
         return "", ""
 
     def headline_key(self, i):
         """section 9: CITED first, more constant rows, earlier entry, wider array, file order"""
         r = self.rows[i]
         get, _ = self.get_of(r)
-        c, _ = self.constant_rows(r, get)
+        c, b = self.constant_rows(r, get)
+        if b != "exact":            # ties are ordered by counted arrays only; a lower bound does not rank
+            c = ""
         return (r["tier"] != "CITED", -(int(c) if c else -1), r.get("entered") or "", -int(r["k"]), i)
 
 
@@ -615,6 +633,7 @@ def build(table_dir):
                     g2 = ctx.get_of(rows[i])
                     if rows[i]["tier"] == "VERIFIED" and g2[0] != "none":
                         get, ref = g2
+                        crn, crb = ctx.constant_rows(rows[i], get)     # the count of the array get points to
                         stats["get_from_tied_row"] += 1
                         break
             first = min((i for i in rtv if int(rows[i]["k"]) >= k and int(rows[i]["N"]) <= n),

@@ -1,4 +1,4 @@
-# Conventions of the covering array table (version 1.6, November 2026)
+# Conventions of the covering array table (version 1.7, November 2026)
 
 Parts that describe files not built yet say "will" or "planned". Anything that changes what the CAs package
 reads is announced to its author before it goes live (section 5).
@@ -297,12 +297,14 @@ Four columns will be added at the end of `table/ca_table.csv`:
 - The exact locator (file path, deposit link, URL, R call or rebuild command) is in the frame file,
   not in `ca_table.csv`, to keep the file CAs downloads small.
 - Until these columns are added, the frame file computes id, constant_rows, constant_rows_basis and
-  get itself (`tools/build_frame.py`), by the same rules. constant_rows is filled only where the
-  array is in `table/arrays/` with its exact count, and a derived step has get none. When the named
+  get itself (`tools/build_frame.py`), by the same rules. constant_rows describes the array
+  that get points to: the exact count where the array is in `table/arrays/` with its count, and a
+  lower bound where the array is given by a covering perfect hash family (q constant rows for an
+  affine expansion, the all-zero row for a plain one); a derived step has get none. When the named
   row of a step has get none but another counted VERIFIED row tied at the same step (same t, v, k
-  and N) has an array, the frame line takes get and get_ref from the first such row in the order of
-  section 9; its id, tier, constant_rows and construction stay those of the named row, and the row
-  lending the array is in ids_all.
+  and N) has an array, the frame line takes get, get_ref, constant_rows and constant_rows_basis
+  from the first such row in the order of section 9; its id, tier and construction stay those of
+  the named row, and the row lending the array is in ids_all.
 
 The frame file is `ca_frame.csv`, with one line per step under the frame rule (section 4)
 and the columns t, v, k, N, basis (row or derived), tier, id, constant_rows, constant_rows_basis, get,
@@ -438,3 +440,7 @@ the frame file only.
 - Version 1.6 (November 2026). Wording only, after the audit of 2026-11-10; no rule changed. Section 3
   says what the tier of a derived line means, section 4 which file each version of CAs reads, and
   section 7 marks the get links and the search box of the page as planned.
+- Version 1.7 (November 2026). Section 7: in the frame file constant_rows and constant_rows_basis describe the
+  array that get points to. A line whose array is lent by a tied VERIFIED row now carries that array's count
+  (it was empty), and a line whose array is given by a covering perfect hash family carries a lower bound
+  (basis lower_bound). No other rule changed.
