@@ -90,4 +90,27 @@ if (hasCAs) {
     check(identical(dim(B), c(12L, 100L)) &&
           sum(count_core(B, 2, vs = rep(2, 100), rowmult = FALSE)$missing) == 0, "power_build")
 }
+## CA_to_PCA_c: the result is a PCA in the sense of CAs::is.PCA, still covers, and is at least as wide as CAs::CA_to_PCA
+if (hasCAs) {
+suppressMessages(library(CAs))
+for (kv in list(c(10, 3), c(20, 4), c(12, 5))) {
+    D <- unclass(CAs::bestCA(2, kv[1], kv[2])); D <- D - min(D)
+    P <- CA_to_PCA_c(D); st <- attr(P, "PCAstatus")
+    stopifnot(is.list(st), st$k1 + st$k2 == ncol(D), isTRUE(attr(P, "PCA_exact")))
+    stopifnot(isTRUE(as.logical(CAs::is.PCA(P))), attr(CAs::is.PCA(P), "PCAstatus")$k1 == st$k1)
+    stopifnot(all(CAs::coverage(P, 2)[c("total", "min")] == 1))
+    old <- suppressMessages(attr(CAs::CA_to_PCA(D), "PCAstatus"))
+    if (is.list(old)) stopifnot(st$k1 >= old$k1)
+    ## brute force over all sets of v rows agrees on k1
+    v <- kv[2]; if (choose(nrow(D), v) <= 20000) {
+        b <- max(apply(utils::combn(nrow(D), v), 2, function(r) sum(apply(D[r, , drop = FALSE], 2, function(x) length(unique(x)) == v))))
+        stopifnot(st$k1 == b)
+    }
+}
+## the product of two results is a covering array of N + M - v rows
+P1 <- CA_to_PCA_c(unclass(CAs::bestCA(2, 10, 3))); P2 <- CA_to_PCA_c(unclass(CAs::bestCA(2, 7, 3)))
+Q <- CAs::productPCA(P1, P2)
+check(nrow(Q) == nrow(P1) + nrow(P2) - 3 && all(CAs::coverage(Q, 2)[c("total", "min")] == 1), "CA_to_PCA_c product")
+}
+
 cat("cafast tests passed\n")

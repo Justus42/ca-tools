@@ -1,5 +1,11 @@
 # cafast (development version, to become 0.1.1)
 
+* New function `CA_to_PCA_c()`: brings a strength 2 array into the
+  partitioned form used by `CAs::productPCA()`, choosing the `v` rows
+  that give the widest left block (the most columns showing all `v`
+  levels) by an exact search in compiled code. For the table's
+  CA(25; 2, 220, 3) it gives `k1 = 137`, where `CAs::CA_to_PCA()` gives 64.
+
 * `maxconstant_c()` counts a repeated constant row once. Constant rows
   already present are taken one per symbol; further copies stay in the
   array as ordinary rows and are never reported as constant rows (with
