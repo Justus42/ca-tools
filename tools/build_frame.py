@@ -143,11 +143,12 @@ REPO = os.path.dirname(HERE)
 sys.path.insert(0, os.path.join(REPO, "table"))
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import lexicon  # noqa: E402
+import priority  # noqa: E402
 from ca_table import counted  # noqa: E402  (the one definition of the counted rows)
 
 FRAME_HEADER = ["t", "v", "k", "N", "basis", "tier", "id", "constant_rows", "constant_rows_basis",
                 "get", "get_ref", "construction", "family", "constructions_all", "ids_all", "prev_id",
-                "entered", "generated"]
+                "entered", "generated", "first_reached"]
 GET_VALUES = ("file", "deposit", "url", "cas", "certificate", "construction", "none")
 BASIS_VALUES = ("row", "derived")
 CR_BASIS_VALUES = ("exact", "lower_bound", "inherited")
@@ -219,6 +220,7 @@ class Context:
             else:
                 self.pos.append(i)
         self.generated = max((r.get("entered") or "" for r in self.rows), default="")
+        self.prio = priority.row_dates(self.rows, table_dir)
 
     def cert_of(self, r):
         for c in self.certs:
@@ -294,13 +296,13 @@ class Context:
         return "", ""
 
     def headline_key(self, i):
-        """section 9: CITED first, more constant rows, earlier entry, wider array, file order"""
+        """section 9: CITED first, more constant rows, earlier priority date, wider array, file order"""
         r = self.rows[i]
         get, _ = self.get_of(r)
         c, b = self.constant_rows(r, get)
         if b != "exact":            # ties are ordered by counted arrays only; a lower bound does not rank
             c = ""
-        return (r["tier"] != "CITED", -(int(c) if c else -1), r.get("entered") or "", -int(r["k"]), i)
+        return (r["tier"] != "CITED", -(int(c) if c else -1), self.prio[i], -int(r["k"]), i)
 
 
 def excluded_inputs(rows):
@@ -632,7 +634,7 @@ def build(table_dir):
                               works[0], "", ALL_SEP.join(works),
                               ";".join("+".join(ctx.ids[j] for j in working_rows(i, w)) for i, w in origins),
                               ctx.ids[prev[1]] if prev else "", max(r.get("entered") or "" for r in head),
-                              ctx.generated])
+                              ctx.generated, ""])
                 continue
             tied = sorted((i for i in rtv if int(rows[i]["k"]) == k and int(rows[i]["N"]) == n), key=hkey)
             named = rows[tied[0]]
@@ -652,12 +654,14 @@ def build(table_dir):
             before = [(int(rows[i]["N"]), i) for i in rtv
                       if int(rows[i]["k"]) >= k and ctx.pos[i] < ctx.pos[first]]
             prev = best_row(before)
+            reach = min((i for i in rtv if int(rows[i]["k"]) >= k and int(rows[i]["N"]) <= n),
+                        key=lambda i: (ctx.prio[i], ctx.pos[i], i))
             if prev:
                 stats["row_with_prev"] += 1
             lines.append([str(t), str(v), str(k), str(n), "row", named["tier"], ctx.ids[tied[0]], crn, crb, get, ref,
                           construction_of(named), "", ALL_SEP.join(frame_label(rows[i], ctx.ids[i]) for i in tied),
                           ";".join(ctx.ids[i] for i in tied), ctx.ids[prev[1]] if prev else "",
-                          named.get("entered") or "", ctx.generated])
+                          named.get("entered") or "", ctx.generated, ctx.ids[reach]])
             stats["get_" + get] += 1
         stats["colbourn_steps"] += len(colb_steps)
     fam_col, con_col = FRAME_HEADER.index("family"), FRAME_HEADER.index("construction")

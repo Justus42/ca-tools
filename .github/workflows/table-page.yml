@@ -340,6 +340,10 @@ jobs:
           rm -f ca_verify tools/constant_rows c.md
       - name: Regenerate table/derived.csv (sizes that follow by published constructions)
         run: python3 tools/derive_table.py
+      - name: Record the priority dates of submissions named by rows (table/priority.csv)
+        # CONVENTIONS.md section 9: the date a pull request was opened (or, without one, the date the
+        # submission reached main). Lines for email, deposit and paper dates are added by the maintainer.
+        run: python3 tools/priority.py record --table-dir table
       - name: Regenerate table/ca_frame.csv (best known under the frame rule) and table/ca_table.csv.gz
         run: python3 tools/build_frame.py
       - uses: r-lib/actions/setup-r@v2
@@ -364,7 +368,7 @@ jobs:
           python3 tools/check_submission.py --selftest --table-dir table > /dev/null
       - name: Commit what changed
         run: |
-          git add docs/index.html docs/derived.html table/README.md table/ca_table.rda table/ca_table.csv table/MANIFEST.csv table/arrays table/derived.csv table/ca_frame.csv table/ca_table.csv.gz table/certificates table/EXTERNAL.csv table/constructions
+          git add docs/index.html docs/derived.html table/README.md table/ca_table.rda table/ca_table.csv table/MANIFEST.csv table/arrays table/derived.csv table/ca_frame.csv table/ca_table.csv.gz table/certificates table/EXTERNAL.csv table/constructions table/priority.csv
           git add submissions/*/NOT_APPLIED.md 2>/dev/null || true
           while read -r s; do [ -n "$s" ] && git add "submissions/$s/upgrade.csv"; done < queued.txt
           if git diff --cached --quiet; then

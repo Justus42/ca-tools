@@ -49,6 +49,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import cphf_cert  # noqa: E402  (family identity, expansion rules, ARRAY_HASH_MAX_ENTRIES)
 import correct_credit  # noqa: E402  (the log of credit corrections, table/CREDIT_CORRECTIONS.csv)
 import build_frame  # noqa: E402  (table/ca_frame.csv and table/ca_table.csv.gz)
+import priority  # noqa: E402  (table/priority.csv, CONVENTIONS.md section 9)
 
 TABLE = "table/ca_table.csv"
 MANIFEST = "table/MANIFEST.csv"
@@ -1100,6 +1101,10 @@ def check_frame(rows, pr):
         for c in re.split(r"[;+]", d["ids_all"]):
             if not build_frame.ID_RE.match(c) or c not in ids:
                 problem("%s: ids_all names %r, no row of the table" % (where, c))
+        if d["basis"] == "row" and d["first_reached"] not in ids:
+            problem("%s: first_reached %r names no row of the table" % (where, d["first_reached"]))
+        if d["basis"] == "derived" and d["first_reached"]:
+            problem("%s: a derived line has a first_reached" % where)
         if d["basis"] == "row":
             r = ids.get(d["id"])
             if r is None or id(r) not in cnt or (r["t"], r["v"], r["k"], r["N"], r["tier"]) != \
@@ -1307,6 +1312,8 @@ def main():
     check_arrays(rows, man)
     check_external(rows, man)
     check_constant_rows(rows, man)
+    for p in priority.check_file(os.path.dirname(TABLE)):
+        problem(p)
     nder = check_derived(rows)
     nframe = check_frame(rows, "--pr" in args)
     old_count = base_row_count(args[args.index("--base") + 1]) \

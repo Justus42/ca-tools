@@ -646,6 +646,15 @@ when it is larger than 1 MiB as text. If that name is already taken
 by a different array, the first eight hex digits of the hash are
 appended, as in `CA_9_2_4_3_9133df95.txt`.
 
+### Priority date
+
+When two submissions reach the same size, the earlier priority date is credited as first reached
+(`../table/CONVENTIONS.md`, section 9). The priority date is the date your pull request was opened. It is
+earlier if the array, or its SHA-256, was published in a deposit or paper before that, or sent to the
+maintainer by email before that. Say so in the pull request with the DOI, the link or the date of the
+email, and the maintainer records it in `../table/priority.csv`. The date the pull request is merged
+never decides.
+
 ### Credit check
 
 The check proves that an array is a covering array. It cannot prove that the

@@ -1,4 +1,4 @@
-# Conventions of the covering array table (version 1.9, November 2026)
+# Conventions of the covering array table (version 1.10, November 2026)
 
 Parts that describe files not built yet say "will" or "planned". Anything that changes what the CAs package
 reads is announced to its author before it goes live (section 5).
@@ -321,7 +321,9 @@ family (section 8), constructions_all and ids_all (every counted row that reache
 prev_id (the previous best at that step: on a row line the best counted row entered before the first
 row that reached the step's N, the rows of one snapshot entered on one day counting as one entry;
 on a derived line the row of the Colbourn-rule value it improves on), entered, and the date it was
-generated (the latest entry date in `ca_table.csv`, so an unchanged table gives the same file). The five columns CAs
+generated (the latest entry date in `ca_table.csv`, so an unchanged table gives the same file), and
+first_reached (on a row line the counted row with the earliest priority date of section 9 among the rows that
+reach the step's N at a width k' >= k, ties going to the earlier entry; empty on a derived line). The five columns CAs
 reads (t, v, k, N, construction) keep their names and meaning here too. It is generated, never edited
 by hand (`tools/build_frame.py`; after every merge to main, `tools/consistency.py` in table-page.yml
 compares it with a fresh build),
@@ -372,12 +374,30 @@ the frame file only.
   constructions_all and ids_all. The construction column of `ca_table.csv` keeps one label per row.
   The headline (the named row) is chosen in this order: a CITED row stays named, then more constant
   rows (a row whose count is unknown ranks below every row with a known count, even an earlier one),
-  then the earlier priority date, then the wider array, then the id.
+  then the earlier priority date, then the wider array, then the id. The headline names the array the
+  table points to. It is not a credit decision.
+- The priority date of a submission is the earliest public or received date that shows its arrays
+  existed. It is the date its pull request was opened, or for a submission that reached main without a
+  pull request the date it reached main, unless an earlier date is on record. An earlier date counts when
+  the array, or the SHA-256 of the array, was published in a deposit or paper on that date or sent to the
+  maintainer by email on that date. A date without a time stands for the start of that day. The dates are
+  kept in `table/priority.csv` (slug, date, basis, evidence), one line per piece of evidence, with basis
+  pull_request, pushed, email, deposit or paper. The table workflow writes the pull_request and pushed
+  lines. The maintainer adds the others with their evidence (a DOI or link, or for an email only the
+  words "email to the maintainer" and the date, never its text). The date the maintainer merged or
+  entered a submission never decides between two people.
+- The priority date of a row is the earliest of its entry date and the priority date of the submission
+  its notes name, taken over every row that holds the same array or the same family, so an exact check
+  entered later keeps the date of the array it checks.
+- First reached is the credit for being first to an N at a point. It goes to the row with the earliest
+  priority date among those that reach it (the frame column first_reached), whatever the headline. An
+  array that replaces another at the same N, for example one with more constant rows or one built by its
+  submitter, can take the headline and is credited for building it. It never takes first reached.
 - An array that only equals a value already in the table is not an improvement and does not take the
   headline from a CITED row. It is still listed and credited.
 - Credit is recorded today in the notes column, starting "credit: ". It moves, as roles are needed,
-  to `credits.csv` (id, role, name, reference) with the roles method, ingredient, first reached
-  and verified. Comparison phrases written at entry stay in notes as history, with one spelling from
+  to `credits.csv` (id, role, name, reference) with the roles method, ingredient, built (the
+  array itself), first reached and verified. Comparison phrases written at entry stay in notes as history, with one spelling from
   now on: "at entry: previous best N (k=..., tier, provenance class)".
 
 - Corrections of any kind are welcome by issue or email.
@@ -457,3 +477,8 @@ the frame file only.
   are not stored with a count (construction and certificate arrays first), each with its witness rows, and
   the frame file reads it. Where a line's count is new, the order of section 9 can now name a different
   tied row (the one with more constant rows). No rule changed.
+- Version 1.10 (November 2026). Section 9: the priority date is defined (`table/priority.csv`), the order of
+  section 9 uses it in place of the entry date, and first reached is a credit of its own, kept apart from
+  the headline. Section 7: the frame file gains the column first_reached at the end. The role built joins
+  the planned roles of `credits.csv`. The headline of a step changes only where two tied rows have the same
+  constant rows and their priority dates fall in a different order from their entry dates.

@@ -184,6 +184,11 @@ the array files and these documents agree.
   or lower_bound when the search did not finish) and the witness rows that
   show it. `python3 tools/constant_rows_table.py verify` rebuilds each array
   and checks the witness; the frame file reads the counts.
+- `priority.csv` (since 2026-11-15) - the priority date of each submission
+  (CONVENTIONS.md section 9): one line per piece of evidence (slug, date, basis,
+  evidence), basis pull_request or pushed (written by the table workflow) or
+  email, deposit or paper (added by the maintainer). The frame file uses it for
+  the order of tied rows and for its column first_reached.
 - `derived.csv` - generated, never edited by hand: sizes that follow from the
   counted rows by published constructions (fusing symbols, deriving a strength,
   adding one column (t >= 3), composition, Chateauneuf-Kreher doubling, CMTW Thm 3.4, k-ary Roux with Yin's
@@ -596,7 +601,9 @@ ids_all entry before each add1 ingredient). Ties are named in the
 order of `CONVENTIONS.md`, section 9: a CITED row first, then more constant rows
 (an unknown count, an empty constant_rows, ranks below every known count, so a
 row with a counted array is named before an equal row whose array was never
-counted, even an earlier one), the earlier entry date, the wider array, the id.
+counted, even an earlier one), the earlier priority date (`priority.csv`), the
+wider array, the id. The named row is the array the table points to, not a credit
+decision.
 get is none on every derived line, and on a row line when neither the named row
 nor a counted VERIFIED row tied at its step has an array the table can point to.
 So most CITED lines have get none, and a CITED line has an array (get file, for
@@ -625,6 +632,12 @@ names the row at the widest counted width when the step's N is below that row's
 otherwise empty.
 prev_id names rows only. generated is the latest entry date in `ca_table.csv`, so
 rebuilding an unchanged table gives the same file.
+
+first_reached (since 2026-11-15) is the credit for being first to the step's N. On a
+row line it names the counted row with the earliest priority date (`priority.csv`,
+`CONVENTIONS.md` section 9) among the rows that reach N or less at k' >= k, ties
+going to the earlier entry. It can differ from id, the named row, for example when
+a later array with more constant rows is named. It is empty on a derived line.
 
 In R, the eCAN-style lookup over the frame file:
 
