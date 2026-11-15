@@ -1,0 +1,2 @@
+t,v,k,N,file,source_detail,construction,builds_on,credit,notes
+3,4,39,180,CA_180_3_39_4.txt,https://github.com/seankim-business/ca-180-3-39-4 (commit 703d2a2965cbdd302c77022f64611159f192451c),"simulated annealing with row reduction and SAT repair, starting from the cyclotomic array with 152 rows and 38 columns, with 33 added rows and a 39th column",cyclotomy-c2010,Seonbin Kim,
