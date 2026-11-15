@@ -5920,6 +5920,7 @@ t,v,k,N,basis,tier,id,constant_rows,constant_rows_basis,get,get_ref,construction
 4,20,2723,1958743,row,CITED,t4-v20-k2723-1,,,none,,SCPHF Random Extension (CLS) fuse fuse fuse,scphfCA,SCPHF Random Extension (CLS) fuse fuse fuse,t4-v20-k2723-1,,2026-08-23,2026-11-15
 4,20,2806,1958875,row,CITED,t4-v20-k2806-1,,,none,,CPHF Random Extension (CLS) fuse fuse fuse,cphfCA,CPHF Random Extension (CLS) fuse fuse fuse,t4-v20-k2806-1,,2026-08-23,2026-11-15
 4,20,10000,2238561,derived,VERIFIED,,,,none,,Sherwood covering perfect hash family (affine):fuse:fuse:fuse,scphfCA,Sherwood covering perfect hash family (affine):fuse:fuse:fuse,t4-v23-k10000-2,t4-v20-k10000-1,2026-11-02,2026-11-15
+4,20,100000,4757275,derived,VERIFIED,,,,none,,Sherwood covering perfect hash family (partly cyclic covering perfect hash family):fuse:fuse:fuse,scphfCA,Sherwood covering perfect hash family (partly cyclic covering perfect hash family):fuse:fuse:fuse,t4-v23-k100000-1,,2026-11-15,2026-11-15
 4,21,5,194481,row,CITED,t4-v21-k5-1,21,exact,file,table/arrays/CA_194481_4_5_21.txt.gz,Derive from strength 5,derive,"Derive from strength 5 || Composition of alphabets (Colbourn, Keri, Rivas Soriano and Schlage-Puchta 2010)",t4-v21-k5-1;t4-v21-k5-2,,2026-08-23,2026-11-15
 4,21,6,213003,row,CITED,t4-v21-k6-1,,,none,,Derive from strength 5,derive,Derive from strength 5,t4-v21-k6-1,,2026-08-23,2026-11-15
 4,21,7,246006,row,CITED,t4-v21-k7-1,,,none,,orthogonal array fuse fuse postop NCK,SCA_Busht,orthogonal array fuse fuse postop NCK,t4-v21-k7-1,,2026-08-23,2026-11-15
@@ -5959,6 +5960,7 @@ t,v,k,N,basis,tier,id,constant_rows,constant_rows_basis,get,get_ref,construction
 4,21,2723,1958745,row,CITED,t4-v21-k2723-1,,,none,,SCPHF Random Extension (CLS) fuse fuse,scphfCA,SCPHF Random Extension (CLS) fuse fuse,t4-v21-k2723-1,,2026-08-23,2026-11-15
 4,21,2806,1958877,row,CITED,t4-v21-k2806-1,,,none,,CPHF Random Extension (CLS) fuse fuse,cphfCA,CPHF Random Extension (CLS) fuse fuse,t4-v21-k2806-1,,2026-08-23,2026-11-15
 4,21,10000,2238563,derived,VERIFIED,,,,none,,Sherwood covering perfect hash family (affine):fuse:fuse,scphfCA,Sherwood covering perfect hash family (affine):fuse:fuse,t4-v23-k10000-2,t4-v21-k10000-1,2026-11-02,2026-11-15
+4,21,100000,4757277,derived,VERIFIED,,,,none,,Sherwood covering perfect hash family (partly cyclic covering perfect hash family):fuse:fuse,scphfCA,Sherwood covering perfect hash family (partly cyclic covering perfect hash family):fuse:fuse,t4-v23-k100000-1,,2026-11-15,2026-11-15
 4,22,5,234256,row,CITED,t4-v22-k5-1,21,lower_bound,file,table/arrays/CA_234256_4_5_22.txt.gz,Derive from strength 5,derive,"Derive from strength 5 || Composition of alphabets (Colbourn, Keri, Rivas Soriano and Schlage-Puchta 2010)",t4-v22-k5-1;t4-v22-k5-2,,2026-08-23,2026-11-15
 4,22,6,260923,row,CITED,t4-v22-k6-1,,,none,,orthogonal array fuse postop NCK,SCA_Busht,orthogonal array fuse postop NCK,t4-v22-k6-1,,2026-08-23,2026-11-15
 4,22,7,269662,row,CITED,t4-v22-k7-1,,,none,,orthogonal array fuse postop NCK,SCA_Busht,orthogonal array fuse postop NCK,t4-v22-k7-1,,2026-08-23,2026-11-15
@@ -5992,6 +5994,7 @@ t,v,k,N,basis,tier,id,constant_rows,constant_rows_basis,get,get_ref,construction
 4,22,2723,1958747,row,CITED,t4-v22-k2723-1,,,none,,SCPHF Random Extension (CLS) fuse,scphfCA,SCPHF Random Extension (CLS) fuse,t4-v22-k2723-1,,2026-08-23,2026-11-15
 4,22,2806,1958879,row,CITED,t4-v22-k2806-1,,,none,,CPHF Random Extension (CLS) fuse,cphfCA,CPHF Random Extension (CLS) fuse,t4-v22-k2806-1,,2026-08-23,2026-11-15
 4,22,10000,2238565,derived,VERIFIED,,,,none,,Sherwood covering perfect hash family (affine):fuse,scphfCA,Sherwood covering perfect hash family (affine):fuse,t4-v23-k10000-2,t4-v22-k10000-1,2026-11-02,2026-11-15
+4,22,100000,4757279,derived,VERIFIED,,,,none,,Sherwood covering perfect hash family (partly cyclic covering perfect hash family):fuse,scphfCA,Sherwood covering perfect hash family (partly cyclic covering perfect hash family):fuse,t4-v23-k100000-1,,2026-11-15,2026-11-15
 4,23,24,279841,row,CITED,t4-v23-k24-1,,,none,,orthogonal array,SCA_Busht,orthogonal array,t4-v23-k24-1,,2026-08-23,2026-11-15
 4,23,26,390621,row,CITED,t4-v23-k26-1,,,none,,orthogonal array fuse fuse,SCA_Busht,orthogonal array fuse fuse,t4-v23-k26-1,,2026-08-23,2026-11-15
 4,23,28,531433,row,CITED,t4-v23-k28-1,,,none,,orthogonal array fuse fuse fuse fuse,SCA_Busht,orthogonal array fuse fuse fuse fuse,t4-v23-k28-1,,2026-08-23,2026-11-15
@@ -6016,6 +6019,10 @@ t,v,k,N,basis,tier,id,constant_rows,constant_rows_basis,get,get_ref,construction
 4,23,2723,1958749,row,CITED,t4-v23-k2723-1,,,none,,SCPHF Random Extension (CLS),scphfCA,SCPHF Random Extension (CLS),t4-v23-k2723-1,,2026-08-23,2026-11-15
 4,23,2806,1958881,row,CITED,t4-v23-k2806-1,,,none,,CPHF Random Extension (CLS),cphfCA,CPHF Random Extension (CLS),t4-v23-k2806-1,,2026-08-23,2026-11-15
 4,23,10000,2238567,row,VERIFIED,t4-v23-k10000-2,23,lower_bound,certificate,tools/cphf/cphfcheck table/certificates/CPHF_8_10000_23_4.txt 4 23 expand CA.txt affine,Sherwood covering perfect hash family (affine),scphfCA,Sherwood covering perfect hash family (affine),t4-v23-k10000-2,t4-v23-k10000-1,2026-11-02,2026-11-15
+4,23,10001,3018313,derived,CITED,,,,none,,Sherwood covering perfect hash family (affine):add1,scphfCA,Sherwood covering perfect hash family (affine):add1,t4-v23-k10000-2+t2-v23-k13777-1,t4-v23-k100000-1,2026-11-02,2026-11-15
+4,23,10002,3798059,derived,CITED,,,,none,,Sherwood covering perfect hash family (affine):add1:add1,scphfCA,Sherwood covering perfect hash family (affine):add1:add1,t4-v23-k10000-2+t2-v23-k13777-1+t2-v23-k13777-1,t4-v23-k100000-1,2026-11-02,2026-11-15
+4,23,10003,4577805,derived,CITED,,,,none,,Sherwood covering perfect hash family (affine):add1:add1:add1,scphfCA,Sherwood covering perfect hash family (affine):add1:add1:add1,t4-v23-k10000-2+t2-v23-k13777-1+t2-v23-k13777-1+t2-v23-k13777-1,t4-v23-k100000-1,2026-11-02,2026-11-15
+4,23,100000,4757281,row,VERIFIED,t4-v23-k100000-1,1,lower_bound,certificate,tools/cphf/cphfcheck table/certificates/CPHF_17_100000_23_4.txt 4 23 expand CA.txt,Sherwood covering perfect hash family (partly cyclic covering perfect hash family),scphfCA,Sherwood covering perfect hash family (partly cyclic covering perfect hash family),t4-v23-k100000-1,,2026-11-15,2026-11-15
 4,24,5,331776,row,CITED,t4-v24-k5-1,24,exact,file,table/arrays/CA_331776_4_5_24.txt.gz,Derive from strength 5,derive,"Derive from strength 5 || Composition of alphabets (Colbourn, Keri, Rivas Soriano and Schlage-Puchta 2010)",t4-v24-k5-1;t4-v24-k5-2,,2026-08-23,2026-11-15
 4,24,6,360249,row,CITED,t4-v24-k6-1,,,none,,Augment OA,augmentOA,Augment OA,t4-v24-k6-1,,2026-08-23,2026-11-15
 4,24,7,374874,row,CITED,t4-v24-k7-1,,,none,,Augment OA,augmentOA,Augment OA,t4-v24-k7-1,,2026-08-23,2026-11-15
