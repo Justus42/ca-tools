@@ -71,6 +71,8 @@ jobs:
         run: python3 tools/tests_frame/test_constant_rows.py
       - name: Above a size rule (CONVENTIONS 1.4)
         run: python3 tools/tests_submission/test_above_rule.py
+      - name: Exact count when ca_verify runs out of memory
+        run: python3 tools/tests_submission/test_count_check.py
       - name: Credit tools
         run: |
           python3 tools/tests_credit/test_credit_check.py

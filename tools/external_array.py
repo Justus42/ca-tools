@@ -15,7 +15,8 @@ hashes: 0-based, single spaces, NA for don't-care, LF after every row).
 For every claim this script downloads the file, rebuilds the canonical form
 as a stream (memory stays small whatever the size), compares the hash, runs
 ca_verify at strength t (in full under the budget, otherwise on the same
-deterministic column windows as check_submission.py) and compares N with the
+deterministic column windows as check_submission.py; when ca_verify is
+stopped for memory, the exact count of check_submission.py takes over) and compares N with the
 table. With --apply, and only when every claim passes, it appends the rows to
 table/ca_table.csv (tier VERIFIED or SCREENED, source S7, notes naming the
 location) and to table/EXTERNAL.csv. The array itself is not copied.
@@ -239,7 +240,7 @@ def check_claim(raw, ctx, tmp):
     comparison = ("exceeds_table" if prev is None or N < prev else
                   "equals_best" if N == prev else "above_table")
     budget = ctx["budget"]
-    status, screen, secs = None, None, {}
+    status, screen, secs, counted = None, None, {}, False
     wild = canon_has_wildcards(canon)
     mode, why = cs.full_or_screen(N, t, v, k, ctx["threads"], budget, ctx["window"],
                                   ctx["threshold"], wild)
@@ -248,6 +249,9 @@ def check_claim(raw, ctx, tmp):
     if mode == "full":
         r = cs.run_ca_verify(ctx["ca_verify"], canon, t, v, ctx["threads"], budget)
         secs["verify"] = r["seconds"]
+        counted = r["stderr"].startswith("ca_verify stopped")
+        if counted:
+            print("note: " + r["stderr"] + "; " + r["summary"], file=sys.stderr)
         if r["outcome"] == "verified":
             status = "verified"
         elif r["outcome"] == "gaps":
@@ -268,7 +272,8 @@ def check_claim(raw, ctx, tmp):
         shutil.copyfile(canon, os.path.join(ctx["keep"], "CA_%d_%d_%d_%d_%s.txt" % (N, t, k, v, sha[:8])))
     os.remove(canon)
     return dict(t=t, v=v, k=k, N=N, sha256=sha, bytes=nbytes, status=status, screen=screen,
-                comparison=comparison, previous_best=prev, shifted=shifted, seconds=secs)
+                comparison=comparison, previous_best=prev, shifted=shifted, seconds=secs,
+                counted=counted)
 
 
 def main(argv=None):
@@ -378,6 +383,9 @@ def main(argv=None):
                 s = r["screen"]
                 notes.append("SCREENED, not exhaustively verified: %d random windows of %d columns "
                              "verified in full, seed %s" % (s["windows"], s["width"], s["seed"]))
+            if r.get("counted"):
+                notes.append("verified by exact count of every column t-set (ca_verify stopped for "
+                             "memory)")
             if r["comparison"] == "above_table":
                 notes.append("above table best, not an improvement")
             if raw.get("notes", "").strip():

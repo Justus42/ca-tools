@@ -169,7 +169,14 @@ computes the SHA-256 of that text. The hash is the array's identity:
 an array whose hash is already in the table is a duplicate and is
 rejected, however it was formatted. The check then runs `ca_verify`
 at strength t on the canonical array and looks up the current best
-known N. An array whose estimated work is too large for the runner
+known N. If `ca_verify` is stopped for lack of memory (arrays with a
+large v^t, such as orthogonal arrays of index one), the check counts
+exactly instead: for every t-set of columns it lists the tuples that
+occur and requires all v^t of them. The count reads the whole array
+into memory as columns, so it runs only for arrays without don't-care
+entries and with C(k, t) times N at most 400 million; it gives the same
+verdict as `ca_verify` and names a missing tuple in the same form. Such
+a row's stamp begins `exact count` in place of `ca_verify`. An array whose estimated work is too large for the runner
 is screened instead (below, "Large arrays: the screened status").
 
 The check posts its report as a comment on the pull request. The

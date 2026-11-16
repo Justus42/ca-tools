@@ -30,6 +30,7 @@ import datetime
 import gzip
 import hashlib
 import io
+import itertools
 import json
 import math
 import os
@@ -503,8 +504,125 @@ def run_ca_verify(ca_verify, path, t, v, threads, timeout):
             missing.append(([int(c) for c in m.group(1).split(",")],
                             [int(s) for s in m.group(2).split(",")]))
     outcome = {0: "verified", 1: "gaps"}.get(p.returncode, "error")
+    if outcome == "error" and killed_for_memory(p.returncode, p.stderr):
+        left = timeout - secs
+        r = count_check(path, t, v, left)
+        r["seconds"] += secs
+        r["stderr"] = ("ca_verify stopped (return code %d); %s"
+                       % (p.returncode, r["stderr"])).strip()
+        return r
     return dict(outcome=outcome, seconds=secs, missing=missing,
                 summary=out[0] if out else "", stderr=p.stderr.strip())
+
+
+# ---------------------------------------------------------------------------
+# Exact counting when ca_verify runs out of memory
+# ---------------------------------------------------------------------------
+
+COUNT_MAX_CELLS = 400 * 1000 * 1000     # C(k,t) * N row visits
+COUNT_MAX_TUPLES = 1 << 30               # v^t
+
+
+def claim_stamp(cl, stamp):
+    """The verify stamp of one claim: the run's stamp, with "exact count"
+    in place of "ca_verify" when the exact count did the check."""
+    if cl.get("counted"):
+        return stamp.replace("ca_verify ", "exact count ", 1)
+    return stamp
+
+
+def killed_for_memory(returncode, stderr):
+    """True when ca_verify ended from a kill signal (the kernel's out of
+    memory killer sends SIGKILL) or reported a failed allocation."""
+    if returncode is None:
+        return False
+    if returncode < 0 or returncode in (137, 134):
+        return True
+    low = (stderr or "").lower()
+    return "alloc" in low or "out of memory" in low
+
+
+def read_columns(path, v):
+    """Columns of an array file as lists of 0-based symbols. Returns
+    (columns, N), or a string saying why the file cannot be counted here
+    (don't-care entries, ragged rows, symbols out of range)."""
+    cols = None
+    lo, hi = None, None
+    with open(path, "r", encoding="utf-8", errors="strict") as f:
+        for lineno, line in enumerate(f, 1):
+            toks = [s for s in TOKEN_SPLIT.split(line) if s]
+            if not toks:
+                continue
+            if cols is None:
+                cols = [[] for _ in toks]
+            elif len(toks) != len(cols):
+                return "line %d: ragged row" % lineno
+            for c, tok in zip(cols, toks):
+                if not tok.isdigit():
+                    return "line %d: entry %r is not a symbol" % (lineno, tok[:20])
+                c.append(int(tok))
+    if not cols:
+        return "array file holds no rows"
+    lo = min(min(c) for c in cols)
+    hi = max(max(c) for c in cols)
+    if lo == 0 and hi <= v - 1:
+        pass
+    elif lo >= 1 and hi == v:
+        cols = [[x - 1 for x in c] for c in cols]
+    else:
+        return "symbols %d..%d do not fit v=%d" % (lo, hi, v)
+    return cols, len(cols[0])
+
+
+def count_check(path, t, v, timeout):
+    """Exact check without ca_verify: for every t-set of columns, every one
+    of the v^t tuples must appear in some row. Same result dict as
+    run_ca_verify."""
+    start = time.monotonic()
+
+    def done(outcome, summary, missing=(), note=""):
+        return dict(outcome=outcome, seconds=time.monotonic() - start,
+                    missing=list(missing), summary=summary, stderr=note)
+
+    vt = v ** t
+    if vt > COUNT_MAX_TUPLES:
+        return done("error", "", note="exact count not run: v^t = %d" % vt)
+    got = read_columns(path, v)
+    if isinstance(got, str):
+        return done("error", "", note="exact count not run: " + got)
+    cols, n = got
+    k = len(cols)
+    if k < t:
+        return done("error", "", note="exact count not run: k=%d < t=%d" % (k, t))
+    if math.comb(k, t) * n > COUNT_MAX_CELLS:
+        return done("error", "", note="exact count not run: C(%d,%d)*N above %d"
+                    % (k, t, COUNT_MAX_CELLS))
+    missing = []
+    for cset in itertools.combinations(range(k), t):
+        if time.monotonic() - start > timeout:
+            return done("timeout", "")
+        codes = cols[cset[0]]
+        for c in cset[1:]:
+            codes = [a * v + b for a, b in zip(codes, cols[c])]
+        if len(set(codes)) == vt:
+            continue
+        seen = bytearray(vt)
+        for x in codes:
+            seen[x] = 1
+        x = seen.index(0)
+        tup = []
+        for _ in range(t):
+            x, d = divmod(x, v)
+            tup.append(d)
+        missing.append((list(cset), tup[::-1]))
+        if len(missing) >= 20:
+            break
+    if missing:
+        return done("gaps", "exact count: %d or more column sets miss a tuple"
+                    % len(missing), missing, note="exact count")
+    return done("verified", "exact count: all %d column sets of size %d cover "
+                "all %d tuples, N=%d" % (math.comb(k, t), t, vt, n),
+                note="exact count")
 
 
 def screen_windows(k, sha, count, width):
@@ -762,6 +880,7 @@ def check_claim(cl, ctx, deadline):
                 r = run_ca_verify(ctx["ca_verify"], canon_path, t, v,
                                   ctx["threads"], min(budget, left))
                 cl["seconds"]["verify"] = r["seconds"]
+                cl["counted"] = r["stderr"].startswith("ca_verify stopped")
                 if r["outcome"] == "verified":
                     cl["status"] = "verified"
                 elif r["outcome"] == "gaps":
@@ -959,9 +1078,10 @@ def build_rows(claims, ctx):
         taken[name] = cl["sha256"]
         cl["canonical_name"] = name
         tier = "VERIFIED" if cl["status"] == "verified" else "SCREENED"
+        stamp = claim_stamp(cl, ctx["stamp"])
         table_rows.append([cl["t"], cl["v"], cl["k"], cl["N"], tier, SOURCE_ID,
                            cl["raw"]["source_detail"].strip(), ctx["snapshot_id"],
-                           cl["sha256"], ctx["stamp"], ctx["date"],
+                           cl["sha256"], stamp, ctx["date"],
                            table_notes(cl, ctx), "", "",
                            cl["raw"]["construction"].strip(), cl.get("builds_on", ""), ""])
         if cl["status"] == "screened":
@@ -972,7 +1092,7 @@ def build_rows(claims, ctx):
                        "above_table": "above_best"}[cl["comparison"]]
         manifest_rows.append([name, cl["t"], cl["v"], cl["k"], cl["N"], mstatus,
                               cl["sha256"], SOURCE_ID,
-                              cl["raw"]["source_detail"].strip(), ctx["stamp"],
+                              cl["raw"]["source_detail"].strip(), stamp,
                               cl.get("constant_rows") if cl.get("constant_rows") is not None else ""])
         files.append((name, cl["canon_text"]))
     return table_rows, manifest_rows, files
