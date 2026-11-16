@@ -43,10 +43,10 @@ t,v,k,N,basis,tier,id,constant_rows,constant_rows_basis,get,get_ref,construction
 2,3,3355,35,row,VERIFIED,t2-v3-k3355-1,1,exact,file,table/arrays/CA_35_2_3355_3.txt,"Profile product of the table's CA(18; 2, 52, 3) with an own array, CA(35; 2, 3003, 3), then column extension by simulated annealing to 3355 columns",profileProduct,"Profile product of the table's CA(18; 2, 52, 3) with an own array, CA(35; 2, 3003, 3), then column extension by simulated annealing to 3355 columns",t2-v3-k3355-1,t2-v3-k3918-1,2026-11-11,2026-11-16,t2-v3-k3355-1
 2,3,4914,36,row,VERIFIED,t2-v3-k4914-1,1,exact,file,table/arrays/CA_36_2_4914_3.txt,"Profile product of the table's CA(18; 2, 52, 3) with an own array, CA(36; 2, 4563, 3), then column extension by simulated annealing to 4914 columns",profileProduct,"Profile product of the table's CA(18; 2, 52, 3) with an own array, CA(36; 2, 4563, 3), then column extension by simulated annealing to 4914 columns",t2-v3-k4914-1,t2-v3-k5763-1,2026-11-11,2026-11-16,t2-v3-k4914-1
 2,3,5730,37,row,VERIFIED,t2-v3-k5730-1,1,exact,file,table/arrays/CA_37_2_5730_3.txt,"Profile product of the table's CA(18; 2, 52, 3) with an own array, CA(37; 2, 5252, 3), then column extension by simulated annealing to 5730 columns",profileProduct,"Profile product of the table's CA(18; 2, 52, 3) with an own array, CA(37; 2, 5252, 3), then column extension by simulated annealing to 5730 columns",t2-v3-k5730-1,t2-v3-k5763-1,2026-11-11,2026-11-16,t2-v3-k5730-1
-2,3,5763,38,row,CITED,t2-v3-k5763-1,,,none,,CA Extender (TJ-AJ-AG),CAEX,CA Extender (TJ-AJ-AG),t2-v3-k5763-1,,2026-08-23,2026-11-16,t2-v3-k5763-1
+2,3,5763,38,row,CITED,t2-v3-k5763-1,1,exact,file,table/arrays/CA_38_2_5763_3.txt,CA Extender (TJ-AJ-AG),CAEX,"CA Extender (TJ-AJ-AG) || Profile product of Colbourn and Torres-Jimenez 2013 (Thm 4.2 / Cor 4.5), 3 symbols",t2-v3-k5763-1;t2-v3-k5763-2,,2026-08-23,2026-11-16,t2-v3-k5763-1
 2,3,8329,39,row,CITED,t2-v3-k8329-1,1,exact,file,table/arrays/CA_39_2_8329_3.txt,CA Extender (TJ-AJ-AG),CAEX,"CA Extender (TJ-AJ-AG) || PCA product (Colbourn et al. 2006, Colbourn and Torres-Jimenez 2013) of two partitioned covering arrays",t2-v3-k8329-1;t2-v3-k8329-2,,2026-08-23,2026-11-16,t2-v3-k8329-1
 2,3,9207,40,row,CITED,t2-v3-k9207-1,1,exact,file,table/arrays/CA_40_2_9207_3.txt,CA Extender (TJ-AJ-AG),CAEX,"CA Extender (TJ-AJ-AG) || Generalized direct product (Colbourn and Torres-Jimenez 2013, Corollary 4.3) using rows that differ in every column",t2-v3-k9207-1;t2-v3-k9207-2,,2026-08-23,2026-11-16,t2-v3-k9207-1
-2,3,11898,41,row,CITED,t2-v3-k11898-1,,,none,,CA Extender (TJ-AJ-AG),CAEX,CA Extender (TJ-AJ-AG),t2-v3-k11898-1,,2026-08-23,2026-11-16,t2-v3-k11898-1
+2,3,11898,41,row,CITED,t2-v3-k11898-1,1,exact,file,table/arrays/CA_41_2_11898_3.txt,CA Extender (TJ-AJ-AG),CAEX,"CA Extender (TJ-AJ-AG) || Profile product of Colbourn and Torres-Jimenez 2013 (Thm 4.2 / Cor 4.5), 3 symbols",t2-v3-k11898-1;t2-v3-k11898-2,,2026-08-23,2026-11-16,t2-v3-k11898-1
 2,3,17895,42,row,CITED,t2-v3-k17895-1,,,none,,CA Extender (TJ-AJ-AG),CAEX,CA Extender (TJ-AJ-AG),t2-v3-k17895-1,,2026-08-23,2026-11-16,t2-v3-k17895-1
 2,3,20000,43,row,CITED,t2-v3-k20000-1,1,exact,file,table/arrays/CA_43_2_20000_3.txt.gz,CA Extender (TJ-AJ-AG),CAEX,"CA Extender (TJ-AJ-AG) || Generalized direct product (Colbourn and Torres-Jimenez 2013, Corollary 4.3) using rows that differ in every column",t2-v3-k20000-1;t2-v3-k20000-2,,2026-08-23,2026-11-16,t2-v3-k20000-1
 2,4,5,16,row,CITED,t2-v4-k5-1,1,exact,file,table/arrays/CA_16_2_5_4.txt,Derive from strength 3,derive,"Derive from strength 3 || Dwyer CA_Database source code ""OA"" (Aaron Dwyer's abbreviation for the method; many of his arrays cite personal communication with Colbourn)",t2-v4-k5-1;t2-v4-k5-2,,2026-08-23,2026-11-16,t2-v4-k5-1
@@ -1024,7 +1024,7 @@ t,v,k,N,basis,tier,id,constant_rows,constant_rows_basis,get,get_ref,construction
 2,13,195,325,row,CITED,t2-v13-k195-1,1,exact,file,table/arrays/CA_325_2_195_13.txt,PCAx2PCA,pcaCA,PCAx2PCA || Construction function of the R package CAs 0.24.4,t2-v13-k195-1;t2-v13-k195-2,,2026-08-23,2026-11-16,t2-v13-k195-1
 2,13,196,336,row,CITED,t2-v13-k196-1,2,exact,file,table/arrays/CA_336_2_196_13.txt,Direct product,dpCA,Direct product || Construction function of the R package CAs 0.24.4,t2-v13-k196-1;t2-v13-k196-2,,2026-08-23,2026-11-16,t2-v13-k196-1
 2,13,221,362,row,CITED,t2-v13-k221-1,,,none,,Direct product,dpCA,Direct product,t2-v13-k221-1,,2026-08-23,2026-11-16,t2-v13-k221-1
-2,13,251,373,row,CITED,t2-v13-k251-1,,,none,,PCAx2PCA,pcaCA,PCAx2PCA,t2-v13-k251-1,,2026-08-23,2026-11-16,t2-v13-k251-1
+2,13,251,373,row,CITED,t2-v13-k251-1,1,exact,file,table/arrays/CA_373_2_251_13.txt,PCAx2PCA,pcaCA,"PCAx2PCA || PCA product of two partitioned covering arrays (Colbourn et al. 2006, Colbourn and Torres-Jimenez 2013)",t2-v13-k251-1;t2-v13-k251-2,,2026-08-23,2026-11-16,t2-v13-k251-1
 2,13,252,384,row,CITED,t2-v13-k252-1,2,exact,file,table/arrays/CA_384_2_252_13.txt,Direct product,dpCA,Direct product || Product of Colbourn and Torres-Jimenez 2013 (Cor 4.3): rows differing in every column removed,t2-v13-k252-1;t2-v13-k252-2,,2026-08-23,2026-11-16,t2-v13-k252-1
 2,13,265,385,row,CITED,t2-v13-k265-1,,,none,,PCAx2PCA,pcaCA,PCAx2PCA,t2-v13-k265-1,,2026-08-23,2026-11-16,t2-v13-k265-1
 2,13,266,395,row,CITED,t2-v13-k266-1,,,none,,Direct product,dpCA,Direct product,t2-v13-k266-1,,2026-08-23,2026-11-16,t2-v13-k266-1
@@ -1500,11 +1500,11 @@ t,v,k,N,basis,tier,id,constant_rows,constant_rows_basis,get,get_ref,construction
 2,16,288,496,row,CITED,t2-v16-k288-1,1,exact,file,table/arrays/CA_496_2_288_16.txt,PCAx2PCA,pcaCA,PCAx2PCA || Construction function of the R package CAs 0.24.4,t2-v16-k288-1;t2-v16-k288-2,,2026-08-23,2026-11-16,t2-v16-k288-1
 2,16,289,510,row,CITED,t2-v16-k289-1,2,exact,file,table/arrays/CA_510_2_289_16.txt,Direct product,dpCA,Direct product || Construction function of the R package CAs 0.24.4,t2-v16-k289-1;t2-v16-k289-2,,2026-08-23,2026-11-16,t2-v16-k289-1
 2,16,306,526,row,CITED,t2-v16-k306-1,,,none,,Direct product generalized,dpGeneralized,Direct product generalized,t2-v16-k306-1,,2026-08-23,2026-11-16,t2-v16-k306-1
-2,16,323,528,row,CITED,t2-v16-k323-1,,,none,,Direct product,dpCA,Direct product,t2-v16-k323-1,,2026-08-23,2026-11-16,t2-v16-k323-1
+2,16,323,528,row,CITED,t2-v16-k323-1,9,exact,file,table/arrays/CA_528_2_323_16.txt,Direct product,dpCA,Direct product || Product of Colbourn and Torres-Jimenez 2013 (Cor 4.3): rows differing in every column removed,t2-v16-k323-1;t2-v16-k323-2,,2026-08-23,2026-11-16,t2-v16-k323-1
 2,16,327,543,row,CITED,t2-v16-k327-1,,,none,,Direct product generalized,dpGeneralized,Direct product generalized,t2-v16-k327-1,,2026-08-23,2026-11-16,t2-v16-k327-1
 2,16,343,544,row,CITED,t2-v16-k343-1,,,none,,Direct product generalized,dpGeneralized,Direct product generalized,t2-v16-k343-1,,2026-08-23,2026-11-16,t2-v16-k343-1
 2,16,360,559,row,CITED,t2-v16-k360-1,,,none,,Direct product generalized,dpGeneralized,Direct product generalized,t2-v16-k360-1,,2026-08-23,2026-11-16,t2-v16-k360-1
-2,16,361,560,row,CITED,t2-v16-k361-1,,,none,,Direct product,dpCA,Direct product,t2-v16-k361-1,,2026-08-23,2026-11-16,t2-v16-k361-1
+2,16,361,560,row,CITED,t2-v16-k361-1,16,exact,file,table/arrays/CA_560_2_361_16.txt,Direct product,dpCA,Direct product || Product of Colbourn and Torres-Jimenez 2013 (Cor 4.3): rows differing in every column removed,t2-v16-k361-1;t2-v16-k361-2,,2026-08-23,2026-11-16,t2-v16-k361-1
 2,16,380,574,row,CITED,t2-v16-k380-1,,,none,,Direct product,dpCA,Direct product,t2-v16-k380-1,,2026-08-23,2026-11-16,t2-v16-k380-1
 2,16,387,589,row,CITED,t2-v16-k387-1,,,none,,Direct product generalized,dpGeneralized,Direct product generalized,t2-v16-k387-1,,2026-08-23,2026-11-16,t2-v16-k387-1
 2,16,391,590,row,CITED,t2-v16-k391-1,,,none,,Direct product,dpCA,Direct product,t2-v16-k391-1,,2026-08-23,2026-11-16,t2-v16-k391-1
@@ -1783,7 +1783,7 @@ t,v,k,N,basis,tier,id,constant_rows,constant_rows_basis,get,get_ref,construction
 2,18,401,683,row,CITED,t2-v18-k401-1,,,none,,Direct product generalized,dpGeneralized,Direct product generalized,t2-v18-k401-1,,2026-08-23,2026-11-16,t2-v18-k401-1
 2,18,421,684,row,CITED,t2-v18-k421-1,,,none,,Direct product generalized,dpGeneralized,Direct product generalized,t2-v18-k421-1,,2026-08-23,2026-11-16,t2-v18-k421-1
 2,18,440,701,row,CITED,t2-v18-k440-1,,,none,,Direct product generalized,dpGeneralized,Direct product generalized,t2-v18-k440-1,,2026-08-23,2026-11-16,t2-v18-k440-1
-2,18,441,702,row,CITED,t2-v18-k441-1,,,none,,Direct product,dpCA,Direct product,t2-v18-k441-1,,2026-08-23,2026-11-16,t2-v18-k441-1
+2,18,441,702,row,CITED,t2-v18-k441-1,18,exact,file,table/arrays/CA_702_2_441_18.txt,Direct product,dpCA,Direct product || Product of Colbourn and Torres-Jimenez 2013 (Cor 4.3): rows differing in every column removed,t2-v18-k441-1;t2-v18-k441-2,,2026-08-23,2026-11-16,t2-v18-k441-1
 2,18,442,749,row,CITED,t2-v18-k442-1,,,none,,Direct product generalized,dpGeneralized,Direct product generalized,t2-v18-k442-1,,2026-08-23,2026-11-16,t2-v18-k442-1
 2,18,458,753,row,CITED,t2-v18-k458-1,,,none,,Direct product generalized,dpGeneralized,Direct product generalized,t2-v18-k458-1,,2026-08-23,2026-11-16,t2-v18-k458-1
 2,18,481,755,row,CITED,t2-v18-k481-1,,,none,,Direct product generalized,dpGeneralized,Direct product generalized,t2-v18-k481-1,,2026-08-23,2026-11-16,t2-v18-k481-1
@@ -4531,7 +4531,7 @@ t,v,k,N,basis,tier,id,constant_rows,constant_rows_basis,get,get_ref,construction
 3,20,11,8930,row,CITED,t3-v20-k11-1,16,lower_bound,file,table/arrays/CA_8930_3_11_20.txt,ordered design (CCL),ODbasedCA,"ordered design (CCL) || Ordered design plus binary patches (Cohen, Colbourn and Ling 2008, Construction 1)",t3-v20-k11-1;t3-v20-k11-2,,2026-08-23,2026-11-16,t3-v20-k11-1
 3,20,12,9330,row,VERIFIED,t3-v20-k12-2,20,exact,file,table/arrays/CA_9330_3_12_20.txt,"ordered design based construction of Cohen, Colbourn and Ling (2003, 2008), strength 3, as implemented in CAs (ODbasedCA), the route chosen by CAs::bestCA",ODbasedCA,"ordered design based construction of Cohen, Colbourn and Ling (2003, 2008), strength 3, as implemented in CAs (ODbasedCA), the route chosen by CAs::bestCA",t3-v20-k12-2,t3-v20-k12-1,2026-10-21,2026-11-16,t3-v20-k12-2
 3,20,14,9690,row,CITED,t3-v20-k14-1,15,lower_bound,file,table/arrays/CA_9690_3_14_20.txt,ordered design (CCL),ODbasedCA,"ordered design (CCL) || Ordered design plus binary patches (Cohen, Colbourn and Ling 2008, Construction 1)",t3-v20-k14-1;t3-v20-k14-2,,2026-08-23,2026-11-16,t3-v20-k14-1
-3,20,16,9880,row,CITED,t3-v20-k16-1,,,none,,ordered design (CCL),ODbasedCA,ordered design (CCL),t3-v20-k16-1,,2026-08-23,2026-11-16,t3-v20-k16-1
+3,20,16,9880,row,CITED,t3-v20-k16-1,,,file,table/arrays/CA_9880_3_16_20.txt,ordered design (CCL),ODbasedCA,"ordered design (CCL) || Ordered design plus binary patches (Cohen, Colbourn and Ling 2008, Construction 1)",t3-v20-k16-1;t3-v20-k16-2,,2026-08-23,2026-11-16,t3-v20-k16-1
 3,20,20,10070,row,CITED,t3-v20-k20-1,20,exact,file,table/arrays/CA_10070_3_20_20.txt,ordered design (CCL),ODbasedCA,"ordered design (CCL) || Ordered design plus binary patches (Cohen, Colbourn and Ling 2008, Construction 1)",t3-v20-k20-1;t3-v20-k20-2,,2026-08-23,2026-11-16,t3-v20-k20-1
 3,20,21,11990,row,CITED,t3-v20-k21-1,,,none,,orthogonal array fuse fuse fuse postop NCK,SCA_Busht,orthogonal array fuse fuse fuse postop NCK,t3-v20-k21-1,,2026-08-23,2026-11-16,t3-v20-k21-1
 3,20,22,12000,row,CITED,t3-v20-k22-1,,,none,,orthogonal array fuse fuse fuse postop NCK,SCA_Busht,orthogonal array fuse fuse fuse postop NCK,t3-v20-k22-1,,2026-08-23,2026-11-16,t3-v20-k22-1
@@ -4880,7 +4880,7 @@ t,v,k,N,basis,tier,id,constant_rows,constant_rows_basis,get,get_ref,construction
 4,3,5,81,row,CITED,t4-v3-k5-1,3,exact,file,table/arrays/CA_81_4_5_3.txt,Derive from strength 5,derive,"Derive from strength 5 || Dwyer CA_Database source code ""OA"" (Aaron Dwyer's abbreviation for the method; many of his arrays cite personal communication with Colbourn)",t4-v3-k5-1;t4-v3-k5-2,,2026-08-23,2026-11-16,t4-v3-k5-1
 4,3,6,111,row,CITED,t4-v3-k6-1,3,exact,file,table/arrays/CA_111_4_6_3.txt,cross-sum (CKRS),CKRS,"cross-sum (CKRS) || Dwyer CA_Database source code ""CrossSum"" (Aaron Dwyer's abbreviation for the method; many of his arrays cite personal communication with Colbourn)",t4-v3-k6-1;t4-v3-k6-2,,2026-08-23,2026-11-16,t4-v3-k6-1
 4,3,7,123,row,CITED,t4-v3-k7-1,3,exact,file,table/arrays/CA_123_4_7_3.txt,cross-sum (CKRS),CKRS,"cross-sum (CKRS) || Dwyer CA_Database source code ""CrossSum"" (Aaron Dwyer's abbreviation for the method; many of his arrays cite personal communication with Colbourn)",t4-v3-k7-1;t4-v3-k7-2,,2026-08-23,2026-11-16,t4-v3-k7-1
-4,3,9,135,row,CITED,t4-v3-k9-1,,,none,,Derive from strength 5,derive,Derive from strength 5,t4-v3-k9-1,,2026-08-23,2026-11-16,t4-v3-k9-1
+4,3,9,135,row,CITED,t4-v3-k9-1,3,exact,file,table/arrays/CA_135_4_9_3.txt,Derive from strength 5,derive,Derive from strength 5 || Derived array of a strength t+1 array,t4-v3-k9-1;t4-v3-k9-2,,2026-08-23,2026-11-16,t4-v3-k9-1
 4,3,11,159,row,CITED,t4-v3-k11-1,,,none,,CPHF 3-stage (TJ-IM),cphfCA,CPHF 3-stage (TJ-IM),t4-v3-k11-1,,2026-08-23,2026-11-16,t4-v3-k11-1
 4,3,12,189,row,CITED,t4-v3-k12-1,,,none,,Torres-Jimenez,TJ,Torres-Jimenez,t4-v3-k12-1,,2026-08-23,2026-11-16,t4-v3-k12-1
 4,3,13,212,row,CITED,t4-v3-k13-1,,,none,,Torres-Jimenez,TJ,Torres-Jimenez,t4-v3-k13-1,,2026-08-23,2026-11-16,t4-v3-k13-1
@@ -5053,7 +5053,7 @@ t,v,k,N,basis,tier,id,constant_rows,constant_rows_basis,get,get_ref,construction
 4,4,96,1769,row,CITED,t4-v4-k96-1,,,none,,CPHF 3-stage (IM-TJ-AJ-AG),cphfCA,CPHF 3-stage (IM-TJ-AJ-AG),t4-v4-k96-1,,2026-08-23,2026-11-16,t4-v4-k96-1
 4,4,97,1780,row,CITED,t4-v4-k97-1,,,none,,CPHF 3-stage (IM-TJ-AJ-AG),cphfCA,CPHF 3-stage (IM-TJ-AJ-AG),t4-v4-k97-1,,2026-08-23,2026-11-16,t4-v4-k97-1
 4,4,99,1782,row,CITED,t4-v4-k99-1,,,none,,CPHF 3-stage (IM-TJ-AJ-AG),cphfCA,CPHF 3-stage (IM-TJ-AJ-AG),t4-v4-k99-1,,2026-08-23,2026-11-16,t4-v4-k99-1
-4,4,108,1786,row,CITED,t4-v4-k108-1,,,none,,CPHF IPO 7 (WCS),cphfCA,CPHF IPO 7 (WCS),t4-v4-k108-1,,2026-08-23,2026-11-16,t4-v4-k108-1
+4,4,108,1786,row,CITED,t4-v4-k108-1,1,exact,file,table/arrays/CA_1786_4_108_4.txt,CPHF IPO 7 (WCS),cphfCA,CPHF IPO 7 (WCS) || Construction function of the R package CAs 0.24.4,t4-v4-k108-1;t4-v4-k108-2,,2026-08-23,2026-11-16,t4-v4-k108-1
 4,4,117,1844,row,CITED,t4-v4-k117-1,,,none,,CPHF 3-stage (IM-TJ-AJ-AG),cphfCA,CPHF 3-stage (IM-TJ-AJ-AG),t4-v4-k117-1,,2026-08-23,2026-11-16,t4-v4-k117-1
 4,4,462,1848,row,CITED,t4-v4-k462-1,,,none,,Cyclotomy (Colbourn),CYCLOTOMY,Cyclotomy (Colbourn),t4-v4-k462-1,,2026-08-23,2026-11-16,t4-v4-k462-1
 4,4,558,2232,row,CITED,t4-v4-k558-1,,,none,,Cyclotomy (Colbourn),CYCLOTOMY,Cyclotomy (Colbourn),t4-v4-k558-1,,2026-08-23,2026-11-16,t4-v4-k558-1
@@ -5344,7 +5344,7 @@ t,v,k,N,basis,tier,id,constant_rows,constant_rows_basis,get,get_ref,construction
 4,8,10,6101,row,VERIFIED,t4-v8-k10-3,8,exact,file,table/arrays/CA_6101_4_10_8.txt,"row deletion + Nurmela-style tabu repair post-optimisation of CA(6125;4,10,8) ca-tools table array (orthogonal array fuse postop NCK; source orthogonal array fuse postop NCK)",postop,"row deletion + Nurmela-style tabu repair post-optimisation of CA(6125;4,10,8) ca-tools table array (orthogonal array fuse postop NCK; source orthogonal array fuse postop NCK)",t4-v8-k10-3,t4-v8-k10-1,2026-11-02,2026-11-16,t4-v8-k10-3
 4,8,15,7680,row,CITED,t4-v8-k15-1,,,none,,3-Restricted SCPHF RE (CL),scphfCA,3-Restricted SCPHF RE (CL),t4-v8-k15-1,,2026-08-23,2026-11-16,t4-v8-k15-1
 4,8,19,8128,row,CITED,t4-v8-k19-1,,,none,,2-Restricted SCPHF RE (CL),scphfCA,2-Restricted SCPHF RE (CL),t4-v8-k19-1,,2026-08-23,2026-11-16,t4-v8-k19-1
-4,8,20,8184,row,CITED,t4-v8-k20-1,,,none,,SCPHF Tabu Search (Walker-Colbourn),scphfCA,SCPHF Tabu Search (Walker-Colbourn),t4-v8-k20-1,,2026-08-23,2026-11-16,t4-v8-k20-1
+4,8,20,8184,row,CITED,t4-v8-k20-1,8,exact,file,table/arrays/CA_8184_4_20_8.txt,SCPHF Tabu Search (Walker-Colbourn),scphfCA,SCPHF Tabu Search (Walker-Colbourn) || Construction function of the R package CAs 0.24.4,t4-v8-k20-1;t4-v8-k20-2,,2026-08-23,2026-11-16,t4-v8-k20-1
 4,8,22,11320,row,VERIFIED,t4-v8-k22-1,8,exact,file,table/arrays/CA_11320_4_22_8.txt,near-CPHF(2) + aligned linear residual block,cphfCA,near-CPHF(2) + aligned linear residual block,t4-v8-k22-1,t4-v8-k33-1,2026-11-01,2026-11-16,t4-v8-k22-1
 4,8,33,11768,row,CITED,t4-v8-k33-1,,,none,,3-Restricted SCPHF RE (CL),scphfCA,3-Restricted SCPHF RE (CL),t4-v8-k33-1,,2026-08-23,2026-11-16,t4-v8-k33-1
 4,8,37,12216,row,CITED,t4-v8-k37-1,,,none,,2-Restricted SCPHF RE (CL),scphfCA,2-Restricted SCPHF RE (CL),t4-v8-k37-1,,2026-08-23,2026-11-16,t4-v8-k37-1
@@ -6115,7 +6115,7 @@ t,v,k,N,basis,tier,id,constant_rows,constant_rows_basis,get,get_ref,construction
 5,2,98,194,row,CITED,t5-v2-k98-1,,,none,,Paley type (Colbourn),PALEY,Paley type (Colbourn),t5-v2-k98-1,,2026-08-23,2026-11-16,t5-v2-k98-1
 5,2,102,202,row,CITED,t5-v2-k102-1,,,none,,Paley type (Colbourn),PALEY,Paley type (Colbourn),t5-v2-k102-1,,2026-08-23,2026-11-16,t5-v2-k102-1
 5,2,103,206,row,CITED,t5-v2-k103-1,,,none,,Paley type (Colbourn),PALEY,Paley type (Colbourn),t5-v2-k103-1,,2026-08-23,2026-11-16,t5-v2-k103-1
-5,2,104,208,row,CITED,t5-v2-k104-1,,,none,,Paley type (Colbourn),PALEY,Paley type (Colbourn),t5-v2-k104-1,,2026-08-23,2026-11-16,t5-v2-k104-1
+5,2,104,208,row,CITED,t5-v2-k104-1,2,exact,file,table/arrays/CA_208_5_104_2.txt,Paley type (Colbourn),PALEY,Paley type (Colbourn) || Construction function of the R package CAs 0.24.4,t5-v2-k104-1;t5-v2-k104-2,,2026-08-23,2026-11-16,t5-v2-k104-1
 5,2,108,214,row,CITED,t5-v2-k108-1,,,none,,Paley type (Colbourn),PALEY,Paley type (Colbourn),t5-v2-k108-1,,2026-08-23,2026-11-16,t5-v2-k108-1
 5,2,110,218,row,CITED,t5-v2-k110-1,,,none,,Paley type (Colbourn),PALEY,Paley type (Colbourn),t5-v2-k110-1,,2026-08-23,2026-11-16,t5-v2-k110-1
 5,2,114,225,row,CITED,t5-v2-k114-1,1,exact,file,table/arrays/CA_225_5_114_2_f42fa25c.txt,SBSTT (TJ-AG),twoStage,"SBSTT (TJ-AG) || CAs::paleyCA(5,114) [Double(paley_mat(113)), 226 rows] then row elimination (tools/own_arrays/nck_lite.c) || Torres-Jimenez binary array, formerly published on his site (no longer online), as kept in the CAs data TJ2level_CAs; method not recorded per array",t5-v2-k114-1;t5-v2-k114-3;t5-v2-k114-2,,2026-08-23,2026-11-16,t5-v2-k114-1
@@ -7969,7 +7969,7 @@ t,v,k,N,basis,tier,id,constant_rows,constant_rows_basis,get,get_ref,construction
 6,4,18,16381,row,CITED,t6-v4-k18-1,,,none,,CPHF Sim Annealing (TJ-IM),cphfCA,CPHF Sim Annealing (TJ-IM),t6-v4-k18-1,,2026-08-23,2026-11-16,t6-v4-k18-1
 6,4,19,19568,row,CITED,t6-v4-k19-1,,,none,,CPHF 3-stage (IM-TJ-AJ-AG),cphfCA,CPHF 3-stage (IM-TJ-AJ-AG),t6-v4-k19-1,,2026-08-23,2026-11-16,t6-v4-k19-1
 6,4,20,20404,row,CITED,t6-v4-k20-1,,,none,,3-Restricted SCPHF RE (CL),scphfCA,3-Restricted SCPHF RE (CL),t6-v4-k20-1,,2026-08-23,2026-11-16,t6-v4-k20-1
-6,4,21,20476,row,CITED,t6-v4-k21-1,,,none,,CPHF IPO 5 (WCS),cphfCA,CPHF IPO 5 (WCS),t6-v4-k21-1,,2026-08-23,2026-11-16,t6-v4-k21-1
+6,4,21,20476,row,CITED,t6-v4-k21-1,4,exact,file,table/arrays/CA_20476_6_21_4.txt,CPHF IPO 5 (WCS),cphfCA,CPHF IPO 5 (WCS) || Construction function of the R package CAs 0.24.4,t6-v4-k21-1;t6-v4-k21-3,,2026-08-23,2026-11-16,t6-v4-k21-1
 6,4,22,21512,row,CITED,t6-v4-k22-1,,,none,,CPHF 3-stage (IM-TJ-AJ-AG),cphfCA,CPHF 3-stage (IM-TJ-AJ-AG),t6-v4-k22-1,,2026-08-23,2026-11-16,t6-v4-k22-1
 6,4,23,22548,row,CITED,t6-v4-k23-1,,,none,,CPHF 3-stage (IM-TJ-AJ-AG),cphfCA,CPHF 3-stage (IM-TJ-AJ-AG),t6-v4-k23-1,,2026-08-23,2026-11-16,t6-v4-k23-1
 6,4,24,23499,row,CITED,t6-v4-k24-1,,,none,,CPHF 3-stage (IM-TJ-AJ-AG),cphfCA,CPHF 3-stage (IM-TJ-AJ-AG),t6-v4-k24-1,,2026-08-23,2026-11-16,t6-v4-k24-1
@@ -8096,7 +8096,7 @@ t,v,k,N,basis,tier,id,constant_rows,constant_rows_basis,get,get_ref,construction
 6,4,9854,679410,row,CITED,t6-v4-k9854-1,,,none,,Power CT27^3S21,powerCT,Power CT27^3S21,t6-v4-k9854-1,,2026-08-23,2026-11-16,t6-v4-k9854-1
 6,4,9901,680910,row,CITED,t6-v4-k9901-1,,,none,,Power N-CT101^2Arc(3),powerNCT,Power N-CT101^2Arc(3),t6-v4-k9901-1,,2026-08-23,2026-11-16,t6-v4-k9901-1
 6,4,10000,682080,row,CITED,t6-v4-k10000-1,,,none,,Power CT27^3S20,powerCT,Power CT27^3S20,t6-v4-k10000-1,,2026-08-23,2026-11-16,t6-v4-k10000-1
-6,5,7,15625,row,CITED,t6-v5-k7-1,,,none,,orthogonal array,SCA_Busht,orthogonal array,t6-v5-k7-1,,2026-08-23,2026-11-16,t6-v5-k7-1
+6,5,7,15625,row,CITED,t6-v5-k7-1,5,exact,file,table/arrays/CA_15625_6_7_5.txt,orthogonal array,SCA_Busht,orthogonal array || Construction function of the R package CAs 0.24.4,t6-v5-k7-1;t6-v5-k7-3,,2026-08-23,2026-11-16,t6-v5-k7-1
 6,5,8,25000,row,CITED,t6-v5-k8-1,,,none,,Xu-Ji-Dong,transversalDesign,Xu-Ji-Dong,t6-v5-k8-1,,2026-08-23,2026-11-16,t6-v5-k8-1
 6,5,11,28125,row,CITED,t6-v5-k11-1,,,none,,Restricted CPHF Sim Annealing (TJ-IM),cphfCA,Restricted CPHF Sim Annealing (TJ-IM),t6-v5-k11-1,,2026-08-23,2026-11-16,t6-v5-k11-1
 6,5,12,30625,row,CITED,t6-v5-k12-1,,,none,,Restricted CPHF Sim Annealing (TJ-IM),cphfCA,Restricted CPHF Sim Annealing (TJ-IM),t6-v5-k12-1,,2026-08-23,2026-11-16,t6-v5-k12-1
