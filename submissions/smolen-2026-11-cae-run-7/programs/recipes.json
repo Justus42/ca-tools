@@ -1,0 +1,251 @@
+{
+ "CA_135_4_9_3.txt": {
+  "kind": "law",
+  "law": "derive",
+  "params": {},
+  "N": 135,
+  "k": 9,
+  "t": 4,
+  "v": 3,
+  "ing": [
+   {
+    "kind": "file",
+    "src": "table/arrays/CA_405_5_10_3.txt",
+    "N": 405,
+    "k": 10,
+    "t": 5,
+    "v": 3,
+    "text": "table array CA_405_5_10_3.txt (frozen-core extension of table array CA_405_5_9_3.txt (Dwyer CA_Database source code \"DeMu)"
+   }
+  ]
+ },
+ "CA_15625_6_7_5.txt": {
+  "kind": "cas",
+  "src": "cphfCA",
+  "N": 15625,
+  "k": 7,
+  "t": 6,
+  "v": 5,
+  "text": "CAs 0.24.4 construction cphfCA (CAs:::labelToCode(\"cphfCA\", 6, 7, 5)) with the stored CPHFs of Wagner, Colbourn and Simos 2022"
+ },
+ "CA_1786_4_108_4.txt": {
+  "kind": "cas",
+  "src": "cphfCA",
+  "N": 1786,
+  "k": 108,
+  "t": 4,
+  "v": 4,
+  "text": "CAs 0.24.4 construction cphfCA (CAs:::labelToCode(\"cphfCA\", 4, 108, 4)) with the stored CPHFs of Wagner, Colbourn and Simos 2022"
+ },
+ "CA_20476_6_21_4.txt": {
+  "kind": "cas",
+  "src": "cphfCA",
+  "N": 20476,
+  "k": 21,
+  "t": 6,
+  "v": 4,
+  "text": "CAs 0.24.4 construction cphfCA (CAs:::labelToCode(\"cphfCA\", 6, 21, 4)) with the stored CPHFs of Wagner, Colbourn and Simos 2022"
+ },
+ "CA_208_5_104_2.txt": {
+  "kind": "cas",
+  "src": "PALEY",
+  "N": 208,
+  "k": 104,
+  "t": 5,
+  "v": 2,
+  "text": "CAs 0.24.4 construction PALEY (CAs:::labelToCode(\"PALEY\", 5, 104, 2))"
+ },
+ "CA_38_2_5763_3.txt": {
+  "kind": "law",
+  "law": "pprod",
+  "params": {
+   "i": 20,
+   "j": 21,
+   "p": 7,
+   "q": 16
+  },
+  "N": 38,
+  "k": 5763,
+  "t": 2,
+  "v": 3,
+  "ing": [
+   {
+    "kind": "file",
+    "src": "table/arrays/CA_24_2_209_3.txt",
+    "N": 24,
+    "k": 209,
+    "t": 2,
+    "v": 3,
+    "text": "table array CA_24_2_209_3.txt (Built in ca-tools 2026-11-10 in two steps, both run by programs/recipe_item123.sh, which w)"
+   },
+   {
+    "kind": "file",
+    "src": "table/arrays/CA_17_2_29_3_72088afb.txt",
+    "N": 17,
+    "k": 29,
+    "t": 2,
+    "v": 3,
+    "text": "table array CA_17_2_29_3_72088afb.txt (tools/own_arrays, array file CA_17_2_29_3_72088afb.txt: simulated annealing with Nurmela-s)"
+   }
+  ]
+ },
+ "CA_41_2_11898_3.txt": {
+  "kind": "law",
+  "law": "pprod",
+  "params": {
+   "i": 4,
+   "j": 5,
+   "p": 7,
+   "q": 16
+  },
+  "N": 41,
+  "k": 11898,
+  "t": 2,
+  "v": 3,
+  "ing": [
+   {
+    "kind": "file",
+    "src": "table/arrays/CA_27_2_436_3.txt",
+    "N": 27,
+    "k": 436,
+    "t": 2,
+    "v": 3,
+    "text": "table array CA_27_2_436_3.txt (Built in ca-tools 2026-11-10 (debate 16) in two steps. Step 1, profile product (method of )"
+   },
+   {
+    "kind": "file",
+    "src": "table/arrays/CA_17_2_29_3_72088afb.txt",
+    "N": 17,
+    "k": 29,
+    "t": 2,
+    "v": 3,
+    "text": "table array CA_17_2_29_3_72088afb.txt (tools/own_arrays, array file CA_17_2_29_3_72088afb.txt: simulated annealing with Nurmela-s)"
+   }
+  ]
+ },
+ "CA_528_2_323_16.txt": {
+  "kind": "law",
+  "law": "ctj",
+  "params": {
+   "s": 1,
+   "r": 15
+  },
+  "N": 528,
+  "k": 323,
+  "t": 2,
+  "v": 16,
+  "ing": [
+   {
+    "kind": "file",
+    "src": "table/arrays/CA_256_2_17_16.txt",
+    "N": 256,
+    "k": 17,
+    "t": 2,
+    "v": 16,
+    "text": "table array CA_256_2_17_16.txt (CAs 0.24.4 construction fuseBushtCA (CAs:::labelToCode(\"fuseBushtCA\", 2, 17, 16)). Built i)"
+   },
+   {
+    "kind": "file",
+    "src": "table/arrays/CA_288_2_19_16.txt",
+    "N": 288,
+    "k": 19,
+    "t": 2,
+    "v": 16,
+    "text": "table array CA_288_2_19_16.txt (CAs 0.24.4 construction projBoseCA (CAs:::labelToCode(\"projBoseCA\", 2, 19, 16)). Built in )"
+   }
+  ]
+ },
+ "CA_560_2_361_16.txt": {
+  "kind": "law",
+  "law": "ctj",
+  "params": {
+   "s": 15,
+   "r": 1
+  },
+  "N": 560,
+  "k": 361,
+  "t": 2,
+  "v": 16,
+  "ing": [
+   {
+    "kind": "file",
+    "src": "table/arrays/CA_288_2_19_16.txt",
+    "N": 288,
+    "k": 19,
+    "t": 2,
+    "v": 16,
+    "text": "table array CA_288_2_19_16.txt (CAs 0.24.4 construction projBoseCA (CAs:::labelToCode(\"projBoseCA\", 2, 19, 16)). Built in )"
+   },
+   {
+    "kind": "file",
+    "src": "table/arrays/CA_288_2_19_16.txt",
+    "N": 288,
+    "k": 19,
+    "t": 2,
+    "v": 16,
+    "text": "table array CA_288_2_19_16.txt (CAs 0.24.4 construction projBoseCA (CAs:::labelToCode(\"projBoseCA\", 2, 19, 16)). Built in )"
+   }
+  ]
+ },
+ "CA_702_2_441_18.txt": {
+  "kind": "law",
+  "law": "ctj",
+  "params": {
+   "s": 17,
+   "r": 1
+  },
+  "N": 702,
+  "k": 441,
+  "t": 2,
+  "v": 18,
+  "ing": [
+   {
+    "kind": "file",
+    "src": "table/arrays/CA_360_2_21_18.txt",
+    "N": 360,
+    "k": 21,
+    "t": 2,
+    "v": 18,
+    "text": "table array CA_360_2_21_18.txt (CAs 0.24.4 construction projBoseCA (CAs:::labelToCode(\"projBoseCA\", 2, 21, 18)). Built in )"
+   },
+   {
+    "kind": "file",
+    "src": "table/arrays/CA_360_2_21_18.txt",
+    "N": 360,
+    "k": 21,
+    "t": 2,
+    "v": 18,
+    "text": "table array CA_360_2_21_18.txt (CAs 0.24.4 construction projBoseCA (CAs:::labelToCode(\"projBoseCA\", 2, 21, 18)). Built in )"
+   }
+  ]
+ },
+ "CA_8184_4_20_8.txt": {
+  "kind": "cas",
+  "src": "scphfCA",
+  "N": 8184,
+  "k": 20,
+  "t": 4,
+  "v": 8,
+  "text": "CAs 0.24.4 construction scphfCA (CAs:::labelToCode(\"scphfCA\", 4, 20, 8)) with stored SCPHFs (Sherwood et al. 2006, Walker and Colbourn 2009, Colbourn, Lanus and Sarkar 2018)"
+ },
+ "CA_9880_3_16_20.txt": {
+  "kind": "law",
+  "law": "od",
+  "params": {},
+  "N": 9880,
+  "k": 16,
+  "t": 3,
+  "v": 20,
+  "ing": [
+   {
+    "kind": "file",
+    "src": "table/arrays/CA_17_3_16_2_0f12b71b.txt",
+    "N": 17,
+    "k": 16,
+    "t": 3,
+    "v": 2,
+    "text": "table array CA_17_3_16_2_0f12b71b.txt (tools/own_arrays, array file CA_17_3_16_2_0f12b71b.txt: SAT built here (tools/own_arrays/c)"
+   }
+  ]
+ }
+}

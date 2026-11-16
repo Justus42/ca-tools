@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "/sessions/rcw-01cg4gfmhajqnjhe7yfurxfs/fakerepo/tools/check_submission.py", line 47, in <module>
+    from ca_table import counted  # noqa: E402  (the one definition of the counted rows)
+ModuleNotFoundError: No module named 'ca_table'
