@@ -202,11 +202,14 @@ Smolen (independent researcher, ORCID 0009-0002-9537-7961),
 chrispbsmolen@gmail.com. The code is under the MIT license (LICENSE), except r/cafast
 and r/countkernel, which follow code of the CAs package (GPL-3, by Ulrike
 Groemping) closely and are under GPL (>= 3), with her agreement to the
-"or later" terms. The table data in table/ is not original
-to this repository. Each row names its source, the sources are listed
-under Attribution in table/README.md, and the data remains subject to
-those sources' terms. The arrays and certificates built by this project
-(source S8, made by tools/own_arrays and tools/cphf and stored in
-table/arrays and table/certificates) are by Christopher Smolen and are
-released under the Creative Commons Attribution 4.0 International
-license (CC BY 4.0).
+"or later" terms. The table data built or compiled by this project is
+under the Creative Commons Attribution 4.0 International license (CC BY
+4.0), as set out in LICENSE-DATA: the arrays, certificates and
+constructions built here (source S8), and the files the project compiles
+and computes (ca_table.csv as compiled here, the frame file, the derived
+sizes, the priority dates and the table pages). Reuse it freely, crediting
+the table (CITATION.cff) and the source named in each row you use. Data
+from other sources stays under its own terms: each row names its source,
+the sources are listed under Attribution in table/README.md, and arrays
+submitted through submissions/ are licensed by their submitters under
+CC BY 4.0.

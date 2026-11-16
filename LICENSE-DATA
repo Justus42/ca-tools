@@ -1,0 +1,28 @@
+Data license
+
+Copyright (c) 2026 Christopher Smolen
+
+The table data built or compiled by this project is licensed under the
+Creative Commons Attribution 4.0 International license (CC BY 4.0):
+https://creativecommons.org/licenses/by/4.0/
+
+This covers
+- the arrays, certificates and constructions built by this project
+  (source S8), in table/arrays, table/certificates and table/constructions;
+- the files this project compiles and computes from the table:
+  table/ca_table.csv as compiled here, table/ca_frame.csv,
+  table/derived.csv, table/priority.csv, the other CSV files in table/
+  written by its tools, and the table pages in docs/.
+
+Anyone may share and adapt this data for any purpose, provided they give
+appropriate credit: cite the table as given in CITATION.cff, with the
+version or commit used, and cite the source named in each row they use.
+
+Data from other sources stays under its own terms. Arrays submitted
+through submissions/ are licensed by their submitters under CC BY 4.0
+(submissions/README.md, Licence). The baseline sizes from Colbourn's
+tables and every other source are credited row by row (table/README.md,
+Attribution).
+
+The code in this repository is under the MIT license (LICENSE), except
+r/cafast and r/countkernel, which are under GPL (>= 3).

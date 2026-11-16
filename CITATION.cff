@@ -16,7 +16,9 @@ identifiers:
     description: "Release table-2026.11"
 repository-code: "https://github.com/chrispbsmolen/ca-tools"
 url: "https://chrispbsmolen.github.io/ca-tools/"
-license: MIT
+license:
+  - CC-BY-4.0
+  - MIT
 keywords:
   - covering arrays
   - combinatorial testing
