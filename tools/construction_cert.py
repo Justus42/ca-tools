@@ -91,7 +91,7 @@ SMS_KINDS = ("sms51-1", "sms65-1")
 REFERENCE = {"powercz-1": "power-cz2012", "powercz-2": "power-cz2012", "fuse-1": "fuse-ckrs2010",
              "derive-1": None, "product-1": "product-cmmssy2006", "sms51-1": "mobius-sms2025",
              "sms65-1": "mobius-sms2025", "sm-xplication-1": "lfsr-sm2025", "product-ctj-1": "pca-ct2013",
-             "roux-1": "recur-mc2005"}
+             "roux-1": "recur-mc2005", "bush-1": "oa-bush1952"}
 REPO_TABLE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "table")
 # the exhaustive check of an inline or file ingredient here costs about C(k, t) * N entry reads in
 # Python; above this an ingredient must be entered in the table first and named by its hash
@@ -3032,6 +3032,10 @@ def run(path, write=None, log=None, table_dir=None):
             ings.append(dict(name=name, source="rebuild", sha256=i["rebuild"]["sha256"], recipe=i["rebuild"]["recipe"]))
         elif "recipe" in i:
             ings.append(dict(name=name, source="recipe", recipe=i["recipe"]))
+        elif "bush" in i:
+            b = i["bush"]
+            ings.append(dict(name=name, source="recipe", recipe="the Bush OA(%d^%d; %d, %d, %d) over GF(%d), Bush 1952"
+                             % (b["q"], i["need_t"], i["need_t"], b["k"], b["q"], b["q"])))
         elif "table" in i:
             ings.append(dict(name=name, source="table", sha256=i["table"]["sha256"], file=i["table"]["file"]))
         elif "file" in i:
