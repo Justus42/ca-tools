@@ -107,6 +107,59 @@ def fuse_ind(A, v, z, r):
     return out
 
 
+def bush_ind(q, t, k):
+    """the Bush OA(q^t; t, k, q) over the prime q by its definition: one row per polynomial (a_0 fastest),
+    its values at 0..q-1, then a_{t-1} when k = q + 1"""
+    out = []
+    for idx in range(q ** t):
+        a = [(idx // q ** i) % q for i in range(t)]
+        row = [sum(a[i] * pow(x, i, q) for i in range(t)) % q for x in range(min(k, q))]
+        if k == q + 1:
+            row.append(a[t - 1])
+        out.append(row[:k])
+    return out
+
+
+def bush_cases(rng, work, n):
+    """fuse-1 certificates with a Bush input over a prime field: a third valid (the independent rebuild is
+    the expected array), the rest with a fault only the bush check sees (t above q, or q not v + times)"""
+    out = []
+    for i in range(n):
+        q = rng.choice([2, 3, 5, 7])
+        t = rng.choice([2, 3]) if q > 2 else 2
+        k = rng.randint(t, q + 1)
+        times = rng.randint(1, max(1, q - 2))
+        v = q - times
+        c = Case("fuse-1", t, v)
+        fails = set()
+        if i % 3:
+            c.fault = "bush"
+            fails.add("bush")
+            if rng.random() < 0.5 and q < 7:
+                t = q + 1
+                k = q + 1
+                c.t = t
+            else:
+                v = v - 1 if v > 2 else v + 1
+                c.v = v
+        if v < 2 or t < 2:
+            continue
+        A = bush_ind(q, t, k)
+        for st in range(times):
+            A = fuse_ind(A, c.v + times - 1 - st, 0, 1) if not fails else A
+        cert = {"format": "construction-cert-1", "construction": "fuse-1", "t": t, "v": v, "times": times,
+                "input": {"bush": {"field": {"q": q, "p": q, "m": 1}, "k": k}},
+                "expected": {"N": len(A) if not fails else q ** t - 2 * times, "k": k,
+                             "array_sha256": sha(canon(A)) if not fails else "0" * 64}}
+        path = os.path.join(work, "bush%d.json" % i)
+        with open(path, "w") as f:
+            json.dump(cert, f)
+        if fails:
+            fails.add("sha256")
+        out.append((c, path, fails, A if not fails else None))
+    return out
+
+
 def derive_ind(A, col, s):
     return [[x for j, x in enumerate(row) if j != col] for row in A if row[col] == s]
 
@@ -567,6 +620,19 @@ def main():
     perr, pn = powercz_table_cases(work, cav)
     errors += perr
     print("powercz-1 with a table ingredient: %d certificates, %d errors" % (pn, len(perr)))
+
+    bcases = bush_cases(rng, work, 60)
+    bad = 0
+    for c, path, fails, out in bcases:
+        ok, got, csha = run_checker(path, table.dir)
+        if ok != (not fails) or (c.fault and c.fault not in got):
+            bad += 1
+            errors.append("bush case %s: expected failures %s, the checker gave %s" % (path, sorted(fails), sorted(got)))
+        if ok and out is not None and not covers(out, c.t, c.v):
+            errors.append("bush case %s: accepted but not covering" % path)
+    print("fuse-1 with a Bush input: %d certificates (%d with a fault), %d disagreements"
+          % (len(bcases), sum(1 for x in bcases if x[0].fault), bad))
+    cases = cases + bcases
 
     # mutation testing
     mutants = [("disable:" + n, n, disabled) for n in all_check_names()] + [
