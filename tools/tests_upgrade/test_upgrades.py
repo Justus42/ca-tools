@@ -246,7 +246,15 @@ def run(keep=None):
         f.write(",".join(ea.EXT_CLAIMS_HEADER) + "\n")
         f.write("2,2,42,35,%s,%s,test deposit,random search,new https://example.org/y,Carol Original,\n" % (loc3, sha3))
     rc, out = quiet(ea.main, [S2, "--table-dir", TD, "--ca-verify", cav, "--threads", "2", "--apply"])
-    check(rc == 0, "external.csv deposit screened and applied (rc %s)" % rc)
+    check(rc == 4, "external.csv deposit over the budget per array waits for its sharded check (rc %s)" % rc)
+    dplan = os.path.join(W, "dep-plan.json")
+    rc, out = quiet(cu.main, [S2, "--table-dir", TD, "--plan", dplan, "--max-shards", "0"])
+    rc, out = quiet(cu.main, [S2, "--table-dir", TD, "--results", dplan, "--tasks", os.path.join(W, "dep-none"),
+                              "--out", os.path.join(W, "dep-res")])
+    check(rc == 0 and "over_budget" in out, "the deposit claim is over the sharded budget too (rc %s)" % rc)
+    rc, out = quiet(ea.main, [S2, "--table-dir", TD, "--ca-verify", cav, "--threads", "2", "--apply",
+                              "--exact-result", os.path.join(W, "dep-res")])
+    check(rc == 0, "external.csv deposit over the sharded budget screened and applied (rc %s)" % rc)
     cs.FULL_FRACTION = old_ff
     # a CPHF family planned over the budget, so screened
     S3 = os.path.join(T, "submissions", "scr-family")

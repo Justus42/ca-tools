@@ -31,6 +31,14 @@
 # column sets was checked exactly once) into the same artifact "cert-results". An entry over the
 # budget, or whose shards did not all finish, stays SCREENED.
 #
+# Deposit submissions (submissions/<slug>/external.csv, since 2026-11-17): every claim whose full check
+# does not fit the budget per array of table-page.yml (tools/external_array.py, deferred: TABLE_THREADS
+# and TABLE_BUDGET_MINUTES below, which must equal THREADS and BUDGET_MINUTES there) is planned by
+# tools/check_upgrades.py (a plan of kind "deposit"), checked exactly in shards by the same run job
+# (the array downloaded and hashed in each shard), and combined by the same collect job into
+# "cert-results". table-page.yml enters the submission when every claim passes, each deferred claim
+# by its sharded result decided again there; until then the submission waits.
+#
 # This workflow never writes to the repository. table-page.yml, the only writer of table/
 # (concurrency group table-page, one run at a time, one pending), finds the result of every
 # certificate submission not yet in the table among the completed runs of this workflow on
@@ -69,6 +77,10 @@ env:
   MAX_SHARDS: "20"
   SHARD_HOURS: "5"
   SAFETY: "2"
+  # the budget per array of table-page.yml (THREADS, BUDGET_MINUTES there): a deposit claim whose full
+  # check does not fit it is checked here in shards (tools/external_array.py, deferred)
+  TABLE_THREADS: "2"
+  TABLE_BUDGET_MINUTES: "15"
   GH_TOKEN: ${{ github.token }}
 
 jobs:
@@ -104,6 +116,7 @@ jobs:
             case "$slug" in example|*[!A-Za-z0-9._-]*) continue ;; esac
             if [ -f "submissions/$slug/certificates.csv" ]; then mark="submissions/$slug/certificates.csv"
             elif [ -f "submissions/$slug/upgrade.csv" ]; then mark="requested in submissions/$slug by"
+            elif [ -f "submissions/$slug/external.csv" ]; then mark="from submissions/$slug/external.csv"
             else continue; fi
             [ -f "submissions/$slug/NOT_APPLIED.md" ] && { echo "$slug has NOT_APPLIED.md; delete it to check again"; continue; }
             if grep -qF "$mark" table/ca_table.csv; then
@@ -111,7 +124,7 @@ jobs:
             fi
             slugs="$slugs $slug"
           done
-          echo "Certificate submissions and upgrade requests to check:${slugs:- none}"
+          echo "Certificate submissions, upgrade requests and deposit submissions to check:${slugs:- none}"
           echo "slugs=$slugs" >> "$GITHUB_OUTPUT"
 
       - name: Plan (estimate, method, shards)
@@ -121,11 +134,15 @@ jobs:
         run: |
           mkdir -p plan
           for slug in $SLUGS; do
-            tool=tools/check_certificates.py
+            tool=tools/check_certificates.py; extra=""
             [ -f "submissions/$slug/upgrade.csv" ] && tool=tools/check_upgrades.py
+            if [ -f "submissions/$slug/external.csv" ]; then
+              tool=tools/check_upgrades.py
+              extra="--table-threads $TABLE_THREADS --table-budget-minutes $TABLE_BUDGET_MINUTES"
+            fi
             python3 "$tool" "submissions/$slug" --plan "plan/$slug.json" \
               --threads "$RUNNER_THREADS" --runner-threads "$RUNNER_THREADS" --max-shards "$MAX_SHARDS" \
-              --shard-hours "$SHARD_HOURS" --safety "$SAFETY" | tee -a "$GITHUB_STEP_SUMMARY"
+              --shard-hours "$SHARD_HOURS" --safety "$SAFETY" $extra | tee -a "$GITHUB_STEP_SUMMARY"
           done
           python3 -c '
           import glob, json, os
@@ -173,6 +190,7 @@ jobs:
           case "$SLUG" in *[!A-Za-z0-9._-]*) exit 2 ;; esac
           tool=tools/check_certificates.py
           [ -f "submissions/$SLUG/upgrade.csv" ] && tool=tools/check_upgrades.py
+          [ -f "submissions/$SLUG/external.csv" ] && tool=tools/check_upgrades.py
           timeout 335m python3 "$tool" "submissions/$SLUG" --run "plan/$SLUG.json" \
             --task "$TASK" --out "out/$SLUG" --threads "$RUNNER_THREADS"
       - uses: actions/upload-artifact@v4
@@ -211,6 +229,7 @@ jobs:
             [ -f "plan/$slug.json" ] || continue
             tool=tools/check_certificates.py
             [ -f "submissions/$slug/upgrade.csv" ] && tool=tools/check_upgrades.py
+            [ -f "submissions/$slug/external.csv" ] && tool=tools/check_upgrades.py
             python3 "$tool" "submissions/$slug" --results "plan/$slug.json" \
               --tasks "tasks/$slug" --out "results/$slug" --threads "$RUNNER_THREADS" \
               --runner-threads "$RUNNER_THREADS" --max-shards "$MAX_SHARDS" --shard-hours "$SHARD_HOURS" \

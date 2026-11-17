@@ -75,6 +75,8 @@ jobs:
         run: python3 tools/tests_submission/test_count_check.py
       - name: External array downloads (member by ranges, whole file resumed)
         run: python3 tools/tests_submission/test_external_download.py
+      - name: Deposit claims checked in shards (plan, shards, result, entry, waiting, refusals)
+        run: python3 tools/tests_submission/test_deposit_shards.py
       - name: Credit tools
         run: |
           python3 tools/tests_credit/test_credit_check.py

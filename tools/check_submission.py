@@ -1472,7 +1472,7 @@ def main(argv=None):
     # certificates (certificates.csv) get the light check of tools/check_certificates.py here: format,
     # identity, duplicates, the estimate and plan of the exact check, and a small screen; the exact
     # check runs after merge (.github/workflows/certificate-check.yml). Arrays kept in a deposit
-    # (external.csv) are checked by the maintainer (tools/external_array.py), not here.
+    # (external.csv) are checked after the merge (tools/external_array.py, certificate-check.yml), not here.
     # A request to check SCREENED entries exactly (upgrade.csv, tools/check_upgrades.py) and construction
     # certificates (constructions.csv, tools/check_constructions.py) get their own light check here too.
     others = [n for n in ("certificates.csv", "external.csv", "upgrade.csv", "constructions.csv")
@@ -1488,9 +1488,10 @@ def main(argv=None):
     if not os.path.exists(cpath) and others and not problems:
         lines = ["## Covering array submission check: %s" % slug, ""]
         if "external.csv" in others:
-            lines.append("This submission holds `external.csv`. Arrays kept in a deposit are checked by the "
-                         "maintainer on a larger machine (`tools/external_array.py`), as submissions/README.md "
-                         "describes, and the result is posted here.")
+            lines.append("This submission holds `external.csv`. Arrays kept in a deposit are checked after the "
+                         "merge on main: in full by the table workflow (`tools/external_array.py`), or exactly in "
+                         "shards by the certificate workflow when the full check is too long for one run, as "
+                         "submissions/README.md describes. The result is posted here.")
             lines.append("")
         if cert_text:
             lines.append(cert_text)

@@ -70,7 +70,7 @@ concurrency:
 env:
   # GitHub-hosted runner for a public repository: 4 cores, 6 hour job limit. The check uses
   # 2 threads (the budgets and the cost model of ca_verify were measured with 2).
-  THREADS: "2"
+  THREADS: "2"                  # THREADS and BUDGET_MINUTES must equal TABLE_THREADS and TABLE_BUDGET_MINUTES of certificate-check.yml
   BUDGET_MINUTES: "15"          # per array
   TOTAL_BUDGET_MINUTES: "300"   # all submissions in this run
   SCREEN_THRESHOLD: "0"         # 0 is off. An array is screened when its predicted full check takes more than 40 percent of the budget (FULL_FRACTION in tools/check_submission.py). Until 2026-11-02 this was 5e10, a limit on C(k,t) * v^t
@@ -136,7 +136,11 @@ jobs:
         # main (trusted tools, the pull request read as data), tools/external_array.py downloads each
         # array, compares its hash, verifies it in full within BUDGET_MINUTES or screens it, compares it
         # with the table and, only if every claim passes, enters the rows and table/EXTERNAL.csv. A
-        # screened array is queued for its exact check by the next step, as for claims.csv.
+        # screened array is queued for its exact check by the next step, as for claims.csv. A claim
+        # whose full check does not fit BUDGET_MINUTES (external_array.py, deferred) is checked exactly in
+        # shards by certificate-check.yml instead; its result, from the newest completed run on main that
+        # holds one, is passed with --exact-result and decided again here. Until it exists the submission
+        # waits (exit status 4): nothing is entered and no NOT_APPLIED.md is written.
         run: |
           touch applied.txt
           slugs=""
@@ -153,20 +157,41 @@ jobs:
           cc -O3 -pthread -o ca_verify ca_verify.c
           stamp=$(git rev-parse --short HEAD)
           mkdir -p out
+          gh api "repos/$GITHUB_REPOSITORY/actions/workflows/certificate-check.yml/runs?branch=main&status=completed&per_page=50" \
+            --jq '.workflow_runs[] | select(.event == "push" or .event == "workflow_dispatch")
+                  | select(.head_repository.full_name == "'"$GITHUB_REPOSITORY"'") | .id' > dep_runs.txt || : > dep_runs.txt
           for slug in $slugs; do
+            found=""
+            while read -r run; do
+              case "$run" in ''|*[!0-9]*) continue ;; esac
+              d="depres/$run"
+              if [ ! -d "$d" ]; then
+                mkdir -p "$d"
+                gh run download "$run" --repo "$GITHUB_REPOSITORY" -n cert-results -D "$d" < /dev/null 2>/dev/null || true
+              fi
+              if [ -f "$d/$slug/result.json" ]; then found="$d/$slug"; break; fi
+            done < dep_runs.txt
+            exact=""
+            [ -n "$found" ] && exact="--exact-result $found"
             added=$(git log --diff-filter=A --format=%H -n 1 -- "submissions/$slug/external.csv")
             pr=""
             [ -n "$added" ] && pr=$(gh api "repos/$GITHUB_REPOSITORY/commits/$added/pulls" --jq '.[0].number' 2>/dev/null || true)
             case "$pr" in ''|*[!0-9]*) pr="" ;; esac
-            if python3 tools/external_array.py "submissions/$slug" \
+            rc=0
+            python3 tools/external_array.py "submissions/$slug" \
                  --table-dir table --ca-verify ./ca_verify --threads "$THREADS" \
-                 --budget-minutes "$BUDGET_MINUTES" --apply > "out/ext-$slug.txt" 2>&1; then
+                 --budget-minutes "$BUDGET_MINUTES" $exact --apply > "out/ext-$slug.txt" 2>&1 || rc=$?
+            if [ "$rc" = 4 ]; then
+              { echo "## external submission $slug: waiting"; echo "Some claims are checked exactly in shards by certificate-check.yml; no result of it is saved yet (still running, or start it again for this slug)."; echo '```'; tail -n 40 "out/ext-$slug.txt"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+              continue
+            fi
+            if [ "$rc" = 0 ]; then
               echo "$slug" >> applied.txt
               msg="Merged and added to the table: \`$slug\` (arrays in a deposit, downloaded and checked again on main at $stamp)."
             else
               echo "::warning::external submission $slug did not pass on main and was not added; see the run summary"
               msg="Merged, but \`$slug\` did not pass when its deposit arrays were checked on main at $stamp, so nothing was added to the table. Report below."
-              { echo "# Not added to the table"; echo; echo "Checked again on main at $stamp; it did not pass. Delete this file to try again."; echo; echo '```'; tail -n 60 "out/ext-$slug.txt"; echo '```'; } > "submissions/$slug/NOT_APPLIED.md"
+              { echo "# Not added to the table"; echo; echo "Checked again on main at $stamp; it did not pass. Delete this file to try again (deleting it also starts the sharded exact checks of certificate-check.yml again)."; echo; echo '```'; tail -n 60 "out/ext-$slug.txt"; echo '```'; } > "submissions/$slug/NOT_APPLIED.md"
             fi
             { echo "## external submission $slug"; echo '```'; tail -n 80 "out/ext-$slug.txt"; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
             if [ -n "$pr" ]; then
@@ -174,7 +199,7 @@ jobs:
               gh pr comment "$pr" --repo "$GITHUB_REPOSITORY" --body-file c.md || true
             fi
           done
-          rm -f ca_verify c.md
+          rm -rf ca_verify c.md depres dep_runs.txt
       - name: Queue the exact check of arrays that entered as SCREENED
         run: |
           : > queued.txt

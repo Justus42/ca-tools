@@ -278,13 +278,26 @@ merge. When the pull request is merged, the table workflow on main runs
 GitHub-hosted runner, and posts the result on the pull request. It
 downloads each file (a zip archive once, however many of its members are
 named), rebuilds the canonical form as a stream, compares the hash, runs
-`ca_verify` at strength t (in full within the budget of 15 minutes per
-array, otherwise on the same deterministic column windows as the pull
-request check, which gives SCREENED), compares the size with the table,
+`ca_verify` at strength t in full, compares the size with the table,
 and only if every claim passes adds the rows and an entry in
-`table/EXTERNAL.csv`. A SCREENED array is then queued for its exact check,
-in shards, as for `claims.csv`. If a claim does not pass, nothing is added
-and the folder gets a `NOT_APPLIED.md` with the report. A maintainer can
+`table/EXTERNAL.csv`.
+
+An array whose full check would not fit the budget of 15 minutes per
+array there is not screened and does not fail for that. After the merge
+the certificate workflow (`certificate-check.yml`) checks it exactly, in
+shards on GitHub-hosted runners: each shard downloads the array, compares
+the hash and checks its share of the column t-sets, and the shards are
+combined with a proof that every t-set was checked exactly once
+(`tools/check_upgrades.py`, `tools/ca_shard_merge.py`). The table
+workflow then enters the submission, deciding each shard verdict again
+with its own tools, and every such array enters VERIFIED. Until the
+sharded result is saved the submission waits; nothing is added and
+nothing is rejected. Only an array too large even for the shards (more
+than 20 shards of 5 hours on 4 threads) is screened as before, on the same deterministic column
+windows as the pull request check, and enters SCREENED; it is then queued
+for its exact check as for `claims.csv`. If a claim does not pass, nothing
+is added and the folder gets a `NOT_APPLIED.md` with the report; deleting
+that file checks the submission again, shards included. A maintainer can
 also run the same command by hand on a larger machine before the merge
 (60 minutes per array by default). The table then names the exact array,
 where it is and how it was checked, without holding a copy, and the page
@@ -302,7 +315,8 @@ links to the deposit. Anyone can fetch and confirm an external array with
   GitHub after the merge. This is the route for arrays too large to
   store or to check one t-set at a time.
 - Any other array larger than 50 MiB stays in a public deposit and is
-  named in `external.csv` (above). The maintainer checks it.
+  named in `external.csv` (above). It is checked on GitHub after the
+  merge, in shards when it is large.
 - An array built by a construction the table can check from its recipe
   (Power CZ, fusing a symbol, the derived array, the direct product of
   strength-2 arrays) can be submitted as its construction certificate,

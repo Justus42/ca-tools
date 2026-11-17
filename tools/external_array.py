@@ -21,20 +21,32 @@ table. With --apply, and only when every claim passes, it appends the rows to
 table/ca_table.csv (tier VERIFIED or SCREENED, source S7, notes naming the
 location) and to table/EXTERNAL.csv. The array itself is not copied.
 
+A claim whose full check does not fit the table workflow's budget per array (deferred(): the
+predicted time above FULL_FRACTION of BUDGET_MINUTES on THREADS threads of table-page.yml) is not
+screened or failed here: certificate-check.yml checks it exactly in shards (tools/check_upgrades.py,
+a plan of kind "deposit") and saves the result. --exact-result DIR gives that result; each shard
+verdict is decided again here with the tools of this commit, the array is downloaded and hashed
+again, and the claim enters VERIFIED. Without a result such a claim is waiting: nothing is applied
+and the exit status is 4, so the table workflow neither enters nor rejects the submission.
+
 It is run by the maintainer (it downloads large files), not by the pull
 request check. Standard library only.
 
 Usage:
   external_array.py SUBMISSION_DIR [--apply] [--threads N] [--budget-minutes M]
-                    [--keep DIR] [--local-root DIR]
+                    [--keep DIR] [--exact-result DIR] [--local-root DIR]
   external_array.py --fetch LOCATION SHA256 OUT   (download, canonicalize, verify the hash)
 --local-root (tests only) reads locations of the form local:<path> under DIR.
+
+Exit status: 0 passed (and applied with --apply), 1 a claim failed, 4 every other claim passed and
+at least one waits for its sharded exact check.
 """
 import argparse
 import atexit
 import csv
 import datetime
 import hashlib
+import json
 import os
 import re
 import shutil
@@ -64,6 +76,41 @@ LOCATION_RE = re.compile(r"^https://([A-Za-z0-9.-]+)/[^\s]+$")
 
 class ExtError(Exception):
     pass
+
+
+class Waiting(Exception):
+    pass
+
+
+TABLE_THREADS = 2
+TABLE_BUDGET_MINUTES = 15.0
+
+
+def deferred(N, t, v, k, threads=TABLE_THREADS, budget=TABLE_BUDGET_MINUTES * 60):
+    """True when the full check of this claim does not fit the table workflow's budget per array:
+    its exact check runs in shards in certificate-check.yml instead (tools/check_upgrades.py), and the
+    claim is entered only with that result. The estimate with don't-care entries is used when it is
+    the larger, since the array is not downloaded when this is decided."""
+    pred = max(cs.predict_verify_seconds(N, t, v, k, threads, w) for w in (False, True))
+    return pred > cs.FULL_FRACTION * budget
+
+
+def load_exact(rdir, slug):
+    """The sharded exact checks of a deposit submission, decided again from the shard outputs kept with
+    the result, with the tools of this commit: {sha256: (outcome, how, shards)}."""
+    import check_upgrades as cu
+    res = json.load(open(os.path.join(rdir, "result.json"), encoding="utf-8"))
+    if res.get("slug") != slug or res.get("kind") != "deposit":
+        raise SystemExit("%s is not the deposit result of %s" % (rdir, slug))
+    plan = {p["index"]: p for p in res["plan"]["entries"]}
+    out = {}
+    for x in res.get("entries", []):
+        p = plan[x["index"]]
+        outcome, how = cu.decide(p, [t for _, t in cu.read_tasks(os.path.join(rdir, "tasks"), p["index"])])
+        if outcome != x["outcome"]:
+            raise SystemExit("the shard outputs of %s say %s, the result says %s" % (p["sha256"][:12], outcome, x["outcome"]))
+        out[p["sha256"]] = (outcome, cu.deposit_text(how), p["shards"])
+    return out
 
 
 def check_location(loc, local_root=None):
@@ -325,6 +372,19 @@ def check_claim(raw, ctx, tmp):
     if want in ctx["seen_sha"]:
         raise ExtError("duplicate: the same sha256 is claimed twice in this submission")
     ctx["seen_sha"].add(want)
+    exact = None
+    if deferred(N, t, v, k, ctx["threads"], ctx["budget"]):
+        exact = ctx["exact"].get(want)
+        if exact is None:
+            raise Waiting("its full check does not fit the budget per array here, so it is checked exactly in "
+                          "shards by certificate-check.yml, and no result of that check is saved yet")
+        if exact[0] == "failed":
+            raise ExtError(exact[1])
+        if exact[0] == "incomplete":
+            raise ExtError("the sharded exact check did not complete (%s); start certificate-check.yml for this "
+                           "submission again" % exact[1])
+        if exact[0] == "verified":
+            print("note: sharded exact check on main: " + exact[1], file=sys.stderr)
     path = download(raw["location"].strip(), tmp, ctx["local_root"])
     nbytes = os.path.getsize(path)
     canon = os.path.join(tmp, "canon.txt")
@@ -341,6 +401,13 @@ def check_claim(raw, ctx, tmp):
     budget = ctx["budget"]
     status, screen, secs, counted = None, None, {}, False
     wild = canon_has_wildcards(canon)
+    if exact and exact[0] == "verified":
+        if ctx["keep"]:
+            shutil.copyfile(canon, os.path.join(ctx["keep"], "CA_%d_%d_%d_%d_%s.txt" % (N, t, k, v, sha[:8])))
+        os.remove(canon)
+        return dict(t=t, v=v, k=k, N=N, sha256=sha, bytes=nbytes, status="verified", screen=None,
+                    comparison=comparison, previous_best=prev, shifted=shifted, seconds=secs,
+                    counted=False, sharded=exact)
     mode, why = cs.full_or_screen(N, t, v, k, ctx["threads"], budget, ctx["window"],
                                   ctx["threshold"], wild)
     if why:
@@ -389,6 +456,8 @@ def main(argv=None):
     ap.add_argument("--window", type=int, default=30)
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--keep", help="also keep the canonical arrays in this directory")
+    ap.add_argument("--exact-result", metavar="DIR",
+                    help="the result of certificate-check.yml for this submission (sharded exact checks)")
     ap.add_argument("--local-root", help=argparse.SUPPRESS)
     a = ap.parse_args(argv)
 
@@ -445,28 +514,36 @@ def main(argv=None):
     known = {r["array_sha256"] for r in table_rows if r.get("array_sha256")}
     ctx = dict(table_rows=table_rows, known_sha=known, ca_verify=a.ca_verify, threads=a.threads,
                budget=a.budget_minutes * 60, threshold=a.screen_threshold, windows=a.windows,
-               window=a.window, keep=a.keep, local_root=a.local_root, seen_sha=set())
+               window=a.window, keep=a.keep, local_root=a.local_root, seen_sha=set(),
+               exact=load_exact(a.exact_result, slug) if a.exact_result else {})
     if a.keep:
         os.makedirs(a.keep, exist_ok=True)
     stamp = "external_array %s %s %s" % (cs.git_short_sha(), datetime.date.today().isoformat(),
                                          cs.machine_tag())
-    results, ok = [], True
+    results, ok, waiting = [], True, 0
     for i, raw in enumerate(claims, 1):
         print("claim %d: %s" % (i, raw.get("location", "")[:100]), file=sys.stderr, flush=True)
         with tempfile.TemporaryDirectory(prefix="caext-") as tmp:
             try:
                 res = check_claim(raw, ctx, tmp)
                 res["passed"] = True
+            except Waiting as e:
+                res = dict(passed=None, reason=str(e))
+                waiting += 1
             except (ExtError, ValueError, UnicodeDecodeError, OSError, zipfile.BadZipFile) as e:
                 res = dict(passed=False, reason=str(e))
                 ok = False
         res["raw"] = raw
         results.append(res)
         print("  %s" % ("PASS %s %s (previous best %s)" % (res["status"], res["comparison"], res["previous_best"])
-                        if res["passed"] else "FAIL " + res["reason"]), flush=True)
+                        if res["passed"] else "WAITING " + res["reason"] if res["passed"] is None
+                        else "FAIL " + res["reason"]), flush=True)
     if not ok:
         print("Not every claim passed; nothing applied.")
         return 1
+    if waiting:
+        print("%d claim%s waiting for the sharded exact check; nothing applied yet." % (waiting, "" if waiting == 1 else "s"))
+        return 4
     if a.apply:
         today = datetime.date.today().isoformat()
         snap = slug                        # as check_submission.py without --pr
@@ -482,6 +559,8 @@ def main(argv=None):
                 s = r["screen"]
                 notes.append("SCREENED, not exhaustively verified: %d random windows of %d columns "
                              "verified in full, seed %s" % (s["windows"], s["width"], s["seed"]))
+            if r.get("sharded"):
+                notes.append("verified exactly on main by certificate-check.yml: %s" % r["sharded"][1])
             if r.get("counted"):
                 notes.append("verified by exact count of every column t-set (ca_verify stopped for "
                              "memory)")

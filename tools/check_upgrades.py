@@ -22,6 +22,13 @@ same core-hours and MAX_TASKS jobs for the whole request, taken in the order of 
 entry over the budget stays SCREENED and the report says so. Nothing is ever sampled here: an
 entry is either checked exactly or left as it is.
 
+A deposit submission (submissions/<slug>/external.csv, since 2026-11-17) uses --plan, --run and
+--results only. The plan holds every claim whose full check does not fit the budget per array of the
+table workflow (external_array.deferred, with --table-threads and --table-budget-minutes), each planned
+as above with its location and sha256; each shard downloads the array and checks that it has that hash.
+The result (kind "deposit") is entered by tools/external_array.py --exact-result in table-page.yml,
+which decides every shard verdict again. A claim over the budget here is screened there instead.
+
 Usage (each form prints a report; nothing in table/ changes without --apply):
 
   check_upgrades.py SUB --light [--out DIR]
@@ -316,8 +323,8 @@ def describe(e):
 # ---------------------------------------------------------------------------------------------
 # the forms of the command
 
-def report(slug, title, items, ok, extra=()):
-    L = ["## Upgrade request: `%s`" % slug, "", title, "", "**Result: %s.**" % ("PASS" if ok else "FAIL"), ""]
+def report(slug, title, items, ok, extra=(), label="Upgrade request"):
+    L = ["## %s: `%s`" % (label, slug), "", title, "", "**Result: %s.**" % ("PASS" if ok else "FAIL"), ""]
     for i, c in enumerate(items, 1):
         L.append("**%d. %s %s** (%s)" % (i, cs.md_cell(c.get("kind", "")), cs.md_cell((c.get("sha") or "")[:16]),
                                          c.get("verdict", "PASS" if c.get("passed") else "FAIL")))
@@ -409,6 +416,8 @@ def tasks_of(plan):
 
 
 def form_plan(sub, slug, a):
+    if is_deposit(sub):
+        return form_plan_deposit(sub, slug, a)
     entries, failed = entries_or_fail(sub, slug, a)
     plan = []
     if not failed:
@@ -446,9 +455,93 @@ def form_plan(sub, slug, a):
 
 def load_plan(path, slug):
     doc = json.load(open(path, encoding="utf-8"))
-    if doc.get("slug") != slug or doc.get("kind") != "upgrade":
-        raise SystemExit("the plan is not the upgrade plan of %s" % slug)
+    if doc.get("slug") != slug or doc.get("kind") not in ("upgrade", "deposit"):
+        raise SystemExit("the plan is not the upgrade or deposit plan of %s" % slug)
     return doc
+
+
+# ---------------------------------------------------------------------------------------------
+# deposit submissions (external.csv): the claims whose full check does not fit the table workflow
+
+def is_deposit(sub):
+    return os.path.isfile(os.path.join(sub, "external.csv")) and not os.path.exists(os.path.join(sub, "upgrade.csv"))
+
+
+def deposit_text(how):
+    return how.replace("; the entry stays SCREENED", "; the claim is not entered")
+
+
+def deposit_claims(sub):
+    with open(os.path.join(sub, "external.csv"), newline="", encoding="utf-8") as f:
+        rd = csv.reader(f)
+        hdr = [h.strip() for h in next(rd, [])]
+        if hdr not in (ea.EXT_CLAIMS_HEADER, ea.PREV_EXT_CLAIMS_HEADER):
+            raise UpError("external.csv header must be %s" % ",".join(ea.EXT_CLAIMS_HEADER))
+        return [dict(zip(hdr, rec)) for rec in rd if any(x.strip() for x in rec)]
+
+
+def form_plan_deposit(sub, slug, a):
+    """the claims of external.csv that deferred() sends here, each planned for its exact check in
+    shards; the index of an entry is the position of its claim in external.csv. Each claim has the cap
+    of max_shards shards of shard_hours hours; the submission has no pool of core-hours (a deposit holds
+    arrays, not hundreds of families), only the MAX_TASKS jobs of one workflow matrix."""
+    plan, failed = [], None
+    pool = ck.Pool(a)
+    pool.core_hours = float("inf")
+    try:
+        for i, raw in enumerate(deposit_claims(sub)):
+            try:
+                t, v, k, N = (int(raw[x]) for x in ("t", "v", "k", "N"))
+            except (KeyError, ValueError):
+                raise UpError("claim %d: t, v, k, N must be integers" % (i + 1))
+            if not ea.deferred(N, t, v, k, a.table_threads, a.table_budget_minutes * 60):
+                continue
+            sha = (raw.get("sha256") or "").strip().lower()
+            if not HEX64.match(sha):
+                raise UpError("claim %d: sha256 %r is not 64 hex digits" % (i + 1, sha[:70]))
+            if v > cs.CA_VERIFY_MAX_V or v ** t > (1 << 40) or v ** (t - 1) > cs.CA_VERIFY_MAX_VT1 or t < 2:
+                raise UpError("claim %d: t = %d, v = %d is outside the range of ca_verify" % (i + 1, t, v))
+            loc = raw["location"].strip()
+            try:
+                ea.check_location(loc, a.local_root)
+            except ea.ExtError as err:
+                raise UpError("claim %d: %s" % (i + 1, err))
+            p0, p1 = array_plan(N, t, v, k, False, a), array_plan(N, t, v, k, True, a)
+            p = p1 if (not p1["exact"] or (p0["exact"] and p1["core_hours"] >= p0["core_hours"])) else p0
+            p = pool.take(p, False)
+            text = (plan_text_deposit(p, a))
+            plan.append(dict(index=i, kind="array", sha256=sha, t=t, v=v, k=k, N=N, source=dict(location=loc),
+                             method=p["method"], shards=p["shards"], exact=p["exact"], core_hours=p["core_hours"],
+                             shard_hours=p["shard_hours"], text=text))
+    except (UpError, ValueError, OSError) as err:
+        plan, failed = [], str(err)
+    doc = dict(slug=slug, kind="deposit", failed=failed,
+               budget=dict(runner_threads=a.runner_threads, max_shards=a.max_shards, shard_hours=a.shard_hours,
+                           safety=a.safety, table_threads=a.table_threads,
+                           table_budget_minutes=a.table_budget_minutes),
+               entries=plan, tasks=tasks_of(plan))
+    with open(a.plan, "w", encoding="utf-8") as f:
+        json.dump(doc, f, indent=1)
+        f.write("\n")
+    for p in plan:
+        print("claim %d %s: %s" % (p["index"] + 1, p["sha256"][:12], p["text"]))
+    if not plan and not failed:
+        print("no claim of external.csv needs a sharded check; the table workflow checks them all")
+    if failed:
+        print("plan failed: %s" % failed)
+    print("tasks: %s" % (" ".join(doc["tasks"]) or "none"))
+    return 0
+
+
+def plan_text_deposit(p, a):
+    if p["exact"]:
+        return ("exact check with ca_verify in %d shard%s on GitHub, about %.2g hours each (%.3g core-hours "
+                "with the safety factor); the claim enters VERIFIED if it passes" % (
+                    p["shards"], "" if p["shards"] == 1 else "s", p["shard_hours"], p["core_hours"]))
+    return ("exact check with ca_verify, about %.3g core-hours with the safety factor: over the budget of one "
+            "claim (%d shards of %g hours on %d threads), or past the %d jobs of one run; the table workflow "
+            "screens this claim instead" % (p["core_hours"], a.max_shards, a.shard_hours, a.runner_threads,
+                                            ck.MAX_TASKS))
 
 
 def canonical_array(p, table_dir, tmp, local_root=None):
@@ -581,6 +674,7 @@ def decide(p, texts):
 
 def form_results(sub, slug, a):
     doc = load_plan(a.results, slug)
+    dep = doc["kind"] == "deposit"
     outdir = a.out or "result-%s" % slug
     os.makedirs(os.path.join(outdir, "tasks"), exist_ok=True)
     items, ok, res = [], doc["failed"] is None, []
@@ -592,15 +686,20 @@ def form_results(sub, slug, a):
             with open(os.path.join(outdir, "tasks", fn), "w", encoding="utf-8") as f:
                 f.write(txt)
         outcome, how = decide(p, [x for _, x in texts])
+        if dep:
+            how = deposit_text(how)
         if outcome == "failed":
             ok = False
-        items.append(dict(kind=p["kind"], sha=p["sha256"], passed=outcome != "failed",
-                          verdict={"verified": "VERIFIED", "failed": "FAIL"}.get(outcome, "stays SCREENED"),
+        items.append(dict(kind=("claim %d" % (p["index"] + 1)) if dep else p["kind"], sha=p["sha256"],
+                          passed=outcome != "failed",
+                          verdict={"verified": "VERIFIED", "failed": "FAIL"}.get(
+                              outcome, "not entered" if dep else "stays SCREENED"),
                           lines=["plan: " + p["text"], "%s: %s" % (outcome, how)]))
         res.append(dict(index=p["index"], kind=p["kind"], sha256=p["sha256"], outcome=outcome, how=how))
     commit = cs.git_short_sha()
-    text = report(slug, "Checked on main by the certificate workflow at %s." % commit, items, ok)
-    result = dict(slug=slug, kind="upgrade", passed=ok, date=a.date or today(), machine=cs.machine_tag(),
+    text = report(slug, "Checked on main by the certificate workflow at %s." % commit, items, ok,
+                  label="Deposit claims checked in shards" if dep else "Upgrade request")
+    result = dict(slug=slug, kind=doc["kind"], passed=ok, date=a.date or today(), machine=cs.machine_tag(),
                   commit=commit, plan=doc, entries=res)
     with open(os.path.join(outdir, "result.json"), "w", encoding="utf-8") as f:
         json.dump(result, f, indent=1)
@@ -832,6 +931,8 @@ def main(argv=None):
     ap.add_argument("--max-shards", type=int, default=cc.MAX_SHARDS)
     ap.add_argument("--shard-hours", type=float, default=cc.SHARD_HOURS)
     ap.add_argument("--safety", type=float, default=cc.SAFETY)
+    ap.add_argument("--table-threads", type=int, default=ea.TABLE_THREADS)
+    ap.add_argument("--table-budget-minutes", type=float, default=ea.TABLE_BUDGET_MINUTES)
     ap.add_argument("--date", default=None)
     ap.add_argument("--local-root", help=argparse.SUPPRESS)
     a = ap.parse_args(argv)
@@ -839,6 +940,9 @@ def main(argv=None):
     slug = os.path.basename(sub)
     if not cs.SAFE_NAME.match(slug):
         raise SystemExit("bad submission directory name %r" % slug)
+    if is_deposit(sub) and not (a.plan or a.run or a.results):
+        raise SystemExit("submissions/%s has external.csv: only --plan, --run and --results apply here; "
+                         "tools/external_array.py enters it" % slug)
     if a.light:
         return form_light(sub, slug, a)
     if a.plan:
