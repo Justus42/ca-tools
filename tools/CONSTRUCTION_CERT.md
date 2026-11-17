@@ -635,6 +635,13 @@ arrays over GF(2..11), prime and prime-power fields, each confirmed by ca_verify
 a reducible modulus, rows past the last fuse's input, a wrong hash or N, and a bush input outside fuse-1
 are all rejected).
 
+The same array on its own is the kind `bush-1` (no fuse; the checks are `bush` and the expected
+values):
+
+    {"format": "construction-cert-1", "construction": "bush-1", "t": 5, "v": 23,
+     "input": {"bush": {"field": {"q": 23, "p": 23, "m": 1}, "k": 24}},
+     "expected": {"N": 6436343, "k": 24, "array_sha256": "..."}}
+
     {"format": "construction-cert-1", "construction": "fuse-1", "t": 4, "v": 24, "times": 5,
      "input": {"bush": {"field": {"q": 29, "p": 29, "m": 1}, "k": 30}},
      "expected": {"N": 707271, "k": 30, "array_sha256": "..."}}

@@ -128,9 +128,10 @@ def bush_cases(rng, work, n):
         q = rng.choice([2, 3, 5, 7])
         t = rng.choice([2, 3]) if q > 2 else 2
         k = rng.randint(t, q + 1)
-        times = rng.randint(1, max(1, q - 2))
+        plain = i % 5 == 4
+        times = 0 if plain else rng.randint(1, max(1, q - 2))
         v = q - times
-        c = Case("fuse-1", t, v)
+        c = Case("bush-1" if plain else "fuse-1", t, v)
         fails = set()
         if i % 3:
             c.fault = "bush"
@@ -147,10 +148,12 @@ def bush_cases(rng, work, n):
         A = bush_ind(q, t, k)
         for st in range(times):
             A = fuse_ind(A, c.v + times - 1 - st, 0, 1) if not fails else A
-        cert = {"format": "construction-cert-1", "construction": "fuse-1", "t": t, "v": v, "times": times,
+        cert = {"format": "construction-cert-1", "construction": c.kind, "t": t, "v": v,
                 "input": {"bush": {"field": {"q": q, "p": q, "m": 1}, "k": k}},
                 "expected": {"N": len(A) if not fails else q ** t - 2 * times, "k": k,
                              "array_sha256": sha(canon(A)) if not fails else "0" * 64}}
+        if not plain:
+            cert["times"] = times
         path = os.path.join(work, "bush%d.json" % i)
         with open(path, "w") as f:
             json.dump(cert, f)
@@ -554,7 +557,7 @@ def main():
     table = MiniTable(os.path.join(work, "table"))
     cases = []
     idx = 0
-    for kind in cc.ARRAY_KINDS:
+    for kind in FAULTS:
         for n in range(ncases):
             c = build_case(rng, kind)
             if n % 3 == 0:
@@ -630,8 +633,8 @@ def main():
             errors.append("bush case %s: expected failures %s, the checker gave %s" % (path, sorted(fails), sorted(got)))
         if ok and out is not None and not covers(out, c.t, c.v):
             errors.append("bush case %s: accepted but not covering" % path)
-    print("fuse-1 with a Bush input: %d certificates (%d with a fault), %d disagreements"
-          % (len(bcases), sum(1 for x in bcases if x[0].fault), bad))
+    print("fuse-1 with a Bush input and bush-1: %d certificates (%d bush-1, %d with a fault), %d disagreements"
+          % (len(bcases), sum(1 for x in bcases if x[0].kind == "bush-1"), sum(1 for x in bcases if x[0].fault), bad))
     cases = cases + bcases
 
     # mutation testing

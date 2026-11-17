@@ -48,6 +48,19 @@ def main():
             print("Bush OA(%d^%d; %d, %d, %d) fused %d times = CA(%d; %d, %d, %d), ca_verify agrees: %s"
                   % (q, t, t, k, q, r, q ** t - 2 * r, t, k, q - r, "PASS" if ok else "FAIL"))
             fails += not ok
+        for t, q, k in [(3, 5, 6), (2, 7, 8), (3, 4, 5), (4, 5, 6), (2, 9, 10)]:
+            p = cert(d, t, q, k, 1)
+            c = json.load(open(p)); c["construction"] = "bush-1"; c["v"] = q; del c["times"]; c["expected"]["N"] = q ** t
+            json.dump(c, open(p, "w"))
+            c["expected"]["array_sha256"] = cc.run(p, None)["sha256"]; json.dump(c, open(p, "w"))
+            res = cc.run(p, out)
+            ver = subprocess.run([exe, out, str(t), str(q)], capture_output=True, text=True)
+            ok = res["ok"] and res["N"] == q ** t and "VERIFIED:" in ver.stdout
+            print("bush-1 OA(%d^%d; %d, %d, %d), ca_verify agrees: %s" % (q, t, t, k, q, "PASS" if ok else "FAIL"))
+            fails += not ok
+            c["v"] = q - 1; json.dump(c, open(p, "w")); res = cc.run(p, None)
+            ok = failed_on(res, "bush")
+            print("bush-1 with v other than q rejected by the bush check: %s" % ("PASS" if ok else "FAIL")); fails += not ok
         sha = cc.run(cert(d, 3, 5, 6, 2), None)["sha256"]
         checks = [
             ("t above q rejected (Bush needs t <= q)", cert(d, 4, 3, 4, 1), "bush"),

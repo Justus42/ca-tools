@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """construction_cert - check a construction certificate and rebuild the array it proves.
 
-A construction certificate records the recipe of a covering array instead of the array. Eleven
+A construction certificate records the recipe of a covering array instead of the array. Twelve
 constructions are known (tools/CONSTRUCTION_CERT.md states each theorem, its hypotheses and the
 proof the checker follows):
 
@@ -12,6 +12,8 @@ proof the checker follows):
   fuse-1     Colbourn, Keri, Rivas Soriano and Schlage-Puchta 2010, Lemma 3.1: a CA(N; t, k, v+1)
              gives a CA(N-2; t, k, v), t >= 2, by the two-row fusing of tools/cphf/fuse2.c; "times": r
              fuses r symbols, and the input may be the Bush OA(q^t; t, k, q) (Bush 1952) rebuilt here
+  bush-1     Bush 1952: the orthogonal array OA(q^t; t, k, q) of index one, q a prime power, t <= q,
+             t <= k <= q+1, rebuilt from its polynomials (the input of fuse-1 above, on its own)
   derive-1   the derived array: the rows of a CA(N; t+1, k+1, v) with symbol s in column c,
              column c deleted, form a CA(N_s; t, k, v)
   product-1  the direct product of a CA(N1; 2, k1, v) and a CA(N2; 2, k2, v): a CA(N1+N2-d; 2,
@@ -81,7 +83,7 @@ import time
 FORMAT = "construction-cert-1"
 CONSTRUCTIONS = ("powercz-1", "powercz-2", "fuse-1", "derive-1", "product-1", "sms51-1", "sms65-1",
                  "sm-xplication-1", "product-ctj-1", "roux-1")
-ARRAY_KINDS = ("fuse-1", "derive-1", "product-1")
+ARRAY_KINDS = ("fuse-1", "derive-1", "product-1", "bush-1")
 SMS_KINDS = ("sms51-1", "sms65-1")
 # the reference id (table/references.csv) of the theorem of each construction, for builds_on
 # (derive-1 has none: deriving a strength t-1 array is folklore with no single source in
@@ -1294,7 +1296,7 @@ def parse_array_ingredient(obj, where, c, table_dir):
     return d
 
 
-ARRAY_KEYS = {"fuse-1": ("input", "rows", "times"), "derive-1": ("input", "column", "symbol"),
+ARRAY_KEYS = {"bush-1": ("input",), "fuse-1": ("input", "rows", "times"), "derive-1": ("input", "column", "symbol"),
               "product-1": ("first", "second", "constant_rows")}
 
 
@@ -1314,15 +1316,17 @@ def load_array_kind(cert, raw, path, table_dir):
     # each ingredient with the strength and the number of symbols the theorem needs of it
     times = need_int(cert, "times", 1, 64) if kind == "fuse-1" and "times" in cert else 1
     c["times"] = times
-    roles = {"fuse-1": [("input", t, v + times)], "derive-1": [("input", t + 1, v)],
+    roles = {"bush-1": [("input", t, v)], "fuse-1": [("input", t, v + times)], "derive-1": [("input", t + 1, v)],
              "product-1": [("first", 2, v), ("second", 2, v)]}[kind]
     for role, nt, nv in roles:
         if role not in cert:
             raise CertError("missing key %r" % role)
         d = parse_array_ingredient(cert[role], role, c, table_dir)
         d["need_t"], d["need_v"] = nt, nv
-        if "bush" in d and kind != "fuse-1":
-            raise CertError("%s: a bush ingredient is taken by fuse-1 only" % role)
+        if "bush" in d and kind not in ("fuse-1", "bush-1"):
+            raise CertError("%s: a bush ingredient is taken by fuse-1 and bush-1 only" % role)
+        if kind == "bush-1" and "bush" not in d:
+            raise CertError("bush-1: the input must be {\"bush\": {...}}")
         c["ingredients"][role] = d
     if kind == "fuse-1":
         zr = cert.get("rows", [0, 1])
@@ -1611,12 +1615,16 @@ def rows_product(c):
         yield [b[j] for _ in range(k1) for j in range(k2)]
 
 
-ROWS_OF = {"fuse-1": rows_fuse, "derive-1": rows_derive, "product-1": rows_product}
+def rows_bush(c):
+    return ingredient_rows(c["ingredients"]["input"], c["t"])
+
+
+ROWS_OF = {"fuse-1": rows_fuse, "derive-1": rows_derive, "product-1": rows_product, "bush-1": rows_bush}
 
 
 def width_of(c):
     ing = c["ingredients"]
-    if c["kind"] == "fuse-1":
+    if c["kind"] in ("fuse-1", "bush-1"):
         return ingredient_size(ing["input"])[1]
     if c["kind"] == "derive-1":
         return len(ing["input"]["rows"][0]) - 1
@@ -1649,6 +1657,7 @@ def check_out_symbols(c):
 
 
 KIND_CHECKS = {
+    "bush-1": [("bush", check_bush)],
     "fuse-1": [("shape", check_array_shape), ("ingredient_hash", check_ingredient_hash),
                ("ingredient_ca", check_ingredient_ca), ("bush", check_bush), ("fuse_strength", check_fuse_strength),
                ("fuse_rows", check_fuse_rows)],
