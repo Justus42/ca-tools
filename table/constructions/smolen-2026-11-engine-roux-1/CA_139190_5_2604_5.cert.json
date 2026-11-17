@@ -1,0 +1,5 @@
+{"format": "construction-cert-1", "construction": "roux-1", "t": 5, "v": 5, "h": 1302,
+ "A": {"rebuild": "707f2163753ac4fdd6d770292068ebbcbc6b76e6ec7f67e8566a6ccc685c5233"},
+ "C": {"rebuild": "fce15d6f3d8e66e1f326a1ab79acc147753d2261bd2bff00967011b3d76d61a2"},
+ "E": {"rebuild": "a533400d8336543e7487b623c30033d9583cd9ec9878683a46ccb760f341be54"},
+ "expected": {"N": 139190, "k": 2604, "array_sha256": "276ca6806d6b9b94f875f69950b5ab4b9a7b2fb1043c7a9a90c8eacc46910cab"}}

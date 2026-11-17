@@ -6546,8 +6546,7 @@ t,v,k,N,basis,tier,id,constant_rows,constant_rows_basis,get,get_ref,construction
 5,5,2407,119313,row,CITED,t5-v5-k2407-1,,,none,,Add 5 factors,add1,Add 5 factors,t5-v5-k2407-1,,2026-08-23,2026-11-17,t5-v5-k2407-1
 5,5,2408,121813,row,CITED,t5-v5-k2408-1,,,none,,Add 5 factors,add1,Add 5 factors,t5-v5-k2408-1,,2026-08-23,2026-11-17,t5-v5-k2408-1
 5,5,2410,124313,row,CITED,t5-v5-k2410-1,,,none,,Add 5 factors,add1,Add 5 factors,t5-v5-k2410-1,,2026-08-23,2026-11-17,t5-v5-k2410-1
-5,5,2412,140566,row,CITED,t5-v5-k2412-1,,,none,,Martirosyan-Colbourn,MC,Martirosyan-Colbourn,t5-v5-k2412-1,,2026-08-23,2026-11-17,t5-v5-k2412-1
-5,5,2604,140590,row,CITED,t5-v5-k2604-1,,,none,,Martirosyan-Colbourn,MC,Martirosyan-Colbourn,t5-v5-k2604-1,,2026-08-23,2026-11-17,t5-v5-k2604-1
+5,5,2604,139190,row,VERIFIED,t5-v5-k2604-2,,,construction,python3 tools/construction_cert.py table/constructions/smolen-2026-11-engine-roux-1/CA_139190_5_2604_5.cert.json --write CA.txt,"Roux-type doubling of Martirosyan and Colbourn 2005 (Corollary 2.2): CA(t, h, v), CA(t-1, h, v) and CA(t-2, h, v^2) give CA(N1 + (v-1) N2 + N3; t, 2h, v); here h = 1302 from CA(49985; 5, 1562, 5), CA(7445; 4, 1454, 5) and CA(59425; 3, 1302, 25)",,"Roux-type doubling of Martirosyan and Colbourn 2005 (Corollary 2.2): CA(t, h, v), CA(t-1, h, v) and CA(t-2, h, v^2) give CA(N1 + (v-1) N2 + N3; t, 2h, v); here h = 1302 from CA(49985; 5, 1562, 5), CA(7445; 4, 1454, 5) and CA(59425; 3, 1302, 25)",t5-v5-k2604-2,t5-v5-k2604-1,2026-11-17,2026-11-17,t5-v5-k2604-2
 5,5,2754,141166,row,CITED,t5-v5-k2754-1,,,none,,Martirosyan-Colbourn,MC,Martirosyan-Colbourn,t5-v5-k2754-1,,2026-08-23,2026-11-17,t5-v5-k2754-1
 5,5,3200,144290,row,CITED,t5-v5-k3200-1,,,none,,Martirosyan-Colbourn,MC,Martirosyan-Colbourn,t5-v5-k3200-1,,2026-08-23,2026-11-17,t5-v5-k3200-1
 5,5,3262,146786,row,CITED,t5-v5-k3262-1,,,none,,Martirosyan-Colbourn,MC,Martirosyan-Colbourn,t5-v5-k3262-1,,2026-08-23,2026-11-17,t5-v5-k3262-1
