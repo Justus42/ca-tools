@@ -337,6 +337,15 @@ table's scope (above, "What the table covers") limits v to 25 and t to
 n(v^t - v) + v when every vector has first coordinate 1 (points of an
 affine space, Sherwood, Martirosyan and Colbourn 2006).
 
+Restricted families (since 2026-11-16): an affine family whose rows 2i
+and 2i+1 agree in their first d_i coordinates in every column gives runs
+that repeat (the subspace restrictions of Wagner, Colbourn and Simos
+2022, Section 6). Write the mode ` affine pairs d1,d2,...` (each d from 2
+to t-1, one per pair of rows, pairs taken from the first rows in order):
+the checker confirms that the family keeps every pair, leaves out the
+repeated runs and expects N = n(v^t - v) + v - sum (v^d_i - v). These are
+the families behind the "Restricted SCPHF" sizes of the Colbourn tables.
+
 The `mode` column is optional (since 2026-11-02): leave it out, leave it
 empty or write `auto`, and the checker chooses the cheapest exact method
 from the data itself. It classifies the rows, finds a cyclic shift
@@ -384,7 +393,8 @@ What happens:
    submissions merged close together never overwrite each other. The
    family goes to `table/certificates/`, is listed in
    `table/certificates/CERTIFICATES.csv` with its family_sha256 and its
-   expansion rule (`smc-1`, or `smc-1-affine` for the affine rule), and
+   expansion rule (`smc-1`, `smc-1-affine` for the affine rule, or
+   `smc-1-affine+pairs d1,...` for a restricted family), and
    the array enters as a VERIFIED row whose stamp begins `cphfcheck`, or
    as SCREENED when the exact check was over the budget (below). The result is posted on the pull request. If a
    claim fails, nothing of the submission is added, and the report is kept
@@ -427,7 +437,9 @@ then runs on GitHub after the merge, within the time budget above.
 An uncovered set of t columns found by a shard, by the screen or by the
 pull request check is a proof that the family is not a CPHF, and the
 claim fails. Anyone can rebuild an array from its family with
-`cphfcheck FILE t v expand OUT [affine]` and compare the hash.
+`cphfcheck FILE t v expand OUT [affine]` and compare the hash; for a
+restricted family, expand with `affine` and then run
+`python3 tools/cphf_cert.py pairs n v t d1,... OUT CA.txt`.
 
 ## Construction certificates (constructions.csv)
 

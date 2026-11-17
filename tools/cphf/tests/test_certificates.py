@@ -24,6 +24,12 @@ Works on a temporary copy of table/ (without arrays/), never on the repository's
   light        the pull request check through check_submission.py
   scope        claims with t outside 2..6, v above 25 or k above 100,000 refused by check_certificates.py
                and check_submission.py; table rows outside the scope flagged by consistency.py
+  pairs        the rule smc-1-affine+pairs on tests/pairs_3_4_32.txt (rows 0,1 and 2,3 agree in their first two
+               coordinates): mode 'auto affine pairs 2,2' with N = 220 passes and enters VERIFIED with the hash of
+               the affine expansion after its repeated runs are removed (computed here independently), and
+               consistency passes; N = 244 (plain affine) still passes; a broken pair, pairs without affine,
+               a wrong N, a dimension out of range and too many pairs are refused; consistency flags a listing
+               whose family breaks its pairs
 Prints PASS/FAIL per test; exit status 0 only if everything passed.
 """
 import contextlib
@@ -509,6 +515,85 @@ def run_all(tmp):
     pr = consistency_problems(root)
     record("scope: consistency flags table rows outside it",
            sum("outside the table's scope" in p for p in pr) == len(out_of_scope), "; ".join(pr[:4]))
+
+    pairs_tests(tmp, exe)
+
+
+def pairs_tests(tmp, exe):
+    fixture = os.path.join(HERE, "pairs_3_4_32.txt")
+    fam = [l.split() for l in open(fixture) if l.strip()]
+    rows = [[int(x) for x in r] for r in fam]
+    record("pairs: cphf_cert rule parsing and run count",
+           cc.rule_pairs("smc-1-affine+pairs 2,2+fuse 3>0") == [2, 2]
+           and cc.expansion_runs("smc-1-affine+pairs 2,2", 4, 4, 3) == (220, 4)
+           and cc.expansion_runs("smc-1-affine+pairs 2,2+fuse 3>0", 4, 4, 3) == (220, 3)
+           and sum(cc.pairs_keep(4, 4, 3, [2, 2])) == 220 and cc.pairs_problem(rows, 4, 3, [2, 2]) is None)
+    try:
+        cc.expansion_runs("smc-1+pairs 2", 4, 4, 3)
+        record("pairs: refused without the affine rule", False)
+    except cc.CertError:
+        record("pairs: refused without the affine rule", True)
+    full = os.path.join(tmp, "pairs_full.txt")
+    subprocess.run([exe, fixture, "3", "4", "expand", full, "affine"], check=True, stdout=subprocess.DEVNULL)
+    seen, ded = set(), []
+    for line in open(full, "rb"):
+        if line not in seen:
+            seen.add(line); ded.append(line)
+    want = __import__("hashlib").sha256(b"".join(ded)).hexdigest()
+    root = fresh(tmp); tdir = os.path.join(root, "table")
+    sub = os.path.join(root, "submissions", "test-pairs")
+    os.makedirs(sub); write_how(sub)
+    shutil.copy(fixture, os.path.join(sub, "pairs.txt"))
+    write_claims(sub, [claim(3, 4, 32, 220, "pairs.txt", "auto affine pairs 2,2")])
+    code, out = cert([sub, "--table-dir", tdir, "--threads", "2", "--apply"])
+    r = table_rows(root)[-1]
+    certs = list(csv.DictReader(open(os.path.join(tdir, "certificates", "CERTIFICATES.csv"))))
+    record("pairs: N = 220 passes and enters VERIFIED with the hash of the de-duplicated expansion",
+           code == 0 and r["tier"] == "VERIFIED" and r["N"] == "220" and r["array_sha256"] == want
+           and len(ded) == 220 and certs[-1]["expansion"] == "smc-1-affine+pairs 2,2", out[-300:])
+    pr = consistency_problems(root)
+    record("pairs: consistency", not pr, "; ".join(pr[:3]))
+    root = fresh(tmp); tdir = os.path.join(root, "table")
+    sub = os.path.join(root, "submissions", "test-pairs")
+    os.makedirs(sub); write_how(sub)
+    shutil.copy(fixture, os.path.join(sub, "pairs.txt"))
+    write_claims(sub, [claim(3, 4, 32, 244, "pairs.txt", "auto affine")])
+    code, out = cert([sub, "--table-dir", tdir, "--threads", "2"])
+    record("pairs: the same family as plain affine (N = 244) still passes", code == 0, out[-200:])
+    for mode, N, why, bad in (("auto affine pairs 2,2", 220, "broken pair", True),
+                              ("auto pairs 2,2", 220, "pairs without affine", False),
+                              ("auto affine pairs 2,2", 232, "wrong N", False),
+                              ("auto affine pairs 3", 232, "dimension out of range", False),
+                              ("auto affine pairs 2,2,2", 208, "too many pairs", False)):
+        fname = "pairs.txt"
+        if bad:
+            broken = [list(r) for r in fam]
+            c = int(broken[1][5])
+            broken[1][5] = str(c + 4 if c + 4 < 32 else c - 4)
+            with open(os.path.join(sub, "broken.txt"), "w") as f:
+                f.write("".join(" ".join(x) + "\n" for x in broken))
+            fname = "broken.txt"
+        write_claims(sub, [claim(3, 4, 32, N, fname, mode)])
+        code, out = cert([sub, "--table-dir", tdir, "--threads", "2"])
+        record("pairs: %s refused" % why, code == 1, out[-200:])
+    root = fresh(tmp); tdir = os.path.join(root, "table")
+    sub = os.path.join(root, "submissions", "test-pairs")
+    os.makedirs(sub); write_how(sub)
+    shutil.copy(fixture, os.path.join(sub, "pairs.txt"))
+    write_claims(sub, [claim(3, 4, 32, 220, "pairs.txt", "auto affine pairs 2,2")])
+    cert([sub, "--table-dir", tdir, "--threads", "2", "--apply"])
+    certs = list(csv.DictReader(open(os.path.join(tdir, "certificates", "CERTIFICATES.csv"))))
+    path = os.path.join(tdir, "certificates", certs[-1]["file"])
+    lines = open(path).read().splitlines()
+    body = [i for i, l in enumerate(lines) if l.strip() and not l.startswith("#")]
+    parts = lines[body[1]].split()
+    parts[0] = str(int(parts[0]) + 4 if int(parts[0]) + 4 < 32 else int(parts[0]) - 4)
+    lines[body[1]] = " ".join(parts)
+    with open(path, "w") as f:
+        f.write("\n".join(lines) + "\n")
+    pr = consistency_problems(root)
+    record("pairs: consistency flags a family that breaks its pairs", any("rows 0 and 1 differ" in p for p in pr),
+           "; ".join(pr[:3]))
 
 
 if __name__ == "__main__":

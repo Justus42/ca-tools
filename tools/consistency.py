@@ -640,6 +640,11 @@ def check_certificates(rows):
             if fsha != c["family_sha256"]:
                 problem("%s: %s: family_sha256 is not the hash of its cphf1 serialization" % (CERT_LIST, c["file"]))
             fam_files[fsha].add(c["file"])
+            pairs = cphf_cert.rule_pairs(c["expansion"])
+            if pairs:
+                prob = cphf_cert.pairs_problem(cphf_cert.read_family(path, q, t), q, t, pairs)
+                if prob:
+                    problem("%s: %s: expansion %s, but %s" % (CERT_LIST, c["file"], c["expansion"], prob))
             N, v = cphf_cert.expansion_runs(c["expansion"], n, q, t)
             if (str(N), str(v)) != (c["N"], c["v"]):
                 problem("%s: %s: expansion %s gives N=%d, v=%d, listed N=%s, v=%s"

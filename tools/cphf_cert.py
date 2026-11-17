@@ -19,6 +19,12 @@ Expansion rules (the column "expansion" of table/certificates/CERTIFICATES.csv):
   smc-1-affine   as smc-1, but beta whose coordinates after the first are all zero are skipped, and
                  the constant runs b = 1..q-1 are appended at the end: n (q^t - q) + q runs (every
                  vector of the family has first coordinate 1)
+  smc-1-affine+pairs d1,...,dm
+                 as smc-1-affine for a family whose rows 2i and 2i+1 (i < m) agree in their first d_i
+                 coordinates in every column; the runs of row 2i+1 whose beta is zero after its first
+                 d_i coordinates equal the runs of row 2i with the same beta and are left out:
+                 n (q^t - q) + q - sum (q^d_i - q) runs (restricted Sherwood families, the
+                 subspace restrictions of Wagner, Colbourn and Simos 2022, Section 6)
   RULE+fuse a>b  then symbol a is written as b in every entry (Colbourn, Keri, Rivas Soriano and
                  Schlage-Puchta 2010, Lemma 3.1): same runs, one symbol fewer
   RULE+fuse2 a   then symbol a is removed with two runs, as tools/cphf/fuse2.c does: N - 2 runs
@@ -32,6 +38,7 @@ import hashlib
 import heapq
 import math
 import re
+import sys
 
 ARRAY_HASH_MAX_ENTRIES = 10 ** 12     # N * k above this: array_sha256 may be left empty
 FAMILY_FORMAT = "cphf1"
@@ -136,11 +143,75 @@ def array_is_hashed(N, k):
 # ---------------------------------------------------------------------------------------------
 # expansion rules
 
-EXPANSION_RE = re.compile(r"^(smc-1|smc-1-affine)((?:\+fuse \d+>\d+|\+fuse2 \d+)*)$")
+EXPANSION_RE = re.compile(r"^(smc-1|smc-1-affine)(\+pairs (\d+(?:,\d+)*))?((?:\+fuse \d+>\d+|\+fuse2 \d+)*)$")
 
 
-def expansion_id(affine):
-    return "smc-1-affine" if affine else "smc-1"
+def expansion_id(affine, pairs=None):
+    rule = "smc-1-affine" if affine else "smc-1"
+    if pairs:
+        rule += "+pairs " + ",".join(str(d) for d in pairs)
+    return rule
+
+
+def rule_pairs(rule):
+    """The pair dimensions of an expansion rule, [] when it has none."""
+    m = EXPANSION_RE.match(rule or "")
+    if not m or not m.group(3):
+        return []
+    return [int(d) for d in m.group(3).split(",")]
+
+
+def pairs_problem(rows, q, t, pairs):
+    """None if rows 2i and 2i+1 of the family (lists of codes) agree in their first pairs[i] coordinates in every
+    column, else the reason. Each d must be 2..t-1 and the pairs must fit in the family."""
+    if not pairs:
+        return None
+    if 2 * len(pairs) > len(rows):
+        return "%d pairs need %d rows, the family has %d" % (len(pairs), 2 * len(pairs), len(rows))
+    for i, d in enumerate(pairs):
+        if not 2 <= d <= t - 1:
+            return "pair %d: dimension %d is not in 2..%d" % (i, d, t - 1)
+        div = q ** (t - d)
+        for c, (a, b) in enumerate(zip(rows[2 * i], rows[2 * i + 1])):
+            if a // div != b // div:
+                return "pair %d: rows %d and %d differ in their first %d coordinates in column %d" % (
+                    i, 2 * i, 2 * i + 1, d, c)
+    return None
+
+
+def pairs_keep(n, q, t, pairs):
+    """For the smc-1-affine order (the zero run, then for each row r the betas 1..q^t-1 whose coordinates after
+    the first are not all zero, then the constant runs 1..q-1), a generator of True (keep) / False (leave out)
+    for every run in order, as the rule smc-1-affine+pairs leaves runs out."""
+    yield True
+    tail = q ** (t - 1)
+    for r in range(n):
+        i = r // 2
+        cut = q ** (t - pairs[i]) if (r % 2 == 1 and i < len(pairs)) else 0
+        for b in range(1, q ** t):
+            if b % tail == 0:
+                continue
+            yield not (cut and b % cut == 0)
+    for _ in range(1, q):
+        yield True
+
+
+def filter_pairs(fin, fout, n, q, t, pairs):
+    """Copy the smc-1-affine expansion from fin to fout (binary files), leaving out the runs of the pairs rule.
+    Returns the number of runs written. Raises CertError if the input has a different number of runs."""
+    keep = pairs_keep(n, q, t, pairs)
+    written = 0
+    for line in fin:
+        try:
+            k = next(keep)
+        except StopIteration:
+            raise CertError("the expansion has more runs than the smc-1-affine rule gives")
+        if k:
+            fout.write(line)
+            written += 1
+    if next(keep, None) is not None:
+        raise CertError("the expansion has fewer runs than the smc-1-affine rule gives")
+    return written
 
 
 def expansion_runs(rule, n, q, t):
@@ -148,9 +219,12 @@ def expansion_runs(rule, n, q, t):
     m = EXPANSION_RE.match(rule or "")
     if not m:
         raise CertError("unknown expansion rule %r" % rule)
+    if m.group(2) and m.group(1) != "smc-1-affine":
+        raise CertError("the pairs rule needs the affine expansion: %r" % rule)
     N = n * (q ** t - q) + q if m.group(1) == "smc-1-affine" else n * (q ** t - 1) + 1
+    N -= sum(q ** d - q for d in rule_pairs(rule))
     v = q
-    for step in re.findall(r"\+(fuse \d+>\d+|fuse2 \d+)", m.group(2)):
+    for step in re.findall(r"\+(fuse \d+>\d+|fuse2 \d+)", m.group(4)):
         if step.startswith("fuse2"):
             N -= 2
         v -= 1
@@ -394,3 +468,21 @@ def combine(texts, method, k, t):
     if (unc == 0) != (first is None):
         raise CertError("uncovered count and first uncovered set disagree")
     return dict(m=m, uncovered=unc, first=first, sets=sets, listed_all=listed == unc, units=got["units"])
+
+
+def main(argv):
+    """cphf_cert.py pairs n q t D1,...,Dm IN OUT: leave out the runs of the rule smc-1-affine+pairs from the
+    affine expansion IN (written by cphfcheck FAMILY t q expand IN affine) and write the array to OUT."""
+    if len(argv) != 8 or argv[1] != "pairs":
+        sys.stderr.write("usage: cphf_cert.py pairs n q t D1,...,Dm IN OUT\n")
+        return 2
+    n, q, t = int(argv[2]), int(argv[3]), int(argv[4])
+    pairs = [int(d) for d in argv[5].split(",")]
+    with open(argv[6], "rb") as fin, open(argv[7], "wb") as fout:
+        runs = filter_pairs(fin, fout, n, q, t, pairs)
+    sys.stdout.write("wrote %d runs\n" % runs)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main(sys.argv))

@@ -81,7 +81,7 @@ PREV_HEADER = ["t", "v", "k", "N", "file", "mode", "source_detail", "constructio
 CERT_HEADER = ["file", "t", "v", "k", "N", "family", "sha256", "array_sha256", "check", "family_sha256",
                "expansion"]
 SRC = os.path.join(HERE, "cphf", "cphfcheck.c")
-MODE_RE = re.compile(r"^(auto|full|fullfast|progression|fastprog|cyclic (\d+))?( ?affine)?$")
+MODE_RE = re.compile(r"^(auto|full|fullfast|progression|fastprog|cyclic (\d+))?( ?affine)?( ?pairs (\d+(?:,\d+)*))?$")
 # the screen of a family over the budget (the conventions of check_submission.py: random column
 # windows seeded from the hash, each checked exactly), and a sample of single t-sets
 SCREEN_WINDOWS, SCREEN_WIDTH, SCREEN_SAMPLES = 20, 30, 10 ** 6
@@ -122,8 +122,11 @@ def run(exe, args, timeout=None):
     return p.returncode, p.stdout, p.stderr
 
 
-def stream_hash(exe, fam, t, v, affine, tmp):
-    """expand into a FIFO and hash it as it is written; returns (rows, sha256)"""
+def stream_hash(exe, fam, t, v, affine, tmp, pairs=None, n=None):
+    """expand into a FIFO and hash it as it is written; returns (rows, sha256). With pairs, the runs the
+    rule smc-1-affine+pairs leaves out are not hashed (cphf_cert.pairs_keep)."""
+    if pairs and n is None:
+        n = len(cc.read_family(fam, v, t))
     fifo = os.path.join(tmp, "ca.fifo")
     if os.path.exists(fifo):
         os.remove(fifo)
@@ -133,11 +136,17 @@ def stream_hash(exe, fam, t, v, affine, tmp):
     def reader():
         h = hashlib.sha256(); rows = 0
         with open(fifo, "rb") as f:
-            while True:
-                b = f.read(1 << 20)
-                if not b:
-                    break
-                h.update(b); rows += b.count(b"\n")
+            if pairs:
+                keep = cc.pairs_keep(n, v, t, pairs)
+                for line in f:
+                    if next(keep, True):
+                        h.update(line); rows += 1
+            else:
+                while True:
+                    b = f.read(1 << 20)
+                    if not b:
+                        break
+                    h.update(b); rows += b.count(b"\n")
         res["sha"], res["rows"] = h.hexdigest(), rows
     th = threading.Thread(target=reader); th.start()
     p = subprocess.run([exe, fam, str(t), str(v), "expand", fifo] + (["affine"] if affine else []),
@@ -249,9 +258,12 @@ def prepare(raw, sub, exe, ctx, tmp):
     m = MODE_RE.match((raw.get("mode") or "").strip())
     if not m:
         raise CertError("mode %r is not empty, 'auto', 'full', 'fullfast', 'progression', 'fastprog' or 'cyclic s', "
-                        "optionally followed by ' affine'" % raw["mode"])
+                        "optionally followed by ' affine' and then ' pairs d1,d2,...'" % raw["mode"])
     method = m.group(1) if m.group(1) and m.group(1) != "auto" else None
     said_affine = bool(m.group(3))
+    pairs = [int(d) for d in m.group(5).split(",")] if m.group(5) else []
+    if pairs and not said_affine:
+        raise CertError("mode %r: pairs needs ' affine' before it" % raw["mode"])
     fname = raw["file"].strip()
     parts = fname.split("/")
     if not fname or any(not cs.SAFE_NAME.match(x) for x in parts) or len(parts) > 3:
@@ -278,6 +290,11 @@ def prepare(raw, sub, exe, ctx, tmp):
     if file_sha(canon) != fsha:
         raise CertError("cphfcheck reads the family differently from its identity (a bug)")
     plain, aff = n * (v ** t - 1) + 1, n * (v ** t - v) + v
+    if pairs:
+        prob = cc.pairs_problem(cc.read_family(fam, v, t), v, t, pairs)
+        if prob:
+            raise CertError("mode says pairs %s, but %s" % (",".join(map(str, pairs)), prob))
+        aff -= sum(v ** d - v for d in pairs)
     if said_affine:
         if not all_first1:
             raise CertError("mode says affine but not every vector has first coordinate 1")
@@ -299,7 +316,7 @@ def prepare(raw, sub, exe, ctx, tmp):
     c["upgrade"] = "screened" in known       # entered as SCREENED; only an exact check can add to it
     prev, prev_row = cs.best_known(ctx["table_rows"], t, v, k)
     c.update(t=t, v=v, k=k, N=N, n=n, fam=fam, fname=fname, fam_sha=fsha, file_sha=file_sha(fam),
-             method=method, affine=affine, expansion=cc.expansion_id(affine),
+             method=method, affine=affine, pairs=pairs, expansion=cc.expansion_id(affine, pairs),
              hashed=cc.array_is_hashed(N, k), prev=prev, prev_row=prev_row,
              comparison=("exceeds_table" if prev is None or N < prev else
                          "equals_best" if N == prev else "above_table"))
@@ -405,7 +422,7 @@ def screen(c, exe, threads, tmp, windows=None, width=None, samples=None):
 def array_hash(c, exe, tmp):
     if not c["hashed"]:
         return None
-    rows, sha = stream_hash(exe, c["fam"], c["t"], c["v"], c["affine"], tmp)
+    rows, sha = stream_hash(exe, c["fam"], c["t"], c["v"], c["affine"], tmp, c.get("pairs"), c.get("n"))
     if rows != c["N"]:
         raise CertError("expanded array has %d runs, expected %d" % (rows, c["N"]))
     return sha
@@ -546,7 +563,7 @@ def make_plan(claims, sub, exe, ctx, tmp, a):
         est = estimate(c, exe, a.threads)
         p = pool.take(cc.plan_claim(est, c["k"], c["t"], **budget_args(a)), c["hashed"])
         plan.append(dict(index=i, file=c["fname"], t=c["t"], v=c["v"], k=c["k"], N=c["N"], n=c["n"],
-                         family_sha256=c["fam_sha"], file_sha256=c["file_sha"], affine=c["affine"],
+                         family_sha256=c["fam_sha"], file_sha256=c["file_sha"], affine=c["affine"], pairs=c["pairs"],
                          hashed=c["hashed"], method=p["method"], shards=p["shards"], exact=p["exact"],
                          core_hours=p["core_hours"], shard_hours=p["shard_hours"], estimate=est,
                          prepared=c))
@@ -764,7 +781,8 @@ def form_run(sub, exe, tmp, a):
         if err.strip():
             body += "".join("# stderr: %s\n" % l for l in err.strip().splitlines()[:20])
     else:
-        c = dict(fam=fam, t=p["t"], v=p["v"], affine=p["affine"], hashed=p["hashed"], N=p["N"])
+        c = dict(fam=fam, t=p["t"], v=p["v"], affine=p["affine"], pairs=p.get("pairs") or [], hashed=p["hashed"],
+                 N=p["N"])
         try:
             sha = array_hash(c, exe, tmp); code, body = 0, "array_sha256 %s\nruns %d\n" % (sha, p["N"])
         except CertError as e:

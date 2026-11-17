@@ -251,6 +251,11 @@ class Context:
             exp = c.get("expansion") or "smc-1"
             cmd = "tools/cphf/cphfcheck table/certificates/%s %s %s expand CA.txt%s" % (
                 c["file"], r["t"], q, " affine" if exp.startswith("smc-1-affine") else "")
+            pm = re.match(r"^smc-1-affine\+pairs ([\d,]+)", exp)
+            if pm:
+                cmd = cmd.replace(" expand CA.txt affine", " expand full.txt affine") + (
+                    ", then python3 tools/cphf_cert.py pairs %s %s %s %s full.txt CA.txt"
+                    % (m.group(1) if m else "n", q, r["t"], pm.group(1)))
             steps = re.findall(r"\+(fuse \d+>\d+|fuse2 \d+)", exp)
             if steps:
                 cmd += ", then " + ", then ".join(steps) + " (tools/cphf_cert.py, expansion %s)" % exp
@@ -289,7 +294,7 @@ class Context:
             c = self.cert_of(r)
             exp = (c.get("expansion") or "smc-1") if c is not None else ""
             m = re.match(r"^CPHF\((\d+); (\d+), (\d+), (\d+)\)", (c.get("family") or "") if c is not None else "")
-            if exp == "smc-1-affine" and m:
+            if re.match(r"^smc-1-affine(\+pairs [\d,]+)?$", exp) and m:
                 return m.group(3), "lower_bound"
             if exp == "smc-1" or re.match(r"^smc-1(-affine)?\+fuse \d+>\d+$", exp):
                 return "1", "lower_bound"

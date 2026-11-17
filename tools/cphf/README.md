@@ -541,6 +541,12 @@ array (column `expansion`):
 - `smc-1-affine`: as `smc-1`, but beta whose coordinates after the first are all zero are skipped,
   and the constant runs b = 1..q-1 are appended at the end: n (q^t - q) + q runs, for a family in
   which every vector has first coordinate 1 (`cphfcheck expand OUT affine`).
+- `smc-1-affine+pairs d1,...,dm`: as `smc-1-affine`, for a family whose rows 2i and 2i+1 (i < m) agree in their
+  first d_i coordinates in every column; the runs of row 2i+1 whose beta is zero after its first d_i coordinates
+  equal the runs of row 2i with the same beta and are left out: n (q^t - q) + q - sum (q^d_i - q) runs
+  (`../cphf_cert.py pairs n q t d1,... IN OUT` on the affine expansion; the subspace restrictions of Wagner,
+  Colbourn and Simos 2022, Section 6). The output is the affine expansion with every repeated run after its first
+  copy removed (`tests/test_certificates.py`, "pairs").
 - a rule followed by `+fuse a>b`: then symbol a is written as b in every entry (Colbourn, Keri,
   Rivas Soriano and Schlage-Puchta 2010, Lemma 3.1): the same runs, one symbol fewer.
 - a rule followed by `+fuse2 a`: then symbol a (the largest, a = q - 1) is removed with two runs
