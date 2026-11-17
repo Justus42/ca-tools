@@ -7,6 +7,8 @@ import csv, json, os, random, shutil, subprocess, sys, tempfile
 HERE = os.path.dirname(os.path.abspath(__file__)); TOOLS = os.path.dirname(HERE); REPO = os.path.dirname(TOOLS)
 sys.path.insert(0, TOOLS)
 import external_array as ea
+import check_submission as cs
+import builds_on as bo
 
 TINY = "0.000001"
 
@@ -84,8 +86,11 @@ def main():
     with tempfile.TemporaryDirectory() as d:
         root = os.path.join(d, "deposit"); os.makedirs(root)
         td = os.path.join(d, "table"); os.makedirs(td)
-        for fn in ("ca_table.csv", "EXTERNAL.csv", "references.csv"):
-            shutil.copy(os.path.join(REPO, "table", fn), td)
+        for fn, hdr, rows in (("ca_table.csv", cs.TABLE_HEADER, []), ("EXTERNAL.csv", ea.EXTERNAL_HEADER, []),
+                              ("references.csv", bo.HEADER, [["oa-bush1952", r"\bbush\b", "K. A. Bush, Orthogonal arrays of "
+                                                             "index unity, Ann. Math. Statist. 23 (1952) 426-434", ""]])):
+            with open(os.path.join(td, fn), "w", newline="") as f:
+                w = csv.writer(f, lineterminator="\n"); w.writerow(hdr); w.writerows(rows)
         exe = os.path.join(d, "ca_verify")
         subprocess.run(["cc", "-O3", "-pthread", "-o", exe, os.path.join(REPO, "ca_verify.c")], check=True)
 
