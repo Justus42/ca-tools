@@ -101,6 +101,8 @@ jobs:
             run: python3 tools/tests_construction/test_powercz2.py
           - name: construction certificates and mutants
             run: python3 tools/tests_construction/test_construction_cert.py
+          - name: roux-1 certificates
+            run: python3 tools/tests_construction/test_roux.py
           - name: stored construction certificates
             run: python3 tools/tests_construction/test_real_certs.py
           - name: Shokri-Moura-Stevens certificates and mutants

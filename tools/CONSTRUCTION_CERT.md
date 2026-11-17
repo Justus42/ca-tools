@@ -1245,6 +1245,47 @@ mutants that need a non-primitive cubic are killed by one case each.
     python3 tools/tests_construction/test_smx.py --cases 60 --seed 20261110      (about 2 minutes)
     python3 tools/tests_construction/test_smx.py --quick --cases 30 --skip-real  (seconds)
 
+## roux-1: the Roux-type doubling of Martirosyan and Colbourn 2005, Corollary 2.2
+
+S. S. Martirosyan and C. J. Colbourn, Recursive constructions of covering arrays, Bayreuth. Math. Schr. 74 (2005)
+266-275, Corollary 2.2: CAN(t, 2l, v) <= CAN(t, l, v) + (v - 1) CAN(t - 1, l, v) + CAN(t - 2, l, v^2).
+
+### Format
+
+    {"format": "construction-cert-1", "construction": "roux-1", "t": t, "v": v, "h": h,
+     "A": {"rebuild": array_sha256}, "C": {"rebuild": array_sha256}, "E": {"rebuild": array_sha256},
+     "expected": {"N": N, "k": 2h, "array_sha256": hex}}
+
+Each ingredient is named by the array_sha256 of a counted VERIFIED row of the table and rebuilt here from the
+recipe the frame (table/ca_frame.csv) records for that row's size: a CPHF certificate expanded by
+tools/cphf/cphfcheck (compiled at run time), another construction certificate (checked in full by this program,
+nested at most 4 deep), or the stored file in table/arrays. The rebuilt file must hash to the named sha256, so
+its coverage is the coverage the table verified. Only the first h columns of each ingredient are used.
+
+### The checks
+
+- roux_ingredients: A has strength at least t over v symbols, C strength at least t - 1 over v, E strength at
+  least t - 2 over v^2 symbols, each with at least h columns (from the table row).
+- assembly (streamed, nothing held whole): every ingredient row has h entries inside its alphabet. The array is
+  [A|A] for each row of A, then [C|C + d mod v] for d = 1..v - 1 (all of C for each d), then
+  [E div v | E mod v] for each row of E, columns 0..h-1 and their twins h..2h-1.
+- symbols, N, k, sha256, alphabet: as for the other kinds.
+
+### Why it is a covering array
+
+Take t columns. If no column and its twin are both chosen, the rows [A|A] show every tuple (at most t distinct
+columns of A). If exactly one pair (a, a + h) is chosen, the tuples with equal entries on the pair come from
+[A|A] (t - 1 distinct columns of A); those whose entries on the pair differ by d come from the block of d,
+which shows every (t - 1)-tuple on the distinct columns of C. If two or more pairs are chosen, at most t - 2
+distinct columns of E are involved, and each column of E carries both entries of its pair (x div v, x mod v),
+so E shows every combination.
+
+### Tests
+
+tools/tests_construction/test_roux.py: t = 4, v = 3, h = 6 from the stored CA(111; 4, 6, 3), CA(33; 3, 6, 3)
+and CA(81; 2, 10, 9): the certificate is valid and its array passes ca_verify; a wrong expected hash and a
+strength 3 array given as A are rejected.
+
 ## The submission route
 
 A submission `submissions/<slug>/constructions.csv` (`submissions/README.md`, "Construction

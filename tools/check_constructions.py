@@ -238,6 +238,8 @@ def ingredient_text(ing):
         return "the VERIFIED table row of array_sha256 %s (table/arrays/%s), trusted as verified" % (ing["sha256"], ing["file"])
     if ing["source"] == "file":
         return "file %s (sha256 %s), checked here" % (ing["file"], ing["sha256"][:16])
+    if ing["source"] == "rebuild":
+        return "the VERIFIED table row of array_sha256 %s, rebuilt here from `%s` and matched by its hash, trusted as verified" % (ing["sha256"], ing["recipe"])
     return "inline, checked here"
 
 

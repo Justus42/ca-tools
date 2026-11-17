@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """construction_cert - check a construction certificate and rebuild the array it proves.
 
-A construction certificate records the recipe of a covering array instead of the array. Nine
+A construction certificate records the recipe of a covering array instead of the array. Eleven
 constructions are known (tools/CONSTRUCTION_CERT.md states each theorem, its hypotheses and the
 proof the checker follows):
 
@@ -31,6 +31,9 @@ proof the checker follows):
              and a CA(N2; 2, k2, v) with a set S of rows of the first and a set T of rows of the
              second made constant with |S| + |T| <= v distinct symbols, those rows left out: a
              CA(N1 + N2 - |S| - |T|; 2, k1 k2, v); an ingredient may itself be such a product
+  roux-1     Martirosyan and Colbourn 2005, Corollary 2.2: CA(t, h, v), CA(t-1, h, v) and CA(t-2, h, v^2),
+             each a counted VERIFIED row of the table rebuilt from the frame's recipe and matched by its
+             array_sha256, give a CA(N_A + (v-1) N_C + N_E; t, 2h, v); assembled streamed
 
 An ingredient is given inline ("rows"), as a file beside the certificate ("file" and its "sha256"),
 both checked exhaustively here, or by the array_sha256 of a counted VERIFIED row of the table
@@ -76,7 +79,7 @@ import time
 
 FORMAT = "construction-cert-1"
 CONSTRUCTIONS = ("powercz-1", "powercz-2", "fuse-1", "derive-1", "product-1", "sms51-1", "sms65-1",
-                 "sm-xplication-1", "product-ctj-1")
+                 "sm-xplication-1", "product-ctj-1", "roux-1")
 ARRAY_KINDS = ("fuse-1", "derive-1", "product-1")
 SMS_KINDS = ("sms51-1", "sms65-1")
 # the reference id (table/references.csv) of the theorem of each construction, for builds_on
@@ -84,7 +87,8 @@ SMS_KINDS = ("sms51-1", "sms65-1")
 # references.csv, so the submitter's builds_on is kept as given and nothing is added)
 REFERENCE = {"powercz-1": "power-cz2012", "powercz-2": "power-cz2012", "fuse-1": "fuse-ckrs2010",
              "derive-1": None, "product-1": "product-cmmssy2006", "sms51-1": "mobius-sms2025",
-             "sms65-1": "mobius-sms2025", "sm-xplication-1": "lfsr-sm2025", "product-ctj-1": "pca-ct2013"}
+             "sms65-1": "mobius-sms2025", "sm-xplication-1": "lfsr-sm2025", "product-ctj-1": "pca-ct2013",
+             "roux-1": "recur-mc2005"}
 REPO_TABLE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "table")
 # the exhaustive check of an inline or file ingredient here costs about C(k, t) * N entry reads in
 # Python; above this an ingredient must be entered in the table first and named by its hash
@@ -336,6 +340,8 @@ def load_certificate(path, table_dir=None):
         return load_smx(cert, raw, path, table_dir)
     if isinstance(cert, dict) and cert.get("construction") == CTJ_KIND:
         return load_ctj(cert, raw, path, table_dir)
+    if isinstance(cert, dict) and cert.get("construction") == ROUX_KIND:
+        return load_roux(cert, raw, path, table_dir)
     cz2 = isinstance(cert, dict) and cert.get("construction") == "powercz-2"
     only_keys(cert, ("format", "construction", "t", "v", "e", "field", "family", "ingredients",
                      "expected", "notes") + (("enumerate_weights",) if cz2 else ()), "certificate")
@@ -2653,6 +2659,172 @@ def assemble(c, write=None):
 
 
 # ---------------------------------------------------------------------------
+# the Roux-type doubling of Martirosyan and Colbourn 2005, Corollary 2.2: roux-1
+# ---------------------------------------------------------------------------
+
+ROUX_KIND = "roux-1"
+REBUILD_DEPTH = 4
+CPHF_RECIPE = re.compile(r"^tools/cphf/cphfcheck (table/certificates/[A-Za-z0-9_.-]+\.txt) (\d+) (\d+) expand CA\.txt((?: [a-z0-9,]+)*)$")
+CERT_RECIPE = re.compile(r"^python3 tools/construction_cert\.py (table/constructions/[A-Za-z0-9_./-]+\.cert\.json) --write CA\.txt$")
+
+
+def table_row_of(sha, td):
+    if REPO_TABLE not in sys.path:
+        sys.path.insert(0, REPO_TABLE)
+    from ca_table import counted
+    with open(os.path.join(td, "ca_table.csv"), newline="", encoding="utf-8") as f:
+        rows = list(csv.DictReader(f))
+    cand = [r for r in counted(rows) if r["tier"] == "VERIFIED" and r["array_sha256"] == sha]
+    return max(cand, key=lambda r: int(r["t"])) if cand else None
+
+
+def rebuild_ingredient(sha, where, c, td, depth):
+    """an ingredient named by the array_sha256 of a counted VERIFIED row of the table and rebuilt
+    from the recipe the table's frame records for that size (a CPHF certificate expanded by
+    tools/cphf/cphfcheck, or another construction certificate); the rebuilt file must hash to sha"""
+    if not isinstance(sha, str) or not HEX64.match(sha):
+        raise CertError("%s: 'rebuild' must be the 64 lower-case hex digits of an array_sha256" % where)
+    if depth > REBUILD_DEPTH:
+        raise CertError("%s: rebuilds nested deeper than %d" % (where, REBUILD_DEPTH))
+    row = table_row_of(sha, td)
+    if row is None:
+        raise CertError("%s: %s is not the array_sha256 of a counted VERIFIED row of the table" % (where, sha[:16]))
+    t, v, k, N = int(row["t"]), int(row["v"]), int(row["k"]), int(row["N"])
+    recipe = None
+    with open(os.path.join(td, "ca_frame.csv"), newline="", encoding="utf-8") as f:
+        for fr in csv.DictReader(f):
+            if (fr["t"], fr["v"], fr["k"], fr["N"]) == (row["t"], row["v"], row["k"], row["N"]) and fr["get"] in ("certificate", "construction", "file"):
+                recipe = (fr["get"], fr["get_ref"])
+    if recipe is None:
+        raise CertError("%s: the frame has no recipe for CA(%d; %d, %d, %d)" % (where, N, t, k, v))
+    import tempfile
+    tmp = c.setdefault("tmp", tempfile.mkdtemp(prefix="roux-"))
+    out = os.path.join(tmp, "%s_%s.txt" % (re.sub(r"[^A-Za-z0-9]", "_", where), sha[:12]))
+    repo = os.path.dirname(td)
+    kind, ref = recipe
+    if kind == "certificate":
+        m = CPHF_RECIPE.match(ref)
+        if not m:
+            raise CertError("%s: the frame's recipe %r is not a CPHF expansion this checker runs" % (where, ref))
+        exe = os.path.join(tmp, "cphfcheck")
+        if not os.path.exists(exe):
+            import subprocess
+            r = subprocess.run(["cc", "-O3", "-o", exe, os.path.join(repo, "tools", "cphf", "cphfcheck.c"), "-lm"],
+                               capture_output=True, text=True)
+            if r.returncode:
+                raise CertError("%s: cannot compile tools/cphf/cphfcheck.c: %s" % (where, r.stderr[-300:]))
+        import subprocess
+        args = [exe, os.path.join(repo, m.group(1)), m.group(2), m.group(3), "expand", out] + m.group(4).split()
+        r = subprocess.run(args, capture_output=True, text=True)
+        if r.returncode or not os.path.exists(out):
+            raise CertError("%s: %s failed: %s" % (where, ref, (r.stdout + r.stderr)[-300:]))
+    elif kind == "construction":
+        m = CERT_RECIPE.match(ref)
+        if not m:
+            raise CertError("%s: the frame's recipe %r is not a construction certificate" % (where, ref))
+        res = run(os.path.join(repo, m.group(1)), out, None, td)
+        if not res["ok"]:
+            raise CertError("%s: the ingredient's own certificate %s was rejected" % (where, m.group(1)))
+    else:
+        src = os.path.join(td, "arrays", os.path.basename(ref))
+        op = gzip.open if src.endswith(".gz") else open
+        with op(src, "rb") as fi, open(out, "wb") as fo:
+            for chunk in iter(lambda: fi.read(1 << 24), b""):
+                fo.write(chunk)
+    h = hashlib.sha256()
+    with open(out, "rb") as f:
+        for chunk in iter(lambda: f.read(1 << 24), b""):
+            h.update(chunk)
+    if h.hexdigest() != sha:
+        raise CertError("%s: the rebuilt array hashes to %s, not %s" % (where, h.hexdigest()[:16], sha[:16]))
+    return {"path": out, "how": "rebuilt from %s" % ref, "rebuild": {"sha256": sha, "recipe": ref},
+            "row": {"sha256": sha, "file": os.path.basename(out), "t": t, "v": v, "k": k, "N": N,
+                    "stamp": row["verify_stamp"]}}
+
+
+def load_roux(cert, raw, path, table_dir):
+    """roux-1: Martirosyan and Colbourn 2005, Corollary 2.2. A = CA(t, h, v), C = CA(t-1, h, v),
+    E = CA(t-2, h, v^2), each the first h columns of a counted VERIFIED row of the table, rebuilt;
+    rows [A|A], then [C|C+d mod v] for d = 1..v-1 (all of C for each d), then [E div v | E mod v]: CA(|A| + (v-1)|C| + |E|; t, 2h, v)"""
+    only_keys(cert, ("format", "construction", "t", "v", "h", "A", "C", "E", "expected", "notes"), "certificate")
+    if cert.get("format") != FORMAT:
+        raise CertError("format must be %r" % FORMAT)
+    t = need_int(cert, "t", 3, 32)
+    v = need_int(cert, "v", 2, 64)
+    h = need_int(cert, "h", 2, None)
+    c = {"kind": ROUX_KIND, "t": t, "v": v, "h": h, "dir": os.path.dirname(os.path.abspath(path)),
+         "cert_sha256": hashlib.sha256(raw).hexdigest(), "ingredients": {}}
+    parse_expected(cert, c)
+    td = table_dir or REPO_TABLE
+    for role, nt, nv in (("A", t, v), ("C", t - 1, v), ("E", t - 2, v * v)):
+        obj = cert.get(role)
+        if not isinstance(obj, dict):
+            raise CertError("missing ingredient %r" % role)
+        only_keys(obj, ("rebuild",), role)
+        d = rebuild_ingredient(obj.get("rebuild"), role, c, td, 0)
+        d["need_t"], d["need_v"] = nt, nv
+        c["ingredients"][role] = d
+    return c
+
+
+def check_roux_ingredients(c):
+    out = []
+    for name, ing in c["ingredients"].items():
+        tb = ing["row"]
+        if tb["t"] < ing["need_t"]:
+            out.append("ingredient %s: the table row has strength %d, Corollary 2.2 needs %d" % (name, tb["t"], ing["need_t"]))
+        if tb["v"] != ing["need_v"]:
+            out.append("ingredient %s: the table row has v = %d, Corollary 2.2 needs %d" % (name, tb["v"], ing["need_v"]))
+        if tb["k"] < c["h"]:
+            out.append("ingredient %s: the table row has %d columns, h = %d" % (name, tb["k"], c["h"]))
+    return out
+
+
+ROUX_CHECKS = [("roux_ingredients", check_roux_ingredients)]
+
+
+def assemble_roux(c, write=None):
+    """streamed: each output row is written and hashed as it is made; ingredient entries outside the
+    alphabet the theorem needs stop the assembly"""
+    v, h = c["v"], c["h"]
+    hsh = hashlib.sha256(); N = 0; symbols = set()
+    fout = open(write, "w") if write else None
+    def emit(row):
+        nonlocal N
+        line = " ".join(map(str, row)) + "\n"
+        hsh.update(line.encode("ascii"))
+        if fout:
+            fout.write(line)
+        N += 1
+    def rows_of(role, lim):
+        ing = c["ingredients"][role]
+        with open(ing["path"]) as f:
+            for ln in f:
+                if not ln.strip():
+                    continue
+                r = [int(x) for x in ln.split()[:h]]
+                if len(r) < h or min(r) < 0 or max(r) >= lim:
+                    raise ValueError("ingredient %s has a row with fewer than %d columns or a symbol outside 0..%d" % (role, h, lim - 1))
+                yield r
+    try:
+        for r in rows_of("A", v):
+            emit(r + r); symbols.update(r)
+        for d in range(1, v):
+            for r in rows_of("C", v):
+                s2 = [(x + d) % v for x in r]
+                emit(r + s2); symbols.update(r); symbols.update(s2)
+        for r in rows_of("E", v * v):
+            a, b = [x // v for x in r], [x % v for x in r]
+            emit(a + b); symbols.update(a); symbols.update(b)
+    finally:
+        if fout:
+            fout.close()
+        import shutil
+        shutil.rmtree(c.get("tmp", ""), ignore_errors=True) if c.get("tmp") else None
+    c["N"], c["k"], c["sha256"], c["symbols"] = N, 2 * h, hsh.hexdigest(), symbols
+
+
+# ---------------------------------------------------------------------------
 # driver
 # ---------------------------------------------------------------------------
 
@@ -2687,6 +2859,10 @@ def run(path, write=None, log=None, table_dir=None):
             % (path, kind, c["t"], c["v"], len(ctj_products(c)),
                ", ".join("%s %d x %d" % (n, len(i["rows"]), len(i["rows"][0]) if i["rows"] else 0)
                          for n, i in c["ingredients"].items())))
+    elif kind == ROUX_KIND:
+        checks, post, build = ROUX_CHECKS, POST_CHECKS + KIND_POST_CHECKS, assemble_roux
+        say("certificate %s: %s, t = %d, v = %d, h = %d, ingredients %s"
+            % (path, kind, c["t"], c["v"], c["h"], ", ".join("%s (%s)" % (n, i["how"]) for n, i in c["ingredients"].items())))
     elif kind == "powercz-2":
         build_family(c)
         apply_relabel(c)
@@ -2744,7 +2920,9 @@ def run(path, write=None, log=None, table_dir=None):
                 say("pass [%s]" % name)
     ings = []
     for name, i in c["ingredients"].items():
-        if "recipe" in i:
+        if "rebuild" in i:
+            ings.append(dict(name=name, source="rebuild", sha256=i["rebuild"]["sha256"], recipe=i["rebuild"]["recipe"]))
+        elif "recipe" in i:
             ings.append(dict(name=name, source="recipe", recipe=i["recipe"]))
         elif "table" in i:
             ings.append(dict(name=name, source="table", sha256=i["table"]["sha256"], file=i["table"]["file"]))
