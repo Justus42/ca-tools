@@ -1,0 +1,38 @@
+{
+ "CA_669_4_224_3.txt": {
+  "kind": "cas",
+  "src": "CYCLOTOMY",
+  "N": 669,
+  "k": 224,
+  "t": 4,
+  "v": 3,
+  "text": "CAs 0.24.4 construction CYCLOTOMY (CAs:::labelToCode(\"CYCLOTOMY\", 4, 224, 3))"
+ },
+ "CA_687_4_230_3.txt": {
+  "kind": "cas",
+  "src": "CYCLOTOMY",
+  "N": 687,
+  "k": 230,
+  "t": 4,
+  "v": 3,
+  "text": "CAs 0.24.4 construction CYCLOTOMY (CAs:::labelToCode(\"CYCLOTOMY\", 4, 230, 3))"
+ },
+ "CA_813_4_272_3.txt": {
+  "kind": "cas",
+  "src": "CYCLOTOMY",
+  "N": 813,
+  "k": 272,
+  "t": 4,
+  "v": 3,
+  "text": "CAs 0.24.4 construction CYCLOTOMY (CAs:::labelToCode(\"CYCLOTOMY\", 4, 272, 3))"
+ },
+ "CA_831_4_278_3.txt": {
+  "kind": "cas",
+  "src": "CYCLOTOMY",
+  "N": 831,
+  "k": 278,
+  "t": 4,
+  "v": 3,
+  "text": "CAs 0.24.4 construction CYCLOTOMY (CAs:::labelToCode(\"CYCLOTOMY\", 4, 278, 3))"
+ }
+}
