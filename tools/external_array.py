@@ -90,6 +90,106 @@ def _zip_dir():
     return _ZIP_DIR[0]
 
 
+UA = {"User-Agent": "ca-tools external_array"}
+
+
+def _get(url, start=None, end=None, timeout=120):
+    h = dict(UA)
+    if start is not None:
+        h["Range"] = "bytes=%d-%s" % (start, "" if end is None else end)
+    return urllib.request.urlopen(urllib.request.Request(url, headers=h), timeout=timeout)
+
+
+def fetch_whole(url, path, tries=6):
+    """the whole file, resumed with a Range request after a dropped connection and checked against the
+    length the server states"""
+    have, total = 0, None
+    if os.path.exists(path):
+        os.remove(path)
+    for _ in range(tries):
+        try:
+            with _get(url, have if have else None) as r, open(path, "ab") as f:
+                if total is None:
+                    cr = r.headers.get("Content-Range")
+                    total = int(cr.split("/")[1]) if cr else int(r.headers.get("Content-Length") or 0) or None
+                if have and r.status != 206:
+                    f.truncate(0); have = 0
+                shutil.copyfileobj(r, f, 1 << 20)
+        except (OSError, ValueError):
+            pass
+        have = os.path.getsize(path) if os.path.exists(path) else 0
+        if total is not None and have >= total:
+            return
+    raise ExtError("download incomplete: %d of %s bytes after %d tries" % (have, total, tries))
+
+
+def _range(url, start, end, tries=4):
+    for _ in range(tries):
+        try:
+            with _get(url, start, end) as r:
+                if r.status != 206:
+                    return None
+                data = r.read()
+                if len(data) == end - start + 1:
+                    return data
+        except (OSError, ValueError):
+            pass
+    return None
+
+
+def fetch_member_sparse(url, member, path):
+    """only what reading one member needs, written at its true offsets into a sparse file of the archive's
+    length: the end of the archive (central directory), the member's local header and its data. Returns
+    False when the server does not answer ranges, and the whole file is fetched instead."""
+    import struct
+    try:
+        with _get(url, 0, 0) as r:
+            cr = r.headers.get("Content-Range")
+            if r.status != 206 or not cr:
+                return False
+            total = int(cr.split("/")[1])
+    except (OSError, ValueError):
+        return False
+    tail_len = min(total, 1 << 20)
+    tail = _range(url, total - tail_len, total - 1)
+    if tail is None:
+        return False
+    with open(path, "wb") as f:
+        f.truncate(total)
+        f.seek(total - tail_len); f.write(tail)
+    i = tail.rfind(b"PK\x05\x06")
+    if i < 0:
+        return False
+    cd_size, cd_off = struct.unpack("<II", tail[i + 12:i + 20])
+    if cd_off == 0xFFFFFFFF or cd_size == 0xFFFFFFFF:
+        j = tail.rfind(b"PK\x06\x06")
+        if j < 0:
+            return False
+        cd_size, cd_off = struct.unpack("<QQ", tail[j + 40:j + 56])
+    if cd_off < total - tail_len:
+        cd = _range(url, cd_off, cd_off + cd_size - 1)
+        if cd is None:
+            return False
+        with open(path, "r+b") as f:
+            f.seek(cd_off); f.write(cd)
+    try:
+        with zipfile.ZipFile(path) as z:
+            info = z.getinfo(member)
+    except (KeyError, zipfile.BadZipFile):
+        return False
+    hdr = _range(url, info.header_offset, info.header_offset + 29)
+    if hdr is None or hdr[:4] != b"PK\x03\x04":
+        return False
+    n, m = struct.unpack("<HH", hdr[26:30])
+    end = info.header_offset + 30 + n + m + info.compress_size - 1
+    body = _range(url, info.header_offset, end)
+    if body is None:
+        return False
+    with open(path, "r+b") as f:
+        f.seek(info.header_offset); f.write(body)
+    return True
+
+
 def download(loc, workdir, local_root=None):
     """Returns the path of the raw array file (extracted from the zip if needed). A zip archive is
     downloaded once per run, however many of its members the claims name."""
@@ -101,9 +201,8 @@ def download(loc, workdir, local_root=None):
         if local_root and base.startswith("local:"):
             shutil.copyfile(os.path.join(local_root, base[len("local:"):]), raw)
         else:
-            req = urllib.request.Request(base, headers={"User-Agent": "ca-tools external_array"})
-            with urllib.request.urlopen(req, timeout=120) as r, open(raw, "wb") as f:
-                shutil.copyfileobj(r, f, 1 << 20)
+            if not (member and fetch_member_sparse(base, member, raw)):
+                fetch_whole(base, raw)
         if not member:
             return raw
         if not zipfile.is_zipfile(raw):
