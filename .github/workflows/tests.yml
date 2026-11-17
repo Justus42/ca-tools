@@ -107,6 +107,8 @@ jobs:
             run: python3 tools/tests_construction/test_construction_cert.py
           - name: roux-1 certificates
             run: python3 tools/tests_construction/test_roux.py
+          - name: fuse-1 with a Bush input and several fuses
+            run: python3 tools/tests_construction/test_bush_fuse.py
           - name: stored construction certificates
             run: python3 tools/tests_construction/test_real_certs.py
           - name: Shokri-Moura-Stevens certificates and mutants

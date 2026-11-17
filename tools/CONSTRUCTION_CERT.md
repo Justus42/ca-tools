@@ -603,6 +603,42 @@ input), then symbols, alphabet, N, k, sha256. The rebuild is the rule of `tools/
      "rows": [0, 1],                                  (optional, default [0, 1])
      "expected": {"N": 14, "k": 5, "array_sha256": "..."}}
 
+### Fusing several symbols, and the Bush orthogonal array as input (since 2026-11-17)
+
+`"times": r` (default 1) applies Lemma 3.1 r times. The input is then a CA(N; t, k, v+r); the first fuse
+removes the symbol v+r-1, the last the symbol v, each time with the rows z and r of the array it is
+given, and the result is a CA(N-2r; t, k, v). Proof: by induction on r, each step is the lemma above
+applied to the covering array the previous step made. The checker requires z and r to be rows of the
+input of the last fuse (N - 2(r-1) rows).
+
+The input may be `{"bush": {"field": {...}, "k": k}}`, the Bush orthogonal array OA(q^t; t, k, q)
+rebuilt here, in place of a table row or a file. Source: K. A. Bush, Orthogonal arrays of index unity,
+Ann. Math. Statist. 23 (1952) 426-434 (`oa-bush1952`).
+
+Theorem (Bush). Let q be a prime power, t <= q and t <= k <= q+1. Take one row for every polynomial
+f = a_0 + a_1 X + ... + a_{t-1} X^{t-1} over GF(q), the column of the field element x holding f(x) and,
+when k = q+1, a last column holding a_{t-1}. The first k columns form an OA(q^t; t, k, q) of index one.
+
+Proof. Take t columns. If they are t field elements x_1..x_t (distinct, so t <= q), the map from the
+coefficients (a_0..a_{t-1}) to (f(x_1)..f(x_t)) is linear with a Vandermonde matrix, which is invertible,
+so every t-tuple is the image of exactly one polynomial. If they are t-1 field elements and the last
+column, fix a_{t-1} = c; then f - c X^{t-1} has degree below t-1 and is fixed by its values at the t-1
+points (Vandermonde again), so every tuple occurs once. An orthogonal array of index one is a covering
+array of the same strength.
+
+Rows are taken in counting order of (a_0, ..., a_{t-1}) with a_0 fastest; the symbol of a field element
+is its index in the field's representation (`field` as in powercz-1, a polynomial basis over GF(p)).
+Hypotheses checked for a bush input (`bush`): GF(q) is a field (the `field` check), q is the number of
+symbols the input needs (v + r), t <= q and t <= k <= q+1. The exhaustive ingredient check is not run
+for it: the theorem is its proof. Tests: `tools/tests_construction/test_bush_fuse.py` (twelve fused Bush
+arrays over GF(2..11), prime and prime-power fields, each confirmed by ca_verify; t above q, k above q+1,
+a reducible modulus, rows past the last fuse's input, a wrong hash or N, and a bush input outside fuse-1
+are all rejected).
+
+    {"format": "construction-cert-1", "construction": "fuse-1", "t": 4, "v": 24, "times": 5,
+     "input": {"bush": {"field": {"q": 29, "p": 29, "m": 1}, "k": 30}},
+     "expected": {"N": 707271, "k": 30, "array_sha256": "..."}}
+
 ## The derived array (derive-1)
 
 Source: the derived array is folklore of the subject, stated for covering arrays as inequality

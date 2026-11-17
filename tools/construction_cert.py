@@ -10,7 +10,8 @@ proof the checker follows):
              0 and t) proved by exact enumeration instead of being declared by a block (e = 2); the
              heavy parts run in the C helper tools/cz2help.c, compiled at run time with cc
   fuse-1     Colbourn, Keri, Rivas Soriano and Schlage-Puchta 2010, Lemma 3.1: a CA(N; t, k, v+1)
-             gives a CA(N-2; t, k, v), t >= 2, by the two-row fusing of tools/cphf/fuse2.c
+             gives a CA(N-2; t, k, v), t >= 2, by the two-row fusing of tools/cphf/fuse2.c; "times": r
+             fuses r symbols, and the input may be the Bush OA(q^t; t, k, q) (Bush 1952) rebuilt here
   derive-1   the derived array: the rows of a CA(N; t+1, k+1, v) with symbol s in column c,
              column c deleted, form a CA(N_s; t, k, v)
   product-1  the direct product of a CA(N1; 2, k1, v) and a CA(N2; 2, k2, v): a CA(N1+N2-d; 2,
@@ -1245,11 +1246,22 @@ def parse_expected(cert, c):
 
 
 def parse_array_ingredient(obj, where, c, table_dir):
-    """an array ingredient: {"rows": [[...]]}, {"file": name, "sha256": hex} or {"table": sha}"""
-    only_keys(obj, ("file", "sha256", "rows", "table"), where)
-    if sum(1 for x in ("file", "rows", "table") if x in obj) != 1:
-        raise CertError("%s: give exactly one of 'rows', 'file' (with 'sha256') or 'table'" % where)
+    """an array ingredient: {"rows": [[...]]}, {"file": name, "sha256": hex}, {"table": sha} or
+    {"bush": {"field": {...}, "k": k}} (the Bush orthogonal array, rebuilt here)"""
+    only_keys(obj, ("file", "sha256", "rows", "table", "bush"), where)
+    if sum(1 for x in ("file", "rows", "table", "bush") if x in obj) != 1:
+        raise CertError("%s: give exactly one of 'rows', 'file' (with 'sha256'), 'table' or 'bush'" % where)
     d = {"name": where}
+    if "bush" in obj:
+        b = obj["bush"]
+        if not isinstance(b, dict):
+            raise CertError("%s: bush must be an object {field, k}" % where)
+        only_keys(b, ("field", "k"), where + " bush")
+        if "field" not in b:
+            raise CertError("%s: bush needs a field" % where)
+        p, m, q, modulus = parse_field(b["field"])
+        d["bush"] = {"F": Field(p, m, modulus), "q": q, "k": need_int(b, "k", 1, q + 1, where + " bush: ")}
+        return d
     if "table" in obj:
         if "sha256" in obj:
             raise CertError("%s: a table ingredient takes no sha256 (the table hash is its name)" % where)
@@ -1282,7 +1294,7 @@ def parse_array_ingredient(obj, where, c, table_dir):
     return d
 
 
-ARRAY_KEYS = {"fuse-1": ("input", "rows"), "derive-1": ("input", "column", "symbol"),
+ARRAY_KEYS = {"fuse-1": ("input", "rows", "times"), "derive-1": ("input", "column", "symbol"),
               "product-1": ("first", "second", "constant_rows")}
 
 
@@ -1300,13 +1312,17 @@ def load_array_kind(cert, raw, path, table_dir):
          "cert_sha256": hashlib.sha256(raw).hexdigest(), "ingredients": {}}
     parse_expected(cert, c)
     # each ingredient with the strength and the number of symbols the theorem needs of it
-    roles = {"fuse-1": [("input", t, v + 1)], "derive-1": [("input", t + 1, v)],
+    times = need_int(cert, "times", 1, 64) if kind == "fuse-1" and "times" in cert else 1
+    c["times"] = times
+    roles = {"fuse-1": [("input", t, v + times)], "derive-1": [("input", t + 1, v)],
              "product-1": [("first", 2, v), ("second", 2, v)]}[kind]
     for role, nt, nv in roles:
         if role not in cert:
             raise CertError("missing key %r" % role)
         d = parse_array_ingredient(cert[role], role, c, table_dir)
         d["need_t"], d["need_v"] = nt, nv
+        if "bush" in d and kind != "fuse-1":
+            raise CertError("%s: a bush ingredient is taken by fuse-1 only" % role)
         c["ingredients"][role] = d
     if kind == "fuse-1":
         zr = cert.get("rows", [0, 1])
@@ -1350,6 +1366,8 @@ def check_array_shape(c):
     needs of it, with at least as many columns as the strength needed of it"""
     out = []
     for name, ing in c["ingredients"].items():
+        if "bush" in ing:
+            continue
         rows = ing["rows"]
         if not rows or not rows[0]:
             out.append("ingredient %s has no rows" % name)
@@ -1377,7 +1395,7 @@ def check_ingredient_ca(c):
     ingredient is checked by ingredient_table instead"""
     out = []
     for name, ing in c["ingredients"].items():
-        if "table" in ing:
+        if "table" in ing or "bush" in ing:
             continue
         rows = ing["rows"]
         if not rows or not rows[0] or any(len(r) != len(rows[0]) for r in rows) or len(rows[0]) < ing["need_t"]:
@@ -1417,6 +1435,63 @@ def check_table_ingredients(c):
     return out
 
 
+def bush_rows(b, t):
+    """the Bush OA(q^t; t, k, q): one row for every polynomial a_0 + a_1 X + ... + a_{t-1} X^{t-1} over
+    GF(q) (the coefficient tuples in counting order, a_0 fastest); column j < q is the value at the field
+    element j, column q (when k = q + 1) is a_{t-1}"""
+    F, q, k = b["F"], b["q"], b["k"]
+    add, mul = F.add, F.mul
+    pts = list(range(min(k, q)))
+    for idx in range(q ** t):
+        a = []
+        x = idx
+        for _ in range(t):
+            a.append(x % q)
+            x //= q
+        row = []
+        for z in pts:
+            y = 0
+            for coef in reversed(a):
+                y = add[mul[y][z]][coef]
+            row.append(y)
+        if k == q + 1:
+            row.append(a[t - 1])
+        yield row
+
+
+def ingredient_rows(ing, t):
+    return bush_rows(ing["bush"], ing["need_t"]) if "bush" in ing else iter(ing["rows"])
+
+
+def ingredient_size(ing):
+    if "bush" in ing:
+        return ing["bush"]["q"] ** ing["need_t"], ing["bush"]["k"]
+    return len(ing["rows"]), (len(ing["rows"][0]) if ing["rows"] else 0)
+
+
+def ingredient_label(n, i):
+    N, k = ingredient_size(i)
+    return "%s %d x %d" % (n, N, k) + (" (Bush, GF(%d))" % i["bush"]["q"] if "bush" in i else "")
+
+
+def check_bush(c):
+    """a bush ingredient: GF(q) is a field, q equals the number of symbols needed of the input, and
+    t <= q and t <= k <= q + 1, the hypotheses of Bush (1952) for an OA(q^t; t, k, q)"""
+    out = []
+    for name, ing in c["ingredients"].items():
+        if "bush" not in ing:
+            continue
+        b, t = ing["bush"], ing["need_t"]
+        out += ["ingredient %s: %s" % (name, x) for x in check_field({"F": b["F"]})]
+        if b["q"] != ing["need_v"]:
+            out.append("ingredient %s: the Bush array has %d symbols, the input needs %d" % (name, b["q"], ing["need_v"]))
+        if not t <= b["q"]:
+            out.append("ingredient %s: strength %d is above q = %d (Bush needs t <= q)" % (name, t, b["q"]))
+        if not t <= b["k"] <= b["q"] + 1:
+            out.append("ingredient %s: k = %d is outside t..q+1 = %d..%d" % (name, b["k"], t, b["q"] + 1))
+    return out
+
+
 def check_fuse_strength(c):
     """fuse-1: t >= 2 (the proof covers a tuple with the help of a second column)"""
     return [] if c["t"] >= 2 else ["fuse-1 needs t >= 2 (t = %d)" % c["t"]]
@@ -1425,9 +1500,9 @@ def check_fuse_strength(c):
 def check_fuse_rows(c):
     """fuse-1: the rows z and r are two distinct rows of the input"""
     z, r = c["zr"]
-    n = len(c["ingredients"]["input"]["rows"])
+    n = ingredient_size(c["ingredients"]["input"])[0] - 2 * (c.get("times", 1) - 1)
     if z == r or not (z < n and r < n):
-        return ["rows [%d, %d] are not two distinct rows of the %d-row input" % (z, r, n)]
+        return ["rows [%d, %d] are not two distinct rows of the input of every fuse (%d rows at the last)" % (z, r, n)]
     return []
 
 
@@ -1463,25 +1538,49 @@ def check_product_constant_rows(c):
     return out
 
 
-def rows_fuse(c):
-    A = c["ingredients"]["input"]["rows"]
-    z, r = c["zr"]
-    top = c["v"]                       # the symbol removed: the largest of the input, v
-    Z = A[z]
+def fuse_once(src, z, r, top):
+    """Lemma 3.1 once on a stream of rows over 0..top: rows z and r are read first (buffering the rows
+    before them), then every other row is written out over 0..top-1"""
+    buf, Z, Rraw = [], None, None
+    it = iter(src)
+    i = 0
+    for row in it:
+        if i == z:
+            Z = row
+        elif i == r:
+            Rraw = row
+        else:
+            buf.append((i, row))
+        i += 1
+        if Z is not None and Rraw is not None:
+            break
 
     def tau(x, j):                     # the transposition Z[j] <-> top in column j
         return top if x == Z[j] else Z[j] if x == top else x
-    R = [tau(x, j) for j, x in enumerate(A[r])]
-    for i, row in enumerate(A):
-        if i in (z, r):
-            continue
-        out = []
+    R = [tau(x, j) for j, x in enumerate(Rraw)]
+
+    def out(row):
+        o = []
         for j, x in enumerate(row):
             y = tau(x, j)
             if y == top:
                 y = R[j] if R[j] != top else 0
-            out.append(y)
-        yield out
+            o.append(y)
+        return o
+    for _, row in buf:
+        yield out(row)
+    for row in it:
+        yield out(row)
+
+
+def rows_fuse(c):
+    """fuse-1, times r: Lemma 3.1 applied r times, each time to rows z and r of the previous array and
+    removing its largest symbol (v + r - 1 first, v last)"""
+    z, r = c["zr"]
+    src = ingredient_rows(c["ingredients"]["input"], c["t"])
+    for s in range(c.get("times", 1)):
+        src = fuse_once(src, z, r, c["v"] + c.get("times", 1) - 1 - s)
+    return src
 
 
 def rows_derive(c):
@@ -1518,7 +1617,7 @@ ROWS_OF = {"fuse-1": rows_fuse, "derive-1": rows_derive, "product-1": rows_produ
 def width_of(c):
     ing = c["ingredients"]
     if c["kind"] == "fuse-1":
-        return len(ing["input"]["rows"][0])
+        return ingredient_size(ing["input"])[1]
     if c["kind"] == "derive-1":
         return len(ing["input"]["rows"][0]) - 1
     return len(ing["first"]["rows"][0]) * len(ing["second"]["rows"][0])
@@ -1551,7 +1650,7 @@ def check_out_symbols(c):
 
 KIND_CHECKS = {
     "fuse-1": [("shape", check_array_shape), ("ingredient_hash", check_ingredient_hash),
-               ("ingredient_ca", check_ingredient_ca), ("fuse_strength", check_fuse_strength),
+               ("ingredient_ca", check_ingredient_ca), ("bush", check_bush), ("fuse_strength", check_fuse_strength),
                ("fuse_rows", check_fuse_rows)],
     "derive-1": [("shape", check_array_shape), ("ingredient_hash", check_ingredient_hash),
                  ("ingredient_ca", check_ingredient_ca), ("derive_column", check_derive_column),
@@ -2840,7 +2939,7 @@ def run(path, write=None, log=None, table_dir=None):
     if kind in ARRAY_KINDS:
         checks, post, build = KIND_CHECKS[kind], POST_CHECKS + KIND_POST_CHECKS, assemble_array_kind
         say("certificate %s: %s, t = %d, v = %d, ingredients %s"
-            % (path, kind, c["t"], c["v"], ", ".join("%s %d x %d" % (n, len(i["rows"]), len(i["rows"][0]) if i["rows"] else 0)
+            % (path, kind, c["t"], c["v"], ", ".join(ingredient_label(n, i)
                                                     for n, i in c["ingredients"].items())))
     elif kind in SMS_KINDS:
         checks, post, build = sms_checks(c), POST_CHECKS + KIND_POST_CHECKS, assemble_sms
@@ -2857,7 +2956,7 @@ def run(path, write=None, log=None, table_dir=None):
         checks, post, build = CTJ_CHECKS, POST_CHECKS + KIND_POST_CHECKS, assemble_ctj
         say("certificate %s: %s, t = %d, v = %d, %d product(s), leaf ingredients %s"
             % (path, kind, c["t"], c["v"], len(ctj_products(c)),
-               ", ".join("%s %d x %d" % (n, len(i["rows"]), len(i["rows"][0]) if i["rows"] else 0)
+               ", ".join(ingredient_label(n, i)
                          for n, i in c["ingredients"].items())))
     elif kind == ROUX_KIND:
         checks, post, build = ROUX_CHECKS, POST_CHECKS + KIND_POST_CHECKS, assemble_roux
