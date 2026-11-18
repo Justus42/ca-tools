@@ -1,0 +1,14 @@
+{
+ "format": "construction-cert-1",
+ "construction": "cyclo-1",
+ "t": 5,
+ "v": 2,
+ "p": 577,
+ "g": 5,
+ "form": "plain",
+ "expected": {
+  "N": 577,
+  "k": 577,
+  "array_sha256": "f1ea4e7701dd5c4014d4e7ad7a2f0934fc0195411538bce5e07122f31383b83b"
+ }
+}
