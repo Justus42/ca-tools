@@ -127,6 +127,7 @@ def check_location(loc, local_root=None):
 
 
 _ZIP_CACHE = {}          # zip URL -> local copy, so a deposit of many members is downloaded once
+_ZIP_SPARSE = {}         # zip URL -> the members a sparse local copy holds (absent: the copy is whole)
 _ZIP_DIR = []
 
 
@@ -219,6 +220,13 @@ def fetch_member_sparse(url, member, path):
             return False
         with open(path, "r+b") as f:
             f.seek(cd_off); f.write(cd)
+    return add_member_sparse(url, member, path)
+
+
+def add_member_sparse(url, member, path):
+    """the local header and data of one more member, written at their true offsets into a sparse copy
+    that already holds the end of the archive (fetch_member_sparse). False when that fails."""
+    import struct
     try:
         with zipfile.ZipFile(path) as z:
             info = z.getinfo(member)
@@ -244,11 +252,21 @@ def download(loc, workdir, local_root=None):
     raw = os.path.join(workdir, "download")
     if member and base in _ZIP_CACHE and os.path.isfile(_ZIP_CACHE[base]):
         raw = _ZIP_CACHE[base]
+        held = _ZIP_SPARSE.get(base)
+        if held is not None and member not in held:
+            if add_member_sparse(base, member, raw):
+                held.add(member)
+            else:
+                os.remove(raw)
+                fetch_whole(base, raw)
+                _ZIP_SPARSE.pop(base, None)
     else:
+        sparse = False
         if local_root and base.startswith("local:"):
             shutil.copyfile(os.path.join(local_root, base[len("local:"):]), raw)
         else:
-            if not (member and fetch_member_sparse(base, member, raw)):
+            sparse = bool(member and fetch_member_sparse(base, member, raw))
+            if not sparse:
                 fetch_whole(base, raw)
         if not member:
             return raw
@@ -257,6 +275,10 @@ def download(loc, workdir, local_root=None):
         cached = os.path.join(_zip_dir(), "z%d.zip" % len(_ZIP_CACHE))
         shutil.move(raw, cached)
         _ZIP_CACHE[base] = raw = cached
+        if sparse:
+            _ZIP_SPARSE[base] = {member}
+        else:
+            _ZIP_SPARSE.pop(base, None)
     out = os.path.join(workdir, "member")
     with zipfile.ZipFile(raw) as z:
         try:
