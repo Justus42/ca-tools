@@ -29,6 +29,12 @@ as above with its location and sha256; each shard downloads the array and checks
 The result (kind "deposit") is entered by tools/external_array.py --exact-result in table-page.yml,
 which decides every shard verdict again. A claim over the budget here is screened there instead.
 
+Memory (since 2026-11-17): each array entry runs ca_verify on as many threads as fit in --runner-gb
+(check_submission.verify_memory_bytes, the memory ca_verify allocates; a strength-6 array of a few
+million rows needs several GB per thread), and when the shard holding the smallest column would be too
+long (few columns, many rows) the entry is sharded by pairs of first columns instead (ca_verify
+SHARD/NSHARDS/p, merged by ca_shard_merge.py with the pair counts).
+
 Usage (each form prints a report; nothing in table/ changes without --apply):
 
   check_upgrades.py SUB --light [--out DIR]
@@ -237,21 +243,34 @@ def resolve(e, ctx, seen):
 # the plan of an exact check
 
 def array_plan(N, t, v, k, wild, a):
-    """ca_verify in m shards on a.runner_threads threads each: the smallest m whose largest shard
-    (its share of the t-sets, by ca_shard_merge.shard_sets) fits in a.shard_hours with the cost
-    model of check_submission.py (which includes its safety factor 2, the doubling)."""
+    """ca_verify in m shards on as many threads as fit in a.runner_gb of memory (at most
+    a.runner_threads; check_submission.verify_memory_bytes, the memory ca_verify allocates): the
+    smallest m whose largest shard (its share of the t-sets, by ca_shard_merge.shard_sets) fits in
+    a.shard_hours with the cost model of check_submission.py (which includes its safety factor 2)."""
+    fit = [th for th in range(1, a.runner_threads + 1)
+           if cs.verify_memory_bytes(N, t, v, k, th, bool(wild)) <= a.runner_gb * 2 ** 30]
+    if not fit:
+        return dict(method="ca_verify", shards=0, exact=False, shard_hours=None, threads=0,
+                    core_hours=float("inf"), memory_gb=cs.verify_memory_bytes(N, t, v, k, 1, bool(wild)) / 2 ** 30)
+    threads = max(fit)
     terms = cs.verify_cost_terms(N, t, v, k, wild)
     read = cs.COST_SAFETY * (cs.COST_STARTUP + 1e-9 * terms["read"] * cs.COST_NS["read"])
     work = cs.COST_SAFETY * 1e-9 * sum(terms[n] * cs.COST_NS[n] for n in cs.COST_NS if n != "read")
     total = math.comb(k, t)
     cap = a.shard_hours * 3600.0
-    for m in range(1, min(a.max_shards, k - t + 1) + 1):
-        worst = max(sm.shard_sets(t, k, i, m) for i in range(m)) / float(total)
-        wall = read + work * worst / a.runner_threads
+    npairs = (k - t + 1) * (k - t + 2) // 2 if t >= 3 else 0
+    splits = [("column", m) for m in range(1, min(a.max_shards, k - t + 1) + 1)]
+    splits += [("pairs", m) for m in range(2, min(a.max_shards, npairs) + 1)]
+    for split, m in splits:
+        count = sm.shard_sets_pairs if split == "pairs" else sm.shard_sets
+        worst = max(count(t, k, i, m) for i in range(m)) / float(total)
+        wall = read + work * worst / threads
         if wall <= cap:
-            return dict(method="ca_verify", shards=m, exact=True, shard_hours=wall / 3600.0,
-                        core_hours=(m * read + work) / 3600.0)
-    return dict(method="ca_verify", shards=0, exact=False, shard_hours=None, core_hours=(read + work) / 3600.0)
+            return dict(method="ca_verify", shards=m, exact=True, shard_hours=wall / 3600.0, threads=threads,
+                        split=split, core_hours=(m * read + work) / 3600.0,
+                        memory_gb=cs.verify_memory_bytes(N, t, v, k, threads, bool(wild)) / 2 ** 30)
+    return dict(method="ca_verify", shards=0, exact=False, shard_hours=None, threads=threads,
+                core_hours=(read + work) / 3600.0)
 
 
 def array_has_wildcards(e, ctx):
@@ -434,12 +453,13 @@ def form_plan(sub, slug, a):
                     plan.append(dict(index=i, kind=e["kind"], sha256=e["sha"], t=e["t"], v=e["v"], k=e["k"],
                                      N=e["N"], source=e["source"], method=p["method"], shards=p["shards"],
                                      exact=p["exact"], core_hours=p["core_hours"], shard_hours=p["shard_hours"],
+                                     threads=p.get("threads"), memory_gb=p.get("memory_gb"), split=p.get("split"),
                                      file_sha256=p.get("file_sha256"), affine=p.get("affine"),
                                      text=plan_text(e, p, a)))
         except (UpError, CertError, ValueError, OSError) as err:
             plan, failed = [], str(err)
     doc = dict(slug=slug, kind="upgrade", failed=failed,
-               budget=dict(runner_threads=a.runner_threads, max_shards=a.max_shards, shard_hours=a.shard_hours,
+               budget=dict(runner_threads=a.runner_threads, runner_gb=a.runner_gb, max_shards=a.max_shards, shard_hours=a.shard_hours,
                            safety=a.safety),
                entries=plan, tasks=tasks_of(plan))
     with open(a.plan, "w", encoding="utf-8") as f:
@@ -512,11 +532,12 @@ def form_plan_deposit(sub, slug, a):
             text = (plan_text_deposit(p, a))
             plan.append(dict(index=i, kind="array", sha256=sha, t=t, v=v, k=k, N=N, source=dict(location=loc),
                              method=p["method"], shards=p["shards"], exact=p["exact"], core_hours=p["core_hours"],
-                             shard_hours=p["shard_hours"], text=text))
+                             shard_hours=p["shard_hours"], threads=p.get("threads"), memory_gb=p.get("memory_gb"),
+                             split=p.get("split"), text=text))
     except (UpError, ValueError, OSError) as err:
         plan, failed = [], str(err)
     doc = dict(slug=slug, kind="deposit", failed=failed,
-               budget=dict(runner_threads=a.runner_threads, max_shards=a.max_shards, shard_hours=a.shard_hours,
+               budget=dict(runner_threads=a.runner_threads, runner_gb=a.runner_gb, max_shards=a.max_shards, shard_hours=a.shard_hours,
                            safety=a.safety, table_threads=a.table_threads,
                            table_budget_minutes=a.table_budget_minutes),
                entries=plan, tasks=tasks_of(plan))
@@ -535,9 +556,13 @@ def form_plan_deposit(sub, slug, a):
 
 def plan_text_deposit(p, a):
     if p["exact"]:
-        return ("exact check with ca_verify in %d shard%s on GitHub, about %.2g hours each (%.3g core-hours "
-                "with the safety factor); the claim enters VERIFIED if it passes" % (
-                    p["shards"], "" if p["shards"] == 1 else "s", p["shard_hours"], p["core_hours"]))
+        return ("exact check with ca_verify in %d shard%s%s on GitHub, %d thread%s each (%.1f GB), about %.2g hours "
+                "each (%.3g core-hours with the safety factor); the claim enters VERIFIED if it passes" % (
+                    p["shards"], "" if p["shards"] == 1 else "s", " by column pairs" if p.get("split") == "pairs" else "",
+                    p["threads"], "" if p["threads"] == 1 else "s", p["memory_gb"], p["shard_hours"], p["core_hours"]))
+    if p.get("threads") == 0:
+        return ("exact check with ca_verify needs %.1f GB on one thread, above the %g GB of a runner; the table "
+                "workflow screens this claim instead" % (p["memory_gb"], a.runner_gb))
     return ("exact check with ca_verify, about %.3g core-hours with the safety factor: over the budget of one "
             "claim (%d shards of %g hours on %d threads), or past the %d jobs of one run; the table workflow "
             "screens this claim instead" % (p["core_hours"], a.max_shards, a.shard_hours, a.runner_threads,
@@ -583,7 +608,9 @@ def run_task(sub, slug, doc, task, outdir, threads, table_dir, tmp, local_root=N
             meta.append("# array_sha256: %s" % sha)
             if sha != p["sha256"]:
                 raise UpError("the array retrieved has sha256 %s, the row says %s" % (sha, p["sha256"]))
-            args = [exe, path, str(p["t"]), str(p["v"]), str(threads)] + (
+            th = min(threads, p.get("threads") or threads)
+            args = [exe, path, str(p["t"]), str(p["v"]), str(th)] + (
+                ["%d/%d/p" % (j, p["shards"])] if p.get("split") == "pairs" else
                 ["%d/%d" % (j, p["shards"])] if p["shards"] > 1 else [])
             meta.append("# command: ca_verify FILE %s" % " ".join(args[2:]))
             r = subprocess.run(args, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
@@ -928,6 +955,8 @@ def main(argv=None):
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--out", default=None)
     ap.add_argument("--runner-threads", type=int, default=cc.RUNNER_THREADS)
+    ap.add_argument("--runner-gb", type=float, default=14.0,
+                    help="memory one shard's ca_verify may use (GitHub-hosted runners have 16 GB)")
     ap.add_argument("--max-shards", type=int, default=cc.MAX_SHARDS)
     ap.add_argument("--shard-hours", type=float, default=cc.SHARD_HOURS)
     ap.add_argument("--safety", type=float, default=cc.SAFETY)

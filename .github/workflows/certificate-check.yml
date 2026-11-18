@@ -77,6 +77,7 @@ env:
   MAX_SHARDS: "20"
   SHARD_HOURS: "5"
   SAFETY: "2"
+  RUNNER_GB: "14"         # memory one shard's ca_verify may use (a GitHub-hosted runner has 16 GB)
   # the budget per array of table-page.yml (THREADS, BUDGET_MINUTES there): a deposit claim whose full
   # check does not fit it is checked here in shards (tools/external_array.py, deferred)
   TABLE_THREADS: "2"
@@ -136,9 +137,10 @@ jobs:
           for slug in $SLUGS; do
             tool=tools/check_certificates.py; extra=""
             [ -f "submissions/$slug/upgrade.csv" ] && tool=tools/check_upgrades.py
+            [ "$tool" = tools/check_upgrades.py ] && extra="--runner-gb $RUNNER_GB"
             if [ -f "submissions/$slug/external.csv" ]; then
               tool=tools/check_upgrades.py
-              extra="--table-threads $TABLE_THREADS --table-budget-minutes $TABLE_BUDGET_MINUTES"
+              extra="--runner-gb $RUNNER_GB --table-threads $TABLE_THREADS --table-budget-minutes $TABLE_BUDGET_MINUTES"
             fi
             python3 "$tool" "submissions/$slug" --plan "plan/$slug.json" \
               --threads "$RUNNER_THREADS" --runner-threads "$RUNNER_THREADS" --max-shards "$MAX_SHARDS" \

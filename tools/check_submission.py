@@ -205,6 +205,37 @@ def full_or_screen(N, t, v, k, threads, budget, window, threshold=0, wildcards=F
     return "full", ""
 
 
+def verify_memory_bytes(N, t, v, k, threads=1, wildcards=False):
+    """the memory ca_verify allocates for an N x k array at strength t over v symbols on `threads`
+    threads, following its own choices (ca_verify.c, "build bitsets and planes" and "threads"):
+    shared, the array, the column bitsets X, the bit planes or one-hot lanes; per thread, the prefix
+    bitsets R[j] (j up to t-2, or t-1 on the binary and class-bitset paths) and the row buffers"""
+    W = (N + 63) // 64
+    NCH = ((k + 63) // 64 + 3) // 4
+    vt1 = v ** (t - 1)
+    binary_fast = v == 2 and not wildcards
+    bitset_classes = vt1 * W <= 8 * N
+    onehot, LB = False, 8
+    if not binary_fast and v <= 64:
+        LB = 8 if v <= 8 else 16 if v <= 16 else 32 if v <= 32 else 64
+        cand = k / float(t)
+        onehot = cand * LB / 256.0 < v * max(1.0, cand / 256.0)
+    nu = (k + 256 // LB - 1) // (256 // LB)
+    shared = N * k + k * v * W * 8 + 2 * W * 8 + NCH * 4 * 8
+    shared += N * nu * 32 if onehot else (1 if binary_fast else v) * NCH * N * 4 * 8
+    per = 0
+    for j in range(t):
+        if j == t - 1 and j > 0 and not binary_fast and not bitset_classes:
+            break
+        per += v ** j * W * 8
+    per += 2 * NCH * 4 * 8 + v * 4 * 8 + (N + 8 * W + 8) * 4 + (N + 1) * 5 + (v + 2) * 8 + k * 16
+    per += nu * 32 if onehot else 0
+    return shared + threads * per + VERIFY_FIXED_BYTES
+
+
+VERIFY_FIXED_BYTES = 24 * 2 ** 20     # the process, its input buffer and small tables: about 21 MB measured
+
+
 def predict_verify_seconds(N, t, v, k, threads=2, wildcards=False):
     """Predicted wall-clock seconds of a full ca_verify run (version 2) on a
     covering array with these parameters, including COST_SAFETY. Arrays with

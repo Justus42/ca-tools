@@ -101,6 +101,8 @@ static uint8_t *OH;                 /* one-hot rows: NU*32 bytes each */
 static uint64_t *R0;                /* bitset of all rows */
 static uint64_t *dvalid;            /* Kw words, bit d set iff d < K */
 static int shard_i = 0, shard_n = 1;
+static int pair_mode = 0;             /* shard by pairs of first columns (a, b), spec SHARD/NSHARDS/p */
+static int *unit_a, *unit_b;
 static int fail_fast = 0;
 static volatile int g_stop = 0;
 static volatile int g_next_unit = 0;
@@ -645,6 +647,18 @@ static void *worker(void *arg) {
         int i = __sync_fetch_and_add(&g_next_unit, 1);
         if (i >= n_units) break;
         if (T == 1) { do_prefix(w, cols, -1); continue; }
+        if (pair_mode) {
+            int a = unit_a[i];
+            cols[0] = a;
+            for (int u = 0; u < V; u++) {
+                const uint64_t *xc = X + ((size_t)a * V + u) * W;
+                uint64_t *dst = w->R[1] + (size_t)u * W;
+                for (int ww = 0; ww < W; ww++) dst[ww] = w->R[0][ww] & xc[ww];
+            }
+            cols[1] = unit_b[i];
+            level(w, 2, cols);
+            continue;
+        }
         int a = shard_i + i * shard_n;
         cols[0] = a;
         level(w, 1, cols);
@@ -666,7 +680,7 @@ static int cmp_example(const void *pa, const void *pb) {
 
 int main(int argc, char **argv) {
     if (argc < 4) {
-        fprintf(stderr, "usage: %s FILE t v [threads] [SHARD/NSHARDS] [--fail-fast]\n", argv[0]);
+        fprintf(stderr, "usage: %s FILE t v [threads] [SHARD/NSHARDS[/p]] [--fail-fast]\n", argv[0]);
         return 2;
     }
     const char *path = argv[1];
@@ -675,17 +689,21 @@ int main(int argc, char **argv) {
     for (int i = 4; i < argc; i++) {
         if (!strcmp(argv[i], "--fail-fast")) { fail_fast = 1; continue; }
         if (strchr(argv[i], '/')) {
-            if (sscanf(argv[i], "%d/%d", &shard_i, &shard_n) != 2 || shard_n < 1 ||
+            char mode = 0;
+            int got = sscanf(argv[i], "%d/%d/%c", &shard_i, &shard_n, &mode);
+            if ((got != 2 && !(got == 3 && mode == 'p')) || shard_n < 1 ||
                 shard_i < 0 || shard_i >= shard_n) {
-                fprintf(stderr, "bad shard spec %s (want SHARD/NSHARDS with 0 <= SHARD < NSHARDS)\n", argv[i]);
+                fprintf(stderr, "bad shard spec %s (want SHARD/NSHARDS or SHARD/NSHARDS/p with 0 <= SHARD < NSHARDS)\n", argv[i]);
                 return 2;
             }
+            pair_mode = got == 3;
             continue;
         }
         if (!saw_threads) { NT = atoi(argv[i]); saw_threads = 1; continue; }
         fprintf(stderr, "unexpected argument %s\n", argv[i]);
         return 2;
     }
+    if (pair_mode && T < 3) { fprintf(stderr, "shards by column pairs need t >= 3\n"); return 2; }
     if (T < 1 || T > MAXT || V < 2 || NT < 1 || NT > MAXNT) {
         fprintf(stderr, "bad parameters\n"); return 2;
     }
@@ -766,7 +784,10 @@ int main(int argc, char **argv) {
 
     fprintf(stderr, "read %d rows x %d columns over v=%d (t=%d, %d threads)\n",
             N, K, V, T, NT);
-    if (shard_n > 1)
+    if (pair_mode)
+        fprintf(stderr, "shard %d of %d by column pairs: column sets whose first two columns (a, b) are pair %d mod %d "
+                "in lexicographic order\n", shard_i, shard_n, shard_i, shard_n);
+    else if (shard_n > 1)
         fprintf(stderr, "shard %d of %d: column sets whose smallest column is %d mod %d\n",
                 shard_i, shard_n, shard_i, shard_n);
 
@@ -865,7 +886,15 @@ int main(int argc, char **argv) {
 
     /* ---- work units: smallest column a, 0 <= a <= K-T, in this shard ---- */
     if (T == 1) n_units = (shard_i == 0) ? 1 : 0;
-    else {
+    else if (pair_mode) {
+        long long p = 0;
+        n_units = 0;
+        unit_a = xcalloc((size_t)K * K / shard_n + K + 1, sizeof(int));
+        unit_b = xcalloc((size_t)K * K / shard_n + K + 1, sizeof(int));
+        for (int a = 0; a <= K - T; a++)
+            for (int b = a + 1; b <= K - T + 1; b++, p++)
+                if (p % shard_n == shard_i) { unit_a[n_units] = a; unit_b[n_units] = b; n_units++; }
+    } else {
         n_units = 0;
         for (int a = shard_i; a <= K - T; a += shard_n) n_units++;
     }
@@ -910,7 +939,8 @@ int main(int argc, char **argv) {
             g_stop ? ", stopped early" : "");
 
     char shard_tag[64] = "";
-    if (shard_n > 1) snprintf(shard_tag, sizeof shard_tag, " (shard %d/%d)", shard_i, shard_n);
+    if (pair_mode) snprintf(shard_tag, sizeof shard_tag, " (shard %d/%d pairs)", shard_i, shard_n);
+    else if (shard_n > 1) snprintf(shard_tag, sizeof shard_tag, " (shard %d/%d)", shard_i, shard_n);
 
     if (gaps == 0) {
         printf("VERIFIED%s: CA(N=%d; t=%d, k=%d, v=%d) - all %lld column sets fully cover all %lld tuples\n",
