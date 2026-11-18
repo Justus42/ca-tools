@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """construction_cert - check a construction certificate and rebuild the array it proves.
 
-A construction certificate records the recipe of a covering array instead of the array. Twelve
+A construction certificate records the recipe of a covering array instead of the array. Thirteen
 constructions are known (tools/CONSTRUCTION_CERT.md states each theorem, its hypotheses and the
 proof the checker follows):
 
@@ -12,6 +12,8 @@ proof the checker follows):
   fuse-1     Colbourn, Keri, Rivas Soriano and Schlage-Puchta 2010, Lemma 3.1: a CA(N; t, k, v+1)
              gives a CA(N-2; t, k, v), t >= 2, by the two-row fusing of tools/cphf/fuse2.c; "times": r
              fuses r symbols, and the input may be the Bush OA(q^t; t, k, q) (Bush 1952) rebuilt here
+  cyclo-1    Colbourn 2010: the cyclotomic array over GF(p) (plain p x p, or shifted vp x (p+1)), its
+             strength checked exactly by ca_verify on one column set from each orbit of its symmetry
   bush-1     Bush 1952: the orthogonal array OA(q^t; t, k, q) of index one, q a prime power, t <= q,
              t <= k <= q+1, rebuilt from its polynomials (the input of fuse-1 above, on its own)
   derive-1   the derived array: the rows of a CA(N; t+1, k+1, v) with symbol s in column c,
@@ -75,6 +77,7 @@ import gzip
 import hashlib
 import itertools
 import json
+import math
 import os
 import re
 import sys
@@ -91,7 +94,7 @@ SMS_KINDS = ("sms51-1", "sms65-1")
 REFERENCE = {"powercz-1": "power-cz2012", "powercz-2": "power-cz2012", "fuse-1": "fuse-ckrs2010",
              "derive-1": None, "product-1": "product-cmmssy2006", "sms51-1": "mobius-sms2025",
              "sms65-1": "mobius-sms2025", "sm-xplication-1": "lfsr-sm2025", "product-ctj-1": "pca-ct2013",
-             "roux-1": "recur-mc2005", "bush-1": "oa-bush1952"}
+             "roux-1": "recur-mc2005", "bush-1": "oa-bush1952", "cyclo-1": "cyclotomy-c2010"}
 REPO_TABLE = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "table")
 # the exhaustive check of an inline or file ingredient here costs about C(k, t) * N entry reads in
 # Python; above this an ingredient must be entered in the table first and named by its hash
@@ -345,6 +348,8 @@ def load_certificate(path, table_dir=None):
         return load_ctj(cert, raw, path, table_dir)
     if isinstance(cert, dict) and cert.get("construction") == ROUX_KIND:
         return load_roux(cert, raw, path, table_dir)
+    if isinstance(cert, dict) and cert.get("construction") == CYCLO_KIND:
+        return load_cyclo(cert, raw, path, table_dir)
     cz2 = isinstance(cert, dict) and cert.get("construction") == "powercz-2"
     only_keys(cert, ("format", "construction", "t", "v", "e", "field", "family", "ingredients",
                      "expected", "notes") + (("enumerate_weights",) if cz2 else ()), "certificate")
@@ -2933,6 +2938,188 @@ def assemble_roux(c, write=None):
 
 
 # ---------------------------------------------------------------------------
+# cyclo-1: cyclotomic arrays (Colbourn 2010), checked exactly up to their symmetry
+# ---------------------------------------------------------------------------
+
+CYCLO_KIND = "cyclo-1"
+CYCLO_MAX_P = 2000003
+
+
+def is_prime(n):
+    if n < 2:
+        return False
+    if n % 2 == 0:
+        return n == 2
+    d = 3
+    while d * d <= n:
+        if n % d == 0:
+            return False
+        d += 2
+    return True
+
+
+def load_cyclo(cert, raw, path, table_dir):
+    """cyclo-1: p prime, v | p - 1, g a primitive root mod p, cls(x) = the exponent of x in base g, mod v.
+    plain: rows and columns GF(p), entry cls(c - r), diag on c = r: p x p. shifted: for s in Z_v the
+    plain array plus s (mod v) and a last column s: v p x (p + 1). The array is the first k columns."""
+    only_keys(cert, ("format", "construction", "t", "v", "p", "g", "form", "diag", "expected", "notes"), "certificate")
+    if cert.get("format") != FORMAT:
+        raise CertError("format must be %r" % FORMAT)
+    t = need_int(cert, "t", 3, 32)
+    v = need_int(cert, "v", 2, 64)
+    p = need_int(cert, "p", 5, CYCLO_MAX_P)
+    g = need_int(cert, "g", 2, p - 1)
+    form = cert.get("form")
+    if form not in ("plain", "shifted"):
+        raise CertError("form must be 'plain' or 'shifted'")
+    diag = need_int(cert, "diag", 0, v - 1) if "diag" in cert else 0
+    c = {"kind": CYCLO_KIND, "t": t, "v": v, "p": p, "g": g, "form": form, "diag": diag,
+         "cols": p + (form == "shifted"), "cert_sha256": hashlib.sha256(raw).hexdigest(), "ingredients": {}}
+    parse_expected(cert, c)
+    return c
+
+
+def cyclo_classes(c):
+    if "cls" not in c:
+        p, g, v = c["p"], c["g"], c["v"]
+        cls = [0] * p
+        x = 1
+        for e in range(p - 1):
+            cls[x] = e % v
+            x = x * g % p
+        c["cls"] = cls
+    return c["cls"]
+
+
+def cyclo_rows(c, order=None):
+    """the rows of the full array, columns in the given order (column p is the last column of the shifted form)"""
+    p, v, diag = c["p"], c["v"], c["diag"]
+    cls = cyclo_classes(c)
+    cols = order if order is not None else list(range(c["cols"]))
+    for s in (range(v) if c["form"] == "shifted" else (0,)):
+        for r in range(p):
+            yield [s if col == p else ((diag if col == r else cls[(col - r) % p]) + s) % v for col in cols]
+
+
+def cyclo_order(c):
+    """0, then the representatives 1, g, ..., g^(v-1) of the classes, then the other columns"""
+    p, g, v = c["p"], c["g"], c["v"]
+    R = [pow(g, i, p) for i in range(v)]
+    rs = set(R)
+    return [0] + R + [x for x in range(1, p) if x not in rs] + ([p] if c["form"] == "shifted" else [])
+
+
+def check_cyclo_params(c):
+    p, v, g = c["p"], c["v"], c["g"]
+    out = []
+    if not is_prime(p):
+        return ["p = %d is not prime" % p]
+    if (p - 1) % v:
+        out.append("v = %d does not divide p - 1 = %d" % (v, p - 1))
+    m = p - 1
+    fac = set()
+    d = 2
+    while d * d <= m:
+        while m % d == 0:
+            fac.add(d)
+            m //= d
+        d += 1
+    if m > 1:
+        fac.add(m)
+    if any(pow(g, (p - 1) // f, p) == 1 for f in fac):
+        out.append("g = %d is not a primitive root mod %d" % (g, p))
+    if not c["t"] <= c["exp_k"] <= c["cols"]:
+        out.append("k = %d is outside t..%d" % (c["exp_k"], c["cols"]))
+    return out
+
+
+def check_cyclo_symmetry(c):
+    """the class of g^v x equals the class of x for every nonzero x, so x -> g^v x (with the rows) maps the
+    array onto itself; x -> x + 1 does by the definition (entries depend on c - r, the last column on s only)"""
+    if check_cyclo_params(c):
+        return ["parameters are not valid (see cyclo_params)"]
+    p, v, g = c["p"], c["v"], c["g"]
+    cls = cyclo_classes(c)
+    h = pow(g, v, p)
+    bad = [x for x in range(1, p) if cls[h * x % p] != cls[x]]
+    return ["the class of %d differs from the class of %d * %d" % (bad[0], h, bad[0])] if bad else []
+
+
+def find_ca_verify():
+    exe = os.environ.get("CA_VERIFY")
+    if exe and os.access(exe, os.X_OK):
+        return exe
+    import tempfile, subprocess
+    src = os.path.join(os.path.dirname(REPO_TABLE), "ca_verify.c")
+    tag = hashlib.sha256(open(src, "rb").read()).hexdigest()[:12]
+    exe = os.path.join(tempfile.gettempdir(), "ca_verify_%s" % tag)
+    if not os.access(exe, os.X_OK):
+        subprocess.run(["cc", "-O3", "-pthread", "-o", exe + ".tmp", src], check=True)
+        os.replace(exe + ".tmp", exe)
+    return exe
+
+
+def check_cyclo_coverage(c):
+    """every t-set of columns of the full array is mapped by x -> a x + b (a a power of g^v) onto a set holding
+    column 0 and one of 1, g, ..., g^(v-1) (CONSTRUCTION_CERT.md); with the columns in cyclo_order those are
+    the sets whose first two columns are (0, b), b = 1..v, the pair units 0..v-1 of ca_verify, each checked
+    in full and counted"""
+    if check_cyclo_params(c) or check_cyclo_symmetry(c):
+        return ["parameters or symmetry are not valid (see cyclo_params, cyclo_symmetry)"]
+    import tempfile, subprocess, shutil, re
+    t, v, K = c["t"], c["v"], c["cols"]
+    tmp = tempfile.mkdtemp()
+    try:
+        path = os.path.join(tmp, "full.txt")
+        with open(path, "w") as f:
+            for row in cyclo_rows(c, cyclo_order(c)):
+                f.write(" ".join(map(str, row)) + "\n")
+        exe = find_ca_verify()
+        threads = str(min(4, os.cpu_count() or 1))
+        if v + 1 > K - t + 1:
+            out = subprocess.run([exe, path, str(t), str(v), threads], capture_output=True, text=True).stdout
+            last = out.strip().splitlines()[-1] if out.strip() else ""
+            return [] if last.startswith("VERIFIED") else ["ca_verify on the full array: %s" % last[:200]]
+        npairs = (K - t + 1) * (K - t + 2) // 2
+        out = []
+        for b in range(1, v + 1):
+            r = subprocess.run([exe, path, str(t), str(v), threads, "%d/%d/p" % (b - 1, npairs)],
+                               capture_output=True, text=True).stdout.strip().splitlines()
+            last = r[-1] if r else ""
+            want = math.comb(K - 1 - b, t - 2)
+            m = re.search(r"all (\d+) column sets", last)
+            if not last.startswith("VERIFIED"):
+                out.append("columns 0 and %d (in check order): %s" % (b, last[:200]))
+            elif not m or int(m.group(1)) != want:
+                out.append("columns 0 and %d: ca_verify checked %s column sets, the unit has %d" % (b, m and m.group(1), want))
+        return out
+    finally:
+        shutil.rmtree(tmp, ignore_errors=True)
+
+
+CYCLO_CHECKS = [("cyclo_params", check_cyclo_params), ("cyclo_symmetry", check_cyclo_symmetry),
+                ("cyclo_coverage", check_cyclo_coverage)]
+
+
+def assemble_cyclo(c, write=None):
+    k = c["exp_k"]
+    hsh = hashlib.sha256(); N = 0; symbols = set()
+    fout = open(write, "w") if write else None
+    try:
+        for row in cyclo_rows(c, list(range(min(k, c["cols"])))):
+            line = " ".join(map(str, row)) + "\n"
+            hsh.update(line.encode("ascii"))
+            if fout:
+                fout.write(line)
+            symbols.update(row)
+            N += 1
+    finally:
+        if fout:
+            fout.close()
+    c["N"], c["k"], c["sha256"], c["symbols"] = N, min(k, c["cols"]), hsh.hexdigest(), symbols
+
+
+# ---------------------------------------------------------------------------
 # driver
 # ---------------------------------------------------------------------------
 
@@ -2967,6 +3154,10 @@ def run(path, write=None, log=None, table_dir=None):
             % (path, kind, c["t"], c["v"], len(ctj_products(c)),
                ", ".join(ingredient_label(n, i)
                          for n, i in c["ingredients"].items())))
+    elif kind == CYCLO_KIND:
+        checks, post, build = CYCLO_CHECKS, POST_CHECKS + KIND_POST_CHECKS, assemble_cyclo
+        say("certificate %s: %s, t = %d, v = %d, p = %d, g = %d, %s form, %d columns of %d"
+            % (path, kind, c["t"], c["v"], c["p"], c["g"], c["form"], c["exp_k"], c["cols"]))
     elif kind == ROUX_KIND:
         checks, post, build = ROUX_CHECKS, POST_CHECKS + KIND_POST_CHECKS, assemble_roux
         say("certificate %s: %s, t = %d, v = %d, h = %d, ingredients %s"

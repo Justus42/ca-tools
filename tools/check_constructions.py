@@ -136,6 +136,8 @@ def check_claim(cl, ctx, tmp):
         out_path = os.path.join(tmp, "rebuilt-%d.txt" % cl["line"]) if text_bytes <= STORE_MAX_BYTES else None
         t0 = time.monotonic()
         try:
+            if ctx["ca_verify"]:
+                os.environ["CA_VERIFY"] = os.path.abspath(ctx["ca_verify"])
             res = ccert.run(path, out_path, table_dir=ctx["table_dir"])
         except ccert.CertError as e:
             raise ConError("the certificate is malformed: %s" % e)

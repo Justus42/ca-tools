@@ -1329,6 +1329,51 @@ tools/tests_construction/test_roux.py: t = 4, v = 3, h = 6 from the stored CA(11
 and CA(81; 2, 10, 9): the certificate is valid and its array passes ca_verify; a wrong expected hash and a
 strength 3 array given as A are rejected.
 
+## cyclo-1: cyclotomic arrays (Colbourn 2010), checked exactly up to their symmetry (since 2026-11-18)
+
+Source: C. J. Colbourn, Covering arrays from cyclotomy, Des. Codes Cryptogr. 55 (2010) 201-219. Whether a
+cyclotomic array has strength t is not a theorem for a given prime; it is a computation. This kind does
+that computation exactly, using the array's own symmetry to check one column set from each orbit.
+
+### Format
+
+    {"format": "construction-cert-1", "construction": "cyclo-1", "t": 5, "v": 2, "p": 523, "g": 2,
+     "form": "plain", "expected": {"N": 523, "k": 523, "array_sha256": "..."}}
+
+p prime, v divides p - 1, g a primitive root mod p, cls(x) the exponent of x to base g, mod v (x nonzero),
+`diag` (default 0) a symbol. `plain`: rows r and columns c are 0..p-1, entry cls(c - r), and `diag` when
+c = r; p x p. `shifted`: for each s in 0..v-1 the plain rows with s added mod v, and a last column s;
+vp x (p + 1). The array is the first k columns.
+
+### The checks
+
+`cyclo_params` (p prime, v | p - 1, g primitive, t <= k <= the number of columns), `cyclo_symmetry`
+(cls(g^v x) = cls(x) for every nonzero x), `cyclo_coverage` (below), then symbols, N, k, sha256 and the
+alphabet as for every kind.
+
+### Why it is a covering array
+
+Let H be the powers of h = g^v (the subgroup of index v). For a in H and b in GF(p), the map x -> ax + b on
+the columns of GF(p) (the last column fixed), with the same map on the row index r (s fixed), maps the array
+onto itself: c - r becomes a(c - r), and cls(a y) = cls(y) by `cyclo_symmetry`; c = r is kept; the last
+column depends on s only. A column t-set and its image are covered together, since the map permutes rows.
+Every t-set S (t >= 3) has two distinct field columns s1, s2. With a in H chosen so that a(s2 - s1) is one
+of R = {1, g, ..., g^(v-1)} (possible since s2 - s1 = g^e, and a = g^(vj) gives g^(e + vj), whose exponent
+can be made e mod v), the map x -> a(x - s1) sends S to a set containing 0 and an element of R. So it is
+enough to check the t-sets containing column 0 and an element of R. With the columns ordered 0, then R,
+then the rest, these are exactly the sets whose first two columns are (0, b) for b = 1..v, the pair units
+0..v-1 of ca_verify's shards by column pairs (SHARD/NSHARDS/p, NSHARDS the number of pairs). The checker
+writes the full array in that order, runs ca_verify on those v units and requires each to be VERIFIED and
+to have checked C(K-1-b, t-2) sets (K columns). Then the full array has strength t, and so has every set
+of its columns, the first k among them. (When v + 1 is above K - t + 1 the full array is checked instead.)
+
+### Tests
+
+`tools/tests_construction/test_cyclo.py`: for primes up to 110, v = 2, 3, 4, both forms, t = 3 and 4, the
+certificate's verdict equals ca_verify on the full array (both kinds of outcome occur), and the rebuilt
+array hashes as an independent build; a non-primitive g, v not dividing p - 1, p not prime and k too large
+are rejected.
+
 ## The submission route
 
 A submission `submissions/<slug>/constructions.csv` (`submissions/README.md`, "Construction
