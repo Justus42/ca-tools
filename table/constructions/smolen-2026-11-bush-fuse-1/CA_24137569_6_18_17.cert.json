@@ -1,0 +1,21 @@
+{
+ "format": "construction-cert-1",
+ "construction": "bush-1",
+ "t": 6,
+ "v": 17,
+ "input": {
+  "bush": {
+   "field": {
+    "q": 17,
+    "p": 17,
+    "m": 1
+   },
+   "k": 18
+  }
+ },
+ "expected": {
+  "N": 24137569,
+  "k": 18,
+  "array_sha256": "39570acbce443becb40293875ce57e0d3706339d214040f9599ef449b8e48fa4"
+ }
+}

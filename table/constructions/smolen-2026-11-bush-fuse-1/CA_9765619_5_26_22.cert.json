@@ -1,0 +1,27 @@
+{
+ "format": "construction-cert-1",
+ "construction": "fuse-1",
+ "t": 5,
+ "v": 22,
+ "times": 3,
+ "input": {
+  "bush": {
+   "field": {
+    "q": 25,
+    "p": 5,
+    "m": 2,
+    "modulus": [
+     2,
+     1,
+     1
+    ]
+   },
+   "k": 26
+  }
+ },
+ "expected": {
+  "N": 9765619,
+  "k": 26,
+  "array_sha256": "8696e395f2a0c9fdb263dda7f289b17ca036844ccf2586d47781b8eca542fc38"
+ }
+}
