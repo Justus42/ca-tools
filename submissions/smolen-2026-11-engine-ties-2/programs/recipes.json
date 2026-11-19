@@ -1,0 +1,84 @@
+{
+ "CA_1647_4_6_6.txt": {
+  "kind": "law",
+  "law": "augB",
+  "params": {
+   "classes": [
+    1,
+    1,
+    1,
+    1
+   ],
+   "sources": [
+    "programs/inputs/QA_NP1_4_6_51.txt",
+    "programs/inputs/QA_N1_4_6_36.txt",
+    "programs/inputs/QA_N1_4_6_36.txt",
+    "programs/inputs/QA_N1_4_6_36.txt"
+   ]
+  },
+  "N": 1647,
+  "k": 6,
+  "t": 4,
+  "v": 6,
+  "ing": [
+   {
+    "kind": "file",
+    "src": "table/arrays/CA_21_4_6_2_2c6505cd.txt",
+    "N": 21,
+    "k": 6,
+    "t": 4,
+    "v": 2,
+    "text": "table array CA_21_4_6_2_2c6505cd.txt (tools/own_arrays, array file CA_21_4_6_2_2c6505cd.txt: weight-class array built here: bina)"
+   }
+  ]
+ },
+ "CA_43983_4_6_14.txt": {
+  "kind": "law",
+  "law": "augB",
+  "params": {
+   "classes": [
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1,
+    1
+   ],
+   "sources": [
+    "programs/inputs/QA_NP1_4_6_51.txt",
+    "programs/inputs/QA_N1_4_6_36.txt",
+    "programs/inputs/QA_N1_4_6_36.txt",
+    "programs/inputs/QA_N1_4_6_36.txt",
+    "programs/inputs/QA_N1_4_6_36.txt",
+    "programs/inputs/QA_N1_4_6_36.txt",
+    "programs/inputs/QA_N1_4_6_36.txt",
+    "programs/inputs/QA_N1_4_6_36.txt",
+    "programs/inputs/QA_N1_4_6_36.txt",
+    "programs/inputs/QA_N1_4_6_36.txt",
+    "programs/inputs/QA_N1_4_6_36.txt",
+    "programs/inputs/QA_N1_4_6_36.txt"
+   ]
+  },
+  "N": 43983,
+  "k": 6,
+  "t": 4,
+  "v": 14,
+  "ing": [
+   {
+    "kind": "file",
+    "src": "table/arrays/CA_21_4_6_2_2c6505cd.txt",
+    "N": 21,
+    "k": 6,
+    "t": 4,
+    "v": 2,
+    "text": "table array CA_21_4_6_2_2c6505cd.txt (tools/own_arrays, array file CA_21_4_6_2_2c6505cd.txt: weight-class array built here: bina)"
+   }
+  ]
+ }
+}
