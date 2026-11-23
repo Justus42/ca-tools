@@ -29,9 +29,9 @@ RAW_CSV = "https://raw.githubusercontent.com/chrispbsmolen/ca-tools/main/table/c
 
 CSS = """
 :root { color-scheme: light dark; --fg:#1d1d1f; --bg:#fdfdfc; --mute:#5f6368;
-  --line:#dcdcd8; --ver:#0b6e3a; --scr:#8a5a00; --dis:#a8321e; --soft:#f2f2ee; }
+  --line:#dcdcd8; --ver:#0b6e3a; --scr:#8a5a00; --dis:#a8321e; --soft:#f2f2ee; --opt:#1f5fa8; }
 @media (prefers-color-scheme: dark) { :root { --fg:#e8e8e3; --bg:#18181a;
-  --mute:#a0a0a0; --line:#3a3a3d; --ver:#5fd08f; --scr:#e0b050; --dis:#f08a74; --soft:#232326; } }
+  --mute:#a0a0a0; --line:#3a3a3d; --ver:#5fd08f; --scr:#e0b050; --dis:#f08a74; --soft:#232326; --opt:#7fb0ef; } }
 * { box-sizing: border-box; }
 body { margin:0; background:var(--bg); color:var(--fg);
   font:16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
@@ -57,6 +57,7 @@ summary { cursor:pointer; }
 .lbl { color:var(--mute); font-size:.8rem; margin-right:.3rem; }
 .bo { display:block; color:var(--mute); font-size:.8rem; }
 .corr { display:block; font-size:.8rem; }
+.opt { color:var(--opt); }
 details.sub > summary { padding:.15rem 0; }
 a { color: inherit; }
 @media (max-width: 480px) { body { font-size:15px; } table { font-size:.82rem; } th, td { padding:.25rem .2rem; } }
@@ -166,6 +167,8 @@ def stamp_html(r):
 
 REFS = {}       # id -> reference (tools/builds_on.py), filled by main()
 REFS_USED = set()
+LB = {}
+LB_CLOSED = set()
 
 
 def short_ref(rid):
@@ -389,6 +392,26 @@ LEGEND = [
 ]
 
 
+def floor_at(t, v, k):
+    for r in LB.get((t, v), ()):
+        if r[2] <= k <= r[3]:
+            return r
+    return None
+
+
+def floor_html(r):
+    links = []
+    for rid in filter(None, r[7].split(";")):
+        if rid in REFS:
+            REFS_USED.add(rid)
+            links.append("<a href=#r%d>%s</a>" % (list(REFS).index(rid) + 1, html.escape(ref_label(rid))))
+    if r[5] == "R0":
+        return "<span class=stamp>floor v<sup>t</sup></span>"
+    if r[5] == "R2":
+        return "<span class=stamp>floor by fixing a symbol, from %s</span>" % (links[-1] if links else "")
+    return "<span class=stamp>floor %s</span>" % ", ".join(links)
+
+
 def stair(rows_tv):
     """Rungs (N, k_from, k_to, evidence rows) from the counted rows (CITED and
     VERIFIED, less retracted rows; table/ca_table.py counted())."""
@@ -600,6 +623,13 @@ def render(rows, manifest, date):
     H.append("<h2>Best known N by strength and alphabet</h2>")
     H.append("<p class=\"mute\">Open a (t, v) pair to see its stair-step. Each rung gives "
              "the column range it serves, the best known N, and its evidence.</p>")
+    H.append("<p class=\"mute\">Proven floor is the largest lower bound on N that follows from published "
+             "theorems at the last k of the rung, and gap is N minus that floor. A rung marked optimal has a "
+             "gap of 0 and an array of that size verified here. Each floor names the theorem and the paper "
+             "behind it, and the full list is <a href=\"%s/blob/main/table/lower_bounds.csv\">"
+             "table/lower_bounds.csv</a>. Tables with both bounds were published for smaller ranges in 2010, "
+             "2011 and 2020 (Colbourn, Keri, Rivas Soriano and Schlage-Puchta, Lawrence et al., Kokkala et al.). "
+             "This one covers every entry of the table and is kept current with it.</p>" % REPO_URL)
     for (t, v) in sorted(by_tv):
         rs = by_tv[(t, v)]
         steps = stair(rs)
@@ -607,13 +637,14 @@ def render(rows, manifest, date):
         scr = [r for r in rs if r["tier"] == "SCREENED" and row_key(r) not in verified_sha]
         dis = {(r["k"], r["N"]): r for r in rs if r["tier"] == "DISPUTED"}
         der = sorted(DERIVED.get((t, v), []), key=lambda d: int(d["k"]))
-        H.append("<details><summary>t = %d, v = %d: %d rungs, %d verified%s%s%s</summary>"
-                 % (t, v, len(steps), nver,
+        nopt = sum(1 for n, _, k1, _ in steps if (t, v, k1, n) in LB_CLOSED)
+        H.append("<details><summary>t = %d, v = %d: %d rungs, %d verified%s%s%s%s</summary>"
+                 % (t, v, len(steps), nver, ", %d proven optimal" % nopt if nopt else "",
                     ", %d screened" % len(scr) if scr else "",
                     ", %d disputed" % len(dis) if dis else "",
                     ", %d derived sizes" % len(der) if der else ""))
-        H.append("<table><thead><tr><th class=n>k</th><th class=n>N</th>"
-                 "<th>evidence</th></tr></thead><tbody>")
+        H.append("<table><thead><tr><th class=n>k</th><th class=n>N</th><th class=n>proven floor</th>"
+                 "<th class=n>gap</th><th>evidence</th></tr></thead><tbody>")
         # Columns past the baseline's range for this (t, v): the table holds only what was
         # submitted there, so say so on every such rung (no survey of the literature).
         base_k = max((r["k"] for r in rs if r["source_id"] == "S1"), default=0)
@@ -625,18 +656,22 @@ def render(rows, manifest, date):
                     "page</a> gives what published constructions yield from this table at these "
                     "widths</span>" % "{:,}".format(base_k)
                     if base_k and k1 > base_k else "")
-            H.append("<tr><td class=n>%s</td><td class=n>%d</td><td class=ev>%s%s%s</td></tr>"
-                     % (krange, n, evidence_html(e),
-                        disputed_html(dis[(k1, n)], rs) if (k1, n) in dis else "", past))
+            fl = floor_at(t, v, k1)
+            opt = "<span class=\"tag opt\">optimal</span>" if (t, v, k1, n) in LB_CLOSED else ""
+            H.append("<tr><td class=n>%s</td><td class=n>%d</td><td class=n>%s</td><td class=n>%s</td>"
+                     "<td class=ev>%s%s%s%s%s</td></tr>"
+                     % (krange, n, fl[4] if fl else "", n - fl[4] if fl else "", opt, evidence_html(e),
+                        disputed_html(dis[(k1, n)], rs) if (k1, n) in dis else "", past,
+                        floor_html(fl) if fl else ""))
         rung_keys = {(k1, n) for n, _, k1, _ in steps}
         for (dk, dn), d in sorted(dis.items()):
             if (dk, dn) not in rung_keys:
-                H.append("<tr><td class=n>%d</td><td class=n>%d</td><td class=ev>%s%s</td></tr>"
+                H.append("<tr><td class=n>%d</td><td class=n>%d</td><td></td><td></td><td class=ev>%s%s</td></tr>"
                          % (dk, dn, html.escape(construction_of(next(
                              (r for r in rs if r["tier"] == "CITED" and r["k"] == dk and r["N"] == dn), d))),
                             disputed_html(d, rs)))
         for r in scr:
-            H.append("<tr><td class=n>%d</td><td class=n>%d</td><td class=ev>"
+            H.append("<tr><td class=n>%d</td><td class=n>%d</td><td></td><td></td><td class=ev>"
                      "<span class=\"tag scr\">screened</span>%s%s<span class=stamp>%s, "
                      "not counted as best known%s</span></td></tr>"
                      % (r["k"], r["N"], html.escape(credit_of(r) + "; ") if credit_of(r) else "",
@@ -644,7 +679,7 @@ def render(rows, manifest, date):
                         + html.escape(r["source_detail"]), stamp_html(r),
                         (", " + constant_rows_of(r)) if constant_rows_of(r) else ""))
         for d in der:
-            H.append("<tr><td class=n>%s</td><td class=n>%s</td><td class=ev>"
+            H.append("<tr><td class=n>%s</td><td class=n>%s</td><td></td><td></td><td class=ev>"
                      "<span class=\"tag lit\">derived</span>%s: %s<span class=stamp>a size that follows from "
                      "this table by a published construction, with no array on file; not counted as best "
                      "known (%s); <a href=\"derived.html\">the derived sizes page</a></span></td></tr>"
@@ -701,6 +736,14 @@ def main():
         with open(xp, newline="", encoding="utf-8") as f:
             for e in csv.DictReader(f):
                 SHA2EXT[e["sha256"]] = e["location"]
+    lp = os.path.join(a.table_dir, "lower_bounds.csv")
+    if os.path.exists(lp):
+        import lower_bounds
+        _, lb = lower_bounds.load(lp)
+        for r in lb:
+            LB.setdefault((r[0], r[1]), []).append(r)
+        LB_CLOSED.update(lower_bounds.closed_steps(lb, os.path.join(a.table_dir, "ca_frame.csv"),
+                                                   os.path.join(a.table_dir, "ca_table.csv")))
     page = render(rows, manifest, date)
     os.makedirs(os.path.dirname(os.path.abspath(a.out)), exist_ok=True)
     with open(a.out, "w", encoding="utf-8") as f:
