@@ -47,9 +47,9 @@ def run(args):
     return p.returncode, p.stdout
 
 
-def shards(sub, root, td, out, plan_path, nshards):
+def shards(sub, root, td, out, plan_path, nshards, budget=TINY):
     up = os.path.join(TOOLS, "check_upgrades.py")
-    rc, txt = run([up, sub, "--plan", plan_path, "--table-budget-minutes", TINY, "--local-root", root, "--table-dir", td])
+    rc, txt = run([up, sub, "--plan", plan_path, "--table-budget-minutes", budget, "--local-root", root, "--table-dir", td])
     assert rc == 0, txt
     doc = json.load(open(plan_path))
     for e in doc["entries"]:
@@ -64,9 +64,9 @@ def shards(sub, root, td, out, plan_path, nshards):
     return rc, txt, doc
 
 
-def enter(sub, root, td, exe, res=None):
+def enter(sub, root, td, exe, res=None, budget=TINY):
     args = [os.path.join(TOOLS, "external_array.py"), sub, "--table-dir", td, "--ca-verify", exe, "--threads", "1",
-            "--budget-minutes", TINY, "--local-root", root, "--apply"]
+            "--budget-minutes", budget, "--local-root", root, "--apply"]
     if res:
         args += ["--exact-result", res]
     return run(args)
@@ -137,6 +137,24 @@ def main():
         check("array with a gap: the shard check fails it", rc == 1 and "NOT A COVERING ARRAY" in txt, txt)
         rc, txt = enter(sub2, root, td, exe, os.path.join(out2, "res"))
         check("array with a gap: not entered, exit 1", rc == 1 and "NOT A COVERING ARRAY" in txt and not rows_from(td, "test-deposit-broken"), txt)
+
+        small, large = oa9(rng), oa9(rng) * 100000
+        lo, hi = (max(cs.predict_verify_seconds(len(x), 2, 3, 4, 1, w) for w in (False, True)) for x in (small, large))
+        mid = "%.9f" % ((lo + hi) / 2 / cs.FULL_FRACTION / 60)
+        mixed = [claim(root, "d.txt", small), claim(root, "e.txt", large)]
+        sub3 = make_sub(d, "test-deposit-mixed", mixed)
+        out3 = os.path.join(d, "mixed")
+        up = os.path.join(TOOLS, "check_upgrades.py")
+        plan3 = os.path.join(d, "mixed.json")
+        rc, txt = run([up, sub3, "--plan", plan3, "--table-budget-minutes", mid, "--table-threads", "1", "--local-root", root, "--table-dir", td])
+        doc = json.load(open(plan3)) if rc == 0 else {}
+        check("first claim fits the table workflow, second is planned: one entry, index 1, task u1-s0",
+              rc == 0 and [e["index"] for e in doc["entries"]] == [1] and doc["tasks"] == ["u1-s0"], txt)
+        rc, txt = run([up, sub3, "--run", plan3, "--task", "u1-s0", "--out", os.path.join(out3, "tasks"),
+                       "--threads", "1", "--local-root", root, "--table-dir", td])
+        check("the task of the second claim runs when an earlier claim is not in the plan", rc == 0, txt)
+        rc, txt = run([up, sub3, "--results", plan3, "--tasks", os.path.join(out3, "tasks"), "--out", os.path.join(out3, "res")])
+        check("its shard checked the array of its own row: verified", rc == 0 and txt.count("(VERIFIED)") == 1, txt)
     print("deposit shards: %s" % ("all passed" if not fails else "%d failed" % fails))
     return 1 if fails else 0
 

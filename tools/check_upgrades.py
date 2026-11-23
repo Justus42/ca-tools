@@ -596,7 +596,9 @@ def run_task(sub, slug, doc, task, outdir, threads, table_dir, tmp, local_root=N
     m = re.fullmatch(r"u(\d+)-s(\d+)", task or "")
     if not m or task not in doc["tasks"]:
         raise SystemExit("task %r is not in the plan" % task)
-    p = doc["entries"][int(m.group(1))]
+    p = next((x for x in doc["entries"] if x and x["index"] == int(m.group(1))), None)
+    if p is None:
+        raise SystemExit("task %r names an entry that is not in the plan" % task)
     j = int(m.group(2))
     os.makedirs(outdir, exist_ok=True)
     meta = ["# task: %s" % task, "# kind: %s" % p["kind"], "# t: %d" % p["t"]]
