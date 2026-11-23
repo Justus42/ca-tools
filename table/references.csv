@@ -71,3 +71,12 @@ thesis-s2026,ruor-31663|constructing new families of covering arrays using finit
 orthogoval-cijsss2024,"C64163845|colbourn, ingalls|ingalls, jedwab|mutually orthogoval","C. J. Colbourn, C. Ingalls, J. Jedwab, M. Saaltink, K. W. Smith and B. Stevens, Sets of mutually orthogoval projective and affine planes, Combin. Theory 4(1) (2024) #8",10.5070/C64163845
 pcphf-c2026,zenodo\.23839216|partly cyclic covering perfect hash,"A. Canli, New upper bounds for covering array numbers from partly cyclic covering perfect hash families, preprint, Zenodo (2026)",10.5281/zenodo.23839216
 singer-cphf-bai2026,"zenodo\.2378705[234]|two-row covering perfect hash","X. Bai, Two-row covering perfect hash families from Singer cycles, and upper bounds for their length, Zenodo (2026), version 2",10.5281/zenodo.24054350
+lb-smm1998,,"B. Stevens, L. Moura and E. Mendelsohn, Lower bounds for transversal covers, Des. Codes Cryptogr. 15 (1998) 279-299",10.1023/A:1008329410829
+lb-pt1989,,"S. Poljak and Z. Tuza, On the maximum number of qualitatively independent partitions, J. Combin. Theory Ser. A 51 (1989) 111-116",10.1016/0097-3165(89)90081-2
+lb-kp1975,,"S. Kounias and C. I. Petros, Orthogonal arrays of strength three and four with index unity, Sankhya Ser. B 37 (1975) 228-240",
+lb-lkklf2011,,"J. Lawrence, R. N. Kacker, Y. Lei, D. R. Kuhn and M. Forbes, A survey of binary covering arrays, Electron. J. Combin. 18 (2011) P84",
+lb-cko2012,,"S. Choi, H. K. Kim and D. Y. Oh, Structures and lower bounds for binary covering arrays, arXiv:1111.0587",
+lb-kmnnos2020,,"J. I. Kokkala, K. Meagher, R. Naserasr, K. J. Nurmela, P. R. J. Östergård and B. Stevens, On the structure of small strength-2 covering arrays, J. Combin. Des. 28 (2020), arXiv:1901.03594",
+lb-it2019,,"I. Izquierdo-Marquez and J. Torres-Jimenez, New covering array numbers, Appl. Math. Comput. 353 (2019) 134-146, arXiv:1711.10040",
+lb-hk2025,,"I. Hiess and L. Kampel, Determining covering array numbers via balanced covering arrays, arXiv:2510.17596",
+lb-khks2023,,"L. Kampel, I. Hiess, I. S. Kotsireas and D. E. Simos, Balanced covering arrays: a classification of covering arrays and packing arrays via exact methods, J. Combin. Des. 31 (2023) 205-261, data https://srd.sba-research.org/data/balca",10.1002/jcd.21876

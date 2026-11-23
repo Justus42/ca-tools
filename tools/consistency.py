@@ -385,6 +385,55 @@ def check_builds_on(rows):
         problem("%s: builds_on in %d row%s: %s" % (TABLE, n, "" if n == 1 else "s", e))
 
 
+def check_lower_bounds(rows):
+    """table/lower_bounds.csv (tools/lower_bounds.py, DECISIONS F19): the header, the reference ids, no
+    bound above any row's N, every (t, v, k) of the table covered (a warning, since new rows need a
+    regeneration), and the closed steps judged per stair step of the frame, each with a VERIFIED array of
+    exactly that size."""
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__))))
+    import lower_bounds as lbm
+    path = os.path.join(os.path.dirname(TABLE), "lower_bounds.csv")
+    try:
+        header, lb = lbm.load(path)
+    except OSError as e:
+        problem("%s: cannot read (%s)" % (path, e))
+        return
+    if header != lbm.HEADER:
+        problem("%s: header is %s, expected %s" % (path, header, lbm.HEADER))
+        return
+    with open(REFERENCES, newline="", encoding="utf-8") as f:
+        ids = {r["id"] for r in csv.DictReader(f)}
+    for r in lb:
+        for rid in filter(None, r[7].split(";")):
+            if rid not in ids:
+                problem("%s: reference id %s (t=%d v=%d k=%d..%d) is not in %s"
+                        % (path, rid, r[0], r[1], r[2], r[3], REFERENCES))
+    by_tv = lbm.index(lb)
+    uncovered = set()
+    above = 0
+    for r in rows:
+        t, v, k, n = int(r["t"]), int(r["v"]), int(r["k"]), int(r["N"])
+        b = lbm.lookup(by_tv, t, v, k)
+        if b is None:
+            uncovered.add((t, v, k))
+        elif b > n:
+            above += 1
+            problem("%s: bound %d above the table at t=%d v=%d k=%d N=%d (%s)" % (path, b, t, v, k, n, r["source_id"]))
+    if uncovered:
+        warning("%s: %d (t, v, k) of the table have no bound yet; run python3 tools/lower_bounds.py"
+                % (path, len(uncovered)))
+    frame = {(int(r["t"]), int(r["v"]), int(r["k"])): int(r["N"])
+             for r in csv.DictReader(open(FRAME, newline="", encoding="utf-8"))}
+    ver = lbm.verified_sizes(TABLE)
+    closed = lbm.closed_steps(lb, FRAME, TABLE)
+    for t, v, k, n in closed:
+        if frame.get((t, v, k)) != n:
+            problem("closed step t=%d v=%d k=%d N=%d is not a stair step of %s" % (t, v, k, n, FRAME))
+        if not any(kk >= k and nn == n for kk, nn in ver.get((t, v), ())):
+            problem("closed step t=%d v=%d k=%d N=%d has no VERIFIED array of that size" % (t, v, k, n))
+    return len(closed)
+
+
 def check_disputed(rows, man):
     """A DISPUTED row (defined 2026-10-23) disputes one CITED row: it carries the
     same t, v, k, N, at most one DISPUTED row per CITED row, it is not part of the
@@ -1329,6 +1378,7 @@ def main():
     check_certificates(rows)
     check_constructions(rows, man)
     check_builds_on(rows)
+    check_lower_bounds(rows)
     check_disputed(rows, man)
     check_retracted(rows)
     check_upgrades(rows)

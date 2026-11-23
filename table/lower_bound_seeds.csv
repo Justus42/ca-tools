@@ -1,0 +1,40 @@
+t,v,k,bound,exact,reference,detail
+3,2,3,8,1,fuse-ckrs2010;lb-khks2023,CKRS 2010 tables; SBA balca data
+3,2,5,10,1,fuse-ckrs2010;lb-khks2023,"CKRS 2010 tables; SBA balca data (CAK(9;3,2)=4)"
+3,2,6,12,1,lb-khks2023,"SBA balca data (CAK(11;3,2)=5)"
+3,2,12,15,1,lb-khks2023;fuse-ckrs2010,"SBA balca data (CAK(14;3,2)=11); Nurmela 2004"
+3,2,13,16,1,lb-khks2023,"SBA balca data (CAK(15;3,2)=12)"
+3,2,15,17,1,lb-khks2023,"no CA(16;3,15,2): SBA balca data (CAK(16;3,2)=14); Izquierdo-Marquez, Torres-Jimenez 2018 as cited"
+3,2,17,18,1,lb-hk2025,"Hiess, Kampel 2025, arXiv 2510.17596, Cor. 1"
+4,2,6,21,1,lb-khks2023,"SBA balca data (CAK(20;4,2)=5)"
+4,2,7,24,1,lb-khks2023,"SBA balca data (CAK(23;4,2)=6)"
+4,2,13,32,1,lb-it2019,"Izquierdo-Marquez, Torres-Jimenez 2019, arXiv 1711.10040, section 5.1"
+4,2,14,33,0,lb-it2019,"Izquierdo-Marquez, Torres-Jimenez 2019, section 5.1: CAK(32;4,2)=13"
+4,2,18,36,1,lb-hk2025,"Hiess, Kampel 2025, Cor. 2"
+5,2,7,42,1,lb-khks2023;cube-je1989,"SBA balca data (CAK(40;5,2)=6) gives 41; Johnson-Entringer 1989 gives 42"
+5,2,8,52,1,lb-it2019,"Izquierdo-Marquez, Torres-Jimenez 2019"
+5,2,9,54,1,lb-it2019,"Izquierdo-Marquez, Torres-Jimenez 2019, section 5.3"
+5,2,10,55,0,lb-it2019,"Izquierdo-Marquez, Torres-Jimenez 2019, section 5.3 and Table 4: CAK(54;5,2)=9"
+6,2,8,85,1,cube-je1989,Johnson-Entringer 1989 (floor(2^8/3))
+6,2,9,107,0,lb-it2019,"Izquierdo-Marquez, Torres-Jimenez 2019"
+7,2,9,170,1,cube-je1989,Johnson-Entringer 1989
+2,3,5,11,1,lb-khks2023;lb-kmnnos2020,"Kokkala et al., arXiv 1901.03594, Table 2; SBA balca (CAK(10;2,3)=4)"
+2,3,6,12,1,lb-khks2023;lb-kmnnos2020,"Kokkala et al.; SBA balca (CAK(11;2,3)=5)"
+2,3,8,13,1,lb-khks2023;lb-kmnnos2020,"Kokkala et al.; SBA balca (CAK(12;2,3)=7)"
+2,3,10,14,1,lb-khks2023;lb-kmnnos2020,"Kokkala et al.; SBA balca (CAK(13;2,3)=9)"
+2,3,11,15,1,lb-kmnnos2020,"Kokkala et al. (no CA(14;2,11,3))"
+2,4,6,19,1,lb-khks2023;lb-kmnnos2020,"Kokkala et al.; SBA balca (CAK(18;2,4)=5)"
+2,4,7,21,1,lb-khks2023;lb-kmnnos2020,"Kokkala et al.; SBA balca (CAK(20;2,4)=6)"
+2,5,7,29,1,lb-khks2023;lb-kmnnos2020,"Kokkala et al.; SBA balca (CAK(28;2,5)=6)"
+2,5,8,30,0,lb-kmnnos2020,Kokkala et al. Table 2
+2,6,4,37,1,lb-khks2023;lb-kmnnos2020,"Kokkala et al.; SBA balca (CAK(36;2,6)=3)"
+2,6,5,39,1,lb-kmnnos2020,Kokkala et al.
+2,6,6,41,1,lb-kmnnos2020,Kokkala et al.
+3,3,5,33,1,lb-khks2023;ck-cck1999,"SBA balca (CAK(32;3,3)=4); Chateauneuf, Colbourn, Kreher 1999"
+3,3,7,37,0,lb-it2019,"Izquierdo-Marquez, Torres-Jimenez 2019"
+3,3,9,40,0,lb-it2019,"Izquierdo-Marquez, Torres-Jimenez 2019"
+4,3,6,87,0,lb-khks2023,"SBA balca (CAK(86;4,3)=5)"
+4,3,7,100,0,lb-it2019,"Izquierdo-Marquez, Torres-Jimenez 2019"
+5,3,7,248,0,lb-khks2023,"SBA balca (CAK(247;5,3)=6)"
+6,3,8,733,0,lb-khks2023,"SBA balca (CAK(732;6,3)=7)"
+3,4,7,68,0,lb-khks2023,"SBA balca (CAK(67;3,4)=6)"
