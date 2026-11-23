@@ -1,8 +1,8 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Derived sizes</title><style>
 :root { color-scheme: light dark; --fg:#1d1d1f; --bg:#fdfdfc; --mute:#5f6368;
-  --line:#dcdcd8; --ver:#0b6e3a; --scr:#8a5a00; --dis:#a8321e; --soft:#f2f2ee; }
+  --line:#dcdcd8; --ver:#0b6e3a; --scr:#8a5a00; --dis:#a8321e; --soft:#f2f2ee; --opt:#1f5fa8; }
 @media (prefers-color-scheme: dark) { :root { --fg:#e8e8e3; --bg:#18181a;
-  --mute:#a0a0a0; --line:#3a3a3d; --ver:#5fd08f; --scr:#e0b050; --dis:#f08a74; --soft:#232326; } }
+  --mute:#a0a0a0; --line:#3a3a3d; --ver:#5fd08f; --scr:#e0b050; --dis:#f08a74; --soft:#232326; --opt:#7fb0ef; } }
 * { box-sizing: border-box; }
 body { margin:0; background:var(--bg); color:var(--fg);
   font:16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; }
@@ -28,6 +28,7 @@ summary { cursor:pointer; }
 .lbl { color:var(--mute); font-size:.8rem; margin-right:.3rem; }
 .bo { display:block; color:var(--mute); font-size:.8rem; }
 .corr { display:block; font-size:.8rem; }
+.opt { color:var(--opt); }
 details.sub > summary { padding:.15rem 0; }
 a { color: inherit; }
 @media (max-width: 480px) { body { font-size:15px; } table { font-size:.82rem; } th, td { padding:.25rem .2rem; } }
