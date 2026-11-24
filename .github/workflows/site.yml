@@ -38,7 +38,7 @@ jobs:
       - name: Build the site from the table on main
         run: python3 tools/build_site.py --repo . --out _site
       - uses: actions/configure-pages@v6
-      - uses: actions/upload-pages-artifact@v5
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: _site
       - id: deploy
