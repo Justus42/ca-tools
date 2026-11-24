@@ -30,8 +30,9 @@ RAW_CSV = "https://raw.githubusercontent.com/chrispbsmolen/ca-tools/main/table/c
 PAGE_URL = "https://chrispbsmolen.github.io/ca-tools/"
 DOI_ALL = "10.5281/zenodo.24168008"
 PAGE_TITLE = "Covering Array Tables: best known covering arrays, by Christopher Smolen"
-PAGE_DESC = ("Best known covering array sizes for strengths 2 to 6, continuing Charles Colbourn's tables "
-             "from November 2024, with checked arrays to download and a way to submit new ones.")
+PAGE_DESC = ("Best known covering array sizes for strengths 2 to 6, and for binary arrays at strengths 7 to 10, "
+             "continuing Charles Colbourn's tables from November 2024, with checked arrays to download and a way "
+             "to submit new ones.")
 
 
 def dataset_jsonld(date, nrows, narrays):
