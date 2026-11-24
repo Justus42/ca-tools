@@ -6,8 +6,8 @@ t,v,k,best_N,smallest_array_N,proven_floor,status
 2,3,46,18,18,15,beat_best
 2,3,49,18,18,15,beat_best
 2,3,52,18,18,15,beat_best
-2,3,60,20,21,15,array_above_best
-2,3,63,20,21,15,array_above_best
+2,3,60,20,20,15,beat_best
+2,3,63,20,20,15,beat_best
 2,3,93,21,21,15,beat_best
 2,3,96,21,21,15,beat_best
 2,3,107,22,22,15,beat_best
