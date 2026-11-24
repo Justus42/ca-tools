@@ -453,7 +453,10 @@ def stair(rows_tv):
     rungs, bestk = [], (rows_tv[0]["t"] - 1 if rows_tv else 0)
     for n, k in pairs:
         if k > bestk:
-            rungs.append([n, bestk + 1, k])
+            if rungs and rungs[-1][0] == n:
+                rungs[-1][2] = k
+            else:
+                rungs.append([n, bestk + 1, k])
             bestk = k
     out = []
     for n, k0, k1 in rungs:
@@ -701,7 +704,7 @@ def render(rows, manifest, date):
         for n, k0, k1, e in steps:
             krange = str(k1) if k0 == k1 else "%d to %d" % (k0, k1)
             past = ("<span class=stamp>past k = %s, the end of the baseline for this strength and "
-                    "alphabet: this rung holds only arrays added here, and smaller arrays may be "
+                    "alphabet: at those columns this rung holds only arrays added here, and smaller arrays may be "
                     "known for some of these columns; <a href=\"derived.html\">the derived sizes "
                     "page</a> gives what published constructions yield from this table at these "
                     "widths</span>" % "{:,}".format(base_k)
