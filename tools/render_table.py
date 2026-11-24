@@ -587,7 +587,7 @@ def render(rows, manifest, date):
     verified_sha = {row_key(r) for r in rows if r["tier"] == "VERIFIED" and row_key(r)}
     rows_shown = [r for r in rows if not (r["tier"] == "SCREENED" and row_key(r) in verified_sha)]
     tiers = collections.Counter(r["tier"] for r in rows_shown)
-    mstat = collections.Counter(m["status"] for m in manifest)
+    mstat = collections.Counter(m["status_at_entry"] for m in manifest)
     # community submissions are the S7 rows that came through the submission check (their notes
     # name the submission); S7 rows entered from the literature appear in the stair-steps only
     subs = [r for r in rows_shown if r["source_id"] == "S7" and r["tier"] in ("VERIFIED", "SCREENED")

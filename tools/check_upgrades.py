@@ -807,18 +807,18 @@ def enter(entries, ctx, slug, date):
 
 
 def rewrite_manifest(path, upd):
-    """status and verify_stamp of the MANIFEST rows of upgraded arrays (screened -> the comparison
-    at upgrade), the rest of the file byte for byte"""
+    """status, status_at_entry and verify_stamp of the MANIFEST rows of upgraded arrays (screened ->
+    the comparison at upgrade), the rest of the file byte for byte"""
     lines = open(path, encoding="utf-8", newline="").read().split("\n")
     out = []
     for line in lines:
         if line and not line.startswith('"file"'):
             rec = next(csv.reader([line]))
-            if len(rec) == len(cs.MANIFEST_HEADER) and rec[6] in upd and rec[5] == "screened":
+            if len(rec) == len(cs.MANIFEST_HEADER) and rec[6] in upd and rec[11] == "screened":
                 st, stamp = upd[rec[6]]
-                rec[5], rec[9] = st, stamp
+                rec[5], rec[9], rec[11] = st, stamp, st
                 cells = [rec[0], int(rec[1]), int(rec[2]), int(rec[3]), int(rec[4])] + rec[5:10] + [
-                    int(rec[10]) if rec[10].isdigit() else ""]
+                    int(rec[10]) if rec[10].isdigit() else "", rec[11]]
                 line = cs.manifest_csv_text([cells]).rstrip("\n")
         out.append(line)
     with open(path, "w", encoding="utf-8", newline="") as f:

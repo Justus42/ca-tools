@@ -1,4 +1,4 @@
-# Conventions of the covering array table (version 1.10, November 2026)
+# Conventions of the covering array table (version 1.11, November 2026)
 
 Parts that describe files not built yet say "will" or "planned". Anything that changes what the CAs package
 reads is announced to its author before it goes live (section 5).
@@ -21,11 +21,13 @@ line in the change log at the end.
 - Counting rule: the rule that says which rows count when the table answers "what is the best known
   N at this point". Section 4.
 - Tier: the evidence class of a row (section 3). This document says "tier", never "status". Two
-  files have their own column named status with other meanings: in `table/MANIFEST.csv` it compares
-  an array with the table at entry (equals_best, exceeds_snapshot, above_snapshot, above_best,
-  screened) and is not updated when a later array beats it, in `table/EXTERNAL.csv` it is verified
+  files have their own column named status with other meanings: in `table/MANIFEST.csv` the column
+  `status_at_entry` compares an array with the table at entry (equals_best, exceeds_snapshot,
+  above_snapshot, above_best, screened; a screened array's value is rewritten by its exact check) and
+  is not updated when a later array beats it. The older column `status` there holds the same value and
+  is kept, filled as before, for programs that read it. In `table/EXTERNAL.csv` status is verified
   when a VERIFIED row carries the deposit's hash.
-  The page does not show the MANIFEST status. The column headed status in its submission tables shows
+  The page does not show the MANIFEST status at entry. The column headed status in its submission tables shows
   the row's tier (verified or screened).
 - Provenance class: the column `source_id` (S1 Colbourn snapshot, S4 NIST covering array library,
   S5 Dwyer's CA_Database, S6 data objects of the CAs package, S7 literature and submissions, S8
@@ -485,3 +487,7 @@ the frame file only.
   the headline. Section 7: the frame file gains the column first_reached at the end. The role built joins
   the planned roles of `credits.csv`. The headline of a step changes only where two tied rows have the same
   constant rows and their priority dates fall in a different order from their entry dates.
+- Version 1.11 (November 2026). Section 1: `table/MANIFEST.csv` gains the column status_at_entry at the end,
+  with the same value as status, because the name status read like the array's current standing. status
+  is kept, filled with the same value as before, for programs that read it, and the tools now read
+  status_at_entry. No value changed.

@@ -65,7 +65,7 @@ TABLE_HEADER = ["t", "v", "k", "N", "tier", "source_id", "source_detail",
 # family_sha256 (since 2026-11-02): the identity of the covering perfect hash family that gives a
 # certificate row (tools/cphf_cert.py); empty in every row this script writes
 MANIFEST_HEADER = ["file", "t", "v", "k", "N", "status", "sha256",
-                   "source_id", "source_detail", "verify_stamp", "constant_rows"]
+                   "source_id", "source_detail", "verify_stamp", "constant_rows", "status_at_entry"]
 SOURCE_ID = "S7"
 SAFE_NAME = re.compile(r"^[A-Za-z0-9][A-Za-z0-9._-]{0,200}$")
 # Size limits. GitHub refuses files over 100 MiB and warns above 50 MiB
@@ -1129,7 +1129,7 @@ def build_rows(claims, ctx):
         manifest_rows.append([name, cl["t"], cl["v"], cl["k"], cl["N"], mstatus,
                               cl["sha256"], SOURCE_ID,
                               cl["raw"]["source_detail"].strip(), stamp,
-                              cl.get("constant_rows") if cl.get("constant_rows") is not None else ""])
+                              cl.get("constant_rows") if cl.get("constant_rows") is not None else "", mstatus])
         files.append((name, cl["canon_text"]))
     return table_rows, manifest_rows, files
 

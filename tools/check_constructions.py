@@ -324,7 +324,7 @@ def apply(claims, ctx):
                        "above_table": "above_best"}[cl["comparison"]]
             mrows.append([name, cl["t"], cl["v"], cl["k"], cl["N"], mstatus, cl["sha256"], cs.SOURCE_ID,
                           cl["raw"]["source_detail"].strip(), stamp,
-                          cl["constant_rows"] if cl.get("constant_rows") is not None else ""])
+                          cl["constant_rows"] if cl.get("constant_rows") is not None else "", mstatus])
         lrows.append(["%s/%s" % (ctx["slug"], cl["raw"]["file"].strip()), cl["t"], cl["v"], cl["k"], cl["N"], cl["kind"],
                       cl["res"]["cert_sha256"], cl["sha256"],
                       "%s: %s" % (stamp.split(" (")[0], ", ".join(cl["res"]["passed"])), name or ""])

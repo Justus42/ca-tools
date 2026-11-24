@@ -77,7 +77,7 @@ HEADER = ["t", "v", "k", "N", "tier", "source_id", "source_detail", "snapshot_id
           "construction", "builds_on", "family_sha256"]
 REFERENCES = "table/references.csv"
 MANIFEST_HEADER = ["file", "t", "v", "k", "N", "status", "sha256", "source_id",
-                   "source_detail", "verify_stamp", "constant_rows"]
+                   "source_detail", "verify_stamp", "constant_rows", "status_at_entry"]
 TIERS = {"CITED", "VERIFIED", "SCREENED", "FAILED_PENDING_RECHECK", "DISPUTED", "RETRACTED"}
 # columns that state the claim and its evidence; once a row is in the table these
 # never change (append-only). The free-text columns may be corrected in place.
@@ -138,7 +138,7 @@ def stair_min(pts, k):
 
 def counts(rows, man):
     tiers = collections.Counter(r["tier"] for r in rows)
-    status = collections.Counter(m["status"] for m in man)
+    status = collections.Counter(m["status_at_entry"] for m in man)
     msha = {m["sha256"] for m in man}
     cited = collections.defaultdict(list)
     full = collections.defaultdict(list)
@@ -470,7 +470,7 @@ def check_disputed(rows, man):
         if r["tier"] == "CITED" and r["source_id"] == "S1":
             cited_tv[(r["t"], r["v"])].append(r)
     for m in man:
-        if m["status"] != "above_snapshot":
+        if m["status_at_entry"] != "above_snapshot":
             continue
         cand = [r for r in cited_tv[(m["t"], m["v"])] if int(r["k"]) >= int(m["k"])]
         best = min((int(r["N"]) for r in cand), default=None)
@@ -816,10 +816,14 @@ def check_arrays(rows, man):
         if not match:
             problem("%s: %s (sha256 %s) has no VERIFIED or SCREENED table row with the same "
                     "t, v, k, N" % (MANIFEST, m["file"], m["sha256"][:12]))
-        if m["status"] not in ("equals_best", "exceeds_snapshot", "above_snapshot", "above_best", "screened"):
-            problem("%s: %s has unknown status %r" % (MANIFEST, m["file"], m["status"]))
-        if m["status"] == "screened" and any(r["tier"] == "VERIFIED" for r in match):
-            problem("%s: %s has status screened but a VERIFIED row; the status follows the exact check"
+        sae = m.get("status_at_entry")
+        if sae not in ("equals_best", "exceeds_snapshot", "above_snapshot", "above_best", "screened"):
+            problem("%s: %s has unknown status_at_entry %r" % (MANIFEST, m["file"], sae))
+        if m.get("status") != sae:
+            problem("%s: %s has status_at_entry %r but status %r; the older column status repeats it"
+                    % (MANIFEST, m["file"], sae, m.get("status")))
+        if sae == "screened" and any(r["tier"] == "VERIFIED" for r in match):
+            problem("%s: %s has status_at_entry screened but a VERIFIED row; it follows the exact check"
                     % (MANIFEST, m["file"]))
 
 

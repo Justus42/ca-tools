@@ -86,8 +86,8 @@ def write_table(d, rows, manifest=(), withdrawn=(), derived=(), constant_rows=()
         with open(os.path.join(d, "MANIFEST.csv"), "w", newline="", encoding="utf-8") as f:
             w = csv.writer(f, lineterminator="\n")
             w.writerow(["file", "t", "v", "k", "N", "status", "sha256", "source_id", "source_detail",
-                        "verify_stamp", "constant_rows"])
-            w.writerows(manifest)
+                        "verify_stamp", "constant_rows", "status_at_entry"])
+            w.writerows([list(m) + [m[5]] if len(m) == 11 else m for m in manifest])
     if withdrawn:
         with open(os.path.join(d, "withdrawn_files.csv"), "w", newline="", encoding="utf-8") as f:
             w = csv.writer(f, lineterminator="\n")

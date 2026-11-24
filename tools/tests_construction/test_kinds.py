@@ -42,7 +42,7 @@ TABLE_HEADER = ["t", "v", "k", "N", "tier", "source_id", "source_detail", "snaps
                 "verify_stamp", "entered", "notes", "lb", "lb_evidence", "construction", "builds_on",
                 "family_sha256"]
 MANIFEST_HEADER = ["file", "t", "v", "k", "N", "status", "sha256", "source_id", "source_detail",
-                   "verify_stamp", "constant_rows"]
+                   "verify_stamp", "constant_rows", "status_at_entry"]
 
 
 # ---------------------------------------------------------------------------------------------
@@ -431,7 +431,7 @@ class MiniTable:
             f.write(text)
         self.rows.append([t, v, k, N, "VERIFIED", "S7", "test", "test", h, "ca_verify test", "2026-11-02", "credit: test",
                           "", "", "test", "", ""])
-        self.man.append([name, t, v, k, N, "equals_best", h, "S7", "test", "ca_verify test", ""])
+        self.man.append([name, t, v, k, N, "equals_best", h, "S7", "test", "ca_verify test", "", "equals_best"])
 
     def flush(self):
         with open(os.path.join(self.dir, "ca_table.csv"), "w", newline="") as f:

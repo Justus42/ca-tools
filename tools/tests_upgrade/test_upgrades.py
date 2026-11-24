@@ -380,7 +380,8 @@ def run(keep=None):
     check(new[0]["verify_stamp"].endswith("(exact, 3 shards)"), "the sharded array says so in its stamp")
     check("please" in new[1]["notes"], "the request's notes are kept")
     man = list(csv.DictReader(open(os.path.join(TD, "MANIFEST.csv"), newline="")))
-    check(all(m["status"] != "screened" for m in man if m["sha256"] in (sha1, sha2)), "MANIFEST status follows")
+    check(all(m["status_at_entry"] != "screened" and m["status"] == m["status_at_entry"] for m in man if m["sha256"] in (sha1, sha2)),
+          "MANIFEST status_at_entry and the older status follow")
     check(len(file_bytes(os.path.join(TD, "MANIFEST.csv"))) > 0 and man_before != file_bytes(os.path.join(TD, "MANIFEST.csv")),
           "MANIFEST rewritten")
     ext = list(csv.DictReader(open(os.path.join(TD, "EXTERNAL.csv"), newline="")))

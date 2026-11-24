@@ -40,7 +40,10 @@ the array files and these documents agree.
   (best known N, stair-step, verified rows). No dependencies.
 - `arrays/` - the explicit arrays in canonical form (0-based integer
   symbols, one run per line, space separated; `NA` marks a don't-care
-  entry, see below). The MANIFEST `status` column separates arrays
+  entry, see below). The MANIFEST `status_at_entry` column (added
+  2026-11-24; the older column `status` is kept with the same value
+  for programs that read it, and the tools read `status_at_entry`)
+  separates arrays
   that equal the best-known size for their parameters at entry (`equals_best`)
   from those SMALLER than the November 2024 snapshot's recorded best
   (`exceeds_snapshot`). A third status, `above_snapshot` (since
@@ -49,8 +52,9 @@ the array files and these documents agree.
   (below). An array that comes through the submission check above the
   best known size at entry is stored with status `above_best`, and one
   that was screened rather than verified in full with status
-  `screened`. The status records the comparison at entry and is not
-  updated when a smaller array is entered later, so an array entered as
+  `screened`. It records the comparison at entry (or, for a screened
+  array, at its exact check) and is not updated when a smaller array is
+  entered later, so an array entered as
   `equals_best` may since have been beaten. The current best at any
   point is the stair-step (`ca_frame.csv` and the page).
   File names are `CA_N_t_k_v.txt`, with a hash suffix
@@ -61,7 +65,8 @@ the array files and these documents agree.
   reproducible, readable by R's `read.table` and Python's `gzip` with
   nothing extra). Its MANIFEST hash is the hash of
   the uncompressed canonical text, and the self-test checks the
-  decompressed bytes against it. The MANIFEST `status` of a screened
+  decompressed bytes against it. The MANIFEST `status_at_entry` (and
+  the older `status`) of a screened
   array changes from `screened` to what the exact check found when a
   VERIFIED row is added beside its SCREENED row (since 2026-11-02 by an
   upgrade request, below under SCREENED), and `../tools/consistency.py`
@@ -160,7 +165,8 @@ the array files and these documents agree.
   the table lists these ids. Every DOI was checked against Crossref
   when it was added; the file grows as methods are added, never by
   guessing.
-- `MANIFEST.csv` - one row per array file: parameters, status,
+- `MANIFEST.csv` - one row per array file: parameters, status at entry
+  (`status`, kept as before, and `status_at_entry`, the last column),
   SHA-256 of the canonical file content, retrieval recipe,
   verification stamp, and `constant_rows` (added 2026-10-20): the
   largest number of rows of the array that can be made constant by
@@ -465,7 +471,7 @@ table: ...") once; that is the comparison the check made at entry, and
 it is not repeated. Comparisons in notes hold as of entry: "equals
 best known" in the older rows means that N equalled the November 2024
 snapshot's best known size at those parameters when the row was
-entered, and the MANIFEST status `equals_best` means equal at entry
+entered, and the MANIFEST `status_at_entry` `equals_best` means equal at entry
 (to the snapshot for those rows, to the table's best for a file from
 the submission check); a new hand-entered row that ties says "equals
 snapshot rung (snapshot best N at this k)" instead. The current best

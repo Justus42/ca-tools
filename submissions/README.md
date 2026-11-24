@@ -546,7 +546,7 @@ own hash so anyone can repeat it, and verifies each of these
 sub-arrays exhaustively at strength t. If any of them has an
 uncovered combination the array is not a covering array, and the
 claim fails with that combination as proof. If all of them pass, the
-claim is recorded with tier `SCREENED` and MANIFEST status
+claim is recorded with tier `SCREENED` and MANIFEST `status_at_entry`
 `screened`, never `VERIFIED`. A screened row is evidence, not proof,
 and it does not count as the best known value. If even the screen
 cannot finish within the budget, the claim fails, and such an array
@@ -635,7 +635,8 @@ comparison with the table at that moment. Its stamp is
 "(exact, M shards)" when it was split), or `cphfcheck <tool> <date>
 github-actions (CPHF certificate, exact)` for a family.
 
-The array's MANIFEST status or EXTERNAL status changes from `screened`
+The array's MANIFEST `status_at_entry` (and the older `status`)
+or EXTERNAL status changes from `screened`
 to what the check found, and a family is listed again in
 `../table/certificates/CERTIFICATES.csv` with its exact check. The
 SCREENED row stays.
