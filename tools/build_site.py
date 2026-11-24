@@ -220,7 +220,7 @@ table.mt td{border-bottom:1px solid var(--line);padding:7px 8px}table.mt .n{text
 .lib>div,.grid2>div,.two2>div,.arr>section,.arr>aside,.doc>section,.hero .in>div{min-width:0}
 @media (max-width:1280px){.el{min-height:96px;padding:6px 7px}.el .n{font-size:clamp(1.05rem,1.6vw,1.7rem)}.el .n small{font-size:.62rem;margin-left:2px}.el .tp{font-size:.6rem}.el .st{font-size:.62rem}.el .dt{font-size:.58rem}.el .ft{flex-direction:column;align-items:flex-start;gap:1px}}
 @media (max-width:1520px){.top nav{gap:17px}.top .in{gap:22px}}
-@media (max-width:1400px){.top .in{flex-wrap:wrap;height:auto;padding-top:10px;padding-bottom:10px;row-gap:10px}.top nav{order:6;width:100%;overflow-x:auto;gap:18px;padding-top:4px;margin-top:-4px;padding-bottom:2px}.top .sp{display:none}.top .ai{margin-left:auto}}
+@media (max-width:1310px){.top .in{flex-wrap:wrap;height:auto;padding-top:10px;padding-bottom:10px;row-gap:10px}.top nav{order:6;width:100%;overflow-x:auto;gap:18px;padding-top:4px;margin-top:-4px;padding-bottom:2px}.top .sp{display:none}.top .sbm{margin-left:auto}}
 @media (max-width:900px){
 body{overflow-x:hidden}
 .hero .in,.arr,.two,.doc,.two2,.grid2,.chk,.citebox{grid-template-columns:1fr !important}
@@ -279,7 +279,6 @@ class Site:
         h = (lambda p: "/" + p) if absolute else (lambda p: self.href(depth, p))
         root = "/" if absolute else "../" * depth
         nav = "".join('<a href="%s"%s>%s</a>' % (h(p), ' class=on' if n == active else "", n) for n, p in NAV)
-        nav += '<a class=po href="%s"%s>For AI</a>' % (h("for-ai/"), ' aria-current=page' if active == "For AI" else "")
         canon = ('<meta name="robots" content="noindex">' if path == "404.html" else
                  '<link rel="canonical" href="%s">' % (BASE + (path[:-len("index.html")] if path.endswith("index.html") else path)))
         ld = '<script type="application/ld+json">%s</script>' % jsonld if jsonld else ""
@@ -287,13 +286,13 @@ class Site:
                '<title>%s</title><meta name="description" content="%s">%s'
                '<link rel="stylesheet" href="%s"><link rel="alternate" type="text/plain" title="llms.txt" href="%s">%s</head><body><a class=skip href="#main">Skip to content</a>'
                '<header class=top><div class=in><b><a class=brand href="%s"><svg class=logo viewBox="0 0 61 22" aria-hidden="true"><rect x="1.0" y="3.0" width="8" height="8" rx="1.6" fill="#b9dcc6" style="transform:rotate(0deg);animation-name:lg0"/><rect x="11.0" y="6.0" width="8" height="8" rx="1.6" fill="#5fa77d" style="transform:rotate(14deg);animation-name:lg1"/><rect x="21.0" y="11.0" width="8" height="8" rx="1.6" fill="#1f6b45" style="transform:rotate(-22deg);animation-name:lg2"/><rect x="31.0" y="6.0" width="8" height="8" rx="1.6" fill="#5fa77d" style="transform:rotate(14deg);animation-name:lg3"/><rect x="41.0" y="3.0" width="8" height="8" rx="1.6" fill="#b9dcc6" style="transform:rotate(0deg);animation-name:lg4"/><rect x="51.0" y="11.0" width="8" height="8" rx="1.6" fill="#1f6b45" style="transform:rotate(-22deg);animation-name:lg5"/></svg><span>Covering Array Tools</span></a></b><nav>%s</nav><span class=sp></span>'
-               '<a class="ai%s" href="%s">For AI</a><a class="sbm%s" href="%s">Submit</a>'
+               '<a class="sbm%s" href="%s">Submit</a>'
                '<div class=srch><button type=button class=qb aria-label="Search" aria-expanded="false" aria-controls="q"><svg width="17" height="17" viewBox="0 0 17 17" aria-hidden="true"><circle cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M11.2 11.2l4.3 4.3" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button><input id=q type=search placeholder="Search sizes, arrays, papers, people" autocomplete=off aria-label="Search" role=combobox aria-autocomplete=list aria-controls=qr aria-expanded=false><div id=qr class=qr role=listbox aria-label="Search results"></div><span id=qn class=vh aria-live=polite></span></div></div></header><div id=main tabindex=-1>%s</div>'
-               '<div class=foot><div class=in><span><a href="%s">Source data on GitHub</a>: every array, the table files and their full history. This build: commit <span class=mono>%s</span>, %s</span>'
-               '<span>Cite: DOI <a href="https://doi.org/%s">%s</a></span><span>Data CC BY 4.0</span><span><a href="%s">About</a></span><span><a href="mailto:%s">%s</a></span></div></div>'
+               '<div class=foot><div class=in><span><a href="%s">Source data on GitHub</a>, with every array and its history. This build: commit <span class=mono>%s</span>, %s</span>'
+               '<span>Cite: DOI <a href="https://doi.org/%s">%s</a></span><span>Data CC BY 4.0</span><span><a href="%s">About</a></span><span><a href="%s">For AI</a></span><span><a href="mailto:%s">%s</a></span></div></div>'
                '<script src="%s" data-root="%s" data-preview="%s" defer></script>%s%s</body></html>') % (
-            E(title), E(desc), canon, h("assets/site.css"), h("llms.txt"), ld, h(""), nav, " on" if active == "For AI" else "", h("for-ai/"), " on" if active == "Submit" else "", h("submit/"), body,
-            REPO_URL, self.commit, self.date, DOI, DOI, h("about/"), CONTACT, CONTACT, h("assets/search.js"), root, "1" if self.preview else "", script, "" if self.preview else COUNTER)
+            E(title), E(desc), canon, h("assets/site.css"), h("llms.txt"), ld, h(""), nav, " on" if active == "Submit" else "", h("submit/"), body,
+            REPO_URL, self.commit, self.date, DOI, DOI, h("about/"), h("for-ai/"), CONTACT, CONTACT, h("assets/search.js"), root, "1" if self.preview else "", script, "" if self.preview else COUNTER)
         self.write(path, doc)
 
 
