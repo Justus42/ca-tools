@@ -294,11 +294,13 @@ var h='',n=0;items=[];['x','c','u','a','p'].forEach(function(g){var r=res[g].sor
 r.slice(0,6).forEach(function(x){var e=x[1],u=url(e[3])+(e[5]?'#k='+e[5]:'');h+='<a href="'+u+'" data-i='+n+' id=qo'+n+' role=option aria-selected=false><b>'+e[1]+'</b><span>'+e[2]+'</span></a>';items.push(u);n++})});
 box.innerHTML=n?h:'<div class=none>Nothing found for '+q.value.replace(/</g,'&lt;')+'</div>';box.classList.add('on');q.setAttribute('aria-expanded','true');act=n?0:-1;mark();document.getElementById('qn').textContent=n?n+(n==1?' result':' results'):'Nothing found'}
 function mark(){var a=box.querySelectorAll('a');for(var i=0;i<a.length;i++){a[i].classList.toggle('act',i==act);a[i].setAttribute('aria-selected',i==act?'true':'false')}if(act>=0&&a[act])q.setAttribute('aria-activedescendant',a[act].id);else q.removeAttribute('aria-activedescendant')}
-q.addEventListener('focus',function(){load(function(){})});q.addEventListener('input',function(){load(run)});
+var st=null,sent='';function track(){var t=q.value.trim().toLowerCase().replace(/\s+/g,' ').slice(0,80);if(t.length<2||t==sent||!window.goatcounter||!goatcounter.count)return;sent=t;goatcounter.count({path:'search: '+t,title:document.getElementById('qn').textContent,event:true})}
+q.addEventListener('focus',function(){load(function(){})});q.addEventListener('input',function(){load(run);clearTimeout(st);st=setTimeout(track,1500)});q.addEventListener('blur',function(){clearTimeout(st);track()});
 q.addEventListener('keydown',function(ev){if(ev.key=='ArrowDown'){act=Math.min(act+1,items.length-1);mark();ev.preventDefault()}else if(ev.key=='ArrowUp'){act=Math.max(act-1,0);mark();ev.preventDefault()}
-else if(ev.key=='Enter'){if(act>=0&&items[act])location.href=items[act];ev.preventDefault()}else if(ev.key=='Escape'){close();q.blur()}});
+else if(ev.key=='Enter'){clearTimeout(st);track();if(act>=0&&items[act])location.href=items[act];ev.preventDefault()}else if(ev.key=='Escape'){close();q.blur()}});
 document.addEventListener('keydown',function(ev){if(ev.key=='/'&&document.activeElement!==q&&!/input|textarea/i.test(document.activeElement.tagName)){q.focus();ev.preventDefault()}});
 document.addEventListener('click',function(ev){if(!ev.target.closest('.srch'))close()})})();
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href]');if(!a||!window.goatcounter||!goatcounter.count)return;var h=a.href,m=h.match(/^https:\/\/(raw\.githubusercontent\.com|zenodo\.org\/records)\/.*?([^\/?#]+)(?:[?#].*)?$/)||h.match(/^[^?#]*?([^\/?#]+\.(?:csv|json|txt|gz|zip|rda|R))(?:[?#].*)?$/);if(!m)return;goatcounter.count({path:'download: '+(m[2]||(a.host==location.host?a.pathname.replace(/^\//,''):m[1])),title:location.pathname,event:true})});
 (function(){var w=document.querySelector('.srch'),bt=w&&w.querySelector('.qb'),q=document.getElementById('q'),r=document.getElementById('qr');if(!bt||!q)return;var pin=false,hov=false;
 function op(){w.classList.add('open');bt.setAttribute('aria-expanded','true')}
 function cl(){pin=false;w.classList.remove('open','pin');bt.setAttribute('aria-expanded','false');if(r)r.classList.remove('on')}
@@ -962,7 +964,7 @@ def main():
              'The literature is checked every month. Each submission is listed on <a href="%s">Updates</a>.</p></section>'
              '<section><h2>Licence and citation</h2><p>The data compiled here is <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> and the code is MIT. Data from other sources keeps its own terms, and each row names its source. '
              'Cite the table with <a href="https://doi.org/%s">doi:%s</a>, and cite the authors of the rows you use.</p></section>'
-             '<section><h2>Contact</h2><p><a href="mailto:%s">%s</a> for corrections, missing papers or anything else. A problem with a row can also be raised as a <a href="%s/issues">GitHub issue</a>.</p></section>'
+             '<section><h2>Contact</h2><p><a href="mailto:%s">%s</a> for corrections, missing papers or anything else. A problem with a row can also be raised as a <a href="%s/issues">GitHub issue</a>. The site counts page views, downloads and searches with <a href="https://www.goatcounter.com/">GoatCounter</a>, which sets no cookies and keeps nothing about who you are.</p></section>'
              '<section><h2>Credit</h2><p>Arrays come from many builders and papers. Each row names who built it or where it comes from, and <a href="%s">Contributors</a> gathers everyone named, with what each contributed.</p></section>'
              '</div></main>') % (datetime.date.fromisoformat(SNAPSHOT_DATE).strftime("%-d %B %Y"), site.href(1, "changelog/"), DOI, DOI, CONTACT, CONTACT, REPO_URL, site.href(1, "contributors/"))
     site.page("about/index.html", "About Covering Array Tools", "Who keeps the covering array table, how arrays are checked, how it changes, and how to cite it.", about, "About")
