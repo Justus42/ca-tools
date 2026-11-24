@@ -68,7 +68,7 @@ a{color:inherit}.mute{color:var(--mute)}.num{font-variant-numeric:tabular-nums}.
 table.lg{border-collapse:collapse;width:100%;font-size:.88rem}
 table.lg th{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mute);font-weight:600;text-align:left;border-bottom:1px solid var(--fg);padding:8px 10px;position:sticky;top:0;background:var(--bg)}
 table.lg td{border-bottom:1px solid var(--line);padding:9px 10px;vertical-align:top}table.lg td.n,table.lg th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-table.lg td.big{font-weight:800;font-size:1rem}table.lg td.a{white-space:nowrap}table.lg td.rb{min-width:9em}table.lg a.ck{color:inherit;text-decoration:underline dotted;text-underline-offset:3px}table.lg a.ck{display:inline-block;padding:4px 0}table.lg td.rb .rbi{display:inline-block;padding:4px 0}table.lg td.a a{display:inline-block;padding:4px 0}table.lg tr.closed td{background:#eef6f0}table.lg tr:target td{background:#fff6d6}
+table.lg td.big{font-weight:800;font-size:1rem}table.lg td.a{white-space:nowrap}table.lg td.rb{min-width:9em}table.lg tr[hidden]{display:none}table.lg a.ck{color:inherit;text-decoration:underline dotted;text-underline-offset:3px}table.lg a.ck{display:inline-block;padding:4px 0}table.lg td.rb .rbi{display:inline-block;padding:4px 0}table.lg td.a a{display:inline-block;padding:4px 0}table.lg tr.closed td{background:#eef6f0}table.lg tr:target td{background:#fff6d6}
 .sub{display:block;color:var(--mute);font-size:.78rem}
 .lib{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px 24px}
 .pg{background:#fff;aspect-ratio:1/1.3;box-shadow:0 1px 2px rgba(0,0,0,.08),0 6px 16px rgba(0,0,0,.07);padding:26px 22px 18px;display:flex;flex-direction:column;font-family:@SERIF@;text-decoration:none;color:inherit}
@@ -207,6 +207,12 @@ a.ct:hover,a.ct:focus-visible{background:#8fc5a4}a.ct b{font-size:1.25rem}a.ct s
 .msec{scroll-margin-top:16px}
 @media (max-width:1100px){.hub{grid-template-columns:repeat(3,minmax(0,1fr))}}
 @media (max-width:700px){.hub{grid-template-columns:repeat(2,minmax(0,1fr))}.hub a{padding:14px}.hub span:not(.big){display:none}.hub em{display:none}}
+.sztop{display:grid;grid-template-columns:1fr 560px;gap:24px 48px;align-items:end;margin:0 0 8px}.szf{margin:0}.szh h1{font-size:2.4rem;margin:4px 0 8px}.szh p{max-width:46rem}.szg{display:grid;grid-template-columns:3fr 2fr;gap:20px 48px;margin-top:22px}
+dl.szd{display:grid;grid-template-columns:11em 1fr;gap:0;margin:0}dl.szd dt{color:var(--mute);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;padding:10px 0;border-bottom:1px solid var(--line)}dl.szd dd{margin:0;padding:10px 0;border-bottom:1px solid var(--line);line-height:1.5}
+.szg h2{font-size:1rem;margin:0 0 10px}.nb{display:grid;grid-template-columns:1fr 1fr;gap:10px}.nb a{display:flex;flex-direction:column;gap:2px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;text-decoration:none;color:var(--fg)}
+.nb a:hover,.nb a:focus-visible{border-color:#1f6b45}.nb span{font-size:.75rem;color:var(--mute);letter-spacing:.06em;text-transform:uppercase}.nb b{font-size:.98rem}.nb i{font-style:normal;color:#1f6b45;font-weight:700}
+@media (max-width:1100px){.sztop{grid-template-columns:1fr}}
+@media (max-width:760px){.szg{grid-template-columns:1fr}dl.szd{grid-template-columns:1fr}dl.szd dt{border:0;padding-bottom:0}}
 @media (prefers-reduced-motion:reduce){*,*:before,*:after{transition:none !important;animation:none !important;scroll-behavior:auto !important}.el:hover,.pg:hover,.pc:hover,.mi:hover,.hub a:hover,.fl4:hover,.ftl:hover,.lv div:hover,.statc div:hover,.bg button:hover{transform:none !important}.tumble i{transform:none !important}}
 .top .in{height:64px;gap:26px}.top b,.top b a,.top nav a,.top .ai,.top .sbm,.srch input{font-size:16px;line-height:1}
 .top b a{font-size:18px;font-weight:700}.top nav{gap:22px}.brand{gap:12px}.logo{width:66px;height:24px}
@@ -312,7 +318,7 @@ function norm(x){return x.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
 function url(p){if(pv&&(p===''||p.slice(-1)=='/'))p+='index.html';return root+p}
 var G={x:'Size',c:'Cells',a:'Arrays',p:'Papers',u:'People',m:'Methods'};
 function close(){box.classList.remove('on');q.setAttribute('aria-expanded','false');q.removeAttribute('aria-activedescendant')}
-function sizes(raw,res){var m=raw.match(/^\s*can\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*$/i),c,e,i,t,k,vv,n;if(m){t=+m[1];k=+m[2];vv=+m[3]}else{m=raw.match(/^\s*ca\s*\(\s*(\d+)\s*;\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*$/i);if(!m)return false;n=+m[1];t=+m[2];k=+m[3];vv=+m[4];for(i=0;i<SI.length;i++){e=SI[i];if(e[0]=='a'&&e[3].indexOf('ca/'+n+'/'+t+'/'+k+'/'+vv+'/')==0)res.x.push([0,e])}}c='t'+t+'/v'+vv+'/';for(i=0;i<SI.length;i++){e=SI[i];if(e[0]=='c'&&e[3]==c){res.x.push([1,['x','CAN('+t+', '+k+', '+vv+')','the row for k = '+k+' on the t='+t+' v='+vv+' page',c,'',k]]);break}}return res.x.length>0}
+function sizes(raw,res){var m=raw.match(/^\s*can\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*$/i),c,e,i,t,k,vv,n;if(m){t=+m[1];k=+m[2];vv=+m[3]}else{m=raw.match(/^\s*ca\s*\(\s*(\d+)\s*;\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*$/i);if(!m)return false;n=+m[1];t=+m[2];k=+m[3];vv=+m[4];for(i=0;i<SI.length;i++){e=SI[i];if(e[0]=='a'&&e[3].indexOf('ca/'+n+'/'+t+'/'+k+'/'+vv+'/')==0)res.x.push([0,e])}}c='t'+t+'/v'+vv+'/';for(i=0;i<SI.length;i++){e=SI[i];if(e[0]=='c'&&e[3]==c){res.x.push([1,['x','CAN('+t+', '+k+', '+vv+')','best known size, lower bound, credit and array','size/?t='+t+'&k='+k+'&v='+vv,'',0]]);break}}return res.x.length>0}
 function run(){var v=norm(q.value);if(!v){close();return}var tk=v.split(' '),res={x:[],c:[],a:[],p:[],u:[],m:[]};if(!sizes(q.value,res)){
 for(var i=0;i<SI.length;i++){var e=SI[i],k=e[4],ok=true;for(var j=0;j<tk.length;j++){var t=tk[j];if(/^\d+$/.test(t)){if((' '+k+' ').indexOf(' '+t+' ')<0){ok=false;break}}else if(k.indexOf(t)<0){ok=false;break}}
 if(ok){var sc=(k.indexOf(v)>=0?0:1)*1000+e[1].length;res[e[0]].push([sc,e])}}}
@@ -428,7 +434,10 @@ def year_of(r):
 
 
 KHASH = ("<script>(function(){var m=location.hash.match(/^#k=(\\d+)$/);if(!m)return;var k=+m[1],rs=document.querySelectorAll('table.lg tbody tr[id^=k]');"
-         "for(var i=0;i<rs.length;i++){var p=rs[i].cells[0].textContent.replace(/,/g,'').split(' to '),a=+p[0],b=+(p[1]||p[0]);if(k>=a&&k<=b){rs[i].classList.add('hit');rs[i].scrollIntoView({block:'center'});break}}})()</script>")
+         "for(var i=0;i<rs.length;i++){var p=rs[i].cells[0].textContent.replace(/,/g,'').split(' to '),a=+p[0],b=+(p[1]||p[0]);if(k>=a&&k<=b){rs[i].classList.add('hit');rs[i].scrollIntoView({block:'center'});break}}})()</script>"
+         "<script>(function(){var bs=document.querySelectorAll('.chips button'),rs=document.querySelectorAll('table.lg tbody tr'),n=document.getElementById('fn');if(!n)return;"
+         "bs.forEach(function(b){b.addEventListener('click',function(){var f=b.getAttribute('data-f'),c=0;bs.forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});"
+         "rs.forEach(function(r){var on=(' '+r.getAttribute('data-f')+' ').indexOf(' '+f+' ')>=0;r.hidden=!on;if(on)c++});n.textContent=f=='all'?'':c+(c==1?' size':' sizes')})})})()</script>")
 COUNTER = '<script data-goatcounter="https://coveringarraytools.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>'
 SOURCE_NAME = {"S1": "Colbourn's tables", "S4": "NIST covering array library", "S5": "Dwyer CA_Database", "S6": "CAs R package data"}
 
@@ -696,7 +705,44 @@ def main():
               "if(!r)return say(a,'The table covers k up to '+fmt(c.s[4])+' for t = '+t+' and v = '+v+'.');"
               "var f=null;for(var j=0;j<c.f.length;j++){if(c.f[j][0]<=k&&k<=c.f[j][1]){f=c.f[j][2]}}"
               "var op=r[2]&&k>=r[2];if(op)f=r[1];a.innerHTML='CAN('+t+', '+fmt(k)+', '+v+') '+(op?'= ':'&le; ')+'<b>'+fmt(r[1])+'</b> '+(op?'<span class=\"tag opt\">optimal</span>':(r[3]?'<span class=\"tag ver\">verified</span>':'<span class=\"tag lit\">cited</span>'))"
-              "+'<br><span class=mute>'+(f?'Lower bound '+fmt(f)+'. ':'')+'</span><a href=\"'+c.p+'#k'+r[0]+'\">Open</a>';flash(a);return false}</script>") % json.dumps(look, separators=(",", ":"))
+              "+'<br><span class=mute>'+(f?'Lower bound '+fmt(f)+'. ':'')+'</span><a href=\"size/?t='+t+'&k='+k+'&v='+v+'\">Open this size</a>';flash(a);return false}</script>") % json.dumps(look, separators=(",", ":"))
+    lbmap = {key: val["f"] for key, val in look.items()}
+    site.write("assets/lb.json", json.dumps(lbmap, separators=(",", ":")), False)
+    sjs = r"""<script>(function(){var R='../',P=new URLSearchParams(location.search),t=+P.get('t'),k=+P.get('k'),v=+P.get('v'),out=document.getElementById('sz'),lb=null;
+['st','sk','sv'].forEach(function(id,i){var x=[t,k,v][i];if(x)document.getElementById(id).value=x});
+function F(n){return n==null?'':(+n).toLocaleString('en-US')}
+function E(s){return String(s==null?'':s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function U(a,b,c){return '?t='+a+'&k='+b+'&v='+c}
+function J(u){return fetch(R+u).then(function(r){if(!r.ok)throw 0;return r.json()})}
+function rung(d,kk){for(var i=0;i<d.rungs.length;i++){var x=d.rungs[i];if(x.k_from<=kk&&kk<=x.k_to)return x}return null}
+function floorAt(tt,vv,kk,x){var f=lb&&lb[tt+'-'+vv],b=null;if(f)for(var i=0;i<f.length;i++)if(f[i][0]<=kk&&kk<=f[i][1])b=f[i][2];var a=x&&x.floor;return b!=null&&(a==null||b>=a)?[b,1]:[a,0]}
+function say(h){out.innerHTML='<p class=mute>'+h+'</p>'}
+if(!t||!k||!v){say('Enter t, k and v above, then Find.');return}
+if(k<t){say('k must be at least t: an array of strength '+t+' needs at least '+t+' columns.');return}
+document.title='CAN('+t+', '+F(k)+', '+v+'): best known covering array size';
+J('assets/lb.json').catch(function(){return null}).then(function(l){lb=l;return J('t'+t+'/v'+v+'.json')}).then(function(d){
+var x=rung(d,k);if(!x){say('The table has t = '+t+' and v = '+v+' for k up to '+F(d.rungs[d.rungs.length-1].k_to)+'. <a href="'+R+'t'+t+'/v'+v+'/">Open the table for t='+t+' v='+v+'</a>.');return}
+var fl=floorAt(t,v,k,x),op=x.optimal_from&&k>=x.optimal_from,gap=fl[0]!=null?x.N-fl[0]:null;
+var tag=op?'<span class="tag opt">optimal</span>':(x.status=='cited'?'<span class="tag lit">cited</span>':'<span class="tag ver">verified</span>');
+var bo=(x.builds_on||[]).map(function(id,i){return '<a href="'+R+'library/'+id+'/">'+E((x.builds_on_names||[])[i]||id)+'</a>'}).join(', ');
+var arr=x.array_page?'<a href="'+x.array_page+'">CA('+F(x.N)+'; '+t+', '+F(x.k_to)+', '+v+')</a>'+(x.k_to>k?' <span class=mute>(take any '+F(k)+' of its columns)</span>':''):(x.family?'<a href="'+R+x.family_page+'">'+E(x.family)+'</a> <span class=mute>(family on file, expands to the array)</span>':'<span class=mute>none on file</span>');
+var h='<div class=szh><div><p class=crumb><a href="'+R+'t'+t+'/v'+v+'/">t='+t+' v='+v+'</a> / k = '+F(k)+'</p><h1>CAN('+t+', '+F(k)+', '+v+') '+(op?'=':'&le;')+' '+F(x.N)+'</h1>'
++'<p>'+tag+' The smallest known covering array of strength '+t+' on '+F(k)+' columns with '+v+' symbols has '+F(x.N)+' rows.</p></div></div>'
++'<div class=szg><dl class=szd><dt>best known size</dt><dd>'+F(x.N)+' rows, for every k from '+F(x.k_from)+' to '+F(x.k_to)+'</dd>'
++'<dt>lower bound</dt><dd>'+(fl[0]!=null?(fl[1]?'':'at least ')+F(fl[0])+(gap!=null?', gap '+F(gap):''):'not on record')+'</dd>'
++'<dt>first reached by</dt><dd>'+E(x.first_reached_by||'')+'</dd><dt>construction</dt><dd>'+E(x.construction||'')+(bo?'<br><span class=mute>builds on</span> '+bo:'')+'</dd>'
++'<dt>array</dt><dd>'+arr+(x.array_by?'<br><span class=mute>'+E(x.array_by)+'</span>':'')+'</dd></dl>'
++'<div><h2>Neighbouring sizes</h2><div class=nb id=nb></div><p class=mute style="font-size:.85rem;margin-top:14px"><a href="'+R+'t'+t+'/v'+v+'/#k'+x.k_to+'">See this size in the table</a></p></div></div>';
+var cut=h.indexOf('<div class=szg>');document.getElementById('szhead').innerHTML=h.slice(0,cut);out.innerHTML=h.slice(cut);
+var nb=[['k - 1',t,k-1,v],['k + 1',t,k+1,v],['t - 1',t-1,k,v],['t + 1',t+1,k,v],['v - 1',t,k,v-1],['v + 1',t,k,v+1]].filter(function(n){return n[1]>=2&&n[3]>=2&&n[2]>=n[1]});
+var box=document.getElementById('nb');box.innerHTML=nb.map(function(n,i){return '<a id=nb'+i+' href="'+U(n[1],n[2],n[3])+'"><span>'+n[0]+'</span><b>CAN('+n[1]+', '+F(n[2])+', '+n[3]+')</b><i>&nbsp;</i></a>'}).join('');
+nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=rung(dd,n[2]);document.querySelector('#nb'+i+' i').textContent=y?'≤ '+F(y.N):'not in the table'}).catch(function(){document.querySelector('#nb'+i+' i').textContent='not in the table'})})
+}).catch(function(){say('The table has no entries for t = '+t+' and v = '+v+'.')})})()</script>"""
+    sbody = ('<main class=wrapw><div class=sztop><div id=szhead></div><form class="look szf" action="./" method=get><h2>Look up a size</h2><div class=lf><span><label for=st>strength t</label><input id=st name=t inputmode=numeric></span>'
+             '<span><label for=sk>columns k</label><input id=sk name=k inputmode=numeric></span><span><label for=sv>symbols v</label><input id=sv name=v inputmode=numeric></span><button>Find</button></div></form></div>'
+             '<div id=sz aria-live=polite></div></main>')
+    site.page("size/index.html", "Look up a covering array size CAN(t, k, v)", "The best known size, lower bound, credit and array for any strength t, columns k and symbols v in the covering array table.", sbody, "Table", None, sjs)
+
     site.page("index.html", "Covering Array Tools: best known covering arrays, with evidence",
               "Best known covering array sizes CA(N; t, k, v) with proven lower bounds, credit, construction and checked arrays to download.",
               home, "Table", jsonld, script)
@@ -739,9 +785,9 @@ def main():
             elif cf:
                 arr = '<a href="%s">%s</a><span class=sub>family on file</span>%s' % (
                     h("cphf/t%d/q%d/" % (cf["t"], cf["q"])), E(cf["family"]), ('<span class=sub>built by %s</span>' % E(short_credit(credit_or_source(R, x["cert_row"])))) if R.credit_of(x["cert_row"]) else "")
-            trs.append('<tr id="k%d" class="%s"><td class=n>%s</td><td class="n big">%s</td><td class=n>%s</td><td class=n>%s</td><td>%s</td>'
+            trs.append('<tr id="k%d" class="%s" data-f="%s"><td class=n>%s</td><td class="n big">%s</td><td class=n>%s</td><td class=n>%s</td><td>%s</td>'
                        '<td class=rb>%s</td><td>%s%s</td><td class=a>%s</td></tr>' % (
-                           x["k1"], "closed" if x["closed"] else "", kr, format(x["N"], ","), format(x["floor"], ",") if x["floor"] is not None else "",
+                           x["k1"], "closed" if x["closed"] else "", " ".join(["all"] + (["arr"] if (x["sha"] or x["cert"]) else []) + (["ver"] if x["verified"] else []) + (["opt"] if x["opt_from"] is not None else [])), kr, format(x["N"], ","), format(x["floor"], ",") if x["floor"] is not None else "",
                            (format(gap, ",") if gap is not None else ""), status, rbh,
                            con_h, ('<span class=sub>builds on %s</span>' % bo) if bo else "", arr))
         body = ('<div class=pageh><div class=in><div><p class=crumb><a href="%s">Table</a> / t=%d v=%d</p><h1>t=%d v=%d</h1>'
@@ -750,7 +796,8 @@ def main():
                 '<div class=stats><div><b class=num>%d</b><span>sizes</span></div><div><b class=num>%d</b><span>verified</span></div>'
                 '<div><b class=num>%d</b><span>optimal</span></div><div><b class=num>%d</b><span><a href="%s">new since the first release</a></span></div>'
                 '<div><b class=num>%s</b><span>last change</span></div></div>'
-                '<main class=wrapw><table class=lg><thead><tr><th class=n>k</th><th class=n>best N</th><th class=n>lower bound</th><th class=n>gap</th><th>status</th>'
+                '<main class=wrapw><div class=chips role=group aria-label="Show"><span class=l>Show</span><button type=button data-f=all aria-pressed=true>All sizes</button><button type=button data-f=arr aria-pressed=false>With an array on file</button><button type=button data-f=ver aria-pressed=false>Verified</button><button type=button data-f=opt aria-pressed=false>Optimal</button><span class=mute id=fn aria-live=polite></span></div>'
+                '<table class=lg><thead><tr><th class=n>k</th><th class=n>best N</th><th class=n>lower bound</th><th class=n>gap</th><th>status</th>'
                 '<th>first reached by</th><th>construction</th><th>array</th></tr></thead><tbody>%s</tbody></table></main>') % (
             h(""), t, v, t, v, t, v, format(c["kmax"], ","), h("t%d/v%d.json" % (t, v)), h("t%d/v%d.csv" % (t, v)), DOI,
             len(c["rungs"]), c["nver"], c["nopt"], c["nnew"], h("learn/") + "#new-since-the-first-release", c["last"], "".join(trs))
@@ -769,7 +816,10 @@ def main():
                      status="optimal" if x["closed"] else ("verified" if x["verified"] else "cited"),
                      credit=x["credit"], construction=x["construction"], builds_on=x["builds_on"], array_sha256=x["sha"],
                      array_page=(BASE + array_path[x["sha"]]) if x["sha"] else "",
-                     first_reached_by=(lambda rb: rb[0] or ", ".join(R.ref_label(i) for i in rb[1]))(reached_by(R, x["first"]))) for x in c["rungs"]]
+                     first_reached_by=(lambda rb: rb[0] or ", ".join(R.ref_label(i) for i in rb[1]))(reached_by(R, x["first"])),
+                     builds_on_names=[R.ref_label(i) for i in x["builds_on"]],
+                     array_by=(("built by " if R.credit_of(x["row"]) else "from ") + short_credit(x["credit"])) if x["sha"] else ((("built by " + short_credit(credit_or_source(R, x["cert_row"]))) if R.credit_of(x["cert_row"]) else "") if x["cert"] else ""),
+                     family=x["cert"]["family"] if x["cert"] else "", family_page=("cphf/t%d/q%d/" % (x["cert"]["t"], x["cert"]["q"])) if x["cert"] else "") for x in c["rungs"]]
         site.write("t%d/v%d.json" % (t, v), json.dumps(dict(t=t, v=v, source=REPO_URL, doi=DOI, rungs=recs), ensure_ascii=False, indent=1), False)
         with open(os.path.join(a.out, "t%d/v%d.csv" % (t, v)), "w", newline="", encoding="utf-8") as f:
             w = csv.writer(f)
