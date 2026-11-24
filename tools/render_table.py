@@ -432,6 +432,29 @@ def floor_at(t, v, k):
     return None
 
 
+def optimal_from(t, v, k0, k1, n):
+    """the smallest k in k0..k1 whose proven floor is n (the floor does not decrease with k)"""
+    import lower_bounds
+    lo, hi = k0, k1
+    while lo < hi:
+        m = (lo + hi) // 2
+        if lower_bounds.lower_bound(t, m, v)[0] >= n:
+            hi = m
+        else:
+            lo = m + 1
+    return lo
+
+
+def optimal_html(t, v, k0, k1, n):
+    if (t, v, k1, n) not in LB_CLOSED:
+        return ""
+    kc = optimal_from(t, v, k0, k1, n)
+    if kc == k0:
+        return "<span class=\"tag opt\">optimal</span>"
+    where = str(k1) if kc == k1 else "%d to %d" % (kc, k1)
+    return "<span class=\"tag opt\">optimal at k = %s</span>" % where
+
+
 def floor_html(r):
     links = []
     for rid in filter(None, r[7].split(";")):
@@ -678,7 +701,8 @@ def render(rows, manifest, date):
              "the column range it serves, the best known N, and its evidence.</p>")
     H.append("<p class=\"mute\">Proven floor is the largest lower bound on N that follows from published "
              "theorems at the last k of the rung, and gap is N minus that floor. A rung marked optimal has a "
-             "gap of 0 and an array of that size verified here. Each floor names the theorem and the paper "
+             "gap of 0 and an array of that size verified here; when the floor reaches N only at the wider "
+             "columns of the rung, the tag says at which k. Each floor names the theorem and the paper "
              "behind it, and the full list is <a href=\"%s/blob/main/table/lower_bounds.csv\">"
              "table/lower_bounds.csv</a>. Tables with both bounds were published for smaller ranges in 2010, "
              "2011 and 2020 (Colbourn, Keri, Rivas Soriano and Schlage-Puchta, Lawrence et al., Kokkala et al.). "
@@ -710,7 +734,7 @@ def render(rows, manifest, date):
                     "widths</span>" % "{:,}".format(base_k)
                     if base_k and k1 > base_k else "")
             fl = floor_at(t, v, k1)
-            opt = "<span class=\"tag opt\">optimal</span>" if (t, v, k1, n) in LB_CLOSED else ""
+            opt = optimal_html(t, v, k0, k1, n)
             H.append("<tr><td class=n>%s</td><td class=n>%d</td><td class=n>%s</td><td class=n>%s</td>"
                      "<td class=ev>%s%s%s%s%s</td></tr>"
                      % (krange, n, fl[4] if fl else "", n - fl[4] if fl else "", opt, evidence_html(e),
@@ -792,6 +816,7 @@ def main():
     lp = os.path.join(a.table_dir, "lower_bounds.csv")
     if os.path.exists(lp):
         import lower_bounds
+        sys.setrecursionlimit(100000)
         _, lb = lower_bounds.load(lp)
         for r in lb:
             LB.setdefault((r[0], r[1]), []).append(r)
