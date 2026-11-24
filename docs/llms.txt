@@ -1,0 +1,33 @@
+# ca-tools: a maintained table of covering arrays
+
+> An open table of the best known sizes of covering arrays CA(N; t, k, v), with checked arrays, proven lower bounds, and the tools that verify them. Anyone can submit an array by pull request. Every submission is checked exactly and credited to the submitter on its row.
+
+The table covers strengths 2 to 6, at most 25 symbols and at most 100,000 columns. Each row gives t, v, k, the size N, its tier (VERIFIED with a stored, checked array, or CITED from the literature with no array here), the source and the credit. Proven lower bounds are kept per (t, v) and k range, each with the theorem that proves it.
+
+## Open targets
+
+- [wanted.csv](https://raw.githubusercontent.com/chrispbsmolen/ca-tools/main/table/wanted.csv): every (t, v, k) that is still open, regenerated on every merge. Columns: best_N (best known size), smallest_array_N (smallest checked array in the table, empty if none), proven_floor, status. status is no_array (no checked array at any size), array_above_best (the best size has no array here, so an array at best_N or smaller is wanted) or beat_best (an array exists at the best size, and a smaller one would be a new record).
+- [Wanted: arrays at seven published sizes](https://github.com/chrispbsmolen/ca-tools/issues/85)
+- [Wanted: arrays for the sizes the table can only cite](https://github.com/chrispbsmolen/ca-tools/issues/86)
+
+## How to submit
+
+- [submissions/README.md](https://github.com/chrispbsmolen/ca-tools/blob/main/submissions/README.md): the file format, claims.csv, HOW.md and the rules. Open a pull request that adds a folder under submissions/. The check runs on the pull request.
+- An array that ties the best size enters as VERIFIED with the submitter's name. A smaller one becomes the new best known size. A larger checked array is recorded as verified but is not a record.
+- Arrays withdrawn from the table cannot be submitted or used as a start or an ingredient. The check compares every submission against them.
+- The table takes arrays and certificates, not code.
+
+## Data
+
+- [table/ca_table.csv](https://raw.githubusercontent.com/chrispbsmolen/ca-tools/main/table/ca_table.csv): every row of the table.
+- [table/lower_bounds.csv](https://raw.githubusercontent.com/chrispbsmolen/ca-tools/main/table/lower_bounds.csv): proven lower bounds with theorem and reference.
+- [table/arrays/](https://github.com/chrispbsmolen/ca-tools/tree/main/table/arrays): the stored arrays, one per file, whitespace-separated symbols, one row per line.
+- [Table page](https://chrispbsmolen.github.io/ca-tools/)
+
+## Checking an array
+
+- [ca_verify.c](https://github.com/chrispbsmolen/ca-tools/blob/main/ca_verify.c) and [ca_verify.py](https://github.com/chrispbsmolen/ca-tools/blob/main/ca_verify.py): exact checkers. Every set of t columns must contain every t-tuple of symbols.
+
+## Licence and citation
+
+The table data is under CC BY 4.0 and the code under the MIT licence. Cite the table as C. Smolen, ca-tools: a maintained table of covering arrays, doi:10.5281/zenodo.24168008, and cite the authors of the rows you use.

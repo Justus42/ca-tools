@@ -393,6 +393,7 @@ jobs:
         run: |
           python3 tools/render_table.py --table-dir table --out docs/index.html --date "$(date -u +%F)"
           python3 tools/render_derived.py --table-dir table --out docs/derived.html --date "$(date -u +%F)"
+          python3 tools/wanted.py --table-dir table --out table/wanted.csv
       - name: Check (consistency and self-test)
         run: |
           if [ -n "$BEFORE" ] && git cat-file -e "$BEFORE^{commit}" 2>/dev/null; then
@@ -403,7 +404,7 @@ jobs:
           python3 tools/check_submission.py --selftest --table-dir table > /dev/null
       - name: Commit what changed
         run: |
-          git add docs/index.html docs/derived.html table/lower_bounds.csv table/README.md table/ca_table.rda table/ca_table.csv table/MANIFEST.csv table/arrays table/derived.csv table/ca_frame.csv table/ca_table.csv.gz table/certificates table/EXTERNAL.csv table/constructions table/priority.csv
+          git add docs/index.html docs/derived.html table/wanted.csv table/lower_bounds.csv table/README.md table/ca_table.rda table/ca_table.csv table/MANIFEST.csv table/arrays table/derived.csv table/ca_frame.csv table/ca_table.csv.gz table/certificates table/EXTERNAL.csv table/constructions table/priority.csv
           git add submissions/*/NOT_APPLIED.md 2>/dev/null || true
           while read -r s; do [ -n "$s" ] && git add "submissions/$s/upgrade.csv"; done < queued.txt
           if git diff --cached --quiet; then
