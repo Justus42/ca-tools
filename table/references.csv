@@ -80,3 +80,4 @@ lb-kmnnos2020,,"J. I. Kokkala, K. Meagher, R. Naserasr, K. J. Nurmela, P. R. J. 
 lb-it2019,,"I. Izquierdo-Marquez and J. Torres-Jimenez, New covering array numbers, Appl. Math. Comput. 353 (2019) 134-146, arXiv:1711.10040",
 lb-hk2025,,"I. Hiess and L. Kampel, Determining covering array numbers via balanced covering arrays, arXiv:2510.17596",
 lb-khks2023,,"L. Kampel, I. Hiess, I. S. Kotsireas and D. E. Simos, Balanced covering arrays: a classification of covering arrays and packing arrays via exact methods, J. Combin. Des. 31 (2023) 205-261, data https://srd.sba-research.org/data/balca",10.1002/jcd.21876
+direct-tiga2015,,"J. Torres-Jimenez, I. Izquierdo-Marquez, A. Gonzalez-Gomez and H. Avila-George, A branch and bound algorithm to derive a direct construction for binary covering arrays, in: G. Sidorov and S. N. Galicia-Haro (eds.), MICAI 2015, Part I, LNAI 9413, Springer, 2015, pp. 1-20",10.1007/978-3-319-27060-9_13
