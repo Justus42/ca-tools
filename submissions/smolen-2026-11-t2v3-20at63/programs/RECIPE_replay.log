@@ -1,0 +1,10 @@
+recipe_20at63 tag replay mode short on Linux x86_64; cc: cc (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0; python: Python 3.13.18
+sha256 recipe_20at63.sh e68a2b8279e091b9be9663192ac2f5e9fa54bc6cf8a922eb8f687eea12134fab
+sha256 orbq7.c 45a44c332cbbe25f466f1d74b4c9d9af69680097fec56b44e796076f41a0bcd9
+sha256 mkgrp.py 45051ad07e72a92061b2809ad57cd0c375832b9bdaa8577576598ab962664c02
+sha256 chk.py e26c9f2f34df6c814274345e26c61c768f64c89b72c0926ea96af999cfa8e766
+step1 | python3 ../mkgrp.py z3z3 0,0 2 > z_20_00_f2.txt | out z_20_00_f2.txt b900ed5b1bde025c3a5730e8a9ab08dcfab4b01d62e890422345ee8790993eed
+step2 | ./orbq7 z_20_00_f2.txt 7 0 w20 5184 2610 | no seed, representative 2610 only | clique #1: 63 orbit columns, 0 free candidates, 0 mutually QI -> 63 columns | EXACT COMPLETE: m-cliques (up to normaliser, as enumerated) 5, largest clique seen 7, best columns 63
+step2 out w20_dump_20_63.txt 14122f0eb24e772938a74b1fc14dea025c4e2555de7c7d3f4dddf49d312a38b1
+check | N=20 k=63 t=2 v=3 missing=0 VERIFIED
+DONE CA_20_2_63_3.txt sha256 14122f0eb24e772938a74b1fc14dea025c4e2555de7c7d3f4dddf49d312a38b1

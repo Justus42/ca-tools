@@ -1,0 +1,2918 @@
+N=20 |G|=9 normaliser gens=53 target m=7 nfree=0
+starters 572838885, vertices 6513921  (19.9 s)
+normaliser orbits (representatives) 5184
+ordered by sampled degree (87 s)
+rep 38/5184 deg 143 cliques 0 best 0 maxdepth 2  88 s
+rep 78/5184 deg 100 cliques 0 best 0 maxdepth 2  89 s
+rep 118/5184 deg 0 cliques 0 best 0 maxdepth 2  90 s
+rep 158/5184 deg 0 cliques 0 best 0 maxdepth 2  91 s
+rep 198/5184 deg 1051 cliques 0 best 0 maxdepth 2  93 s
+rep 238/5184 deg 2603 cliques 0 best 0 maxdepth 2  95 s
+rep 278/5184 deg 3829 cliques 0 best 0 maxdepth 2  99 s
+rep 318/5184 deg 3128 cliques 0 best 0 maxdepth 2  102 s
+rep 358/5184 deg 3863 cliques 0 best 0 maxdepth 2  107 s
+rep 398/5184 deg 4101 cliques 0 best 0 maxdepth 2  113 s
+rep 438/5184 deg 6909 cliques 0 best 0 maxdepth 2  118 s
+rep 478/5184 deg 3848 cliques 0 best 0 maxdepth 2  124 s
+rep 518/5184 deg 4169 cliques 0 best 0 maxdepth 2  130 s
+rep 558/5184 deg 5411 cliques 0 best 0 maxdepth 2  139 s
+rep 598/5184 deg 6864 cliques 0 best 0 maxdepth 3  148 s
+rep 638/5184 deg 12156 cliques 0 best 0 maxdepth 3  162 s
+rep 678/5184 deg 8998 cliques 0 best 0 maxdepth 3  172 s
+rep 718/5184 deg 6479 cliques 0 best 0 maxdepth 3  184 s
+rep 758/5184 deg 8244 cliques 0 best 0 maxdepth 3  200 s
+rep 798/5184 deg 9962 cliques 0 best 0 maxdepth 3  220 s
+rep 838/5184 deg 10414 cliques 0 best 0 maxdepth 3  239 s
+rep 878/5184 deg 11178 cliques 0 best 0 maxdepth 3  260 s
+rep 918/5184 deg 11856 cliques 0 best 0 maxdepth 3  286 s
+rep 958/5184 deg 12211 cliques 0 best 0 maxdepth 3  314 s
+rep 998/5184 deg 12672 cliques 0 best 0 maxdepth 3  342 s
+rep 1038/5184 deg 9976 cliques 0 best 0 maxdepth 3  368 s
+rep 1078/5184 deg 13718 cliques 0 best 0 maxdepth 3  397 s
+rep 1118/5184 deg 11289 cliques 0 best 0 maxdepth 3  426 s
+rep 1158/5184 deg 11807 cliques 0 best 0 maxdepth 3  459 s
+rep 1198/5184 deg 15574 cliques 0 best 0 maxdepth 3  496 s
+rep 1238/5184 deg 14481 cliques 0 best 0 maxdepth 3  535 s
+rep 1278/5184 deg 11451 cliques 0 best 0 maxdepth 3  573 s
+rep 1318/5184 deg 12479 cliques 0 best 0 maxdepth 3  619 s
+rep 1358/5184 deg 14093 cliques 0 best 0 maxdepth 3  659 s
+rep 1398/5184 deg 14423 cliques 0 best 0 maxdepth 3  707 s
+rep 1438/5184 deg 13613 cliques 0 best 0 maxdepth 3  749 s
+rep 1478/5184 deg 12553 cliques 0 best 0 maxdepth 3  791 s
+rep 1518/5184 deg 16264 cliques 0 best 0 maxdepth 3  842 s
+rep 1558/5184 deg 14632 cliques 0 best 0 maxdepth 3  894 s
+rep 1598/5184 deg 13207 cliques 0 best 0 maxdepth 3  950 s
+rep 1638/5184 deg 11465 cliques 0 best 0 maxdepth 3  1018 s
+rep 1662 deg 20380 ... 1052 s
+rep 1662/5184 deg 20380 cliques 0 best 0 maxdepth 3  1057 s
+rep 1676 deg 20466 ... 1077 s
+rep 1676/5184 deg 20466 cliques 0 best 0 maxdepth 3  1084 s
+rep 1678/5184 deg 18318 cliques 0 best 0 maxdepth 3  1087 s
+rep 1688 deg 21577 ... 1103 s
+rep 1688/5184 deg 21577 cliques 0 best 0 maxdepth 3  1111 s
+rep 1712 deg 21439 ... 1153 s
+rep 1712/5184 deg 21439 cliques 0 best 0 maxdepth 3  1161 s
+rep 1718/5184 deg 13785 cliques 0 best 0 maxdepth 3  1171 s
+rep 1730 deg 20317 ... 1187 s
+rep 1730/5184 deg 20317 cliques 0 best 0 maxdepth 3  1191 s
+rep 1740 deg 20231 ... 1207 s
+rep 1740/5184 deg 20231 cliques 0 best 0 maxdepth 3  1211 s
+rep 1756 deg 22125 ... 1235 s
+rep 1756/5184 deg 22125 cliques 0 best 0 maxdepth 3  1245 s
+rep 1758/5184 deg 14601 cliques 0 best 0 maxdepth 3  1248 s
+rep 1764 deg 20892 ... 1254 s
+rep 1764/5184 deg 20892 cliques 0 best 0 maxdepth 3  1259 s
+rep 1768 deg 21217 ... 1262 s
+rep 1768/5184 deg 21217 cliques 0 best 0 maxdepth 3  1269 s
+rep 1774 deg 25792 ... 1277 s
+rep 1774/5184 deg 25792 cliques 0 best 0 maxdepth 3  1289 s
+rep 1776 deg 23258 ... 1289 s
+rep 1776/5184 deg 23258 cliques 0 best 0 maxdepth 3  1299 s
+rep 1780 deg 21234 ... 1304 s
+rep 1780/5184 deg 21234 cliques 0 best 0 maxdepth 3  1311 s
+rep 1798/5184 deg 18779 cliques 0 best 0 maxdepth 3  1346 s
+rep 1814 deg 23888 ... 1370 s
+rep 1814/5184 deg 23888 cliques 0 best 0 maxdepth 3  1379 s
+rep 1818 deg 21915 ... 1384 s
+rep 1818/5184 deg 21915 cliques 0 best 0 maxdepth 3  1390 s
+rep 1822 deg 24803 ... 1392 s
+rep 1822/5184 deg 24803 cliques 0 best 0 maxdepth 3  1400 s
+rep 1824 deg 26710 ... 1400 s
+rep 1824/5184 deg 26710 cliques 0 best 0 maxdepth 3  1412 s
+rep 1826 deg 23765 ... 1412 s
+rep 1826/5184 deg 23765 cliques 0 best 0 maxdepth 3  1420 s
+rep 1830 deg 22253 ... 1424 s
+rep 1830/5184 deg 22253 cliques 0 best 0 maxdepth 4  1433 s
+rep 1834 deg 21466 ... 1438 s
+rep 1834/5184 deg 21466 cliques 0 best 0 maxdepth 4  1446 s
+rep 1838 deg 20098 ... 1449 s
+rep 1838/5184 deg 20098 cliques 0 best 0 maxdepth 4  1456 s
+rep 1840 deg 20885 ... 1456 s
+rep 1840/5184 deg 20885 cliques 0 best 0 maxdepth 4  1463 s
+rep 1842 deg 24261 ... 1463 s
+rep 1842/5184 deg 24261 cliques 0 best 0 maxdepth 4  1474 s
+rep 1850 deg 22857 ... 1487 s
+rep 1850/5184 deg 22857 cliques 0 best 0 maxdepth 4  1496 s
+rep 1852 deg 22180 ... 1496 s
+rep 1852/5184 deg 22180 cliques 0 best 0 maxdepth 4  1499 s
+rep 1856 deg 22093 ... 1503 s
+rep 1856/5184 deg 22093 cliques 0 best 0 maxdepth 4  1508 s
+rep 1858 deg 24904 ... 1508 s
+rep 1858/5184 deg 24904 cliques 0 best 0 maxdepth 4  1515 s
+rep 1864 deg 22430 ... 1524 s
+rep 1864/5184 deg 22430 cliques 0 best 0 maxdepth 4  1530 s
+rep 1866 deg 23549 ... 1530 s
+rep 1866/5184 deg 23549 cliques 0 best 0 maxdepth 4  1539 s
+rep 1868 deg 20742 ... 1539 s
+rep 1868/5184 deg 20742 cliques 0 best 0 maxdepth 4  1547 s
+rep 1870 deg 21100 ... 1547 s
+rep 1870/5184 deg 21100 cliques 0 best 0 maxdepth 4  1554 s
+rep 1872 deg 26504 ... 1554 s
+rep 1872/5184 deg 26504 cliques 0 best 0 maxdepth 4  1564 s
+rep 1874 deg 23763 ... 1564 s
+rep 1874/5184 deg 23763 cliques 0 best 0 maxdepth 4  1571 s
+rep 1878 deg 25453 ... 1576 s
+rep 1878/5184 deg 25453 cliques 0 best 0 maxdepth 4  1585 s
+rep 1882 deg 23081 ... 1590 s
+rep 1882/5184 deg 23081 cliques 0 best 0 maxdepth 4  1597 s
+rep 1884 deg 25418 ... 1597 s
+rep 1884/5184 deg 25418 cliques 0 best 0 maxdepth 4  1607 s
+rep 1886 deg 23956 ... 1607 s
+rep 1886/5184 deg 23956 cliques 0 best 0 maxdepth 4  1616 s
+rep 1888 deg 26568 ... 1616 s
+rep 1888/5184 deg 26568 cliques 0 best 0 maxdepth 4  1626 s
+rep 1890 deg 22680 ... 1626 s
+rep 1890/5184 deg 22680 cliques 0 best 0 maxdepth 4  1632 s
+rep 1892 deg 25770 ... 1632 s
+rep 1892/5184 deg 25770 cliques 0 best 0 maxdepth 4  1643 s
+rep 1894 deg 26529 ... 1643 s
+rep 1894/5184 deg 26529 cliques 0 best 0 maxdepth 4  1654 s
+rep 1896 deg 23485 ... 1654 s
+rep 1896/5184 deg 23485 cliques 0 best 0 maxdepth 4  1660 s
+rep 1902 deg 20722 ... 1669 s
+rep 1902/5184 deg 20722 cliques 0 best 0 maxdepth 4  1673 s
+rep 1904 deg 20097 ... 1673 s
+rep 1904/5184 deg 20097 cliques 0 best 0 maxdepth 4  1678 s
+rep 1910 deg 30252 ... 1687 s
+rep 1910/5184 deg 30252 cliques 0 best 0 maxdepth 4  1700 s
+rep 1912 deg 32446 ... 1700 s
+rep 1912/5184 deg 32446 cliques 0 best 0 maxdepth 4  1714 s
+rep 1914 deg 26818 ... 1714 s
+rep 1914/5184 deg 26818 cliques 0 best 0 maxdepth 4  1727 s
+rep 1916 deg 21321 ... 1727 s
+rep 1916/5184 deg 21321 cliques 0 best 0 maxdepth 4  1735 s
+rep 1918 deg 23637 ... 1735 s
+rep 1918/5184 deg 23637 cliques 0 best 0 maxdepth 4  1745 s
+rep 1920 deg 27406 ... 1745 s
+rep 1920/5184 deg 27406 cliques 0 best 0 maxdepth 4  1758 s
+rep 1922 deg 23913 ... 1758 s
+rep 1922/5184 deg 23913 cliques 0 best 0 maxdepth 4  1766 s
+rep 1924 deg 25383 ... 1767 s
+rep 1924/5184 deg 25383 cliques 0 best 0 maxdepth 4  1777 s
+rep 1926 deg 23610 ... 1777 s
+rep 1926/5184 deg 23610 cliques 0 best 0 maxdepth 4  1786 s
+rep 1928 deg 26563 ... 1786 s
+rep 1928/5184 deg 26563 cliques 0 best 0 maxdepth 4  1797 s
+rep 1930 deg 25414 ... 1797 s
+rep 1930/5184 deg 25414 cliques 0 best 0 maxdepth 4  1808 s
+rep 1932 deg 22518 ... 1808 s
+rep 1932/5184 deg 22518 cliques 0 best 0 maxdepth 4  1814 s
+rep 1934 deg 25951 ... 1814 s
+rep 1934/5184 deg 25951 cliques 0 best 0 maxdepth 4  1824 s
+rep 1936 deg 23252 ... 1824 s
+rep 1936/5184 deg 23252 cliques 0 best 0 maxdepth 4  1829 s
+rep 1938 deg 26257 ... 1829 s
+rep 1938/5184 deg 26257 cliques 0 best 0 maxdepth 4  1842 s
+rep 1940 deg 23663 ... 1842 s
+rep 1940/5184 deg 23663 cliques 0 best 0 maxdepth 4  1852 s
+rep 1944 deg 20958 ... 1856 s
+rep 1944/5184 deg 20958 cliques 0 best 0 maxdepth 4  1863 s
+rep 1946 deg 28387 ... 1863 s
+rep 1946/5184 deg 28387 cliques 0 best 0 maxdepth 4  1879 s
+rep 1948 deg 20625 ... 1879 s
+rep 1948/5184 deg 20625 cliques 0 best 0 maxdepth 4  1885 s
+rep 1950 deg 25830 ... 1885 s
+rep 1950/5184 deg 25830 cliques 0 best 0 maxdepth 4  1896 s
+rep 1952 deg 31816 ... 1896 s
+rep 1952/5184 deg 31816 cliques 0 best 0 maxdepth 4  1914 s
+rep 1954 deg 27968 ... 1914 s
+rep 1954/5184 deg 27968 cliques 0 best 0 maxdepth 4  1928 s
+rep 1956 deg 22123 ... 1928 s
+rep 1956/5184 deg 22123 cliques 0 best 0 maxdepth 4  1935 s
+rep 1958 deg 29898 ... 1935 s
+rep 1958/5184 deg 29898 cliques 0 best 0 maxdepth 4  1951 s
+rep 1960 deg 24094 ... 1951 s
+rep 1960/5184 deg 24094 cliques 0 best 0 maxdepth 4  1956 s
+rep 1962 deg 31283 ... 1956 s
+rep 1962/5184 deg 31283 cliques 0 best 0 maxdepth 4  1971 s
+rep 1964 deg 31473 ... 1971 s
+rep 1964/5184 deg 31473 cliques 0 best 0 maxdepth 4  1992 s
+rep 1966 deg 21066 ... 1992 s
+rep 1966/5184 deg 21066 cliques 0 best 0 maxdepth 4  1996 s
+rep 1968 deg 22900 ... 1996 s
+rep 1968/5184 deg 22900 cliques 0 best 0 maxdepth 4  2001 s
+rep 1972 deg 20532 ... 2005 s
+rep 1972/5184 deg 20532 cliques 0 best 0 maxdepth 4  2010 s
+rep 1974 deg 29370 ... 2010 s
+rep 1974/5184 deg 29370 cliques 0 best 0 maxdepth 4  2024 s
+rep 1976 deg 29557 ... 2024 s
+rep 1976/5184 deg 29557 cliques 0 best 0 maxdepth 4  2041 s
+rep 1978 deg 28196 ... 2041 s
+rep 1978/5184 deg 28196 cliques 0 best 0 maxdepth 4  2055 s
+rep 1982 deg 27205 ... 2059 s
+rep 1982/5184 deg 27205 cliques 0 best 0 maxdepth 4  2072 s
+rep 1984 deg 32106 ... 2072 s
+rep 1984/5184 deg 32106 cliques 0 best 0 maxdepth 4  2088 s
+rep 1986 deg 24455 ... 2088 s
+rep 1986/5184 deg 24455 cliques 0 best 0 maxdepth 4  2094 s
+rep 1988 deg 32266 ... 2094 s
+rep 1988/5184 deg 32266 cliques 0 best 0 maxdepth 4  2108 s
+rep 1990 deg 29156 ... 2108 s
+rep 1990/5184 deg 29156 cliques 0 best 0 maxdepth 4  2120 s
+rep 1992 deg 28817 ... 2121 s
+rep 1992/5184 deg 28817 cliques 0 best 0 maxdepth 4  2135 s
+rep 1994 deg 28529 ... 2135 s
+rep 1994/5184 deg 28529 cliques 0 best 0 maxdepth 4  2150 s
+rep 1996 deg 31160 ... 2150 s
+rep 1996/5184 deg 31160 cliques 0 best 0 maxdepth 4  2167 s
+rep 1998 deg 20411 ... 2167 s
+rep 1998/5184 deg 20411 cliques 0 best 0 maxdepth 4  2172 s
+rep 2000 deg 31133 ... 2172 s
+rep 2000/5184 deg 31133 cliques 0 best 0 maxdepth 4  2186 s
+rep 2002 deg 26632 ... 2186 s
+rep 2002/5184 deg 26632 cliques 0 best 0 maxdepth 4  2199 s
+rep 2004 deg 32018 ... 2199 s
+rep 2004/5184 deg 32018 cliques 0 best 0 maxdepth 4  2217 s
+rep 2006 deg 30681 ... 2217 s
+rep 2006/5184 deg 30681 cliques 0 best 0 maxdepth 4  2233 s
+rep 2008 deg 25825 ... 2233 s
+rep 2008/5184 deg 25825 cliques 0 best 0 maxdepth 4  2244 s
+rep 2010 deg 27295 ... 2244 s
+rep 2010/5184 deg 27295 cliques 0 best 0 maxdepth 4  2256 s
+rep 2012 deg 25788 ... 2256 s
+rep 2012/5184 deg 25788 cliques 0 best 0 maxdepth 4  2268 s
+rep 2014 deg 25625 ... 2269 s
+rep 2014/5184 deg 25625 cliques 0 best 0 maxdepth 4  2274 s
+rep 2016 deg 32941 ... 2274 s
+rep 2016/5184 deg 32941 cliques 0 best 0 maxdepth 4  2289 s
+rep 2018 deg 31596 ... 2290 s
+rep 2018/5184 deg 31596 cliques 0 best 0 maxdepth 4  2307 s
+rep 2020 deg 31154 ... 2307 s
+rep 2020/5184 deg 31154 cliques 0 best 0 maxdepth 4  2323 s
+rep 2022 deg 31959 ... 2323 s
+rep 2022/5184 deg 31959 cliques 0 best 0 maxdepth 4  2334 s
+rep 2024 deg 27938 ... 2334 s
+rep 2024/5184 deg 27938 cliques 0 best 0 maxdepth 4  2348 s
+rep 2026 deg 32538 ... 2348 s
+rep 2026/5184 deg 32538 cliques 0 best 0 maxdepth 4  2367 s
+rep 2028 deg 27439 ... 2367 s
+rep 2028/5184 deg 27439 cliques 0 best 0 maxdepth 4  2379 s
+rep 2030 deg 25823 ... 2379 s
+rep 2030/5184 deg 25823 cliques 0 best 0 maxdepth 4  2384 s
+rep 2032 deg 32423 ... 2384 s
+rep 2032/5184 deg 32423 cliques 0 best 0 maxdepth 4  2399 s
+rep 2034 deg 34284 ... 2399 s
+rep 2034/5184 deg 34284 cliques 0 best 0 maxdepth 4  2422 s
+rep 2036 deg 26344 ... 2422 s
+rep 2036/5184 deg 26344 cliques 0 best 0 maxdepth 4  2433 s
+rep 2038 deg 31629 ... 2433 s
+rep 2038/5184 deg 31629 cliques 0 best 0 maxdepth 4  2448 s
+rep 2040 deg 27225 ... 2448 s
+rep 2040/5184 deg 27225 cliques 0 best 0 maxdepth 4  2461 s
+rep 2042 deg 34610 ... 2461 s
+rep 2042/5184 deg 34610 cliques 0 best 0 maxdepth 4  2481 s
+rep 2044 deg 31935 ... 2481 s
+rep 2044/5184 deg 31935 cliques 0 best 0 maxdepth 4  2496 s
+rep 2046 deg 34584 ... 2496 s
+rep 2046/5184 deg 34584 cliques 0 best 0 maxdepth 4  2521 s
+rep 2048 deg 29755 ... 2521 s
+rep 2048/5184 deg 29755 cliques 0 best 0 maxdepth 4  2535 s
+rep 2050 deg 30429 ... 2535 s
+rep 2050/5184 deg 30429 cliques 0 best 0 maxdepth 4  2551 s
+rep 2052 deg 33129 ... 2551 s
+rep 2052/5184 deg 33129 cliques 0 best 0 maxdepth 4  2569 s
+rep 2054 deg 32096 ... 2569 s
+rep 2054/5184 deg 32096 cliques 0 best 0 maxdepth 4  2587 s
+rep 2056 deg 32716 ... 2587 s
+rep 2056/5184 deg 32716 cliques 0 best 0 maxdepth 4  2604 s
+rep 2058 deg 32121 ... 2604 s
+rep 2058/5184 deg 32121 cliques 0 best 0 maxdepth 4  2621 s
+rep 2060 deg 30749 ... 2621 s
+rep 2060/5184 deg 30749 cliques 0 best 0 maxdepth 4  2635 s
+rep 2062 deg 30200 ... 2635 s
+rep 2062/5184 deg 30200 cliques 0 best 0 maxdepth 4  2653 s
+rep 2064 deg 32643 ... 2653 s
+rep 2064/5184 deg 32643 cliques 0 best 0 maxdepth 4  2671 s
+rep 2066 deg 26288 ... 2671 s
+rep 2066/5184 deg 26288 cliques 0 best 0 maxdepth 4  2682 s
+rep 2068 deg 34379 ... 2683 s
+rep 2068/5184 deg 34379 cliques 0 best 0 maxdepth 4  2706 s
+rep 2070 deg 33792 ... 2706 s
+rep 2070/5184 deg 33792 cliques 0 best 0 maxdepth 4  2722 s
+rep 2072 deg 30303 ... 2722 s
+rep 2072/5184 deg 30303 cliques 0 best 0 maxdepth 4  2740 s
+rep 2076 deg 24192 ... 2745 s
+rep 2076/5184 deg 24192 cliques 0 best 0 maxdepth 4  2752 s
+rep 2078 deg 37717 ... 2752 s
+rep 2078/5184 deg 37717 cliques 0 best 0 maxdepth 4  2777 s
+rep 2080 deg 36794 ... 2777 s
+rep 2080/5184 deg 36794 cliques 0 best 0 maxdepth 4  2798 s
+rep 2082 deg 30598 ... 2799 s
+rep 2082/5184 deg 30598 cliques 0 best 0 maxdepth 4  2809 s
+rep 2084 deg 32450 ... 2809 s
+rep 2084/5184 deg 32450 cliques 0 best 0 maxdepth 4  2828 s
+rep 2086 deg 25782 ... 2828 s
+rep 2086/5184 deg 25782 cliques 0 best 0 maxdepth 4  2838 s
+rep 2088 deg 30007 ... 2838 s
+rep 2088/5184 deg 30007 cliques 0 best 0 maxdepth 4  2856 s
+rep 2090 deg 39334 ... 2856 s
+rep 2090/5184 deg 39334 cliques 0 best 0 maxdepth 4  2877 s
+rep 2092 deg 31753 ... 2877 s
+rep 2092/5184 deg 31753 cliques 0 best 0 maxdepth 4  2895 s
+rep 2094 deg 32608 ... 2895 s
+rep 2094/5184 deg 32608 cliques 0 best 0 maxdepth 4  2914 s
+rep 2096 deg 24257 ... 2914 s
+rep 2096/5184 deg 24257 cliques 0 best 0 maxdepth 4  2921 s
+rep 2098 deg 34199 ... 2921 s
+rep 2098/5184 deg 34199 cliques 0 best 0 maxdepth 4  2938 s
+rep 2100 deg 36678 ... 2938 s
+rep 2100/5184 deg 36678 cliques 0 best 0 maxdepth 4  2961 s
+rep 2102 deg 31819 ... 2961 s
+rep 2102/5184 deg 31819 cliques 0 best 0 maxdepth 4  2979 s
+rep 2104 deg 30376 ... 2979 s
+rep 2104/5184 deg 30376 cliques 0 best 0 maxdepth 4  2990 s
+rep 2106 deg 40790 ... 2990 s
+rep 2106/5184 deg 40790 cliques 0 best 0 maxdepth 4  3020 s
+rep 2108 deg 34629 ... 3020 s
+rep 2108/5184 deg 34629 cliques 0 best 0 maxdepth 4  3042 s
+rep 2110 deg 31483 ... 3042 s
+rep 2110/5184 deg 31483 cliques 0 best 0 maxdepth 4  3060 s
+rep 2112 deg 30634 ... 3060 s
+rep 2112/5184 deg 30634 cliques 0 best 0 maxdepth 4  3076 s
+rep 2114 deg 33538 ... 3076 s
+rep 2114/5184 deg 33538 cliques 0 best 0 maxdepth 4  3087 s
+rep 2116 deg 30396 ... 3087 s
+rep 2116/5184 deg 30396 cliques 0 best 0 maxdepth 4  3100 s
+rep 2118 deg 32130 ... 3100 s
+rep 2118/5184 deg 32130 cliques 0 best 0 maxdepth 4  3117 s
+rep 2120 deg 30958 ... 3117 s
+rep 2120/5184 deg 30958 cliques 0 best 0 maxdepth 4  3129 s
+rep 2122 deg 34116 ... 3129 s
+rep 2122/5184 deg 34116 cliques 0 best 0 maxdepth 4  3147 s
+rep 2124 deg 37550 ... 3147 s
+rep 2124/5184 deg 37550 cliques 0 best 0 maxdepth 4  3172 s
+rep 2126 deg 28154 ... 3172 s
+rep 2126/5184 deg 28154 cliques 0 best 0 maxdepth 4  3186 s
+rep 2128 deg 34819 ... 3187 s
+rep 2128/5184 deg 34819 cliques 0 best 0 maxdepth 4  3208 s
+rep 2130 deg 35952 ... 3208 s
+rep 2130/5184 deg 35952 cliques 0 best 0 maxdepth 4  3233 s
+rep 2132 deg 30737 ... 3233 s
+rep 2132/5184 deg 30737 cliques 0 best 0 maxdepth 4  3248 s
+rep 2134 deg 29056 ... 3248 s
+rep 2134/5184 deg 29056 cliques 0 best 0 maxdepth 4  3262 s
+rep 2136 deg 34984 ... 3262 s
+rep 2136/5184 deg 34984 cliques 0 best 0 maxdepth 4  3280 s
+rep 2138 deg 36806 ... 3281 s
+rep 2138/5184 deg 36806 cliques 0 best 0 maxdepth 4  3304 s
+rep 2140 deg 36058 ... 3304 s
+rep 2140/5184 deg 36058 cliques 0 best 0 maxdepth 4  3331 s
+rep 2142 deg 41047 ... 3331 s
+rep 2142/5184 deg 41047 cliques 0 best 0 maxdepth 4  3362 s
+rep 2144 deg 35397 ... 3362 s
+rep 2144/5184 deg 35397 cliques 0 best 0 maxdepth 4  3387 s
+rep 2146 deg 31390 ... 3387 s
+rep 2146/5184 deg 31390 cliques 0 best 0 maxdepth 4  3400 s
+rep 2148 deg 29098 ... 3400 s
+rep 2148/5184 deg 29098 cliques 0 best 0 maxdepth 4  3413 s
+rep 2150 deg 26755 ... 3413 s
+rep 2150/5184 deg 26755 cliques 0 best 0 maxdepth 4  3427 s
+rep 2152 deg 31771 ... 3427 s
+rep 2152/5184 deg 31771 cliques 0 best 0 maxdepth 4  3443 s
+rep 2154 deg 34119 ... 3443 s
+rep 2154/5184 deg 34119 cliques 0 best 0 maxdepth 4  3466 s
+rep 2156 deg 31339 ... 3466 s
+rep 2156/5184 deg 31339 cliques 0 best 0 maxdepth 4  3480 s
+rep 2158 deg 35358 ... 3480 s
+rep 2158/5184 deg 35358 cliques 0 best 0 maxdepth 4  3502 s
+rep 2160 deg 39153 ... 3502 s
+rep 2160/5184 deg 39153 cliques 0 best 0 maxdepth 4  3530 s
+rep 2162 deg 32561 ... 3530 s
+rep 2162/5184 deg 32561 cliques 0 best 0 maxdepth 4  3550 s
+rep 2164 deg 33701 ... 3550 s
+rep 2164/5184 deg 33701 cliques 0 best 0 maxdepth 4  3575 s
+rep 2166 deg 29766 ... 3575 s
+rep 2166/5184 deg 29766 cliques 0 best 0 maxdepth 4  3585 s
+rep 2168 deg 35487 ... 3585 s
+rep 2168/5184 deg 35487 cliques 0 best 0 maxdepth 4  3608 s
+rep 2170 deg 33822 ... 3608 s
+rep 2170/5184 deg 33822 cliques 0 best 0 maxdepth 4  3629 s
+rep 2172 deg 34626 ... 3629 s
+rep 2172/5184 deg 34626 cliques 0 best 0 maxdepth 4  3649 s
+rep 2174 deg 35941 ... 3650 s
+rep 2174/5184 deg 35941 cliques 0 best 0 maxdepth 4  3677 s
+rep 2176 deg 22186 ... 3677 s
+rep 2176/5184 deg 22186 cliques 0 best 0 maxdepth 4  3683 s
+rep 2178 deg 36952 ... 3683 s
+rep 2178/5184 deg 36952 cliques 0 best 0 maxdepth 4  3714 s
+rep 2180 deg 36812 ... 3714 s
+rep 2180/5184 deg 36812 cliques 0 best 0 maxdepth 4  3733 s
+rep 2182 deg 34943 ... 3734 s
+rep 2182/5184 deg 34943 cliques 0 best 0 maxdepth 4  3756 s
+rep 2184 deg 38066 ... 3756 s
+rep 2184/5184 deg 38066 cliques 0 best 0 maxdepth 4  3781 s
+rep 2186 deg 35170 ... 3781 s
+rep 2186/5184 deg 35170 cliques 0 best 0 maxdepth 4  3801 s
+rep 2188 deg 31503 ... 3801 s
+rep 2188/5184 deg 31503 cliques 0 best 0 maxdepth 4  3819 s
+rep 2190 deg 39673 ... 3819 s
+rep 2190/5184 deg 39673 cliques 0 best 0 maxdepth 4  3845 s
+rep 2192 deg 35462 ... 3845 s
+rep 2192/5184 deg 35462 cliques 0 best 0 maxdepth 4  3865 s
+rep 2194 deg 30374 ... 3866 s
+rep 2194/5184 deg 30374 cliques 0 best 0 maxdepth 4  3880 s
+rep 2196 deg 32420 ... 3880 s
+rep 2196/5184 deg 32420 cliques 0 best 0 maxdepth 4  3900 s
+rep 2198 deg 37118 ... 3900 s
+rep 2198/5184 deg 37118 cliques 0 best 0 maxdepth 4  3920 s
+rep 2200 deg 37082 ... 3921 s
+rep 2200/5184 deg 37082 cliques 0 best 0 maxdepth 4  3946 s
+rep 2202 deg 33742 ... 3946 s
+rep 2202/5184 deg 33742 cliques 0 best 0 maxdepth 4  3965 s
+rep 2204 deg 29649 ... 3965 s
+rep 2204/5184 deg 29649 cliques 0 best 0 maxdepth 4  3979 s
+rep 2206 deg 31475 ... 3979 s
+rep 2206/5184 deg 31475 cliques 0 best 0 maxdepth 4  4002 s
+rep 2208 deg 35666 ... 4002 s
+rep 2208/5184 deg 35666 cliques 0 best 0 maxdepth 4  4020 s
+rep 2210 deg 34110 ... 4020 s
+rep 2210/5184 deg 34110 cliques 0 best 0 maxdepth 4  4033 s
+rep 2212 deg 33276 ... 4033 s
+rep 2212/5184 deg 33276 cliques 0 best 0 maxdepth 4  4054 s
+rep 2214 deg 32313 ... 4054 s
+rep 2214/5184 deg 32313 cliques 0 best 0 maxdepth 4  4066 s
+rep 2216 deg 30273 ... 4066 s
+rep 2216/5184 deg 30273 cliques 0 best 0 maxdepth 4  4080 s
+rep 2218 deg 34105 ... 4080 s
+rep 2218/5184 deg 34105 cliques 0 best 0 maxdepth 4  4104 s
+rep 2220 deg 38682 ... 4104 s
+rep 2220/5184 deg 38682 cliques 0 best 0 maxdepth 4  4137 s
+rep 2222 deg 33324 ... 4137 s
+rep 2222/5184 deg 33324 cliques 0 best 0 maxdepth 4  4153 s
+rep 2224 deg 22062 ... 4153 s
+rep 2224/5184 deg 22062 cliques 0 best 0 maxdepth 4  4160 s
+rep 2226 deg 37443 ... 4160 s
+rep 2226/5184 deg 37443 cliques 0 best 0 maxdepth 4  4181 s
+rep 2228 deg 30833 ... 4181 s
+rep 2228/5184 deg 30833 cliques 0 best 0 maxdepth 4  4198 s
+rep 2230 deg 36959 ... 4198 s
+rep 2230/5184 deg 36959 cliques 0 best 0 maxdepth 4  4229 s
+rep 2232 deg 38112 ... 4229 s
+rep 2232/5184 deg 38112 cliques 0 best 0 maxdepth 4  4255 s
+rep 2234 deg 33602 ... 4255 s
+rep 2234/5184 deg 33602 cliques 0 best 0 maxdepth 4  4275 s
+rep 2236 deg 39545 ... 4275 s
+rep 2236/5184 deg 39545 cliques 0 best 0 maxdepth 4  4306 s
+rep 2238 deg 36381 ... 4306 s
+rep 2238/5184 deg 36381 cliques 0 best 0 maxdepth 4  4327 s
+rep 2240 deg 38572 ... 4327 s
+rep 2240/5184 deg 38572 cliques 0 best 0 maxdepth 4  4358 s
+rep 2242 deg 33482 ... 4358 s
+rep 2242/5184 deg 33482 cliques 0 best 0 maxdepth 4  4378 s
+rep 2244 deg 26406 ... 4378 s
+rep 2244/5184 deg 26406 cliques 0 best 0 maxdepth 4  4390 s
+rep 2246 deg 22838 ... 4390 s
+rep 2246/5184 deg 22838 cliques 0 best 0 maxdepth 4  4396 s
+rep 2248 deg 38860 ... 4396 s
+rep 2248/5184 deg 38860 cliques 0 best 0 maxdepth 4  4422 s
+rep 2250 deg 36715 ... 4422 s
+rep 2250/5184 deg 36715 cliques 0 best 0 maxdepth 4  4443 s
+rep 2252 deg 35389 ... 4443 s
+rep 2252/5184 deg 35389 cliques 0 best 0 maxdepth 4  4457 s
+rep 2254 deg 34232 ... 4457 s
+rep 2254/5184 deg 34232 cliques 0 best 0 maxdepth 4  4467 s
+rep 2256 deg 39935 ... 4467 s
+rep 2256/5184 deg 39935 cliques 0 best 0 maxdepth 4  4487 s
+rep 2258 deg 34326 ... 4488 s
+rep 2258/5184 deg 34326 cliques 0 best 0 maxdepth 4  4508 s
+rep 2260 deg 32190 ... 4508 s
+rep 2260/5184 deg 32190 cliques 0 best 0 maxdepth 4  4523 s
+rep 2262 deg 32189 ... 4523 s
+rep 2262/5184 deg 32189 cliques 0 best 0 maxdepth 4  4535 s
+rep 2264 deg 39663 ... 4535 s
+rep 2264/5184 deg 39663 cliques 0 best 0 maxdepth 4  4566 s
+rep 2266 deg 35430 ... 4566 s
+rep 2266/5184 deg 35430 cliques 0 best 0 maxdepth 4  4582 s
+rep 2268 deg 35985 ... 4582 s
+rep 2268/5184 deg 35985 cliques 0 best 0 maxdepth 4  4604 s
+rep 2270 deg 37218 ... 4605 s
+rep 2270/5184 deg 37218 cliques 0 best 0 maxdepth 4  4629 s
+rep 2272 deg 35499 ... 4629 s
+rep 2272/5184 deg 35499 cliques 0 best 0 maxdepth 4  4651 s
+rep 2274 deg 35751 ... 4651 s
+rep 2274/5184 deg 35751 cliques 0 best 0 maxdepth 4  4672 s
+rep 2276 deg 37135 ... 4672 s
+rep 2276/5184 deg 37135 cliques 0 best 0 maxdepth 4  4688 s
+rep 2278 deg 35594 ... 4688 s
+rep 2278/5184 deg 35594 cliques 0 best 0 maxdepth 4  4708 s
+rep 2280 deg 36517 ... 4708 s
+rep 2280/5184 deg 36517 cliques 0 best 0 maxdepth 4  4724 s
+rep 2282 deg 35604 ... 4724 s
+rep 2282/5184 deg 35604 cliques 0 best 0 maxdepth 4  4734 s
+rep 2284 deg 34861 ... 4735 s
+rep 2284/5184 deg 34861 cliques 0 best 0 maxdepth 4  4752 s
+rep 2286 deg 34552 ... 4752 s
+rep 2286/5184 deg 34552 cliques 0 best 0 maxdepth 4  4762 s
+rep 2288 deg 38030 ... 4762 s
+rep 2288/5184 deg 38030 cliques 0 best 0 maxdepth 4  4781 s
+rep 2290 deg 37161 ... 4781 s
+rep 2290/5184 deg 37161 cliques 0 best 0 maxdepth 4  4799 s
+rep 2292 deg 31950 ... 4799 s
+rep 2292/5184 deg 31950 cliques 0 best 0 maxdepth 4  4810 s
+rep 2294 deg 38029 ... 4810 s
+rep 2294/5184 deg 38029 cliques 0 best 0 maxdepth 4  4823 s
+rep 2296 deg 37210 ... 4823 s
+rep 2296/5184 deg 37210 cliques 0 best 0 maxdepth 4  4841 s
+rep 2298 deg 36312 ... 4841 s
+rep 2298/5184 deg 36312 cliques 0 best 0 maxdepth 4  4853 s
+rep 2300 deg 36910 ... 4853 s
+rep 2300/5184 deg 36910 cliques 0 best 0 maxdepth 4  4867 s
+rep 2302 deg 33176 ... 4867 s
+rep 2302/5184 deg 33176 cliques 0 best 0 maxdepth 4  4880 s
+rep 2304 deg 32925 ... 4880 s
+rep 2304/5184 deg 32925 cliques 0 best 0 maxdepth 4  4895 s
+rep 2306 deg 32297 ... 4895 s
+rep 2306/5184 deg 32297 cliques 0 best 0 maxdepth 4  4909 s
+rep 2308 deg 35137 ... 4909 s
+rep 2308/5184 deg 35137 cliques 0 best 0 maxdepth 4  4928 s
+rep 2310 deg 34828 ... 4928 s
+rep 2310/5184 deg 34828 cliques 0 best 0 maxdepth 4  4939 s
+rep 2312 deg 34315 ... 4939 s
+rep 2312/5184 deg 34315 cliques 0 best 0 maxdepth 4  4955 s
+rep 2314 deg 39573 ... 4956 s
+rep 2314/5184 deg 39573 cliques 0 best 0 maxdepth 4  4981 s
+rep 2316 deg 30601 ... 4981 s
+rep 2316/5184 deg 30601 cliques 0 best 0 maxdepth 4  4994 s
+rep 2318 deg 38052 ... 4994 s
+rep 2318/5184 deg 38052 cliques 0 best 0 maxdepth 4  5009 s
+rep 2320 deg 32220 ... 5009 s
+rep 2320/5184 deg 32220 cliques 0 best 0 maxdepth 4  5023 s
+rep 2322 deg 32743 ... 5023 s
+rep 2322/5184 deg 32743 cliques 0 best 0 maxdepth 4  5036 s
+rep 2324 deg 35207 ... 5036 s
+rep 2324/5184 deg 35207 cliques 0 best 0 maxdepth 4  5052 s
+rep 2326 deg 37817 ... 5052 s
+rep 2326/5184 deg 37817 cliques 0 best 0 maxdepth 4  5077 s
+rep 2328 deg 41628 ... 5077 s
+rep 2328/5184 deg 41628 cliques 0 best 0 maxdepth 4  5098 s
+rep 2330 deg 35882 ... 5098 s
+rep 2330/5184 deg 35882 cliques 0 best 0 maxdepth 4  5114 s
+rep 2332 deg 32696 ... 5114 s
+rep 2332/5184 deg 32696 cliques 0 best 0 maxdepth 4  5123 s
+rep 2334 deg 36732 ... 5123 s
+rep 2334/5184 deg 36732 cliques 0 best 0 maxdepth 4  5139 s
+rep 2336 deg 37442 ... 5139 s
+rep 2336/5184 deg 37442 cliques 0 best 0 maxdepth 4  5152 s
+rep 2338 deg 35568 ... 5152 s
+rep 2338/5184 deg 35568 cliques 0 best 0 maxdepth 4  5164 s
+rep 2340 deg 44069 ... 5164 s
+rep 2340/5184 deg 44069 cliques 0 best 0 maxdepth 4  5196 s
+rep 2342 deg 36477 ... 5196 s
+rep 2342/5184 deg 36477 cliques 0 best 0 maxdepth 4  5211 s
+rep 2344 deg 38560 ... 5211 s
+rep 2344/5184 deg 38560 cliques 0 best 0 maxdepth 4  5223 s
+rep 2346 deg 39802 ... 5223 s
+rep 2346/5184 deg 39802 cliques 0 best 0 maxdepth 4  5246 s
+rep 2348 deg 37229 ... 5246 s
+rep 2348/5184 deg 37229 cliques 0 best 0 maxdepth 4  5257 s
+rep 2350 deg 43129 ... 5257 s
+rep 2350/5184 deg 43129 cliques 0 best 0 maxdepth 4  5282 s
+rep 2352 deg 37362 ... 5282 s
+rep 2352/5184 deg 37362 cliques 0 best 0 maxdepth 4  5298 s
+rep 2354 deg 36318 ... 5298 s
+rep 2354/5184 deg 36318 cliques 0 best 0 maxdepth 4  5309 s
+rep 2356 deg 35109 ... 5309 s
+rep 2356/5184 deg 35109 cliques 0 best 0 maxdepth 4  5324 s
+rep 2358 deg 36076 ... 5324 s
+rep 2358/5184 deg 36076 cliques 0 best 0 maxdepth 4  5340 s
+rep 2360 deg 36192 ... 5340 s
+rep 2360/5184 deg 36192 cliques 0 best 0 maxdepth 4  5355 s
+rep 2362 deg 32322 ... 5355 s
+rep 2362/5184 deg 32322 cliques 0 best 0 maxdepth 4  5366 s
+rep 2366 deg 40181 ... 5369 s
+rep 2366/5184 deg 40181 cliques 0 best 0 maxdepth 4  5384 s
+rep 2368 deg 37139 ... 5384 s
+rep 2368/5184 deg 37139 cliques 0 best 0 maxdepth 4  5399 s
+rep 2370 deg 37602 ... 5399 s
+rep 2370/5184 deg 37602 cliques 0 best 0 maxdepth 4  5422 s
+rep 2372 deg 35975 ... 5422 s
+rep 2372/5184 deg 35975 cliques 0 best 0 maxdepth 4  5435 s
+rep 2374 deg 36916 ... 5435 s
+rep 2374/5184 deg 36916 cliques 0 best 0 maxdepth 4  5463 s
+rep 2376 deg 34971 ... 5463 s
+rep 2376/5184 deg 34971 cliques 0 best 0 maxdepth 4  5474 s
+rep 2378 deg 33192 ... 5474 s
+rep 2378/5184 deg 33192 cliques 0 best 0 maxdepth 4  5488 s
+rep 2380 deg 37374 ... 5488 s
+rep 2380/5184 deg 37374 cliques 0 best 0 maxdepth 4  5501 s
+rep 2382 deg 37724 ... 5501 s
+rep 2382/5184 deg 37724 cliques 0 best 0 maxdepth 4  5520 s
+rep 2384 deg 39834 ... 5520 s
+rep 2384/5184 deg 39834 cliques 0 best 0 maxdepth 4  5535 s
+rep 2386 deg 44655 ... 5535 s
+rep 2386/5184 deg 44655 cliques 0 best 0 maxdepth 4  5559 s
+rep 2388 deg 35482 ... 5559 s
+rep 2388/5184 deg 35482 cliques 0 best 0 maxdepth 4  5572 s
+rep 2390 deg 34524 ... 5572 s
+rep 2390/5184 deg 34524 cliques 0 best 0 maxdepth 4  5586 s
+rep 2392 deg 40327 ... 5586 s
+rep 2392/5184 deg 40327 cliques 0 best 0 maxdepth 4  5605 s
+rep 2394 deg 36443 ... 5605 s
+rep 2394/5184 deg 36443 cliques 0 best 0 maxdepth 4  5619 s
+rep 2396 deg 32499 ... 5619 s
+rep 2396/5184 deg 32499 cliques 0 best 0 maxdepth 4  5631 s
+rep 2398 deg 42027 ... 5631 s
+rep 2398/5184 deg 42027 cliques 0 best 0 maxdepth 4  5650 s
+rep 2400 deg 43996 ... 5650 s
+rep 2400/5184 deg 43996 cliques 0 best 0 maxdepth 4  5679 s
+rep 2402 deg 37373 ... 5679 s
+rep 2402/5184 deg 37373 cliques 0 best 0 maxdepth 4  5697 s
+rep 2404 deg 34804 ... 5697 s
+rep 2404/5184 deg 34804 cliques 0 best 0 maxdepth 4  5711 s
+rep 2406 deg 36162 ... 5711 s
+rep 2406/5184 deg 36162 cliques 0 best 0 maxdepth 4  5726 s
+rep 2408 deg 36805 ... 5726 s
+rep 2408/5184 deg 36805 cliques 0 best 0 maxdepth 4  5742 s
+rep 2410 deg 35620 ... 5742 s
+rep 2410/5184 deg 35620 cliques 0 best 0 maxdepth 4  5757 s
+rep 2412 deg 38297 ... 5757 s
+rep 2412/5184 deg 38297 cliques 0 best 0 maxdepth 4  5773 s
+rep 2414 deg 39531 ... 5773 s
+rep 2414/5184 deg 39531 cliques 0 best 0 maxdepth 4  5791 s
+rep 2416 deg 40006 ... 5791 s
+rep 2416/5184 deg 40006 cliques 0 best 0 maxdepth 4  5808 s
+rep 2418 deg 37849 ... 5808 s
+rep 2418/5184 deg 37849 cliques 0 best 0 maxdepth 4  5822 s
+rep 2420 deg 40432 ... 5822 s
+rep 2420/5184 deg 40432 cliques 0 best 0 maxdepth 4  5845 s
+rep 2422 deg 38228 ... 5845 s
+rep 2422/5184 deg 38228 cliques 0 best 0 maxdepth 4  5860 s
+rep 2424 deg 36521 ... 5860 s
+rep 2424/5184 deg 36521 cliques 0 best 0 maxdepth 4  5879 s
+rep 2426 deg 41417 ... 5879 s
+rep 2426/5184 deg 41417 cliques 0 best 0 maxdepth 4  5905 s
+rep 2428 deg 37861 ... 5905 s
+rep 2428/5184 deg 37861 cliques 0 best 0 maxdepth 4  5922 s
+rep 2430 deg 36376 ... 5922 s
+rep 2430/5184 deg 36376 cliques 0 best 0 maxdepth 4  5936 s
+rep 2432 deg 36080 ... 5936 s
+rep 2432/5184 deg 36080 cliques 0 best 0 maxdepth 4  5944 s
+rep 2434 deg 40698 ... 5944 s
+rep 2434/5184 deg 40698 cliques 0 best 0 maxdepth 4  5965 s
+rep 2436 deg 36678 ... 5965 s
+rep 2436/5184 deg 36678 cliques 0 best 0 maxdepth 4  5980 s
+rep 2438 deg 35318 ... 5980 s
+rep 2438/5184 deg 35318 cliques 0 best 0 maxdepth 4  5994 s
+rep 2440 deg 40722 ... 5994 s
+rep 2440/5184 deg 40722 cliques 0 best 0 maxdepth 4  6010 s
+rep 2442 deg 33571 ... 6010 s
+rep 2442/5184 deg 33571 cliques 0 best 0 maxdepth 4  6022 s
+rep 2444 deg 35138 ... 6022 s
+rep 2444/5184 deg 35138 cliques 0 best 0 maxdepth 4  6031 s
+rep 2446 deg 40376 ... 6031 s
+rep 2446/5184 deg 40376 cliques 0 best 0 maxdepth 4  6047 s
+rep 2448 deg 38402 ... 6047 s
+rep 2448/5184 deg 38402 cliques 0 best 0 maxdepth 4  6064 s
+rep 2450 deg 40246 ... 6064 s
+rep 2450/5184 deg 40246 cliques 0 best 0 maxdepth 4  6092 s
+rep 2452 deg 42060 ... 6092 s
+rep 2452/5184 deg 42060 cliques 0 best 0 maxdepth 4  6118 s
+rep 2454 deg 41488 ... 6118 s
+rep 2454/5184 deg 41488 cliques 0 best 0 maxdepth 4  6133 s
+rep 2456 deg 36522 ... 6133 s
+rep 2456/5184 deg 36522 cliques 0 best 0 maxdepth 4  6147 s
+rep 2458 deg 36132 ... 6147 s
+rep 2458/5184 deg 36132 cliques 0 best 0 maxdepth 4  6161 s
+rep 2460 deg 35355 ... 6161 s
+rep 2460/5184 deg 35355 cliques 0 best 0 maxdepth 4  6169 s
+rep 2462 deg 39249 ... 6169 s
+rep 2462/5184 deg 39249 cliques 0 best 0 maxdepth 4  6189 s
+rep 2464 deg 41672 ... 6189 s
+rep 2464/5184 deg 41672 cliques 0 best 0 maxdepth 4  6208 s
+rep 2466 deg 33427 ... 6208 s
+rep 2466/5184 deg 33427 cliques 0 best 0 maxdepth 4  6220 s
+rep 2468 deg 34594 ... 6220 s
+rep 2468/5184 deg 34594 cliques 0 best 0 maxdepth 4  6234 s
+rep 2470 deg 35962 ... 6234 s
+rep 2470/5184 deg 35962 cliques 0 best 0 maxdepth 4  6249 s
+rep 2472 deg 39433 ... 6249 s
+rep 2472/5184 deg 39433 cliques 0 best 0 maxdepth 4  6267 s
+rep 2474 deg 43928 ... 6267 s
+rep 2474/5184 deg 43928 cliques 0 best 0 maxdepth 4  6291 s
+rep 2476 deg 39038 ... 6291 s
+rep 2476/5184 deg 39038 cliques 0 best 0 maxdepth 4  6305 s
+rep 2478 deg 38031 ... 6305 s
+rep 2478/5184 deg 38031 cliques 0 best 0 maxdepth 4  6324 s
+rep 2480 deg 41959 ... 6324 s
+rep 2480/5184 deg 41959 cliques 0 best 0 maxdepth 4  6345 s
+rep 2482 deg 42674 ... 6345 s
+rep 2482/5184 deg 42674 cliques 0 best 0 maxdepth 4  6367 s
+rep 2484 deg 36771 ... 6367 s
+rep 2484/5184 deg 36771 cliques 0 best 0 maxdepth 4  6380 s
+rep 2486 deg 42884 ... 6380 s
+rep 2486/5184 deg 42884 cliques 0 best 0 maxdepth 4  6404 s
+rep 2488 deg 41451 ... 6404 s
+rep 2488/5184 deg 41451 cliques 0 best 0 maxdepth 4  6419 s
+rep 2490 deg 41013 ... 6419 s
+rep 2490/5184 deg 41013 cliques 0 best 0 maxdepth 4  6440 s
+rep 2492 deg 34660 ... 6440 s
+rep 2492/5184 deg 34660 cliques 0 best 0 maxdepth 4  6453 s
+rep 2494 deg 36359 ... 6453 s
+rep 2494/5184 deg 36359 cliques 0 best 0 maxdepth 4  6473 s
+rep 2496 deg 39312 ... 6473 s
+rep 2496/5184 deg 39312 cliques 0 best 0 maxdepth 4  6490 s
+rep 2498 deg 34404 ... 6490 s
+rep 2498/5184 deg 34404 cliques 0 best 0 maxdepth 4  6497 s
+rep 2500 deg 36917 ... 6497 s
+rep 2500/5184 deg 36917 cliques 0 best 0 maxdepth 4  6511 s
+rep 2502 deg 33837 ... 6511 s
+rep 2502/5184 deg 33837 cliques 0 best 0 maxdepth 4  6519 s
+rep 2504 deg 39692 ... 6519 s
+rep 2504/5184 deg 39692 cliques 0 best 0 maxdepth 4  6533 s
+rep 2506 deg 44143 ... 6533 s
+rep 2506/5184 deg 44143 cliques 0 best 0 maxdepth 4  6563 s
+rep 2508 deg 35176 ... 6563 s
+rep 2508/5184 deg 35176 cliques 0 best 0 maxdepth 4  6573 s
+rep 2510 deg 38636 ... 6573 s
+rep 2510/5184 deg 38636 cliques 0 best 0 maxdepth 4  6589 s
+rep 2512 deg 44411 ... 6589 s
+rep 2512/5184 deg 44411 cliques 0 best 0 maxdepth 4  6610 s
+rep 2514 deg 34874 ... 6610 s
+rep 2514/5184 deg 34874 cliques 0 best 0 maxdepth 4  6618 s
+rep 2516 deg 36892 ... 6618 s
+rep 2516/5184 deg 36892 cliques 0 best 0 maxdepth 4  6632 s
+rep 2518 deg 40087 ... 6632 s
+rep 2518/5184 deg 40087 cliques 0 best 0 maxdepth 4  6652 s
+rep 2520 deg 37553 ... 6652 s
+rep 2520/5184 deg 37553 cliques 0 best 0 maxdepth 4  6665 s
+rep 2522 deg 35694 ... 6666 s
+rep 2522/5184 deg 35694 cliques 0 best 0 maxdepth 4  6676 s
+rep 2524 deg 37143 ... 6677 s
+rep 2524/5184 deg 37143 cliques 0 best 0 maxdepth 4  6685 s
+rep 2526 deg 40991 ... 6685 s
+rep 2526/5184 deg 40991 cliques 0 best 0 maxdepth 4  6700 s
+rep 2528 deg 40217 ... 6700 s
+rep 2528/5184 deg 40217 cliques 0 best 0 maxdepth 4  6723 s
+rep 2530 deg 36246 ... 6723 s
+rep 2530/5184 deg 36246 cliques 0 best 0 maxdepth 4  6736 s
+rep 2532 deg 37588 ... 6736 s
+rep 2532/5184 deg 37588 cliques 0 best 0 maxdepth 4  6746 s
+rep 2534 deg 36444 ... 6746 s
+rep 2534/5184 deg 36444 cliques 0 best 0 maxdepth 4  6759 s
+rep 2536 deg 32836 ... 6759 s
+rep 2536/5184 deg 32836 cliques 0 best 0 maxdepth 4  6767 s
+rep 2538 deg 36825 ... 6767 s
+rep 2538/5184 deg 36825 cliques 0 best 0 maxdepth 4  6782 s
+rep 2540 deg 37607 ... 6782 s
+rep 2540/5184 deg 37607 cliques 0 best 0 maxdepth 4  6797 s
+rep 2542 deg 34950 ... 6797 s
+rep 2542/5184 deg 34950 cliques 0 best 0 maxdepth 4  6804 s
+rep 2544 deg 38595 ... 6804 s
+rep 2544/5184 deg 38595 cliques 0 best 0 maxdepth 4  6820 s
+rep 2546 deg 34690 ... 6820 s
+rep 2546/5184 deg 34690 cliques 0 best 0 maxdepth 4  6831 s
+rep 2548 deg 40220 ... 6831 s
+rep 2548/5184 deg 40220 cliques 0 best 0 maxdepth 4  6849 s
+rep 2550 deg 33675 ... 6849 s
+rep 2550/5184 deg 33675 cliques 0 best 0 maxdepth 4  6860 s
+rep 2552 deg 36541 ... 6860 s
+rep 2552/5184 deg 36541 cliques 0 best 0 maxdepth 4  6874 s
+rep 2554 deg 46984 ... 6874 s
+rep 2554/5184 deg 46984 cliques 0 best 0 maxdepth 4  6905 s
+rep 2556 deg 38240 ... 6905 s
+rep 2556/5184 deg 38240 cliques 0 best 0 maxdepth 4  6920 s
+rep 2558 deg 43431 ... 6920 s
+rep 2558/5184 deg 43431 cliques 0 best 0 maxdepth 4  6948 s
+rep 2560 deg 31930 ... 6948 s
+rep 2560/5184 deg 31930 cliques 0 best 0 maxdepth 4  6959 s
+rep 2562 deg 40113 ... 6959 s
+rep 2562/5184 deg 40113 cliques 0 best 0 maxdepth 4  6974 s
+rep 2564 deg 41352 ... 6974 s
+rep 2564/5184 deg 41352 cliques 0 best 0 maxdepth 4  6994 s
+rep 2566 deg 34690 ... 6994 s
+rep 2566/5184 deg 34690 cliques 0 best 0 maxdepth 4  7007 s
+rep 2568 deg 36029 ... 7007 s
+rep 2568/5184 deg 36029 cliques 0 best 0 maxdepth 4  7022 s
+rep 2570 deg 46195 ... 7022 s
+rep 2570/5184 deg 46195 cliques 0 best 0 maxdepth 4  7043 s
+rep 2572 deg 35871 ... 7043 s
+rep 2572/5184 deg 35871 cliques 0 best 0 maxdepth 4  7060 s
+rep 2574 deg 39052 ... 7060 s
+rep 2574/5184 deg 39052 cliques 0 best 0 maxdepth 4  7077 s
+rep 2576 deg 35662 ... 7077 s
+rep 2576/5184 deg 35662 cliques 0 best 0 maxdepth 4  7091 s
+rep 2578 deg 41391 ... 7091 s
+rep 2578/5184 deg 41391 cliques 0 best 0 maxdepth 4  7110 s
+rep 2580 deg 38731 ... 7110 s
+rep 2580/5184 deg 38731 cliques 0 best 0 maxdepth 4  7128 s
+rep 2582 deg 40842 ... 7128 s
+rep 2582/5184 deg 40842 cliques 0 best 0 maxdepth 4  7144 s
+rep 2584 deg 40782 ... 7144 s
+rep 2584/5184 deg 40782 cliques 0 best 0 maxdepth 4  7163 s
+rep 2586 deg 38470 ... 7163 s
+rep 2586/5184 deg 38470 cliques 0 best 0 maxdepth 4  7182 s
+rep 2588 deg 37536 ... 7182 s
+rep 2588/5184 deg 37536 cliques 0 best 0 maxdepth 4  7197 s
+rep 2590 deg 45244 ... 7197 s
+rep 2590/5184 deg 45244 cliques 0 best 0 maxdepth 4  7224 s
+rep 2592 deg 39676 ... 7225 s
+rep 2592/5184 deg 39676 cliques 0 best 0 maxdepth 4  7240 s
+rep 2594 deg 35744 ... 7240 s
+rep 2594/5184 deg 35744 cliques 0 best 0 maxdepth 4  7254 s
+rep 2596 deg 37027 ... 7254 s
+rep 2596/5184 deg 37027 cliques 0 best 0 maxdepth 4  7269 s
+rep 2598 deg 35828 ... 7269 s
+rep 2598/5184 deg 35828 cliques 0 best 0 maxdepth 4  7282 s
+rep 2600 deg 39437 ... 7282 s
+rep 2600/5184 deg 39437 cliques 0 best 0 maxdepth 4  7298 s
+rep 2602 deg 42355 ... 7298 s
+rep 2602/5184 deg 42355 cliques 0 best 0 maxdepth 4  7320 s
+rep 2604 deg 40934 ... 7320 s
+rep 2604/5184 deg 40934 cliques 0 best 0 maxdepth 4  7336 s
+rep 2606 deg 35138 ... 7336 s
+rep 2606/5184 deg 35138 cliques 0 best 0 maxdepth 4  7350 s
+rep 2608 deg 34666 ... 7350 s
+rep 2608/5184 deg 34666 cliques 0 best 0 maxdepth 4  7361 s
+rep 2610 deg 42231 ... 7361 s
+clique #1: 63 orbit columns, 0 free candidates, 0 mutually QI -> 63 columns
+DUMP z00_0_dump_20_63.txt  (63 orbit columns + 0 free)
+rep 2610/5184 deg 42231 cliques 5 best 63 maxdepth 7  7386 s
+rep 2612 deg 42180 ... 7386 s
+rep 2612/5184 deg 42180 cliques 5 best 63 maxdepth 7  7411 s
+rep 2614 deg 40202 ... 7411 s
+rep 2614/5184 deg 40202 cliques 5 best 63 maxdepth 7  7434 s
+rep 2616 deg 36848 ... 7434 s
+rep 2616/5184 deg 36848 cliques 5 best 63 maxdepth 7  7445 s
+rep 2618 deg 36987 ... 7445 s
+rep 2618/5184 deg 36987 cliques 5 best 63 maxdepth 7  7464 s
+rep 2620 deg 38376 ... 7464 s
+rep 2620/5184 deg 38376 cliques 5 best 63 maxdepth 7  7479 s
+rep 2622 deg 42108 ... 7479 s
+rep 2622/5184 deg 42108 cliques 5 best 63 maxdepth 7  7501 s
+rep 2624 deg 49001 ... 7501 s
+rep 2624/5184 deg 49001 cliques 5 best 63 maxdepth 7  7534 s
+rep 2626 deg 43021 ... 7534 s
+rep 2626/5184 deg 43021 cliques 5 best 63 maxdepth 7  7552 s
+rep 2628 deg 35602 ... 7552 s
+rep 2628/5184 deg 35602 cliques 5 best 63 maxdepth 7  7568 s
+rep 2630 deg 39131 ... 7568 s
+rep 2630/5184 deg 39131 cliques 5 best 63 maxdepth 7  7584 s
+rep 2632 deg 37283 ... 7584 s
+rep 2632/5184 deg 37283 cliques 5 best 63 maxdepth 7  7600 s
+rep 2634 deg 39428 ... 7600 s
+rep 2634/5184 deg 39428 cliques 5 best 63 maxdepth 7  7616 s
+rep 2636 deg 41866 ... 7616 s
+rep 2636/5184 deg 41866 cliques 5 best 63 maxdepth 7  7640 s
+rep 2638 deg 37973 ... 7640 s
+rep 2638/5184 deg 37973 cliques 5 best 63 maxdepth 7  7655 s
+rep 2640 deg 34344 ... 7655 s
+rep 2640/5184 deg 34344 cliques 5 best 63 maxdepth 7  7668 s
+rep 2642 deg 40520 ... 7668 s
+rep 2642/5184 deg 40520 cliques 5 best 63 maxdepth 7  7685 s
+rep 2644 deg 37830 ... 7685 s
+rep 2644/5184 deg 37830 cliques 5 best 63 maxdepth 7  7698 s
+rep 2646 deg 38317 ... 7698 s
+rep 2646/5184 deg 38317 cliques 5 best 63 maxdepth 7  7719 s
+rep 2648 deg 36457 ... 7719 s
+rep 2648/5184 deg 36457 cliques 5 best 63 maxdepth 7  7731 s
+rep 2650 deg 36843 ... 7731 s
+rep 2650/5184 deg 36843 cliques 5 best 63 maxdepth 7  7745 s
+rep 2652 deg 35023 ... 7745 s
+rep 2652/5184 deg 35023 cliques 5 best 63 maxdepth 7  7759 s
+rep 2654 deg 39302 ... 7759 s
+rep 2654/5184 deg 39302 cliques 5 best 63 maxdepth 7  7775 s
+rep 2656 deg 40861 ... 7775 s
+rep 2656/5184 deg 40861 cliques 5 best 63 maxdepth 7  7794 s
+rep 2658 deg 44591 ... 7794 s
+rep 2658/5184 deg 44591 cliques 5 best 63 maxdepth 7  7815 s
+rep 2660 deg 44478 ... 7815 s
+rep 2660/5184 deg 44478 cliques 5 best 63 maxdepth 7  7837 s
+rep 2662 deg 41539 ... 7837 s
+rep 2662/5184 deg 41539 cliques 5 best 63 maxdepth 7  7855 s
+rep 2664 deg 41672 ... 7855 s
+rep 2664/5184 deg 41672 cliques 5 best 63 maxdepth 7  7877 s
+rep 2666 deg 42607 ... 7877 s
+rep 2666/5184 deg 42607 cliques 5 best 63 maxdepth 7  7893 s
+rep 2668 deg 43682 ... 7893 s
+rep 2668/5184 deg 43682 cliques 5 best 63 maxdepth 7  7911 s
+rep 2670 deg 45424 ... 7911 s
+rep 2670/5184 deg 45424 cliques 5 best 63 maxdepth 7  7929 s
+rep 2672 deg 44314 ... 7929 s
+rep 2672/5184 deg 44314 cliques 5 best 63 maxdepth 7  7949 s
+rep 2674 deg 35824 ... 7949 s
+rep 2674/5184 deg 35824 cliques 5 best 63 maxdepth 7  7962 s
+rep 2676 deg 40458 ... 7962 s
+rep 2676/5184 deg 40458 cliques 5 best 63 maxdepth 7  7979 s
+rep 2678 deg 47959 ... 7979 s
+rep 2678/5184 deg 47959 cliques 5 best 63 maxdepth 7  8011 s
+rep 2680 deg 40929 ... 8011 s
+rep 2680/5184 deg 40929 cliques 5 best 63 maxdepth 7  8030 s
+rep 2682 deg 41654 ... 8030 s
+rep 2682/5184 deg 41654 cliques 5 best 63 maxdepth 7  8051 s
+rep 2684 deg 37393 ... 8051 s
+rep 2684/5184 deg 37393 cliques 5 best 63 maxdepth 7  8063 s
+rep 2686 deg 37347 ... 8063 s
+rep 2686/5184 deg 37347 cliques 5 best 63 maxdepth 7  8077 s
+rep 2688 deg 44184 ... 8077 s
+rep 2688/5184 deg 44184 cliques 5 best 63 maxdepth 7  8105 s
+rep 2690 deg 47387 ... 8105 s
+rep 2690/5184 deg 47387 cliques 5 best 63 maxdepth 7  8137 s
+rep 2692 deg 38795 ... 8137 s
+rep 2692/5184 deg 38795 cliques 5 best 63 maxdepth 7  8155 s
+rep 2694 deg 39008 ... 8155 s
+rep 2694/5184 deg 39008 cliques 5 best 63 maxdepth 7  8168 s
+rep 2696 deg 41944 ... 8169 s
+rep 2696/5184 deg 41944 cliques 5 best 63 maxdepth 7  8190 s
+rep 2698 deg 43748 ... 8190 s
+rep 2698/5184 deg 43748 cliques 5 best 63 maxdepth 7  8205 s
+rep 2700 deg 39230 ... 8205 s
+rep 2700/5184 deg 39230 cliques 5 best 63 maxdepth 7  8220 s
+rep 2702 deg 44117 ... 8220 s
+rep 2702/5184 deg 44117 cliques 5 best 63 maxdepth 7  8245 s
+rep 2704 deg 41982 ... 8245 s
+rep 2704/5184 deg 41982 cliques 5 best 63 maxdepth 7  8267 s
+rep 2706 deg 39423 ... 8267 s
+rep 2706/5184 deg 39423 cliques 5 best 63 maxdepth 7  8282 s
+rep 2708 deg 36804 ... 8282 s
+rep 2708/5184 deg 36804 cliques 5 best 63 maxdepth 7  8298 s
+rep 2710 deg 40029 ... 8298 s
+rep 2710/5184 deg 40029 cliques 5 best 63 maxdepth 7  8317 s
+rep 2712 deg 38146 ... 8317 s
+rep 2712/5184 deg 38146 cliques 5 best 63 maxdepth 7  8330 s
+rep 2714 deg 39956 ... 8330 s
+rep 2714/5184 deg 39956 cliques 5 best 63 maxdepth 7  8344 s
+rep 2716 deg 50927 ... 8344 s
+rep 2716/5184 deg 50927 cliques 5 best 63 maxdepth 7  8381 s
+rep 2718 deg 43506 ... 8381 s
+rep 2718/5184 deg 43506 cliques 5 best 63 maxdepth 7  8409 s
+rep 2720 deg 36100 ... 8409 s
+rep 2720/5184 deg 36100 cliques 5 best 63 maxdepth 7  8422 s
+rep 2722 deg 46833 ... 8422 s
+rep 2722/5184 deg 46833 cliques 5 best 63 maxdepth 7  8448 s
+rep 2724 deg 40949 ... 8448 s
+rep 2724/5184 deg 40949 cliques 5 best 63 maxdepth 7  8462 s
+rep 2726 deg 41500 ... 8462 s
+rep 2726/5184 deg 41500 cliques 5 best 63 maxdepth 7  8479 s
+rep 2728 deg 40887 ... 8479 s
+rep 2728/5184 deg 40887 cliques 5 best 63 maxdepth 7  8499 s
+rep 2730 deg 45727 ... 8499 s
+rep 2730/5184 deg 45727 cliques 5 best 63 maxdepth 7  8531 s
+rep 2732 deg 47471 ... 8531 s
+rep 2732/5184 deg 47471 cliques 5 best 63 maxdepth 7  8562 s
+rep 2734 deg 38174 ... 8562 s
+rep 2734/5184 deg 38174 cliques 5 best 63 maxdepth 7  8578 s
+rep 2736 deg 39594 ... 8579 s
+rep 2736/5184 deg 39594 cliques 5 best 63 maxdepth 7  8602 s
+rep 2738 deg 42727 ... 8602 s
+rep 2738/5184 deg 42727 cliques 5 best 63 maxdepth 7  8620 s
+rep 2740 deg 46665 ... 8620 s
+rep 2740/5184 deg 46665 cliques 5 best 63 maxdepth 7  8652 s
+rep 2742 deg 37505 ... 8652 s
+rep 2742/5184 deg 37505 cliques 5 best 63 maxdepth 7  8670 s
+rep 2744 deg 41776 ... 8670 s
+rep 2744/5184 deg 41776 cliques 5 best 63 maxdepth 7  8685 s
+rep 2746 deg 45113 ... 8685 s
+rep 2746/5184 deg 45113 cliques 5 best 63 maxdepth 7  8713 s
+rep 2748 deg 34933 ... 8713 s
+rep 2748/5184 deg 34933 cliques 5 best 63 maxdepth 7  8727 s
+rep 2750 deg 41752 ... 8727 s
+rep 2750/5184 deg 41752 cliques 5 best 63 maxdepth 7  8744 s
+rep 2752 deg 45459 ... 8744 s
+rep 2752/5184 deg 45459 cliques 5 best 63 maxdepth 7  8779 s
+rep 2754 deg 37467 ... 8779 s
+rep 2754/5184 deg 37467 cliques 5 best 63 maxdepth 7  8794 s
+rep 2756 deg 44290 ... 8794 s
+rep 2756/5184 deg 44290 cliques 5 best 63 maxdepth 7  8821 s
+rep 2758 deg 44074 ... 8821 s
+rep 2758/5184 deg 44074 cliques 5 best 63 maxdepth 7  8841 s
+rep 2760 deg 36206 ... 8841 s
+rep 2760/5184 deg 36206 cliques 5 best 63 maxdepth 7  8853 s
+rep 2762 deg 35932 ... 8853 s
+rep 2762/5184 deg 35932 cliques 5 best 63 maxdepth 7  8866 s
+rep 2764 deg 37009 ... 8866 s
+rep 2764/5184 deg 37009 cliques 5 best 63 maxdepth 7  8879 s
+rep 2766 deg 42685 ... 8879 s
+rep 2766/5184 deg 42685 cliques 5 best 63 maxdepth 7  8896 s
+rep 2768 deg 48216 ... 8896 s
+rep 2768/5184 deg 48216 cliques 5 best 63 maxdepth 7  8932 s
+rep 2770 deg 43242 ... 8932 s
+rep 2770/5184 deg 43242 cliques 5 best 63 maxdepth 7  8955 s
+rep 2772 deg 39497 ... 8955 s
+rep 2772/5184 deg 39497 cliques 5 best 63 maxdepth 7  8972 s
+rep 2774 deg 37182 ... 8972 s
+rep 2774/5184 deg 37182 cliques 5 best 63 maxdepth 7  8987 s
+rep 2776 deg 49716 ... 8987 s
+rep 2776/5184 deg 49716 cliques 5 best 63 maxdepth 7  9025 s
+rep 2778 deg 48103 ... 9025 s
+rep 2778/5184 deg 48103 cliques 5 best 63 maxdepth 7  9047 s
+rep 2780 deg 49996 ... 9048 s
+rep 2780/5184 deg 49996 cliques 5 best 63 maxdepth 7  9084 s
+rep 2782 deg 47014 ... 9084 s
+rep 2782/5184 deg 47014 cliques 5 best 63 maxdepth 7  9111 s
+rep 2784 deg 45802 ... 9111 s
+rep 2784/5184 deg 45802 cliques 5 best 63 maxdepth 7  9141 s
+rep 2786 deg 41981 ... 9141 s
+rep 2786/5184 deg 41981 cliques 5 best 63 maxdepth 7  9158 s
+rep 2788 deg 43624 ... 9158 s
+rep 2788/5184 deg 43624 cliques 5 best 63 maxdepth 7  9186 s
+rep 2790 deg 43235 ... 9186 s
+rep 2790/5184 deg 43235 cliques 5 best 63 maxdepth 7  9212 s
+rep 2792 deg 37903 ... 9212 s
+rep 2792/5184 deg 37903 cliques 5 best 63 maxdepth 7  9229 s
+rep 2794 deg 39790 ... 9229 s
+rep 2794/5184 deg 39790 cliques 5 best 63 maxdepth 7  9243 s
+rep 2796 deg 41835 ... 9243 s
+rep 2796/5184 deg 41835 cliques 5 best 63 maxdepth 7  9263 s
+rep 2798 deg 43728 ... 9263 s
+rep 2798/5184 deg 43728 cliques 5 best 63 maxdepth 7  9292 s
+rep 2800 deg 42613 ... 9292 s
+rep 2800/5184 deg 42613 cliques 5 best 63 maxdepth 7  9308 s
+rep 2802 deg 43300 ... 9308 s
+rep 2802/5184 deg 43300 cliques 5 best 63 maxdepth 7  9326 s
+rep 2804 deg 47791 ... 9326 s
+rep 2804/5184 deg 47791 cliques 5 best 63 maxdepth 7  9359 s
+rep 2806 deg 36572 ... 9359 s
+rep 2806/5184 deg 36572 cliques 5 best 63 maxdepth 7  9375 s
+rep 2808 deg 45165 ... 9375 s
+rep 2808/5184 deg 45165 cliques 5 best 63 maxdepth 7  9400 s
+rep 2810 deg 42073 ... 9401 s
+rep 2810/5184 deg 42073 cliques 5 best 63 maxdepth 7  9419 s
+rep 2812 deg 38848 ... 9419 s
+rep 2812/5184 deg 38848 cliques 5 best 63 maxdepth 7  9433 s
+rep 2814 deg 44196 ... 9433 s
+rep 2814/5184 deg 44196 cliques 5 best 63 maxdepth 7  9451 s
+rep 2816 deg 41070 ... 9452 s
+rep 2816/5184 deg 41070 cliques 5 best 63 maxdepth 7  9471 s
+rep 2818 deg 44327 ... 9471 s
+rep 2818/5184 deg 44327 cliques 5 best 63 maxdepth 7  9494 s
+rep 2820 deg 34015 ... 9494 s
+rep 2820/5184 deg 34015 cliques 5 best 63 maxdepth 7  9506 s
+rep 2822 deg 45053 ... 9506 s
+rep 2822/5184 deg 45053 cliques 5 best 63 maxdepth 7  9530 s
+rep 2824 deg 36538 ... 9530 s
+rep 2824/5184 deg 36538 cliques 5 best 63 maxdepth 7  9545 s
+rep 2826 deg 48704 ... 9545 s
+rep 2826/5184 deg 48704 cliques 5 best 63 maxdepth 7  9569 s
+rep 2828 deg 41572 ... 9570 s
+rep 2828/5184 deg 41572 cliques 5 best 63 maxdepth 7  9587 s
+rep 2830 deg 38210 ... 9587 s
+rep 2830/5184 deg 38210 cliques 5 best 63 maxdepth 7  9605 s
+rep 2832 deg 44093 ... 9605 s
+rep 2832/5184 deg 44093 cliques 5 best 63 maxdepth 7  9626 s
+rep 2834 deg 37733 ... 9626 s
+rep 2834/5184 deg 37733 cliques 5 best 63 maxdepth 7  9642 s
+rep 2836 deg 44561 ... 9642 s
+rep 2836/5184 deg 44561 cliques 5 best 63 maxdepth 7  9670 s
+rep 2838 deg 36894 ... 9670 s
+rep 2838/5184 deg 36894 cliques 5 best 63 maxdepth 7  9684 s
+rep 2840 deg 33402 ... 9684 s
+rep 2840/5184 deg 33402 cliques 5 best 63 maxdepth 7  9696 s
+rep 2842 deg 44591 ... 9696 s
+rep 2842/5184 deg 44591 cliques 5 best 63 maxdepth 7  9714 s
+rep 2844 deg 43525 ... 9715 s
+rep 2844/5184 deg 43525 cliques 5 best 63 maxdepth 7  9735 s
+rep 2846 deg 43286 ... 9735 s
+rep 2846/5184 deg 43286 cliques 5 best 63 maxdepth 7  9763 s
+rep 2848 deg 38103 ... 9763 s
+rep 2848/5184 deg 38103 cliques 5 best 63 maxdepth 7  9780 s
+rep 2850 deg 43948 ... 9780 s
+rep 2850/5184 deg 43948 cliques 5 best 63 maxdepth 7  9809 s
+rep 2852 deg 43658 ... 9809 s
+rep 2852/5184 deg 43658 cliques 5 best 63 maxdepth 7  9835 s
+rep 2854 deg 40068 ... 9835 s
+rep 2854/5184 deg 40068 cliques 5 best 63 maxdepth 7  9852 s
+rep 2856 deg 46186 ... 9852 s
+rep 2856/5184 deg 46186 cliques 5 best 63 maxdepth 7  9885 s
+rep 2858 deg 48648 ... 9885 s
+rep 2858/5184 deg 48648 cliques 5 best 63 maxdepth 7  9913 s
+rep 2860 deg 45134 ... 9913 s
+rep 2860/5184 deg 45134 cliques 5 best 63 maxdepth 7  9942 s
+rep 2862 deg 42318 ... 9942 s
+rep 2862/5184 deg 42318 cliques 5 best 63 maxdepth 7  9962 s
+rep 2864 deg 48724 ... 9962 s
+rep 2864/5184 deg 48724 cliques 5 best 63 maxdepth 7  9997 s
+rep 2866 deg 47221 ... 9998 s
+rep 2866/5184 deg 47221 cliques 5 best 63 maxdepth 7  10030 s
+rep 2868 deg 47007 ... 10030 s
+rep 2868/5184 deg 47007 cliques 5 best 63 maxdepth 7  10056 s
+rep 2870 deg 42729 ... 10056 s
+rep 2870/5184 deg 42729 cliques 5 best 63 maxdepth 7  10072 s
+rep 2872 deg 41228 ... 10073 s
+rep 2872/5184 deg 41228 cliques 5 best 63 maxdepth 7  10096 s
+rep 2874 deg 37679 ... 10096 s
+rep 2874/5184 deg 37679 cliques 5 best 63 maxdepth 7  10105 s
+rep 2876 deg 42943 ... 10105 s
+rep 2876/5184 deg 42943 cliques 5 best 63 maxdepth 7  10122 s
+rep 2878 deg 47919 ... 10122 s
+rep 2878/5184 deg 47919 cliques 5 best 63 maxdepth 7  10154 s
+rep 2880 deg 44067 ... 10154 s
+rep 2880/5184 deg 44067 cliques 5 best 63 maxdepth 7  10182 s
+rep 2882 deg 41688 ... 10182 s
+rep 2882/5184 deg 41688 cliques 5 best 63 maxdepth 7  10201 s
+rep 2884 deg 38291 ... 10201 s
+rep 2884/5184 deg 38291 cliques 5 best 63 maxdepth 7  10219 s
+rep 2886 deg 45742 ... 10219 s
+rep 2886/5184 deg 45742 cliques 5 best 63 maxdepth 7  10239 s
+rep 2888 deg 46073 ... 10239 s
+rep 2888/5184 deg 46073 cliques 5 best 63 maxdepth 7  10264 s
+rep 2890 deg 43869 ... 10264 s
+rep 2890/5184 deg 43869 cliques 5 best 63 maxdepth 7  10293 s
+rep 2892 deg 41257 ... 10293 s
+rep 2892/5184 deg 41257 cliques 5 best 63 maxdepth 7  10319 s
+rep 2894 deg 44499 ... 10319 s
+rep 2894/5184 deg 44499 cliques 5 best 63 maxdepth 7  10342 s
+rep 2896 deg 42667 ... 10342 s
+rep 2896/5184 deg 42667 cliques 5 best 63 maxdepth 7  10361 s
+rep 2898 deg 38007 ... 10361 s
+rep 2898/5184 deg 38007 cliques 5 best 63 maxdepth 7  10377 s
+rep 2900 deg 48208 ... 10377 s
+rep 2900/5184 deg 48208 cliques 5 best 63 maxdepth 7  10411 s
+rep 2902 deg 40649 ... 10411 s
+rep 2902/5184 deg 40649 cliques 5 best 63 maxdepth 7  10428 s
+rep 2904 deg 44353 ... 10429 s
+rep 2904/5184 deg 44353 cliques 5 best 63 maxdepth 7  10457 s
+rep 2906 deg 40212 ... 10457 s
+rep 2906/5184 deg 40212 cliques 5 best 63 maxdepth 7  10475 s
+rep 2908 deg 43205 ... 10475 s
+rep 2908/5184 deg 43205 cliques 5 best 63 maxdepth 7  10497 s
+rep 2910 deg 45953 ... 10497 s
+rep 2910/5184 deg 45953 cliques 5 best 63 maxdepth 7  10521 s
+rep 2912 deg 42679 ... 10522 s
+rep 2912/5184 deg 42679 cliques 5 best 63 maxdepth 7  10543 s
+rep 2914 deg 40812 ... 10543 s
+rep 2914/5184 deg 40812 cliques 5 best 63 maxdepth 7  10566 s
+rep 2916 deg 40969 ... 10566 s
+rep 2916/5184 deg 40969 cliques 5 best 63 maxdepth 7  10589 s
+rep 2918 deg 48568 ... 10589 s
+rep 2918/5184 deg 48568 cliques 5 best 63 maxdepth 7  10618 s
+rep 2920 deg 41097 ... 10618 s
+rep 2920/5184 deg 41097 cliques 5 best 63 maxdepth 7  10634 s
+rep 2922 deg 43403 ... 10634 s
+rep 2922/5184 deg 43403 cliques 5 best 63 maxdepth 7  10665 s
+rep 2924 deg 47829 ... 10665 s
+rep 2924/5184 deg 47829 cliques 5 best 63 maxdepth 7  10704 s
+rep 2926 deg 38912 ... 10704 s
+rep 2926/5184 deg 38912 cliques 5 best 63 maxdepth 7  10724 s
+rep 2928 deg 52770 ... 10724 s
+rep 2928/5184 deg 52770 cliques 5 best 63 maxdepth 7  10765 s
+rep 2930 deg 43938 ... 10765 s
+rep 2930/5184 deg 43938 cliques 5 best 63 maxdepth 7  10796 s
+rep 2932 deg 36339 ... 10796 s
+rep 2932/5184 deg 36339 cliques 5 best 63 maxdepth 7  10809 s
+rep 2934 deg 42634 ... 10809 s
+rep 2934/5184 deg 42634 cliques 5 best 63 maxdepth 7  10834 s
+rep 2936 deg 42188 ... 10834 s
+rep 2936/5184 deg 42188 cliques 5 best 63 maxdepth 7  10858 s
+rep 2938 deg 37020 ... 10858 s
+rep 2938/5184 deg 37020 cliques 5 best 63 maxdepth 7  10872 s
+rep 2940 deg 38964 ... 10872 s
+rep 2940/5184 deg 38964 cliques 5 best 63 maxdepth 7  10889 s
+rep 2942 deg 44615 ... 10889 s
+rep 2942/5184 deg 44615 cliques 5 best 63 maxdepth 7  10912 s
+rep 2944 deg 37572 ... 10912 s
+rep 2944/5184 deg 37572 cliques 5 best 63 maxdepth 7  10928 s
+rep 2946 deg 38843 ... 10928 s
+rep 2946/5184 deg 38843 cliques 5 best 63 maxdepth 7  10942 s
+rep 2948 deg 38252 ... 10942 s
+rep 2948/5184 deg 38252 cliques 5 best 63 maxdepth 7  10957 s
+rep 2950 deg 39653 ... 10957 s
+rep 2950/5184 deg 39653 cliques 5 best 63 maxdepth 7  10972 s
+rep 2952 deg 43427 ... 10972 s
+rep 2952/5184 deg 43427 cliques 5 best 63 maxdepth 7  11000 s
+rep 2954 deg 47175 ... 11000 s
+rep 2954/5184 deg 47175 cliques 5 best 63 maxdepth 7  11030 s
+rep 2956 deg 39674 ... 11030 s
+rep 2956/5184 deg 39674 cliques 5 best 63 maxdepth 7  11045 s
+rep 2958 deg 30787 ... 11045 s
+rep 2958/5184 deg 30787 cliques 5 best 63 maxdepth 7  11055 s
+rep 2960 deg 51537 ... 11055 s
+rep 2960/5184 deg 51537 cliques 5 best 63 maxdepth 7  11093 s
+rep 2962 deg 40816 ... 11093 s
+rep 2962/5184 deg 40816 cliques 5 best 63 maxdepth 7  11111 s
+rep 2964 deg 42766 ... 11111 s
+rep 2964/5184 deg 42766 cliques 5 best 63 maxdepth 7  11136 s
+rep 2966 deg 43555 ... 11136 s
+rep 2966/5184 deg 43555 cliques 5 best 63 maxdepth 7  11156 s
+rep 2968 deg 49476 ... 11156 s
+rep 2968/5184 deg 49476 cliques 5 best 63 maxdepth 7  11190 s
+rep 2970 deg 43821 ... 11190 s
+rep 2970/5184 deg 43821 cliques 5 best 63 maxdepth 7  11211 s
+rep 2972 deg 45365 ... 11211 s
+rep 2972/5184 deg 45365 cliques 5 best 63 maxdepth 7  11228 s
+rep 2974 deg 46453 ... 11228 s
+rep 2974/5184 deg 46453 cliques 5 best 63 maxdepth 7  11260 s
+rep 2976 deg 45822 ... 11260 s
+rep 2976/5184 deg 45822 cliques 5 best 63 maxdepth 7  11291 s
+rep 2978 deg 37393 ... 11291 s
+rep 2978/5184 deg 37393 cliques 5 best 63 maxdepth 7  11304 s
+rep 2980 deg 41027 ... 11304 s
+rep 2980/5184 deg 41027 cliques 5 best 63 maxdepth 7  11321 s
+rep 2982 deg 41980 ... 11321 s
+rep 2982/5184 deg 41980 cliques 5 best 63 maxdepth 7  11340 s
+rep 2984 deg 39175 ... 11340 s
+rep 2984/5184 deg 39175 cliques 5 best 63 maxdepth 7  11355 s
+rep 2986 deg 47803 ... 11355 s
+rep 2986/5184 deg 47803 cliques 5 best 63 maxdepth 7  11391 s
+rep 2988 deg 42979 ... 11391 s
+rep 2988/5184 deg 42979 cliques 5 best 63 maxdepth 7  11416 s
+rep 2990 deg 38480 ... 11416 s
+rep 2990/5184 deg 38480 cliques 5 best 63 maxdepth 7  11432 s
+rep 2992 deg 47586 ... 11432 s
+rep 2992/5184 deg 47586 cliques 5 best 63 maxdepth 7  11454 s
+rep 2994 deg 43834 ... 11454 s
+rep 2994/5184 deg 43834 cliques 5 best 63 maxdepth 7  11481 s
+rep 2996 deg 46674 ... 11481 s
+rep 2996/5184 deg 46674 cliques 5 best 63 maxdepth 7  11511 s
+rep 2998 deg 46114 ... 11511 s
+rep 2998/5184 deg 46114 cliques 5 best 63 maxdepth 7  11531 s
+rep 3000 deg 42467 ... 11531 s
+rep 3000/5184 deg 42467 cliques 5 best 63 maxdepth 7  11553 s
+rep 3002 deg 40029 ... 11553 s
+rep 3002/5184 deg 40029 cliques 5 best 63 maxdepth 7  11569 s
+rep 3004 deg 38908 ... 11569 s
+rep 3004/5184 deg 38908 cliques 5 best 63 maxdepth 7  11588 s
+rep 3006 deg 40561 ... 11588 s
+rep 3006/5184 deg 40561 cliques 5 best 63 maxdepth 7  11608 s
+rep 3008 deg 41243 ... 11608 s
+rep 3008/5184 deg 41243 cliques 5 best 63 maxdepth 7  11631 s
+rep 3010 deg 43501 ... 11631 s
+rep 3010/5184 deg 43501 cliques 5 best 63 maxdepth 7  11660 s
+rep 3012 deg 42170 ... 11660 s
+rep 3012/5184 deg 42170 cliques 5 best 63 maxdepth 7  11679 s
+rep 3014 deg 47923 ... 11679 s
+rep 3014/5184 deg 47923 cliques 5 best 63 maxdepth 7  11710 s
+rep 3016 deg 44629 ... 11711 s
+rep 3016/5184 deg 44629 cliques 5 best 63 maxdepth 7  11740 s
+rep 3018 deg 49469 ... 11740 s
+rep 3018/5184 deg 49469 cliques 5 best 63 maxdepth 7  11774 s
+rep 3020 deg 43990 ... 11774 s
+rep 3020/5184 deg 43990 cliques 5 best 63 maxdepth 7  11804 s
+rep 3022 deg 41544 ... 11804 s
+rep 3022/5184 deg 41544 cliques 5 best 63 maxdepth 7  11812 s
+rep 3024 deg 49719 ... 11812 s
+rep 3024/5184 deg 49719 cliques 5 best 63 maxdepth 7  11844 s
+rep 3026 deg 41551 ... 11844 s
+rep 3026/5184 deg 41551 cliques 5 best 63 maxdepth 7  11863 s
+rep 3028 deg 40392 ... 11863 s
+rep 3028/5184 deg 40392 cliques 5 best 63 maxdepth 7  11887 s
+rep 3030 deg 42249 ... 11887 s
+rep 3030/5184 deg 42249 cliques 5 best 63 maxdepth 7  11911 s
+rep 3032 deg 38276 ... 11911 s
+rep 3032/5184 deg 38276 cliques 5 best 63 maxdepth 7  11925 s
+rep 3034 deg 48075 ... 11925 s
+rep 3034/5184 deg 48075 cliques 5 best 63 maxdepth 7  11956 s
+rep 3036 deg 46812 ... 11956 s
+rep 3036/5184 deg 46812 cliques 5 best 63 maxdepth 7  11987 s
+rep 3038 deg 47467 ... 11987 s
+rep 3038/5184 deg 47467 cliques 5 best 63 maxdepth 7  12023 s
+rep 3040 deg 42123 ... 12023 s
+rep 3040/5184 deg 42123 cliques 5 best 63 maxdepth 7  12041 s
+rep 3042 deg 34102 ... 12041 s
+rep 3042/5184 deg 34102 cliques 5 best 63 maxdepth 7  12054 s
+rep 3044 deg 33306 ... 12054 s
+rep 3044/5184 deg 33306 cliques 5 best 63 maxdepth 7  12065 s
+rep 3046 deg 38966 ... 12066 s
+rep 3046/5184 deg 38966 cliques 5 best 63 maxdepth 7  12087 s
+rep 3048 deg 38973 ... 12087 s
+rep 3048/5184 deg 38973 cliques 5 best 63 maxdepth 7  12099 s
+rep 3050 deg 41515 ... 12099 s
+rep 3050/5184 deg 41515 cliques 5 best 63 maxdepth 7  12119 s
+rep 3052 deg 46048 ... 12119 s
+rep 3052/5184 deg 46048 cliques 5 best 63 maxdepth 7  12151 s
+rep 3054 deg 46028 ... 12151 s
+rep 3054/5184 deg 46028 cliques 5 best 63 maxdepth 7  12181 s
+rep 3056 deg 46375 ... 12181 s
+rep 3056/5184 deg 46375 cliques 5 best 63 maxdepth 7  12210 s
+rep 3058 deg 47295 ... 12210 s
+rep 3058/5184 deg 47295 cliques 5 best 63 maxdepth 7  12243 s
+rep 3060 deg 46203 ... 12243 s
+rep 3060/5184 deg 46203 cliques 5 best 63 maxdepth 7  12263 s
+rep 3062 deg 40716 ... 12263 s
+rep 3062/5184 deg 40716 cliques 5 best 63 maxdepth 7  12280 s
+rep 3064 deg 43816 ... 12280 s
+rep 3064/5184 deg 43816 cliques 5 best 63 maxdepth 7  12299 s
+rep 3066 deg 43054 ... 12299 s
+rep 3066/5184 deg 43054 cliques 5 best 63 maxdepth 7  12319 s
+rep 3068 deg 42563 ... 12319 s
+rep 3068/5184 deg 42563 cliques 5 best 63 maxdepth 7  12339 s
+rep 3070 deg 43613 ... 12340 s
+rep 3070/5184 deg 43613 cliques 5 best 63 maxdepth 7  12362 s
+rep 3072 deg 45685 ... 12362 s
+rep 3072/5184 deg 45685 cliques 5 best 63 maxdepth 7  12394 s
+rep 3074 deg 45194 ... 12394 s
+rep 3074/5184 deg 45194 cliques 5 best 63 maxdepth 7  12424 s
+rep 3076 deg 44893 ... 12424 s
+rep 3076/5184 deg 44893 cliques 5 best 63 maxdepth 7  12448 s
+rep 3078 deg 40090 ... 12448 s
+rep 3078/5184 deg 40090 cliques 5 best 63 maxdepth 7  12471 s
+rep 3080 deg 48724 ... 12471 s
+rep 3080/5184 deg 48724 cliques 5 best 63 maxdepth 7  12505 s
+rep 3082 deg 43470 ... 12505 s
+rep 3082/5184 deg 43470 cliques 5 best 63 maxdepth 7  12523 s
+rep 3084 deg 34658 ... 12523 s
+rep 3084/5184 deg 34658 cliques 5 best 63 maxdepth 7  12536 s
+rep 3086 deg 40952 ... 12536 s
+rep 3086/5184 deg 40952 cliques 5 best 63 maxdepth 7  12554 s
+rep 3088 deg 49750 ... 12554 s
+rep 3088/5184 deg 49750 cliques 5 best 63 maxdepth 7  12587 s
+rep 3090 deg 41519 ... 12587 s
+rep 3090/5184 deg 41519 cliques 5 best 63 maxdepth 7  12604 s
+rep 3092 deg 39224 ... 12604 s
+rep 3092/5184 deg 39224 cliques 5 best 63 maxdepth 7  12621 s
+rep 3094 deg 46869 ... 12621 s
+rep 3094/5184 deg 46869 cliques 5 best 63 maxdepth 7  12653 s
+rep 3096 deg 39946 ... 12653 s
+rep 3096/5184 deg 39946 cliques 5 best 63 maxdepth 7  12672 s
+rep 3098 deg 40562 ... 12672 s
+rep 3098/5184 deg 40562 cliques 5 best 63 maxdepth 7  12686 s
+rep 3100 deg 45174 ... 12686 s
+rep 3100/5184 deg 45174 cliques 5 best 63 maxdepth 7  12715 s
+rep 3102 deg 46866 ... 12715 s
+rep 3102/5184 deg 46866 cliques 5 best 63 maxdepth 7  12740 s
+rep 3104 deg 41865 ... 12740 s
+rep 3104/5184 deg 41865 cliques 5 best 63 maxdepth 7  12763 s
+rep 3106 deg 43092 ... 12763 s
+rep 3106/5184 deg 43092 cliques 5 best 63 maxdepth 7  12784 s
+rep 3108 deg 42842 ... 12784 s
+rep 3108/5184 deg 42842 cliques 5 best 63 maxdepth 7  12810 s
+rep 3110 deg 34694 ... 12810 s
+rep 3110/5184 deg 34694 cliques 5 best 63 maxdepth 7  12826 s
+rep 3112 deg 45816 ... 12826 s
+rep 3112/5184 deg 45816 cliques 5 best 63 maxdepth 7  12857 s
+rep 3114 deg 45095 ... 12857 s
+rep 3114/5184 deg 45095 cliques 5 best 63 maxdepth 7  12877 s
+rep 3116 deg 47591 ... 12877 s
+rep 3116/5184 deg 47591 cliques 5 best 63 maxdepth 7  12905 s
+rep 3118 deg 49430 ... 12905 s
+rep 3118/5184 deg 49430 cliques 5 best 63 maxdepth 7  12939 s
+rep 3120 deg 44436 ... 12939 s
+rep 3120/5184 deg 44436 cliques 5 best 63 maxdepth 7  12967 s
+rep 3122 deg 45533 ... 12967 s
+rep 3122/5184 deg 45533 cliques 5 best 63 maxdepth 7  12999 s
+rep 3124 deg 42492 ... 12999 s
+rep 3124/5184 deg 42492 cliques 5 best 63 maxdepth 7  13022 s
+rep 3126 deg 39207 ... 13022 s
+rep 3126/5184 deg 39207 cliques 5 best 63 maxdepth 7  13039 s
+rep 3128 deg 47652 ... 13039 s
+rep 3128/5184 deg 47652 cliques 5 best 63 maxdepth 7  13074 s
+rep 3130 deg 48563 ... 13074 s
+rep 3130/5184 deg 48563 cliques 5 best 63 maxdepth 7  13106 s
+rep 3132 deg 35077 ... 13106 s
+rep 3132/5184 deg 35077 cliques 5 best 63 maxdepth 7  13119 s
+rep 3134 deg 41299 ... 13119 s
+rep 3134/5184 deg 41299 cliques 5 best 63 maxdepth 7  13139 s
+rep 3136 deg 46448 ... 13139 s
+rep 3136/5184 deg 46448 cliques 5 best 63 maxdepth 7  13160 s
+rep 3138 deg 46466 ... 13160 s
+rep 3138/5184 deg 46466 cliques 5 best 63 maxdepth 7  13182 s
+rep 3140 deg 44842 ... 13182 s
+rep 3140/5184 deg 44842 cliques 5 best 63 maxdepth 7  13207 s
+rep 3142 deg 47694 ... 13207 s
+rep 3142/5184 deg 47694 cliques 5 best 63 maxdepth 7  13239 s
+rep 3144 deg 43444 ... 13239 s
+rep 3144/5184 deg 43444 cliques 5 best 63 maxdepth 7  13266 s
+rep 3146 deg 39624 ... 13266 s
+rep 3146/5184 deg 39624 cliques 5 best 63 maxdepth 7  13280 s
+rep 3148 deg 38276 ... 13280 s
+rep 3148/5184 deg 38276 cliques 5 best 63 maxdepth 7  13295 s
+rep 3150 deg 43644 ... 13295 s
+rep 3150/5184 deg 43644 cliques 5 best 63 maxdepth 7  13313 s
+rep 3152 deg 37794 ... 13313 s
+rep 3152/5184 deg 37794 cliques 5 best 63 maxdepth 7  13327 s
+rep 3154 deg 45883 ... 13327 s
+rep 3154/5184 deg 45883 cliques 5 best 63 maxdepth 7  13352 s
+rep 3156 deg 43182 ... 13352 s
+rep 3156/5184 deg 43182 cliques 5 best 63 maxdepth 7  13379 s
+rep 3158 deg 48590 ... 13379 s
+rep 3158/5184 deg 48590 cliques 5 best 63 maxdepth 7  13415 s
+rep 3160 deg 36977 ... 13415 s
+rep 3160/5184 deg 36977 cliques 5 best 63 maxdepth 7  13430 s
+rep 3162 deg 51153 ... 13430 s
+rep 3162/5184 deg 51153 cliques 5 best 63 maxdepth 7  13465 s
+rep 3164 deg 41038 ... 13465 s
+rep 3164/5184 deg 41038 cliques 5 best 63 maxdepth 7  13482 s
+rep 3166 deg 40166 ... 13482 s
+rep 3166/5184 deg 40166 cliques 5 best 63 maxdepth 7  13499 s
+rep 3168 deg 42837 ... 13499 s
+rep 3168/5184 deg 42837 cliques 5 best 63 maxdepth 7  13526 s
+rep 3170 deg 35930 ... 13526 s
+rep 3170/5184 deg 35930 cliques 5 best 63 maxdepth 7  13542 s
+rep 3172 deg 40194 ... 13542 s
+rep 3172/5184 deg 40194 cliques 5 best 63 maxdepth 7  13561 s
+rep 3174 deg 55206 ... 13561 s
+rep 3174/5184 deg 55206 cliques 5 best 63 maxdepth 7  13604 s
+rep 3176 deg 39776 ... 13604 s
+rep 3176/5184 deg 39776 cliques 5 best 63 maxdepth 7  13621 s
+rep 3178 deg 43589 ... 13621 s
+rep 3178/5184 deg 43589 cliques 5 best 63 maxdepth 7  13646 s
+rep 3180 deg 47388 ... 13646 s
+rep 3180/5184 deg 47388 cliques 5 best 63 maxdepth 7  13677 s
+rep 3182 deg 47128 ... 13677 s
+rep 3182/5184 deg 47128 cliques 5 best 63 maxdepth 7  13708 s
+rep 3184 deg 46811 ... 13708 s
+rep 3184/5184 deg 46811 cliques 5 best 63 maxdepth 7  13740 s
+rep 3186 deg 43899 ... 13740 s
+rep 3186/5184 deg 43899 cliques 5 best 63 maxdepth 7  13767 s
+rep 3188 deg 39278 ... 13767 s
+rep 3188/5184 deg 39278 cliques 5 best 63 maxdepth 7  13782 s
+rep 3190 deg 47143 ... 13782 s
+rep 3190/5184 deg 47143 cliques 5 best 63 maxdepth 7  13815 s
+rep 3192 deg 44915 ... 13815 s
+rep 3192/5184 deg 44915 cliques 5 best 63 maxdepth 7  13835 s
+rep 3194 deg 44310 ... 13835 s
+rep 3194/5184 deg 44310 cliques 5 best 63 maxdepth 7  13861 s
+rep 3196 deg 38713 ... 13861 s
+rep 3196/5184 deg 38713 cliques 5 best 63 maxdepth 7  13881 s
+rep 3198 deg 35020 ... 13881 s
+rep 3198/5184 deg 35020 cliques 5 best 63 maxdepth 7  13895 s
+rep 3200 deg 49700 ... 13895 s
+rep 3200/5184 deg 49700 cliques 5 best 63 maxdepth 7  13932 s
+rep 3202 deg 47711 ... 13932 s
+rep 3202/5184 deg 47711 cliques 5 best 63 maxdepth 7  13963 s
+rep 3204 deg 47875 ... 13963 s
+rep 3204/5184 deg 47875 cliques 5 best 63 maxdepth 7  13995 s
+rep 3206 deg 45045 ... 13995 s
+rep 3206/5184 deg 45045 cliques 5 best 63 maxdepth 7  14024 s
+rep 3208 deg 44232 ... 14024 s
+rep 3208/5184 deg 44232 cliques 5 best 63 maxdepth 7  14052 s
+rep 3210 deg 45507 ... 14052 s
+rep 3210/5184 deg 45507 cliques 5 best 63 maxdepth 7  14081 s
+rep 3212 deg 37798 ... 14081 s
+rep 3212/5184 deg 37798 cliques 5 best 63 maxdepth 7  14095 s
+rep 3214 deg 42247 ... 14095 s
+rep 3214/5184 deg 42247 cliques 5 best 63 maxdepth 7  14116 s
+rep 3216 deg 43994 ... 14116 s
+rep 3216/5184 deg 43994 cliques 5 best 63 maxdepth 7  14144 s
+rep 3218 deg 41532 ... 14144 s
+rep 3218/5184 deg 41532 cliques 5 best 63 maxdepth 7  14164 s
+rep 3220 deg 45040 ... 14164 s
+rep 3220/5184 deg 45040 cliques 5 best 63 maxdepth 7  14193 s
+rep 3222 deg 43897 ... 14193 s
+rep 3222/5184 deg 43897 cliques 5 best 63 maxdepth 7  14217 s
+rep 3224 deg 43044 ... 14217 s
+rep 3224/5184 deg 43044 cliques 5 best 63 maxdepth 7  14242 s
+rep 3226 deg 47984 ... 14242 s
+rep 3226/5184 deg 47984 cliques 5 best 63 maxdepth 7  14274 s
+rep 3228 deg 39775 ... 14274 s
+rep 3228/5184 deg 39775 cliques 5 best 63 maxdepth 7  14294 s
+rep 3230 deg 48166 ... 14294 s
+rep 3230/5184 deg 48166 cliques 5 best 63 maxdepth 7  14322 s
+rep 3232 deg 42973 ... 14322 s
+rep 3232/5184 deg 42973 cliques 5 best 63 maxdepth 7  14345 s
+rep 3234 deg 45434 ... 14345 s
+rep 3234/5184 deg 45434 cliques 5 best 63 maxdepth 7  14373 s
+rep 3236 deg 41579 ... 14373 s
+rep 3236/5184 deg 41579 cliques 5 best 63 maxdepth 7  14391 s
+rep 3238 deg 41604 ... 14391 s
+rep 3238/5184 deg 41604 cliques 5 best 63 maxdepth 7  14411 s
+rep 3240 deg 41639 ... 14411 s
+rep 3240/5184 deg 41639 cliques 5 best 63 maxdepth 7  14435 s
+rep 3242 deg 43840 ... 14435 s
+rep 3242/5184 deg 43840 cliques 5 best 63 maxdepth 7  14465 s
+rep 3244 deg 43821 ... 14465 s
+rep 3244/5184 deg 43821 cliques 5 best 63 maxdepth 7  14492 s
+rep 3246 deg 45464 ... 14492 s
+rep 3246/5184 deg 45464 cliques 5 best 63 maxdepth 7  14521 s
+rep 3248 deg 47517 ... 14521 s
+rep 3248/5184 deg 47517 cliques 5 best 63 maxdepth 7  14552 s
+rep 3250 deg 44249 ... 14552 s
+rep 3250/5184 deg 44249 cliques 5 best 63 maxdepth 7  14573 s
+rep 3252 deg 41714 ... 14573 s
+rep 3252/5184 deg 41714 cliques 5 best 63 maxdepth 7  14593 s
+rep 3254 deg 44973 ... 14594 s
+rep 3254/5184 deg 44973 cliques 5 best 63 maxdepth 7  14624 s
+rep 3256 deg 45421 ... 14624 s
+rep 3256/5184 deg 45421 cliques 5 best 63 maxdepth 7  14648 s
+rep 3258 deg 44371 ... 14649 s
+rep 3258/5184 deg 44371 cliques 5 best 63 maxdepth 7  14675 s
+rep 3260 deg 41674 ... 14675 s
+rep 3260/5184 deg 41674 cliques 5 best 63 maxdepth 7  14691 s
+rep 3262 deg 46035 ... 14691 s
+rep 3262/5184 deg 46035 cliques 5 best 63 maxdepth 7  14724 s
+rep 3264 deg 44480 ... 14724 s
+rep 3264/5184 deg 44480 cliques 5 best 63 maxdepth 7  14747 s
+rep 3266 deg 41086 ... 14747 s
+rep 3266/5184 deg 41086 cliques 5 best 63 maxdepth 7  14768 s
+rep 3268 deg 45980 ... 14768 s
+rep 3268/5184 deg 45980 cliques 5 best 63 maxdepth 7  14793 s
+rep 3270 deg 47056 ... 14793 s
+rep 3270/5184 deg 47056 cliques 5 best 63 maxdepth 7  14815 s
+rep 3272 deg 42339 ... 14816 s
+rep 3272/5184 deg 42339 cliques 5 best 63 maxdepth 7  14833 s
+rep 3274 deg 50276 ... 14833 s
+rep 3274/5184 deg 50276 cliques 5 best 63 maxdepth 7  14874 s
+rep 3276 deg 44046 ... 14874 s
+rep 3276/5184 deg 44046 cliques 5 best 63 maxdepth 7  14906 s
+rep 3278 deg 36002 ... 14906 s
+rep 3278/5184 deg 36002 cliques 5 best 63 maxdepth 7  14923 s
+rep 3280 deg 44061 ... 14923 s
+rep 3280/5184 deg 44061 cliques 5 best 63 maxdepth 7  14950 s
+rep 3282 deg 43908 ... 14950 s
+rep 3282/5184 deg 43908 cliques 5 best 63 maxdepth 7  14970 s
+rep 3284 deg 42705 ... 14970 s
+rep 3284/5184 deg 42705 cliques 5 best 63 maxdepth 7  14996 s
+rep 3286 deg 52185 ... 14996 s
+rep 3286/5184 deg 52185 cliques 5 best 63 maxdepth 7  15039 s
+rep 3288 deg 48086 ... 15039 s
+rep 3288/5184 deg 48086 cliques 5 best 63 maxdepth 7  15078 s
+rep 3290 deg 43640 ... 15078 s
+rep 3290/5184 deg 43640 cliques 5 best 63 maxdepth 7  15100 s
+rep 3292 deg 40338 ... 15100 s
+rep 3292/5184 deg 40338 cliques 5 best 63 maxdepth 7  15117 s
+rep 3294 deg 41935 ... 15118 s
+rep 3294/5184 deg 41935 cliques 5 best 63 maxdepth 7  15142 s
+rep 3296 deg 42839 ... 15142 s
+rep 3296/5184 deg 42839 cliques 5 best 63 maxdepth 7  15167 s
+rep 3298 deg 46444 ... 15167 s
+rep 3298/5184 deg 46444 cliques 5 best 63 maxdepth 7  15187 s
+rep 3300 deg 43625 ... 15187 s
+rep 3300/5184 deg 43625 cliques 5 best 63 maxdepth 7  15207 s
+rep 3302 deg 48783 ... 15207 s
+rep 3302/5184 deg 48783 cliques 5 best 63 maxdepth 7  15241 s
+rep 3304 deg 42620 ... 15241 s
+rep 3304/5184 deg 42620 cliques 5 best 63 maxdepth 7  15267 s
+rep 3306 deg 37144 ... 15268 s
+rep 3306/5184 deg 37144 cliques 5 best 63 maxdepth 7  15281 s
+rep 3308 deg 46919 ... 15281 s
+rep 3308/5184 deg 46919 cliques 5 best 63 maxdepth 7  15312 s
+rep 3310 deg 47759 ... 15312 s
+rep 3310/5184 deg 47759 cliques 5 best 63 maxdepth 7  15341 s
+rep 3312 deg 40664 ... 15341 s
+rep 3312/5184 deg 40664 cliques 5 best 63 maxdepth 7  15358 s
+rep 3314 deg 49393 ... 15358 s
+rep 3314/5184 deg 49393 cliques 5 best 63 maxdepth 7  15396 s
+rep 3316 deg 44873 ... 15397 s
+rep 3316/5184 deg 44873 cliques 5 best 63 maxdepth 7  15421 s
+rep 3318 deg 41818 ... 15421 s
+rep 3318/5184 deg 41818 cliques 5 best 63 maxdepth 7  15447 s
+rep 3320 deg 37741 ... 15447 s
+rep 3320/5184 deg 37741 cliques 5 best 63 maxdepth 7  15466 s
+rep 3322 deg 45774 ... 15466 s
+rep 3322/5184 deg 45774 cliques 5 best 63 maxdepth 7  15495 s
+rep 3324 deg 44246 ... 15495 s
+rep 3324/5184 deg 44246 cliques 5 best 63 maxdepth 7  15524 s
+rep 3326 deg 48370 ... 15524 s
+rep 3326/5184 deg 48370 cliques 5 best 63 maxdepth 7  15556 s
+rep 3328 deg 43755 ... 15556 s
+rep 3328/5184 deg 43755 cliques 5 best 63 maxdepth 7  15584 s
+rep 3330 deg 40928 ... 15584 s
+rep 3330/5184 deg 40928 cliques 5 best 63 maxdepth 7  15606 s
+rep 3332 deg 47849 ... 15606 s
+rep 3332/5184 deg 47849 cliques 5 best 63 maxdepth 7  15639 s
+rep 3334 deg 44089 ... 15639 s
+rep 3334/5184 deg 44089 cliques 5 best 63 maxdepth 7  15669 s
+rep 3336 deg 45170 ... 15669 s
+rep 3336/5184 deg 45170 cliques 5 best 63 maxdepth 7  15700 s
+rep 3338 deg 45721 ... 15700 s
+rep 3338/5184 deg 45721 cliques 5 best 63 maxdepth 7  15724 s
+rep 3340 deg 44670 ... 15724 s
+rep 3340/5184 deg 44670 cliques 5 best 63 maxdepth 7  15751 s
+rep 3342 deg 46795 ... 15751 s
+rep 3342/5184 deg 46795 cliques 5 best 63 maxdepth 7  15782 s
+rep 3344 deg 43770 ... 15782 s
+rep 3344/5184 deg 43770 cliques 5 best 63 maxdepth 7  15803 s
+rep 3346 deg 44140 ... 15803 s
+rep 3346/5184 deg 44140 cliques 5 best 63 maxdepth 7  15828 s
+rep 3348 deg 47335 ... 15828 s
+rep 3348/5184 deg 47335 cliques 5 best 63 maxdepth 7  15860 s
+rep 3350 deg 32504 ... 15860 s
+rep 3350/5184 deg 32504 cliques 5 best 63 maxdepth 7  15874 s
+rep 3352 deg 44517 ... 15875 s
+rep 3352/5184 deg 44517 cliques 5 best 63 maxdepth 7  15898 s
+rep 3354 deg 39956 ... 15898 s
+rep 3354/5184 deg 39956 cliques 5 best 63 maxdepth 7  15915 s
+rep 3356 deg 42390 ... 15915 s
+rep 3356/5184 deg 42390 cliques 5 best 63 maxdepth 7  15931 s
+rep 3358 deg 44261 ... 15931 s
+rep 3358/5184 deg 44261 cliques 5 best 63 maxdepth 7  15956 s
+rep 3360 deg 41300 ... 15956 s
+rep 3360/5184 deg 41300 cliques 5 best 63 maxdepth 7  15981 s
+rep 3362 deg 38762 ... 15981 s
+rep 3362/5184 deg 38762 cliques 5 best 63 maxdepth 7  15996 s
+rep 3364 deg 40273 ... 15996 s
+rep 3364/5184 deg 40273 cliques 5 best 63 maxdepth 7  16011 s
+rep 3366 deg 43017 ... 16011 s
+rep 3366/5184 deg 43017 cliques 5 best 63 maxdepth 7  16033 s
+rep 3368 deg 44638 ... 16033 s
+rep 3368/5184 deg 44638 cliques 5 best 63 maxdepth 7  16057 s
+rep 3370 deg 41903 ... 16057 s
+rep 3370/5184 deg 41903 cliques 5 best 63 maxdepth 7  16077 s
+rep 3372 deg 47998 ... 16077 s
+rep 3372/5184 deg 47998 cliques 5 best 63 maxdepth 7  16112 s
+rep 3374 deg 38767 ... 16113 s
+rep 3374/5184 deg 38767 cliques 5 best 63 maxdepth 7  16131 s
+rep 3376 deg 45622 ... 16131 s
+rep 3376/5184 deg 45622 cliques 5 best 63 maxdepth 7  16166 s
+rep 3378 deg 48403 ... 16166 s
+rep 3378/5184 deg 48403 cliques 5 best 63 maxdepth 7  16199 s
+rep 3380 deg 46258 ... 16200 s
+rep 3380/5184 deg 46258 cliques 5 best 63 maxdepth 7  16228 s
+rep 3382 deg 43788 ... 16228 s
+rep 3382/5184 deg 43788 cliques 5 best 63 maxdepth 7  16257 s
+rep 3384 deg 44824 ... 16257 s
+rep 3384/5184 deg 44824 cliques 5 best 63 maxdepth 7  16284 s
+rep 3386 deg 39512 ... 16284 s
+rep 3386/5184 deg 39512 cliques 5 best 63 maxdepth 7  16300 s
+rep 3388 deg 47207 ... 16300 s
+rep 3388/5184 deg 47207 cliques 5 best 63 maxdepth 7  16326 s
+rep 3390 deg 45414 ... 16326 s
+rep 3390/5184 deg 45414 cliques 5 best 63 maxdepth 7  16356 s
+rep 3392 deg 41725 ... 16356 s
+rep 3392/5184 deg 41725 cliques 5 best 63 maxdepth 7  16367 s
+rep 3394 deg 48602 ... 16367 s
+rep 3394/5184 deg 48602 cliques 5 best 63 maxdepth 7  16403 s
+rep 3396 deg 50063 ... 16403 s
+rep 3396/5184 deg 50063 cliques 5 best 63 maxdepth 7  16440 s
+rep 3398 deg 39277 ... 16440 s
+rep 3398/5184 deg 39277 cliques 5 best 63 maxdepth 7  16458 s
+rep 3400 deg 39879 ... 16458 s
+rep 3400/5184 deg 39879 cliques 5 best 63 maxdepth 7  16472 s
+rep 3402 deg 42794 ... 16472 s
+rep 3402/5184 deg 42794 cliques 5 best 63 maxdepth 7  16495 s
+rep 3404 deg 50884 ... 16495 s
+rep 3404/5184 deg 50884 cliques 5 best 63 maxdepth 7  16530 s
+rep 3406 deg 41534 ... 16530 s
+rep 3406/5184 deg 41534 cliques 5 best 63 maxdepth 7  16547 s
+rep 3408 deg 44826 ... 16547 s
+rep 3408/5184 deg 44826 cliques 5 best 63 maxdepth 7  16576 s
+rep 3410 deg 43279 ... 16576 s
+rep 3410/5184 deg 43279 cliques 5 best 63 maxdepth 7  16601 s
+rep 3412 deg 46882 ... 16601 s
+rep 3412/5184 deg 46882 cliques 5 best 63 maxdepth 7  16630 s
+rep 3414 deg 46621 ... 16630 s
+rep 3414/5184 deg 46621 cliques 5 best 63 maxdepth 7  16655 s
+rep 3416 deg 39771 ... 16655 s
+rep 3416/5184 deg 39771 cliques 5 best 63 maxdepth 7  16671 s
+rep 3418 deg 46057 ... 16672 s
+rep 3418/5184 deg 46057 cliques 5 best 63 maxdepth 7  16702 s
+rep 3420 deg 36243 ... 16702 s
+rep 3420/5184 deg 36243 cliques 5 best 63 maxdepth 7  16715 s
+rep 3422 deg 42139 ... 16715 s
+rep 3422/5184 deg 42139 cliques 5 best 63 maxdepth 7  16733 s
+rep 3424 deg 42345 ... 16733 s
+rep 3424/5184 deg 42345 cliques 5 best 63 maxdepth 7  16753 s
+rep 3426 deg 42663 ... 16753 s
+rep 3426/5184 deg 42663 cliques 5 best 63 maxdepth 7  16776 s
+rep 3428 deg 50007 ... 16776 s
+rep 3428/5184 deg 50007 cliques 5 best 63 maxdepth 7  16814 s
+rep 3430 deg 39271 ... 16814 s
+rep 3430/5184 deg 39271 cliques 5 best 63 maxdepth 7  16835 s
+rep 3432 deg 44570 ... 16835 s
+rep 3432/5184 deg 44570 cliques 5 best 63 maxdepth 7  16864 s
+rep 3434 deg 34392 ... 16864 s
+rep 3434/5184 deg 34392 cliques 5 best 63 maxdepth 7  16877 s
+rep 3436 deg 46531 ... 16877 s
+rep 3436/5184 deg 46531 cliques 5 best 63 maxdepth 7  16906 s
+rep 3438 deg 38150 ... 16906 s
+rep 3438/5184 deg 38150 cliques 5 best 63 maxdepth 7  16920 s
+rep 3440 deg 44539 ... 16920 s
+rep 3440/5184 deg 44539 cliques 5 best 63 maxdepth 7  16944 s
+rep 3442 deg 33038 ... 16944 s
+rep 3442/5184 deg 33038 cliques 5 best 63 maxdepth 7  16956 s
+rep 3444 deg 40211 ... 16956 s
+rep 3444/5184 deg 40211 cliques 5 best 63 maxdepth 7  16974 s
+rep 3446 deg 43591 ... 16974 s
+rep 3446/5184 deg 43591 cliques 5 best 63 maxdepth 7  16993 s
+rep 3448 deg 41438 ... 16993 s
+rep 3448/5184 deg 41438 cliques 5 best 63 maxdepth 7  17011 s
+rep 3450 deg 45631 ... 17011 s
+rep 3450/5184 deg 45631 cliques 5 best 63 maxdepth 7  17045 s
+rep 3452 deg 48575 ... 17045 s
+rep 3452/5184 deg 48575 cliques 5 best 63 maxdepth 7  17079 s
+rep 3454 deg 38087 ... 17079 s
+rep 3454/5184 deg 38087 cliques 5 best 63 maxdepth 7  17094 s
+rep 3456 deg 45201 ... 17094 s
+rep 3456/5184 deg 45201 cliques 5 best 63 maxdepth 7  17119 s
+rep 3458 deg 41592 ... 17119 s
+rep 3458/5184 deg 41592 cliques 5 best 63 maxdepth 7  17144 s
+rep 3460 deg 47456 ... 17144 s
+rep 3460/5184 deg 47456 cliques 5 best 63 maxdepth 7  17176 s
+rep 3462 deg 43810 ... 17176 s
+rep 3462/5184 deg 43810 cliques 5 best 63 maxdepth 7  17203 s
+rep 3464 deg 39769 ... 17203 s
+rep 3464/5184 deg 39769 cliques 5 best 63 maxdepth 7  17218 s
+rep 3466 deg 36232 ... 17218 s
+rep 3466/5184 deg 36232 cliques 5 best 63 maxdepth 7  17232 s
+rep 3468 deg 47087 ... 17232 s
+rep 3468/5184 deg 47087 cliques 5 best 63 maxdepth 7  17257 s
+rep 3470 deg 46299 ... 17257 s
+rep 3470/5184 deg 46299 cliques 5 best 63 maxdepth 7  17283 s
+rep 3472 deg 42750 ... 17283 s
+rep 3472/5184 deg 42750 cliques 5 best 63 maxdepth 7  17308 s
+rep 3474 deg 49097 ... 17308 s
+rep 3474/5184 deg 49097 cliques 5 best 63 maxdepth 7  17341 s
+rep 3476 deg 30300 ... 17341 s
+rep 3476/5184 deg 30300 cliques 5 best 63 maxdepth 7  17350 s
+rep 3478 deg 46294 ... 17350 s
+rep 3478/5184 deg 46294 cliques 5 best 63 maxdepth 7  17377 s
+rep 3480 deg 44323 ... 17377 s
+rep 3480/5184 deg 44323 cliques 5 best 63 maxdepth 7  17400 s
+rep 3482 deg 40474 ... 17400 s
+rep 3482/5184 deg 40474 cliques 5 best 63 maxdepth 7  17413 s
+rep 3484 deg 31024 ... 17413 s
+rep 3484/5184 deg 31024 cliques 5 best 63 maxdepth 7  17422 s
+rep 3486 deg 46766 ... 17422 s
+rep 3486/5184 deg 46766 cliques 5 best 63 maxdepth 7  17448 s
+rep 3488 deg 43020 ... 17449 s
+rep 3488/5184 deg 43020 cliques 5 best 63 maxdepth 7  17470 s
+rep 3490 deg 45482 ... 17470 s
+rep 3490/5184 deg 45482 cliques 5 best 63 maxdepth 7  17491 s
+rep 3492 deg 43144 ... 17491 s
+rep 3492/5184 deg 43144 cliques 5 best 63 maxdepth 7  17507 s
+rep 3494 deg 40798 ... 17507 s
+rep 3494/5184 deg 40798 cliques 5 best 63 maxdepth 7  17522 s
+rep 3496 deg 40073 ... 17522 s
+rep 3496/5184 deg 40073 cliques 5 best 63 maxdepth 7  17534 s
+rep 3498 deg 31392 ... 17534 s
+rep 3498/5184 deg 31392 cliques 5 best 63 maxdepth 7  17543 s
+rep 3500 deg 44748 ... 17543 s
+rep 3500/5184 deg 44748 cliques 5 best 63 maxdepth 7  17564 s
+rep 3502 deg 35329 ... 17564 s
+rep 3502/5184 deg 35329 cliques 5 best 63 maxdepth 7  17576 s
+rep 3504 deg 40463 ... 17576 s
+rep 3504/5184 deg 40463 cliques 5 best 63 maxdepth 7  17590 s
+rep 3506 deg 39589 ... 17590 s
+rep 3506/5184 deg 39589 cliques 5 best 63 maxdepth 7  17607 s
+rep 3508 deg 45214 ... 17607 s
+rep 3508/5184 deg 45214 cliques 5 best 63 maxdepth 7  17627 s
+rep 3510 deg 43224 ... 17627 s
+rep 3510/5184 deg 43224 cliques 5 best 63 maxdepth 7  17648 s
+rep 3512 deg 39645 ... 17648 s
+rep 3512/5184 deg 39645 cliques 5 best 63 maxdepth 7  17664 s
+rep 3514 deg 42116 ... 17665 s
+rep 3514/5184 deg 42116 cliques 5 best 63 maxdepth 7  17681 s
+rep 3516 deg 35910 ... 17681 s
+rep 3516/5184 deg 35910 cliques 5 best 63 maxdepth 7  17692 s
+rep 3518 deg 45740 ... 17692 s
+rep 3518/5184 deg 45740 cliques 5 best 63 maxdepth 7  17713 s
+rep 3520 deg 49904 ... 17713 s
+rep 3520/5184 deg 49904 cliques 5 best 63 maxdepth 7  17742 s
+rep 3522 deg 40607 ... 17742 s
+rep 3522/5184 deg 40607 cliques 5 best 63 maxdepth 7  17757 s
+rep 3524 deg 41025 ... 17757 s
+rep 3524/5184 deg 41025 cliques 5 best 63 maxdepth 7  17772 s
+rep 3526 deg 38671 ... 17772 s
+rep 3526/5184 deg 38671 cliques 5 best 63 maxdepth 7  17784 s
+rep 3528 deg 35824 ... 17784 s
+rep 3528/5184 deg 35824 cliques 5 best 63 maxdepth 7  17796 s
+rep 3530 deg 43035 ... 17796 s
+rep 3530/5184 deg 43035 cliques 5 best 63 maxdepth 7  17814 s
+rep 3532 deg 38972 ... 17814 s
+rep 3532/5184 deg 38972 cliques 5 best 63 maxdepth 7  17828 s
+rep 3534 deg 43576 ... 17828 s
+rep 3534/5184 deg 43576 cliques 5 best 63 maxdepth 7  17849 s
+rep 3536 deg 45810 ... 17849 s
+rep 3536/5184 deg 45810 cliques 5 best 63 maxdepth 7  17871 s
+rep 3538 deg 39439 ... 17871 s
+rep 3538/5184 deg 39439 cliques 5 best 63 maxdepth 7  17883 s
+rep 3540 deg 39729 ... 17883 s
+rep 3540/5184 deg 39729 cliques 5 best 63 maxdepth 7  17900 s
+rep 3542 deg 42724 ... 17900 s
+rep 3542/5184 deg 42724 cliques 5 best 63 maxdepth 7  17918 s
+rep 3544 deg 43328 ... 17918 s
+rep 3544/5184 deg 43328 cliques 5 best 63 maxdepth 7  17937 s
+rep 3546 deg 44123 ... 17937 s
+rep 3546/5184 deg 44123 cliques 5 best 63 maxdepth 7  17954 s
+rep 3548 deg 44325 ... 17954 s
+rep 3548/5184 deg 44325 cliques 5 best 63 maxdepth 7  17974 s
+rep 3550 deg 43235 ... 17974 s
+rep 3550/5184 deg 43235 cliques 5 best 63 maxdepth 7  17991 s
+rep 3552 deg 41735 ... 17991 s
+rep 3552/5184 deg 41735 cliques 5 best 63 maxdepth 7  18006 s
+rep 3554 deg 39048 ... 18006 s
+rep 3554/5184 deg 39048 cliques 5 best 63 maxdepth 7  18020 s
+rep 3556 deg 45802 ... 18020 s
+rep 3556/5184 deg 45802 cliques 5 best 63 maxdepth 7  18041 s
+rep 3558 deg 41065 ... 18041 s
+rep 3558/5184 deg 41065 cliques 5 best 63 maxdepth 7  18058 s
+rep 3560 deg 48340 ... 18058 s
+rep 3560/5184 deg 48340 cliques 5 best 63 maxdepth 7  18082 s
+rep 3562 deg 42130 ... 18082 s
+rep 3562/5184 deg 42130 cliques 5 best 63 maxdepth 7  18099 s
+rep 3564 deg 43325 ... 18099 s
+rep 3564/5184 deg 43325 cliques 5 best 63 maxdepth 7  18121 s
+rep 3566 deg 40750 ... 18121 s
+rep 3566/5184 deg 40750 cliques 5 best 63 maxdepth 7  18137 s
+rep 3568 deg 38598 ... 18137 s
+rep 3568/5184 deg 38598 cliques 5 best 63 maxdepth 7  18153 s
+rep 3570 deg 44451 ... 18153 s
+rep 3570/5184 deg 44451 cliques 5 best 63 maxdepth 7  18168 s
+rep 3572 deg 40445 ... 18168 s
+rep 3572/5184 deg 40445 cliques 5 best 63 maxdepth 7  18177 s
+rep 3574 deg 44221 ... 18177 s
+rep 3574/5184 deg 44221 cliques 5 best 63 maxdepth 7  18195 s
+rep 3576 deg 39294 ... 18195 s
+rep 3576/5184 deg 39294 cliques 5 best 63 maxdepth 7  18205 s
+rep 3578 deg 40611 ... 18205 s
+rep 3578/5184 deg 40611 cliques 5 best 63 maxdepth 7  18223 s
+rep 3580 deg 45129 ... 18223 s
+rep 3580/5184 deg 45129 cliques 5 best 63 maxdepth 7  18243 s
+rep 3582 deg 43492 ... 18243 s
+rep 3582/5184 deg 43492 cliques 5 best 63 maxdepth 7  18260 s
+rep 3584 deg 41573 ... 18260 s
+rep 3584/5184 deg 41573 cliques 5 best 63 maxdepth 7  18277 s
+rep 3586 deg 46301 ... 18277 s
+rep 3586/5184 deg 46301 cliques 5 best 63 maxdepth 7  18300 s
+rep 3588 deg 44851 ... 18300 s
+rep 3588/5184 deg 44851 cliques 5 best 63 maxdepth 7  18320 s
+rep 3590 deg 36812 ... 18320 s
+rep 3590/5184 deg 36812 cliques 5 best 63 maxdepth 7  18330 s
+rep 3592 deg 48810 ... 18330 s
+rep 3592/5184 deg 48810 cliques 5 best 63 maxdepth 7  18355 s
+rep 3594 deg 39568 ... 18355 s
+rep 3594/5184 deg 39568 cliques 5 best 63 maxdepth 7  18367 s
+rep 3596 deg 44755 ... 18367 s
+rep 3596/5184 deg 44755 cliques 5 best 63 maxdepth 7  18387 s
+rep 3598 deg 46056 ... 18387 s
+rep 3598/5184 deg 46056 cliques 5 best 63 maxdepth 7  18413 s
+rep 3600 deg 45703 ... 18413 s
+rep 3600/5184 deg 45703 cliques 5 best 63 maxdepth 7  18429 s
+rep 3602 deg 44289 ... 18429 s
+rep 3602/5184 deg 44289 cliques 5 best 63 maxdepth 7  18447 s
+rep 3604 deg 41871 ... 18447 s
+rep 3604/5184 deg 41871 cliques 5 best 63 maxdepth 7  18467 s
+rep 3606 deg 42591 ... 18468 s
+rep 3606/5184 deg 42591 cliques 5 best 63 maxdepth 7  18486 s
+rep 3608 deg 41783 ... 18486 s
+rep 3608/5184 deg 41783 cliques 5 best 63 maxdepth 7  18505 s
+rep 3610 deg 46635 ... 18505 s
+rep 3610/5184 deg 46635 cliques 5 best 63 maxdepth 7  18527 s
+rep 3612 deg 38494 ... 18527 s
+rep 3612/5184 deg 38494 cliques 5 best 63 maxdepth 7  18540 s
+rep 3614 deg 39821 ... 18540 s
+rep 3614/5184 deg 39821 cliques 5 best 63 maxdepth 7  18555 s
+rep 3616 deg 36774 ... 18555 s
+rep 3616/5184 deg 36774 cliques 5 best 63 maxdepth 7  18566 s
+rep 3618 deg 41266 ... 18567 s
+rep 3618/5184 deg 41266 cliques 5 best 63 maxdepth 7  18584 s
+rep 3620 deg 46045 ... 18584 s
+rep 3620/5184 deg 46045 cliques 5 best 63 maxdepth 7  18608 s
+rep 3622 deg 42152 ... 18608 s
+rep 3622/5184 deg 42152 cliques 5 best 63 maxdepth 7  18628 s
+rep 3624 deg 45652 ... 18628 s
+rep 3624/5184 deg 45652 cliques 5 best 63 maxdepth 7  18653 s
+rep 3626 deg 36094 ... 18653 s
+rep 3626/5184 deg 36094 cliques 5 best 63 maxdepth 7  18662 s
+rep 3628 deg 43843 ... 18662 s
+rep 3628/5184 deg 43843 cliques 5 best 63 maxdepth 7  18680 s
+rep 3630 deg 40198 ... 18680 s
+rep 3630/5184 deg 40198 cliques 5 best 63 maxdepth 7  18695 s
+rep 3632 deg 43194 ... 18695 s
+rep 3632/5184 deg 43194 cliques 5 best 63 maxdepth 7  18716 s
+rep 3634 deg 42021 ... 18716 s
+rep 3634/5184 deg 42021 cliques 5 best 63 maxdepth 7  18736 s
+rep 3636 deg 37520 ... 18736 s
+rep 3636/5184 deg 37520 cliques 5 best 63 maxdepth 7  18748 s
+rep 3638 deg 43738 ... 18748 s
+rep 3638/5184 deg 43738 cliques 5 best 63 maxdepth 7  18767 s
+rep 3640 deg 44284 ... 18767 s
+rep 3640/5184 deg 44284 cliques 5 best 63 maxdepth 7  18788 s
+rep 3642 deg 39342 ... 18788 s
+rep 3642/5184 deg 39342 cliques 5 best 63 maxdepth 7  18802 s
+rep 3644 deg 40821 ... 18802 s
+rep 3644/5184 deg 40821 cliques 5 best 63 maxdepth 7  18819 s
+rep 3646 deg 41327 ... 18819 s
+rep 3646/5184 deg 41327 cliques 5 best 63 maxdepth 7  18833 s
+rep 3648 deg 34225 ... 18833 s
+rep 3648/5184 deg 34225 cliques 5 best 63 maxdepth 7  18842 s
+rep 3650 deg 44117 ... 18842 s
+rep 3650/5184 deg 44117 cliques 5 best 63 maxdepth 7  18863 s
+rep 3652 deg 46562 ... 18863 s
+rep 3652/5184 deg 46562 cliques 5 best 63 maxdepth 7  18885 s
+rep 3654 deg 43234 ... 18885 s
+rep 3654/5184 deg 43234 cliques 5 best 63 maxdepth 7  18900 s
+rep 3656 deg 38210 ... 18900 s
+rep 3656/5184 deg 38210 cliques 5 best 63 maxdepth 7  18916 s
+rep 3658 deg 35682 ... 18916 s
+rep 3658/5184 deg 35682 cliques 5 best 63 maxdepth 7  18927 s
+rep 3660 deg 43906 ... 18927 s
+rep 3660/5184 deg 43906 cliques 5 best 63 maxdepth 7  18949 s
+rep 3662 deg 45416 ... 18949 s
+rep 3662/5184 deg 45416 cliques 5 best 63 maxdepth 7  18973 s
+rep 3664 deg 43138 ... 18973 s
+rep 3664/5184 deg 43138 cliques 5 best 63 maxdepth 7  18992 s
+rep 3666 deg 42782 ... 18992 s
+rep 3666/5184 deg 42782 cliques 5 best 63 maxdepth 7  19011 s
+rep 3668 deg 37129 ... 19011 s
+rep 3668/5184 deg 37129 cliques 5 best 63 maxdepth 7  19022 s
+rep 3670 deg 43228 ... 19022 s
+rep 3670/5184 deg 43228 cliques 5 best 63 maxdepth 7  19040 s
+rep 3672 deg 47273 ... 19040 s
+rep 3672/5184 deg 47273 cliques 5 best 63 maxdepth 7  19060 s
+rep 3674 deg 40170 ... 19060 s
+rep 3674/5184 deg 40170 cliques 5 best 63 maxdepth 7  19072 s
+rep 3676 deg 35069 ... 19072 s
+rep 3676/5184 deg 35069 cliques 5 best 63 maxdepth 7  19082 s
+rep 3678 deg 47031 ... 19082 s
+rep 3678/5184 deg 47031 cliques 5 best 63 maxdepth 7  19110 s
+rep 3680 deg 47831 ... 19110 s
+rep 3680/5184 deg 47831 cliques 5 best 63 maxdepth 7  19135 s
+rep 3682 deg 40241 ... 19135 s
+rep 3682/5184 deg 40241 cliques 5 best 63 maxdepth 7  19149 s
+rep 3684 deg 44865 ... 19149 s
+rep 3684/5184 deg 44865 cliques 5 best 63 maxdepth 7  19171 s
+rep 3686 deg 36761 ... 19171 s
+rep 3686/5184 deg 36761 cliques 5 best 63 maxdepth 7  19181 s
+rep 3688 deg 47915 ... 19181 s
+rep 3688/5184 deg 47915 cliques 5 best 63 maxdepth 7  19202 s
+rep 3690 deg 47331 ... 19202 s
+rep 3690/5184 deg 47331 cliques 5 best 63 maxdepth 7  19225 s
+rep 3692 deg 45417 ... 19225 s
+rep 3692/5184 deg 45417 cliques 5 best 63 maxdepth 7  19247 s
+rep 3694 deg 38277 ... 19247 s
+rep 3694/5184 deg 38277 cliques 5 best 63 maxdepth 7  19263 s
+rep 3696 deg 39786 ... 19263 s
+rep 3696/5184 deg 39786 cliques 5 best 63 maxdepth 7  19280 s
+rep 3698 deg 43996 ... 19280 s
+rep 3698/5184 deg 43996 cliques 5 best 63 maxdepth 7  19300 s
+rep 3700 deg 44396 ... 19300 s
+rep 3700/5184 deg 44396 cliques 5 best 63 maxdepth 7  19316 s
+rep 3702 deg 46737 ... 19316 s
+rep 3702/5184 deg 46737 cliques 5 best 63 maxdepth 7  19341 s
+rep 3704 deg 41007 ... 19342 s
+rep 3704/5184 deg 41007 cliques 5 best 63 maxdepth 7  19359 s
+rep 3706 deg 43004 ... 19359 s
+rep 3706/5184 deg 43004 cliques 5 best 63 maxdepth 7  19381 s
+rep 3708 deg 35578 ... 19381 s
+rep 3708/5184 deg 35578 cliques 5 best 63 maxdepth 7  19392 s
+rep 3710 deg 45448 ... 19392 s
+rep 3710/5184 deg 45448 cliques 5 best 63 maxdepth 7  19418 s
+rep 3712 deg 47240 ... 19418 s
+rep 3712/5184 deg 47240 cliques 5 best 63 maxdepth 7  19440 s
+rep 3714 deg 42044 ... 19440 s
+rep 3714/5184 deg 42044 cliques 5 best 63 maxdepth 7  19460 s
+rep 3716 deg 36759 ... 19460 s
+rep 3716/5184 deg 36759 cliques 5 best 63 maxdepth 7  19469 s
+rep 3718 deg 43782 ... 19469 s
+rep 3718/5184 deg 43782 cliques 5 best 63 maxdepth 7  19490 s
+rep 3720 deg 45880 ... 19490 s
+rep 3720/5184 deg 45880 cliques 5 best 63 maxdepth 7  19509 s
+rep 3722 deg 40761 ... 19509 s
+rep 3722/5184 deg 40761 cliques 5 best 63 maxdepth 7  19525 s
+rep 3724 deg 47924 ... 19525 s
+rep 3724/5184 deg 47924 cliques 5 best 63 maxdepth 7  19550 s
+rep 3726 deg 40126 ... 19550 s
+rep 3726/5184 deg 40126 cliques 5 best 63 maxdepth 7  19567 s
+rep 3728 deg 45659 ... 19567 s
+rep 3728/5184 deg 45659 cliques 5 best 63 maxdepth 7  19588 s
+rep 3730 deg 41803 ... 19588 s
+rep 3730/5184 deg 41803 cliques 5 best 63 maxdepth 7  19608 s
+rep 3732 deg 42141 ... 19608 s
+rep 3732/5184 deg 42141 cliques 5 best 63 maxdepth 7  19627 s
+rep 3734 deg 37402 ... 19627 s
+rep 3734/5184 deg 37402 cliques 5 best 63 maxdepth 7  19638 s
+rep 3736 deg 42024 ... 19638 s
+rep 3736/5184 deg 42024 cliques 5 best 63 maxdepth 7  19656 s
+rep 3738 deg 39921 ... 19656 s
+rep 3738/5184 deg 39921 cliques 5 best 63 maxdepth 7  19669 s
+rep 3740 deg 40970 ... 19669 s
+rep 3740/5184 deg 40970 cliques 5 best 63 maxdepth 7  19685 s
+rep 3742 deg 46007 ... 19685 s
+rep 3742/5184 deg 46007 cliques 5 best 63 maxdepth 7  19707 s
+rep 3744 deg 40173 ... 19707 s
+rep 3744/5184 deg 40173 cliques 5 best 63 maxdepth 7  19724 s
+rep 3746 deg 43454 ... 19724 s
+rep 3746/5184 deg 43454 cliques 5 best 63 maxdepth 7  19746 s
+rep 3748 deg 46035 ... 19746 s
+rep 3748/5184 deg 46035 cliques 5 best 63 maxdepth 7  19772 s
+rep 3750 deg 42087 ... 19772 s
+rep 3750/5184 deg 42087 cliques 5 best 63 maxdepth 7  19791 s
+rep 3752 deg 42739 ... 19791 s
+rep 3752/5184 deg 42739 cliques 5 best 63 maxdepth 7  19808 s
+rep 3754 deg 40583 ... 19808 s
+rep 3754/5184 deg 40583 cliques 5 best 63 maxdepth 7  19827 s
+rep 3756 deg 41642 ... 19827 s
+rep 3756/5184 deg 41642 cliques 5 best 63 maxdepth 7  19843 s
+rep 3758 deg 38373 ... 19843 s
+rep 3758/5184 deg 38373 cliques 5 best 63 maxdepth 7  19856 s
+rep 3760 deg 34479 ... 19856 s
+rep 3760/5184 deg 34479 cliques 5 best 63 maxdepth 7  19866 s
+rep 3762 deg 43444 ... 19866 s
+rep 3762/5184 deg 43444 cliques 5 best 63 maxdepth 7  19887 s
+rep 3764 deg 41159 ... 19887 s
+rep 3764/5184 deg 41159 cliques 5 best 63 maxdepth 7  19902 s
+rep 3766 deg 45075 ... 19902 s
+rep 3766/5184 deg 45075 cliques 5 best 63 maxdepth 7  19924 s
+rep 3768 deg 37330 ... 19925 s
+rep 3768/5184 deg 37330 cliques 5 best 63 maxdepth 7  19937 s
+rep 3770 deg 45796 ... 19937 s
+rep 3770/5184 deg 45796 cliques 5 best 63 maxdepth 7  19960 s
+rep 3772 deg 38546 ... 19960 s
+rep 3772/5184 deg 38546 cliques 5 best 63 maxdepth 7  19975 s
+rep 3774 deg 34942 ... 19975 s
+rep 3774/5184 deg 34942 cliques 5 best 63 maxdepth 7  19984 s
+rep 3776 deg 31430 ... 19984 s
+rep 3776/5184 deg 31430 cliques 5 best 63 maxdepth 7  19993 s
+rep 3778 deg 37213 ... 19993 s
+rep 3778/5184 deg 37213 cliques 5 best 63 maxdepth 7  20005 s
+rep 3780 deg 40921 ... 20005 s
+rep 3780/5184 deg 40921 cliques 5 best 63 maxdepth 7  20019 s
+rep 3782 deg 39795 ... 20019 s
+rep 3782/5184 deg 39795 cliques 5 best 63 maxdepth 7  20033 s
+rep 3784 deg 31384 ... 20033 s
+rep 3784/5184 deg 31384 cliques 5 best 63 maxdepth 7  20043 s
+rep 3786 deg 37598 ... 20043 s
+rep 3786/5184 deg 37598 cliques 5 best 63 maxdepth 7  20058 s
+rep 3788 deg 45451 ... 20058 s
+rep 3788/5184 deg 45451 cliques 5 best 63 maxdepth 7  20081 s
+rep 3790 deg 43373 ... 20081 s
+rep 3790/5184 deg 43373 cliques 5 best 63 maxdepth 7  20098 s
+rep 3792 deg 41078 ... 20098 s
+rep 3792/5184 deg 41078 cliques 5 best 63 maxdepth 7  20113 s
+rep 3794 deg 43344 ... 20113 s
+rep 3794/5184 deg 43344 cliques 5 best 63 maxdepth 7  20133 s
+rep 3796 deg 44948 ... 20133 s
+rep 3796/5184 deg 44948 cliques 5 best 63 maxdepth 7  20154 s
+rep 3798 deg 35841 ... 20154 s
+rep 3798/5184 deg 35841 cliques 5 best 63 maxdepth 7  20163 s
+rep 3800 deg 41040 ... 20163 s
+rep 3800/5184 deg 41040 cliques 5 best 63 maxdepth 7  20179 s
+rep 3802 deg 32538 ... 20179 s
+rep 3802/5184 deg 32538 cliques 5 best 63 maxdepth 7  20188 s
+rep 3804 deg 36146 ... 20188 s
+rep 3804/5184 deg 36146 cliques 5 best 63 maxdepth 7  20199 s
+rep 3806 deg 39639 ... 20199 s
+rep 3806/5184 deg 39639 cliques 5 best 63 maxdepth 7  20215 s
+rep 3808 deg 41765 ... 20215 s
+rep 3808/5184 deg 41765 cliques 5 best 63 maxdepth 7  20228 s
+rep 3810 deg 35957 ... 20229 s
+rep 3810/5184 deg 35957 cliques 5 best 63 maxdepth 7  20244 s
+rep 3812 deg 40555 ... 20244 s
+rep 3812/5184 deg 40555 cliques 5 best 63 maxdepth 7  20259 s
+rep 3814 deg 35876 ... 20259 s
+rep 3814/5184 deg 35876 cliques 5 best 63 maxdepth 7  20269 s
+rep 3816 deg 47511 ... 20269 s
+rep 3816/5184 deg 47511 cliques 5 best 63 maxdepth 7  20292 s
+rep 3818 deg 44937 ... 20292 s
+rep 3818/5184 deg 44937 cliques 5 best 63 maxdepth 7  20315 s
+rep 3820 deg 37338 ... 20315 s
+rep 3820/5184 deg 37338 cliques 5 best 63 maxdepth 7  20331 s
+rep 3822 deg 27633 ... 20331 s
+rep 3822/5184 deg 27633 cliques 5 best 63 maxdepth 7  20339 s
+rep 3824 deg 38401 ... 20339 s
+rep 3824/5184 deg 38401 cliques 5 best 63 maxdepth 7  20352 s
+rep 3826 deg 41693 ... 20352 s
+rep 3826/5184 deg 41693 cliques 5 best 63 maxdepth 7  20370 s
+rep 3828 deg 36373 ... 20370 s
+rep 3828/5184 deg 36373 cliques 5 best 63 maxdepth 7  20381 s
+rep 3830 deg 39316 ... 20381 s
+rep 3830/5184 deg 39316 cliques 5 best 63 maxdepth 7  20396 s
+rep 3832 deg 38027 ... 20396 s
+rep 3832/5184 deg 38027 cliques 5 best 63 maxdepth 7  20410 s
+rep 3834 deg 37633 ... 20410 s
+rep 3834/5184 deg 37633 cliques 5 best 63 maxdepth 7  20425 s
+rep 3836 deg 41866 ... 20425 s
+rep 3836/5184 deg 41866 cliques 5 best 63 maxdepth 7  20444 s
+rep 3838 deg 40929 ... 20444 s
+rep 3838/5184 deg 40929 cliques 5 best 63 maxdepth 7  20463 s
+rep 3840 deg 45030 ... 20463 s
+rep 3840/5184 deg 45030 cliques 5 best 63 maxdepth 7  20482 s
+rep 3842 deg 38504 ... 20482 s
+rep 3842/5184 deg 38504 cliques 5 best 63 maxdepth 7  20493 s
+rep 3844 deg 45362 ... 20493 s
+rep 3844/5184 deg 45362 cliques 5 best 63 maxdepth 7  20519 s
+rep 3846 deg 41890 ... 20519 s
+rep 3846/5184 deg 41890 cliques 5 best 63 maxdepth 7  20539 s
+rep 3848 deg 36468 ... 20539 s
+rep 3848/5184 deg 36468 cliques 5 best 63 maxdepth 7  20552 s
+rep 3850 deg 39940 ... 20552 s
+rep 3850/5184 deg 39940 cliques 5 best 63 maxdepth 7  20567 s
+rep 3852 deg 39347 ... 20567 s
+rep 3852/5184 deg 39347 cliques 5 best 63 maxdepth 7  20583 s
+rep 3854 deg 39956 ... 20583 s
+rep 3854/5184 deg 39956 cliques 5 best 63 maxdepth 7  20603 s
+rep 3856 deg 46593 ... 20603 s
+rep 3856/5184 deg 46593 cliques 5 best 63 maxdepth 7  20626 s
+rep 3858 deg 22931 ... 20626 s
+rep 3858/5184 deg 22931 cliques 5 best 63 maxdepth 7  20631 s
+rep 3860 deg 45789 ... 20631 s
+rep 3860/5184 deg 45789 cliques 5 best 63 maxdepth 7  20652 s
+rep 3862 deg 45855 ... 20652 s
+rep 3862/5184 deg 45855 cliques 5 best 63 maxdepth 7  20672 s
+rep 3864 deg 41976 ... 20672 s
+rep 3864/5184 deg 41976 cliques 5 best 63 maxdepth 7  20689 s
+rep 3866 deg 39123 ... 20689 s
+rep 3866/5184 deg 39123 cliques 5 best 63 maxdepth 7  20703 s
+rep 3868 deg 37530 ... 20703 s
+rep 3868/5184 deg 37530 cliques 5 best 63 maxdepth 7  20714 s
+rep 3870 deg 47915 ... 20714 s
+rep 3870/5184 deg 47915 cliques 5 best 63 maxdepth 7  20734 s
+rep 3872 deg 39449 ... 20734 s
+rep 3872/5184 deg 39449 cliques 5 best 63 maxdepth 7  20748 s
+rep 3874 deg 37965 ... 20748 s
+rep 3874/5184 deg 37965 cliques 5 best 63 maxdepth 7  20758 s
+rep 3876 deg 36123 ... 20758 s
+rep 3876/5184 deg 36123 cliques 5 best 63 maxdepth 7  20769 s
+rep 3878 deg 35830 ... 20769 s
+rep 3878/5184 deg 35830 cliques 5 best 63 maxdepth 7  20781 s
+rep 3880 deg 40302 ... 20781 s
+rep 3880/5184 deg 40302 cliques 5 best 63 maxdepth 7  20796 s
+rep 3882 deg 40741 ... 20796 s
+rep 3882/5184 deg 40741 cliques 5 best 63 maxdepth 7  20808 s
+rep 3884 deg 41611 ... 20808 s
+rep 3884/5184 deg 41611 cliques 5 best 63 maxdepth 7  20823 s
+rep 3886 deg 42694 ... 20823 s
+rep 3886/5184 deg 42694 cliques 5 best 63 maxdepth 7  20840 s
+rep 3888 deg 35284 ... 20840 s
+rep 3888/5184 deg 35284 cliques 5 best 63 maxdepth 7  20850 s
+rep 3890 deg 39893 ... 20850 s
+rep 3890/5184 deg 39893 cliques 5 best 63 maxdepth 7  20863 s
+rep 3892 deg 40750 ... 20863 s
+rep 3892/5184 deg 40750 cliques 5 best 63 maxdepth 7  20879 s
+rep 3894 deg 35354 ... 20879 s
+rep 3894/5184 deg 35354 cliques 5 best 63 maxdepth 7  20889 s
+rep 3896 deg 34416 ... 20889 s
+rep 3896/5184 deg 34416 cliques 5 best 63 maxdepth 7  20900 s
+rep 3898 deg 38517 ... 20900 s
+rep 3898/5184 deg 38517 cliques 5 best 63 maxdepth 7  20914 s
+rep 3900 deg 42134 ... 20914 s
+rep 3900/5184 deg 42134 cliques 5 best 63 maxdepth 7  20929 s
+rep 3902 deg 42196 ... 20929 s
+rep 3902/5184 deg 42196 cliques 5 best 63 maxdepth 7  20946 s
+rep 3904 deg 42567 ... 20946 s
+rep 3904/5184 deg 42567 cliques 5 best 63 maxdepth 7  20960 s
+rep 3906 deg 32948 ... 20960 s
+rep 3906/5184 deg 32948 cliques 5 best 63 maxdepth 7  20969 s
+rep 3908 deg 44996 ... 20969 s
+rep 3908/5184 deg 44996 cliques 5 best 63 maxdepth 7  20987 s
+rep 3910 deg 42893 ... 20987 s
+rep 3910/5184 deg 42893 cliques 5 best 63 maxdepth 7  21004 s
+rep 3912 deg 42533 ... 21004 s
+rep 3912/5184 deg 42533 cliques 5 best 63 maxdepth 7  21021 s
+rep 3914 deg 36969 ... 21021 s
+rep 3914/5184 deg 36969 cliques 5 best 63 maxdepth 7  21030 s
+rep 3916 deg 32325 ... 21030 s
+rep 3916/5184 deg 32325 cliques 5 best 63 maxdepth 7  21037 s
+rep 3918 deg 37161 ... 21037 s
+rep 3918/5184 deg 37161 cliques 5 best 63 maxdepth 7  21048 s
+rep 3920 deg 37931 ... 21049 s
+rep 3920/5184 deg 37931 cliques 5 best 63 maxdepth 7  21059 s
+rep 3922 deg 36323 ... 21059 s
+rep 3922/5184 deg 36323 cliques 5 best 63 maxdepth 7  21072 s
+rep 3924 deg 39242 ... 21072 s
+rep 3924/5184 deg 39242 cliques 5 best 63 maxdepth 7  21084 s
+rep 3926 deg 35745 ... 21084 s
+rep 3926/5184 deg 35745 cliques 5 best 63 maxdepth 7  21095 s
+rep 3928 deg 39183 ... 21095 s
+rep 3928/5184 deg 39183 cliques 5 best 63 maxdepth 7  21109 s
+rep 3930 deg 42255 ... 21109 s
+rep 3930/5184 deg 42255 cliques 5 best 63 maxdepth 7  21123 s
+rep 3932 deg 31976 ... 21123 s
+rep 3932/5184 deg 31976 cliques 5 best 63 maxdepth 7  21132 s
+rep 3934 deg 39608 ... 21132 s
+rep 3934/5184 deg 39608 cliques 5 best 63 maxdepth 7  21145 s
+rep 3936 deg 41900 ... 21145 s
+rep 3936/5184 deg 41900 cliques 5 best 63 maxdepth 7  21162 s
+rep 3938 deg 24810 ... 21162 s
+rep 3938/5184 deg 24810 cliques 5 best 63 maxdepth 7  21167 s
+rep 3940 deg 38292 ... 21167 s
+rep 3940/5184 deg 38292 cliques 5 best 63 maxdepth 7  21180 s
+rep 3942 deg 42453 ... 21180 s
+rep 3942/5184 deg 42453 cliques 5 best 63 maxdepth 7  21194 s
+rep 3944 deg 42109 ... 21194 s
+rep 3944/5184 deg 42109 cliques 5 best 63 maxdepth 7  21212 s
+rep 3946 deg 35115 ... 21212 s
+rep 3946/5184 deg 35115 cliques 5 best 63 maxdepth 7  21222 s
+rep 3948 deg 35127 ... 21222 s
+rep 3948/5184 deg 35127 cliques 5 best 63 maxdepth 7  21230 s
+rep 3950 deg 44958 ... 21230 s
+rep 3950/5184 deg 44958 cliques 5 best 63 maxdepth 7  21253 s
+rep 3952 deg 38245 ... 21253 s
+rep 3952/5184 deg 38245 cliques 5 best 63 maxdepth 7  21263 s
+rep 3954 deg 40916 ... 21263 s
+rep 3954/5184 deg 40916 cliques 5 best 63 maxdepth 7  21280 s
+rep 3956 deg 37158 ... 21280 s
+rep 3956/5184 deg 37158 cliques 5 best 63 maxdepth 7  21291 s
+rep 3958 deg 38944 ... 21291 s
+rep 3958/5184 deg 38944 cliques 5 best 63 maxdepth 7  21305 s
+rep 3960 deg 39819 ... 21305 s
+rep 3960/5184 deg 39819 cliques 5 best 63 maxdepth 7  21319 s
+rep 3962 deg 35467 ... 21319 s
+rep 3962/5184 deg 35467 cliques 5 best 63 maxdepth 7  21332 s
+rep 3964 deg 41101 ... 21332 s
+rep 3964/5184 deg 41101 cliques 5 best 63 maxdepth 7  21347 s
+rep 3966 deg 32678 ... 21347 s
+rep 3966/5184 deg 32678 cliques 5 best 63 maxdepth 7  21355 s
+rep 3968 deg 34413 ... 21355 s
+rep 3968/5184 deg 34413 cliques 5 best 63 maxdepth 7  21365 s
+rep 3970 deg 37254 ... 21365 s
+rep 3970/5184 deg 37254 cliques 5 best 63 maxdepth 7  21378 s
+rep 3972 deg 40621 ... 21378 s
+rep 3972/5184 deg 40621 cliques 5 best 63 maxdepth 7  21394 s
+rep 3974 deg 39792 ... 21394 s
+rep 3974/5184 deg 39792 cliques 5 best 63 maxdepth 7  21410 s
+rep 3976 deg 41753 ... 21410 s
+rep 3976/5184 deg 41753 cliques 5 best 63 maxdepth 7  21426 s
+rep 3978 deg 33237 ... 21426 s
+rep 3978/5184 deg 33237 cliques 5 best 63 maxdepth 7  21435 s
+rep 3980 deg 46173 ... 21435 s
+rep 3980/5184 deg 46173 cliques 5 best 63 maxdepth 7  21458 s
+rep 3982 deg 29616 ... 21458 s
+rep 3982/5184 deg 29616 cliques 5 best 63 maxdepth 7  21465 s
+rep 3984 deg 30863 ... 21465 s
+rep 3984/5184 deg 30863 cliques 5 best 63 maxdepth 7  21471 s
+rep 3986 deg 29763 ... 21471 s
+rep 3986/5184 deg 29763 cliques 5 best 63 maxdepth 7  21479 s
+rep 3988 deg 36110 ... 21479 s
+rep 3988/5184 deg 36110 cliques 5 best 63 maxdepth 7  21490 s
+rep 3990 deg 42911 ... 21490 s
+rep 3990/5184 deg 42911 cliques 5 best 63 maxdepth 7  21507 s
+rep 3992 deg 41205 ... 21507 s
+rep 3992/5184 deg 41205 cliques 5 best 63 maxdepth 7  21524 s
+rep 3994 deg 41720 ... 21524 s
+rep 3994/5184 deg 41720 cliques 5 best 63 maxdepth 7  21540 s
+rep 3996 deg 35980 ... 21540 s
+rep 3996/5184 deg 35980 cliques 5 best 63 maxdepth 7  21551 s
+rep 3998 deg 42232 ... 21551 s
+rep 3998/5184 deg 42232 cliques 5 best 63 maxdepth 7  21566 s
+rep 4000 deg 41810 ... 21566 s
+rep 4000/5184 deg 41810 cliques 5 best 63 maxdepth 7  21581 s
+rep 4002 deg 32355 ... 21581 s
+rep 4002/5184 deg 32355 cliques 5 best 63 maxdepth 7  21586 s
+rep 4004 deg 37339 ... 21586 s
+rep 4004/5184 deg 37339 cliques 5 best 63 maxdepth 7  21597 s
+rep 4006 deg 42182 ... 21597 s
+rep 4006/5184 deg 42182 cliques 5 best 63 maxdepth 7  21613 s
+rep 4008 deg 41376 ... 21613 s
+rep 4008/5184 deg 41376 cliques 5 best 63 maxdepth 7  21630 s
+rep 4010 deg 30849 ... 21630 s
+rep 4010/5184 deg 30849 cliques 5 best 63 maxdepth 7  21638 s
+rep 4012 deg 38563 ... 21638 s
+rep 4012/5184 deg 38563 cliques 5 best 63 maxdepth 7  21652 s
+rep 4014 deg 26492 ... 21652 s
+rep 4014/5184 deg 26492 cliques 5 best 63 maxdepth 7  21659 s
+rep 4016 deg 31051 ... 21659 s
+rep 4016/5184 deg 31051 cliques 5 best 63 maxdepth 7  21665 s
+rep 4018 deg 36199 ... 21665 s
+rep 4018/5184 deg 36199 cliques 5 best 63 maxdepth 7  21675 s
+rep 4020 deg 44483 ... 21675 s
+rep 4020/5184 deg 44483 cliques 5 best 63 maxdepth 7  21695 s
+rep 4022 deg 38747 ... 21695 s
+rep 4022/5184 deg 38747 cliques 5 best 63 maxdepth 7  21708 s
+rep 4024 deg 40981 ... 21708 s
+rep 4024/5184 deg 40981 cliques 5 best 63 maxdepth 7  21722 s
+rep 4026 deg 28919 ... 21722 s
+rep 4026/5184 deg 28919 cliques 5 best 63 maxdepth 7  21729 s
+rep 4028 deg 36560 ... 21729 s
+rep 4028/5184 deg 36560 cliques 5 best 63 maxdepth 7  21740 s
+rep 4030 deg 37102 ... 21740 s
+rep 4030/5184 deg 37102 cliques 5 best 63 maxdepth 7  21752 s
+rep 4032 deg 39576 ... 21752 s
+rep 4032/5184 deg 39576 cliques 5 best 63 maxdepth 7  21766 s
+rep 4034 deg 36010 ... 21766 s
+rep 4034/5184 deg 36010 cliques 5 best 63 maxdepth 7  21775 s
+rep 4036 deg 31678 ... 21775 s
+rep 4036/5184 deg 31678 cliques 5 best 63 maxdepth 7  21784 s
+rep 4038 deg 41051 ... 21784 s
+rep 4038/5184 deg 41051 cliques 5 best 63 maxdepth 7  21799 s
+rep 4040 deg 30860 ... 21800 s
+rep 4040/5184 deg 30860 cliques 5 best 63 maxdepth 7  21807 s
+rep 4042 deg 37592 ... 21807 s
+rep 4042/5184 deg 37592 cliques 5 best 63 maxdepth 7  21820 s
+rep 4044 deg 31094 ... 21820 s
+rep 4044/5184 deg 31094 cliques 5 best 63 maxdepth 7  21826 s
+rep 4046 deg 39059 ... 21826 s
+rep 4046/5184 deg 39059 cliques 5 best 63 maxdepth 7  21840 s
+rep 4048 deg 36586 ... 21840 s
+rep 4048/5184 deg 36586 cliques 5 best 63 maxdepth 7  21852 s
+rep 4050 deg 35002 ... 21852 s
+rep 4050/5184 deg 35002 cliques 5 best 63 maxdepth 7  21861 s
+rep 4052 deg 36825 ... 21861 s
+rep 4052/5184 deg 36825 cliques 5 best 63 maxdepth 7  21871 s
+rep 4054 deg 38596 ... 21871 s
+rep 4054/5184 deg 38596 cliques 5 best 63 maxdepth 7  21885 s
+rep 4056 deg 38488 ... 21885 s
+rep 4056/5184 deg 38488 cliques 5 best 63 maxdepth 7  21900 s
+rep 4058 deg 27617 ... 21900 s
+rep 4058/5184 deg 27617 cliques 5 best 63 maxdepth 7  21906 s
+rep 4060 deg 31583 ... 21906 s
+rep 4060/5184 deg 31583 cliques 5 best 63 maxdepth 7  21914 s
+rep 4062 deg 35716 ... 21914 s
+rep 4062/5184 deg 35716 cliques 5 best 63 maxdepth 7  21924 s
+rep 4064 deg 38646 ... 21924 s
+rep 4064/5184 deg 38646 cliques 5 best 63 maxdepth 7  21935 s
+rep 4066 deg 35626 ... 21936 s
+rep 4066/5184 deg 35626 cliques 5 best 63 maxdepth 7  21947 s
+rep 4068 deg 27744 ... 21947 s
+rep 4068/5184 deg 27744 cliques 5 best 63 maxdepth 7  21953 s
+rep 4070 deg 35031 ... 21953 s
+rep 4070/5184 deg 35031 cliques 5 best 63 maxdepth 7  21964 s
+rep 4072 deg 35953 ... 21964 s
+rep 4072/5184 deg 35953 cliques 5 best 63 maxdepth 7  21977 s
+rep 4074 deg 34857 ... 21977 s
+rep 4074/5184 deg 34857 cliques 5 best 63 maxdepth 7  21986 s
+rep 4076 deg 34542 ... 21986 s
+rep 4076/5184 deg 34542 cliques 5 best 63 maxdepth 7  21998 s
+rep 4078 deg 37961 ... 21998 s
+rep 4078/5184 deg 37961 cliques 5 best 63 maxdepth 7  22012 s
+rep 4080 deg 39465 ... 22012 s
+rep 4080/5184 deg 39465 cliques 5 best 63 maxdepth 7  22025 s
+rep 4082 deg 29396 ... 22025 s
+rep 4082/5184 deg 29396 cliques 5 best 63 maxdepth 7  22031 s
+rep 4084 deg 39770 ... 22031 s
+rep 4084/5184 deg 39770 cliques 5 best 63 maxdepth 7  22047 s
+rep 4086 deg 31373 ... 22047 s
+rep 4086/5184 deg 31373 cliques 5 best 63 maxdepth 7  22055 s
+rep 4088 deg 31596 ... 22055 s
+rep 4088/5184 deg 31596 cliques 5 best 63 maxdepth 7  22063 s
+rep 4090 deg 35201 ... 22063 s
+rep 4090/5184 deg 35201 cliques 5 best 63 maxdepth 7  22073 s
+rep 4092 deg 29448 ... 22073 s
+rep 4092/5184 deg 29448 cliques 5 best 63 maxdepth 7  22080 s
+rep 4094 deg 39073 ... 22080 s
+rep 4094/5184 deg 39073 cliques 5 best 63 maxdepth 7  22094 s
+rep 4096 deg 27312 ... 22094 s
+rep 4096/5184 deg 27312 cliques 5 best 63 maxdepth 7  22099 s
+rep 4098 deg 33200 ... 22099 s
+rep 4098/5184 deg 33200 cliques 5 best 63 maxdepth 7  22109 s
+rep 4100 deg 36017 ... 22109 s
+rep 4100/5184 deg 36017 cliques 5 best 63 maxdepth 7  22119 s
+rep 4102 deg 29682 ... 22120 s
+rep 4102/5184 deg 29682 cliques 5 best 63 maxdepth 7  22126 s
+rep 4104 deg 38886 ... 22126 s
+rep 4104/5184 deg 38886 cliques 5 best 63 maxdepth 7  22140 s
+rep 4106 deg 30988 ... 22140 s
+rep 4106/5184 deg 30988 cliques 5 best 63 maxdepth 7  22147 s
+rep 4108 deg 33435 ... 22147 s
+rep 4108/5184 deg 33435 cliques 5 best 63 maxdepth 7  22156 s
+rep 4110 deg 26996 ... 22156 s
+rep 4110/5184 deg 26996 cliques 5 best 63 maxdepth 7  22161 s
+rep 4112 deg 38731 ... 22161 s
+rep 4112/5184 deg 38731 cliques 5 best 63 maxdepth 7  22175 s
+rep 4114 deg 33205 ... 22175 s
+rep 4114/5184 deg 33205 cliques 5 best 63 maxdepth 7  22184 s
+rep 4116 deg 39944 ... 22184 s
+rep 4116/5184 deg 39944 cliques 5 best 63 maxdepth 7  22198 s
+rep 4118 deg 30820 ... 22198 s
+rep 4118/5184 deg 30820 cliques 5 best 63 maxdepth 7  22205 s
+rep 4120 deg 30462 ... 22205 s
+rep 4120/5184 deg 30462 cliques 5 best 63 maxdepth 7  22212 s
+rep 4122 deg 32759 ... 22212 s
+rep 4122/5184 deg 32759 cliques 5 best 63 maxdepth 7  22221 s
+rep 4124 deg 36070 ... 22221 s
+rep 4124/5184 deg 36070 cliques 5 best 63 maxdepth 7  22232 s
+rep 4126 deg 32166 ... 22232 s
+rep 4126/5184 deg 32166 cliques 5 best 63 maxdepth 7  22240 s
+rep 4128 deg 44412 ... 22240 s
+rep 4128/5184 deg 44412 cliques 5 best 63 maxdepth 7  22258 s
+rep 4130 deg 38273 ... 22258 s
+rep 4130/5184 deg 38273 cliques 5 best 63 maxdepth 7  22270 s
+rep 4132 deg 35017 ... 22270 s
+rep 4132/5184 deg 35017 cliques 5 best 63 maxdepth 7  22281 s
+rep 4134 deg 31459 ... 22281 s
+rep 4134/5184 deg 31459 cliques 5 best 63 maxdepth 7  22288 s
+rep 4136 deg 32505 ... 22289 s
+rep 4136/5184 deg 32505 cliques 5 best 63 maxdepth 7  22299 s
+rep 4138 deg 33919 ... 22299 s
+rep 4138/5184 deg 33919 cliques 5 best 63 maxdepth 7  22308 s
+rep 4140 deg 32869 ... 22308 s
+rep 4140/5184 deg 32869 cliques 5 best 63 maxdepth 7  22317 s
+rep 4142 deg 28383 ... 22317 s
+rep 4142/5184 deg 28383 cliques 5 best 63 maxdepth 7  22323 s
+rep 4144 deg 31246 ... 22323 s
+rep 4144/5184 deg 31246 cliques 5 best 63 maxdepth 7  22331 s
+rep 4146 deg 25079 ... 22331 s
+rep 4146/5184 deg 25079 cliques 5 best 63 maxdepth 7  22336 s
+rep 4148 deg 33274 ... 22336 s
+rep 4148/5184 deg 33274 cliques 5 best 63 maxdepth 7  22344 s
+rep 4150 deg 32993 ... 22344 s
+rep 4150/5184 deg 32993 cliques 5 best 63 maxdepth 7  22352 s
+rep 4152 deg 36305 ... 22352 s
+rep 4152/5184 deg 36305 cliques 5 best 63 maxdepth 7  22364 s
+rep 4154 deg 35052 ... 22364 s
+rep 4154/5184 deg 35052 cliques 5 best 63 maxdepth 7  22374 s
+rep 4156 deg 33196 ... 22374 s
+rep 4156/5184 deg 33196 cliques 5 best 63 maxdepth 7  22383 s
+rep 4158 deg 37265 ... 22383 s
+rep 4158/5184 deg 37265 cliques 5 best 63 maxdepth 7  22396 s
+rep 4160 deg 26072 ... 22396 s
+rep 4160/5184 deg 26072 cliques 5 best 63 maxdepth 7  22401 s
+rep 4162 deg 35233 ... 22401 s
+rep 4162/5184 deg 35233 cliques 5 best 63 maxdepth 7  22412 s
+rep 4164 deg 39521 ... 22412 s
+rep 4164/5184 deg 39521 cliques 5 best 63 maxdepth 7  22429 s
+rep 4166 deg 32416 ... 22429 s
+rep 4166/5184 deg 32416 cliques 5 best 63 maxdepth 7  22437 s
+rep 4168 deg 22934 ... 22437 s
+rep 4168/5184 deg 22934 cliques 5 best 63 maxdepth 7  22441 s
+rep 4170 deg 33174 ... 22442 s
+rep 4170/5184 deg 33174 cliques 5 best 63 maxdepth 7  22450 s
+rep 4172 deg 31707 ... 22450 s
+rep 4172/5184 deg 31707 cliques 5 best 63 maxdepth 7  22460 s
+rep 4174 deg 33912 ... 22460 s
+rep 4174/5184 deg 33912 cliques 5 best 63 maxdepth 7  22470 s
+rep 4176 deg 30882 ... 22470 s
+rep 4176/5184 deg 30882 cliques 5 best 63 maxdepth 7  22477 s
+rep 4178 deg 32720 ... 22477 s
+rep 4178/5184 deg 32720 cliques 5 best 63 maxdepth 7  22486 s
+rep 4180 deg 35114 ... 22486 s
+rep 4180/5184 deg 35114 cliques 5 best 63 maxdepth 7  22497 s
+rep 4182 deg 37892 ... 22497 s
+rep 4182/5184 deg 37892 cliques 5 best 63 maxdepth 7  22510 s
+rep 4184 deg 29589 ... 22510 s
+rep 4184/5184 deg 29589 cliques 5 best 63 maxdepth 7  22516 s
+rep 4186 deg 34112 ... 22516 s
+rep 4186/5184 deg 34112 cliques 5 best 63 maxdepth 7  22525 s
+rep 4188 deg 31382 ... 22525 s
+rep 4188/5184 deg 31382 cliques 5 best 63 maxdepth 7  22534 s
+rep 4190 deg 31191 ... 22534 s
+rep 4190/5184 deg 31191 cliques 5 best 63 maxdepth 7  22542 s
+rep 4192 deg 28251 ... 22542 s
+rep 4192/5184 deg 28251 cliques 5 best 63 maxdepth 7  22548 s
+rep 4194 deg 33847 ... 22548 s
+rep 4194/5184 deg 33847 cliques 5 best 63 maxdepth 7  22557 s
+rep 4196 deg 35166 ... 22557 s
+rep 4196/5184 deg 35166 cliques 5 best 63 maxdepth 7  22572 s
+rep 4198 deg 40538 ... 22572 s
+rep 4198/5184 deg 40538 cliques 5 best 63 maxdepth 7  22590 s
+rep 4200 deg 31721 ... 22590 s
+rep 4200/5184 deg 31721 cliques 5 best 63 maxdepth 7  22598 s
+rep 4202 deg 32976 ... 22598 s
+rep 4202/5184 deg 32976 cliques 5 best 63 maxdepth 7  22608 s
+rep 4204 deg 26053 ... 22608 s
+rep 4204/5184 deg 26053 cliques 5 best 63 maxdepth 7  22614 s
+rep 4206 deg 35066 ... 22614 s
+rep 4206/5184 deg 35066 cliques 5 best 63 maxdepth 7  22624 s
+rep 4208 deg 38068 ... 22624 s
+rep 4208/5184 deg 38068 cliques 5 best 63 maxdepth 7  22638 s
+rep 4210 deg 33029 ... 22638 s
+rep 4210/5184 deg 33029 cliques 5 best 63 maxdepth 7  22646 s
+rep 4212 deg 35926 ... 22646 s
+rep 4212/5184 deg 35926 cliques 5 best 63 maxdepth 7  22656 s
+rep 4214 deg 37020 ... 22656 s
+rep 4214/5184 deg 37020 cliques 5 best 63 maxdepth 7  22669 s
+rep 4216 deg 26650 ... 22669 s
+rep 4216/5184 deg 26650 cliques 5 best 63 maxdepth 7  22674 s
+rep 4218 deg 35485 ... 22674 s
+rep 4218/5184 deg 35485 cliques 5 best 63 maxdepth 7  22686 s
+rep 4220 deg 34977 ... 22686 s
+rep 4220/5184 deg 34977 cliques 5 best 63 maxdepth 7  22697 s
+rep 4222 deg 39427 ... 22697 s
+rep 4222/5184 deg 39427 cliques 5 best 63 maxdepth 7  22714 s
+rep 4224 deg 34190 ... 22714 s
+rep 4224/5184 deg 34190 cliques 5 best 63 maxdepth 7  22723 s
+rep 4226 deg 32314 ... 22723 s
+rep 4226/5184 deg 32314 cliques 5 best 63 maxdepth 7  22732 s
+rep 4228 deg 24380 ... 22732 s
+rep 4228/5184 deg 24380 cliques 5 best 63 maxdepth 7  22737 s
+rep 4230 deg 36698 ... 22737 s
+rep 4230/5184 deg 36698 cliques 5 best 63 maxdepth 7  22750 s
+rep 4232 deg 27332 ... 22750 s
+rep 4232/5184 deg 27332 cliques 5 best 63 maxdepth 7  22756 s
+rep 4234 deg 32460 ... 22756 s
+rep 4234/5184 deg 32460 cliques 5 best 63 maxdepth 7  22764 s
+rep 4236 deg 27340 ... 22764 s
+rep 4236/5184 deg 27340 cliques 5 best 63 maxdepth 7  22770 s
+rep 4238 deg 30019 ... 22770 s
+rep 4238/5184 deg 30019 cliques 5 best 63 maxdepth 7  22777 s
+rep 4240 deg 25491 ... 22777 s
+rep 4240/5184 deg 25491 cliques 5 best 63 maxdepth 7  22783 s
+rep 4242 deg 30782 ... 22783 s
+rep 4242/5184 deg 30782 cliques 5 best 63 maxdepth 7  22789 s
+rep 4244 deg 29770 ... 22789 s
+rep 4244/5184 deg 29770 cliques 5 best 63 maxdepth 7  22796 s
+rep 4246 deg 38451 ... 22796 s
+rep 4246/5184 deg 38451 cliques 5 best 63 maxdepth 7  22809 s
+rep 4248 deg 26275 ... 22809 s
+rep 4248/5184 deg 26275 cliques 5 best 63 maxdepth 7  22813 s
+rep 4250 deg 34573 ... 22813 s
+rep 4250/5184 deg 34573 cliques 5 best 63 maxdepth 7  22824 s
+rep 4252 deg 27353 ... 22824 s
+rep 4252/5184 deg 27353 cliques 5 best 63 maxdepth 7  22830 s
+rep 4254 deg 32273 ... 22830 s
+rep 4254/5184 deg 32273 cliques 5 best 63 maxdepth 7  22840 s
+rep 4256 deg 23119 ... 22840 s
+rep 4256/5184 deg 23119 cliques 5 best 63 maxdepth 7  22845 s
+rep 4258 deg 36282 ... 22845 s
+rep 4258/5184 deg 36282 cliques 5 best 63 maxdepth 7  22856 s
+rep 4260 deg 34257 ... 22856 s
+rep 4260/5184 deg 34257 cliques 5 best 63 maxdepth 7  22863 s
+rep 4262 deg 23661 ... 22863 s
+rep 4262/5184 deg 23661 cliques 5 best 63 maxdepth 7  22868 s
+rep 4264 deg 28087 ... 22868 s
+rep 4264/5184 deg 28087 cliques 5 best 63 maxdepth 7  22873 s
+rep 4266 deg 33200 ... 22873 s
+rep 4266/5184 deg 33200 cliques 5 best 63 maxdepth 7  22882 s
+rep 4268 deg 32323 ... 22882 s
+rep 4268/5184 deg 32323 cliques 5 best 63 maxdepth 7  22891 s
+rep 4270 deg 37798 ... 22891 s
+rep 4270/5184 deg 37798 cliques 5 best 63 maxdepth 7  22902 s
+rep 4272 deg 31351 ... 22902 s
+rep 4272/5184 deg 31351 cliques 5 best 63 maxdepth 7  22910 s
+rep 4274 deg 29257 ... 22910 s
+rep 4274/5184 deg 29257 cliques 5 best 63 maxdepth 7  22917 s
+rep 4276 deg 25143 ... 22917 s
+rep 4276/5184 deg 25143 cliques 5 best 63 maxdepth 7  22922 s
+rep 4278 deg 33800 ... 22922 s
+rep 4278/5184 deg 33800 cliques 5 best 63 maxdepth 7  22930 s
+rep 4280 deg 24850 ... 22930 s
+rep 4280/5184 deg 24850 cliques 5 best 63 maxdepth 7  22935 s
+rep 4282 deg 31111 ... 22935 s
+rep 4282/5184 deg 31111 cliques 5 best 63 maxdepth 7  22944 s
+rep 4284 deg 34631 ... 22944 s
+rep 4284/5184 deg 34631 cliques 5 best 63 maxdepth 7  22954 s
+rep 4286 deg 33137 ... 22954 s
+rep 4286/5184 deg 33137 cliques 5 best 63 maxdepth 7  22966 s
+rep 4288 deg 30120 ... 22966 s
+rep 4288/5184 deg 30120 cliques 5 best 63 maxdepth 7  22973 s
+rep 4290 deg 25242 ... 22973 s
+rep 4290/5184 deg 25242 cliques 5 best 63 maxdepth 7  22978 s
+rep 4292 deg 32037 ... 22978 s
+rep 4292/5184 deg 32037 cliques 5 best 63 maxdepth 7  22986 s
+rep 4294 deg 34117 ... 22986 s
+rep 4294/5184 deg 34117 cliques 5 best 63 maxdepth 7  22996 s
+rep 4296 deg 33400 ... 22996 s
+rep 4296/5184 deg 33400 cliques 5 best 63 maxdepth 7  23005 s
+rep 4298 deg 30957 ... 23005 s
+rep 4298/5184 deg 30957 cliques 5 best 63 maxdepth 7  23012 s
+rep 4300 deg 37174 ... 23012 s
+rep 4300/5184 deg 37174 cliques 5 best 63 maxdepth 7  23022 s
+rep 4302 deg 28684 ... 23022 s
+rep 4302/5184 deg 28684 cliques 5 best 63 maxdepth 7  23028 s
+rep 4304 deg 33556 ... 23029 s
+rep 4304/5184 deg 33556 cliques 5 best 63 maxdepth 7  23039 s
+rep 4306 deg 38380 ... 23039 s
+rep 4306/5184 deg 38380 cliques 5 best 63 maxdepth 7  23053 s
+rep 4308 deg 33282 ... 23053 s
+rep 4308/5184 deg 33282 cliques 5 best 63 maxdepth 7  23065 s
+rep 4310 deg 31119 ... 23065 s
+rep 4310/5184 deg 31119 cliques 5 best 63 maxdepth 7  23071 s
+rep 4312 deg 28933 ... 23071 s
+rep 4312/5184 deg 28933 cliques 5 best 63 maxdepth 7  23077 s
+rep 4314 deg 30941 ... 23077 s
+rep 4314/5184 deg 30941 cliques 5 best 63 maxdepth 7  23085 s
+rep 4316 deg 38080 ... 23085 s
+rep 4316/5184 deg 38080 cliques 5 best 63 maxdepth 7  23099 s
+rep 4318 deg 25106 ... 23099 s
+rep 4318/5184 deg 25106 cliques 5 best 63 maxdepth 7  23104 s
+rep 4320 deg 36142 ... 23104 s
+rep 4320/5184 deg 36142 cliques 5 best 63 maxdepth 7  23118 s
+rep 4322 deg 20539 ... 23118 s
+rep 4322/5184 deg 20539 cliques 5 best 63 maxdepth 7  23121 s
+rep 4324 deg 29216 ... 23121 s
+rep 4324/5184 deg 29216 cliques 5 best 63 maxdepth 7  23127 s
+rep 4326 deg 34868 ... 23127 s
+rep 4326/5184 deg 34868 cliques 5 best 63 maxdepth 7  23137 s
+rep 4328 deg 28821 ... 23137 s
+rep 4328/5184 deg 28821 cliques 5 best 63 maxdepth 7  23143 s
+rep 4330 deg 33662 ... 23143 s
+rep 4330/5184 deg 33662 cliques 5 best 63 maxdepth 7  23153 s
+rep 4332 deg 32986 ... 23153 s
+rep 4332/5184 deg 32986 cliques 5 best 63 maxdepth 7  23162 s
+rep 4334 deg 33305 ... 23162 s
+rep 4334/5184 deg 33305 cliques 5 best 63 maxdepth 7  23173 s
+rep 4336 deg 30507 ... 23173 s
+rep 4336/5184 deg 30507 cliques 5 best 63 maxdepth 7  23181 s
+rep 4338 deg 27629 ... 23181 s
+rep 4338/5184 deg 27629 cliques 5 best 63 maxdepth 7  23187 s
+rep 4340 deg 31285 ... 23187 s
+rep 4340/5184 deg 31285 cliques 5 best 63 maxdepth 7  23195 s
+rep 4342 deg 33106 ... 23195 s
+rep 4342/5184 deg 33106 cliques 5 best 63 maxdepth 7  23205 s
+rep 4344 deg 27727 ... 23205 s
+rep 4344/5184 deg 27727 cliques 5 best 63 maxdepth 7  23211 s
+rep 4346 deg 32705 ... 23211 s
+rep 4346/5184 deg 32705 cliques 5 best 63 maxdepth 7  23220 s
+rep 4348 deg 29803 ... 23220 s
+rep 4348/5184 deg 29803 cliques 5 best 63 maxdepth 7  23226 s
+rep 4350 deg 27841 ... 23226 s
+rep 4350/5184 deg 27841 cliques 5 best 63 maxdepth 7  23232 s
+rep 4352 deg 31623 ... 23232 s
+rep 4352/5184 deg 31623 cliques 5 best 63 maxdepth 7  23241 s
+rep 4354 deg 28481 ... 23241 s
+rep 4354/5184 deg 28481 cliques 5 best 63 maxdepth 7  23249 s
+rep 4356 deg 30807 ... 23249 s
+rep 4356/5184 deg 30807 cliques 5 best 63 maxdepth 7  23257 s
+rep 4358 deg 32125 ... 23257 s
+rep 4358/5184 deg 32125 cliques 5 best 63 maxdepth 7  23267 s
+rep 4360 deg 28131 ... 23267 s
+rep 4360/5184 deg 28131 cliques 5 best 63 maxdepth 7  23273 s
+rep 4362 deg 26625 ... 23273 s
+rep 4362/5184 deg 26625 cliques 5 best 63 maxdepth 7  23278 s
+rep 4364 deg 29314 ... 23278 s
+rep 4364/5184 deg 29314 cliques 5 best 63 maxdepth 7  23286 s
+rep 4366 deg 30141 ... 23286 s
+rep 4366/5184 deg 30141 cliques 5 best 63 maxdepth 7  23295 s
+rep 4368 deg 31215 ... 23295 s
+rep 4368/5184 deg 31215 cliques 5 best 63 maxdepth 7  23304 s
+rep 4370 deg 26747 ... 23304 s
+rep 4370/5184 deg 26747 cliques 5 best 63 maxdepth 7  23310 s
+rep 4372 deg 30393 ... 23310 s
+rep 4372/5184 deg 30393 cliques 5 best 63 maxdepth 7  23317 s
+rep 4374 deg 24148 ... 23317 s
+rep 4374/5184 deg 24148 cliques 5 best 63 maxdepth 7  23321 s
+rep 4376 deg 27584 ... 23321 s
+rep 4376/5184 deg 27584 cliques 5 best 63 maxdepth 7  23327 s
+rep 4378 deg 23572 ... 23327 s
+rep 4378/5184 deg 23572 cliques 5 best 63 maxdepth 7  23332 s
+rep 4380 deg 27127 ... 23332 s
+rep 4380/5184 deg 27127 cliques 5 best 63 maxdepth 7  23338 s
+rep 4382 deg 25966 ... 23338 s
+rep 4382/5184 deg 25966 cliques 5 best 63 maxdepth 7  23344 s
+rep 4384 deg 33194 ... 23344 s
+rep 4384/5184 deg 33194 cliques 5 best 63 maxdepth 7  23355 s
+rep 4386 deg 33166 ... 23355 s
+rep 4386/5184 deg 33166 cliques 5 best 63 maxdepth 7  23365 s
+rep 4388 deg 31819 ... 23365 s
+rep 4388/5184 deg 31819 cliques 5 best 63 maxdepth 7  23374 s
+rep 4390 deg 22876 ... 23374 s
+rep 4390/5184 deg 22876 cliques 5 best 63 maxdepth 7  23378 s
+rep 4392 deg 29838 ... 23378 s
+rep 4392/5184 deg 29838 cliques 5 best 63 maxdepth 7  23385 s
+rep 4394 deg 32463 ... 23385 s
+rep 4394/5184 deg 32463 cliques 5 best 63 maxdepth 7  23393 s
+rep 4396 deg 30702 ... 23393 s
+rep 4396/5184 deg 30702 cliques 5 best 63 maxdepth 7  23402 s
+rep 4398 deg 36447 ... 23402 s
+rep 4398/5184 deg 36447 cliques 5 best 63 maxdepth 7  23413 s
+rep 4400 deg 25650 ... 23413 s
+rep 4400/5184 deg 25650 cliques 5 best 63 maxdepth 7  23418 s
+rep 4402 deg 31111 ... 23418 s
+rep 4402/5184 deg 31111 cliques 5 best 63 maxdepth 7  23426 s
+rep 4404 deg 31020 ... 23426 s
+rep 4404/5184 deg 31020 cliques 5 best 63 maxdepth 7  23435 s
+rep 4406 deg 23260 ... 23435 s
+rep 4406/5184 deg 23260 cliques 5 best 63 maxdepth 7  23440 s
+rep 4408 deg 26705 ... 23440 s
+rep 4408/5184 deg 26705 cliques 5 best 63 maxdepth 7  23447 s
+rep 4410 deg 25961 ... 23447 s
+rep 4410/5184 deg 25961 cliques 5 best 63 maxdepth 7  23452 s
+rep 4412 deg 24567 ... 23452 s
+rep 4412/5184 deg 24567 cliques 5 best 63 maxdepth 7  23457 s
+rep 4414 deg 29755 ... 23457 s
+rep 4414/5184 deg 29755 cliques 5 best 63 maxdepth 7  23465 s
+rep 4416 deg 26990 ... 23465 s
+rep 4416/5184 deg 26990 cliques 5 best 63 maxdepth 7  23471 s
+rep 4418 deg 21851 ... 23471 s
+rep 4418/5184 deg 21851 cliques 5 best 63 maxdepth 7  23475 s
+rep 4420 deg 26221 ... 23475 s
+rep 4420/5184 deg 26221 cliques 5 best 63 maxdepth 7  23480 s
+rep 4422 deg 33697 ... 23480 s
+rep 4422/5184 deg 33697 cliques 5 best 63 maxdepth 7  23490 s
+rep 4424 deg 32206 ... 23490 s
+rep 4424/5184 deg 32206 cliques 5 best 63 maxdepth 7  23499 s
+rep 4426 deg 21261 ... 23499 s
+rep 4426/5184 deg 21261 cliques 5 best 63 maxdepth 7  23503 s
+rep 4428 deg 25099 ... 23503 s
+rep 4428/5184 deg 25099 cliques 5 best 63 maxdepth 7  23507 s
+rep 4430 deg 26719 ... 23508 s
+rep 4430/5184 deg 26719 cliques 5 best 63 maxdepth 7  23513 s
+rep 4432 deg 28099 ... 23513 s
+rep 4432/5184 deg 28099 cliques 5 best 63 maxdepth 7  23519 s
+rep 4434 deg 31328 ... 23519 s
+rep 4434/5184 deg 31328 cliques 5 best 63 maxdepth 7  23527 s
+rep 4436 deg 31335 ... 23527 s
+rep 4436/5184 deg 31335 cliques 5 best 63 maxdepth 7  23537 s
+rep 4438 deg 26205 ... 23538 s
+rep 4438/5184 deg 26205 cliques 5 best 63 maxdepth 7  23543 s
+rep 4440 deg 30449 ... 23543 s
+rep 4440/5184 deg 30449 cliques 5 best 63 maxdepth 7  23551 s
+rep 4442 deg 34043 ... 23551 s
+rep 4442/5184 deg 34043 cliques 5 best 63 maxdepth 7  23561 s
+rep 4444 deg 27485 ... 23561 s
+rep 4444/5184 deg 27485 cliques 5 best 63 maxdepth 7  23567 s
+rep 4446 deg 31050 ... 23567 s
+rep 4446/5184 deg 31050 cliques 5 best 63 maxdepth 7  23576 s
+rep 4448 deg 26610 ... 23576 s
+rep 4448/5184 deg 26610 cliques 5 best 63 maxdepth 7  23582 s
+rep 4452 deg 32126 ... 23584 s
+rep 4452/5184 deg 32126 cliques 5 best 63 maxdepth 7  23590 s
+rep 4454 deg 22317 ... 23590 s
+rep 4454/5184 deg 22317 cliques 5 best 63 maxdepth 7  23594 s
+rep 4456 deg 27586 ... 23594 s
+rep 4456/5184 deg 27586 cliques 5 best 63 maxdepth 7  23599 s
+rep 4458 deg 24665 ... 23599 s
+rep 4458/5184 deg 24665 cliques 5 best 63 maxdepth 7  23603 s
+rep 4460 deg 24265 ... 23603 s
+rep 4460/5184 deg 24265 cliques 5 best 63 maxdepth 7  23608 s
+rep 4462 deg 30450 ... 23608 s
+rep 4462/5184 deg 30450 cliques 5 best 63 maxdepth 7  23616 s
+rep 4466 deg 28947 ... 23618 s
+rep 4466/5184 deg 28947 cliques 5 best 63 maxdepth 7  23626 s
+rep 4468 deg 33626 ... 23626 s
+rep 4468/5184 deg 33626 cliques 5 best 63 maxdepth 7  23637 s
+rep 4470 deg 24227 ... 23637 s
+rep 4470/5184 deg 24227 cliques 5 best 63 maxdepth 7  23641 s
+rep 4472 deg 29966 ... 23641 s
+rep 4472/5184 deg 29966 cliques 5 best 63 maxdepth 7  23649 s
+rep 4474 deg 27125 ... 23649 s
+rep 4474/5184 deg 27125 cliques 5 best 63 maxdepth 7  23656 s
+rep 4476 deg 31261 ... 23656 s
+rep 4476/5184 deg 31261 cliques 5 best 63 maxdepth 7  23664 s
+rep 4478 deg 23305 ... 23664 s
+rep 4478/5184 deg 23305 cliques 5 best 63 maxdepth 7  23668 s
+rep 4480 deg 27357 ... 23668 s
+rep 4480/5184 deg 27357 cliques 5 best 63 maxdepth 7  23674 s
+rep 4482 deg 21241 ... 23674 s
+rep 4482/5184 deg 21241 cliques 5 best 63 maxdepth 7  23678 s
+rep 4484 deg 30420 ... 23678 s
+rep 4484/5184 deg 30420 cliques 5 best 63 maxdepth 7  23687 s
+rep 4486 deg 29082 ... 23687 s
+rep 4486/5184 deg 29082 cliques 5 best 63 maxdepth 7  23694 s
+rep 4488 deg 23897 ... 23694 s
+rep 4488/5184 deg 23897 cliques 5 best 63 maxdepth 7  23698 s
+rep 4490 deg 27052 ... 23698 s
+rep 4490/5184 deg 27052 cliques 5 best 63 maxdepth 7  23705 s
+rep 4492 deg 28321 ... 23705 s
+rep 4492/5184 deg 28321 cliques 5 best 63 maxdepth 7  23712 s
+rep 4494 deg 27338 ... 23712 s
+rep 4494/5184 deg 27338 cliques 5 best 63 maxdepth 7  23719 s
+rep 4496 deg 26052 ... 23719 s
+rep 4496/5184 deg 26052 cliques 5 best 63 maxdepth 7  23724 s
+rep 4498 deg 29421 ... 23724 s
+rep 4498/5184 deg 29421 cliques 5 best 63 maxdepth 7  23731 s
+rep 4502 deg 27749 ... 23734 s
+rep 4502/5184 deg 27749 cliques 5 best 63 maxdepth 7  23741 s
+rep 4504 deg 26309 ... 23741 s
+rep 4504/5184 deg 26309 cliques 5 best 63 maxdepth 7  23749 s
+rep 4506 deg 26119 ... 23749 s
+rep 4506/5184 deg 26119 cliques 5 best 63 maxdepth 7  23755 s
+rep 4508 deg 23617 ... 23755 s
+rep 4508/5184 deg 23617 cliques 5 best 63 maxdepth 7  23759 s
+rep 4510 deg 26496 ... 23759 s
+rep 4510/5184 deg 26496 cliques 5 best 63 maxdepth 7  23764 s
+rep 4512 deg 29036 ... 23764 s
+rep 4512/5184 deg 29036 cliques 5 best 63 maxdepth 7  23772 s
+rep 4514 deg 24164 ... 23772 s
+rep 4514/5184 deg 24164 cliques 5 best 63 maxdepth 7  23776 s
+rep 4518 deg 20514 ... 23778 s
+rep 4518/5184 deg 20514 cliques 5 best 63 maxdepth 7  23781 s
+rep 4520 deg 25173 ... 23781 s
+rep 4520/5184 deg 25173 cliques 5 best 63 maxdepth 7  23786 s
+rep 4522 deg 20949 ... 23786 s
+rep 4522/5184 deg 20949 cliques 5 best 63 maxdepth 7  23789 s
+rep 4524 deg 29323 ... 23789 s
+rep 4524/5184 deg 29323 cliques 5 best 63 maxdepth 7  23797 s
+rep 4526 deg 25050 ... 23797 s
+rep 4526/5184 deg 25050 cliques 5 best 63 maxdepth 7  23803 s
+rep 4528 deg 23214 ... 23803 s
+rep 4528/5184 deg 23214 cliques 5 best 63 maxdepth 7  23808 s
+rep 4532 deg 32496 ... 23811 s
+rep 4532/5184 deg 32496 cliques 5 best 63 maxdepth 7  23823 s
+rep 4534 deg 20762 ... 23823 s
+rep 4534/5184 deg 20762 cliques 5 best 63 maxdepth 7  23827 s
+rep 4536 deg 31765 ... 23827 s
+rep 4536/5184 deg 31765 cliques 5 best 63 maxdepth 7  23835 s
+rep 4538 deg 27628 ... 23835 s
+rep 4538/5184 deg 27628 cliques 5 best 63 maxdepth 7  23842 s
+rep 4540 deg 23519 ... 23842 s
+rep 4540/5184 deg 23519 cliques 5 best 63 maxdepth 7  23847 s
+rep 4542 deg 22181 ... 23847 s
+rep 4542/5184 deg 22181 cliques 5 best 63 maxdepth 7  23851 s
+rep 4546 deg 26684 ... 23853 s
+rep 4546/5184 deg 26684 cliques 5 best 63 maxdepth 7  23860 s
+rep 4550 deg 31787 ... 23863 s
+rep 4550/5184 deg 31787 cliques 5 best 63 maxdepth 7  23874 s
+rep 4554 deg 23729 ... 23876 s
+rep 4554/5184 deg 23729 cliques 5 best 63 maxdepth 7  23881 s
+rep 4558 deg 25065 ... 23884 s
+rep 4558/5184 deg 25065 cliques 5 best 63 maxdepth 7  23889 s
+rep 4560 deg 28915 ... 23889 s
+rep 4560/5184 deg 28915 cliques 5 best 63 maxdepth 7  23897 s
+rep 4564 deg 29342 ... 23899 s
+rep 4564/5184 deg 29342 cliques 5 best 63 maxdepth 7  23906 s
+rep 4566 deg 20849 ... 23906 s
+rep 4566/5184 deg 20849 cliques 5 best 63 maxdepth 7  23910 s
+rep 4568 deg 31865 ... 23910 s
+rep 4568/5184 deg 31865 cliques 5 best 63 maxdepth 7  23919 s
+rep 4570 deg 22853 ... 23919 s
+rep 4570/5184 deg 22853 cliques 5 best 63 maxdepth 7  23923 s
+rep 4572 deg 29219 ... 23923 s
+rep 4572/5184 deg 29219 cliques 5 best 63 maxdepth 7  23931 s
+rep 4574 deg 22635 ... 23931 s
+rep 4574/5184 deg 22635 cliques 5 best 63 maxdepth 7  23936 s
+rep 4576 deg 20454 ... 23936 s
+rep 4576/5184 deg 20454 cliques 5 best 63 maxdepth 7  23939 s
+rep 4578 deg 25789 ... 23939 s
+rep 4578/5184 deg 25789 cliques 5 best 63 maxdepth 7  23945 s
+rep 4580 deg 28942 ... 23945 s
+rep 4580/5184 deg 28942 cliques 5 best 63 maxdepth 7  23951 s
+rep 4582 deg 23692 ... 23951 s
+rep 4582/5184 deg 23692 cliques 5 best 63 maxdepth 7  23956 s
+rep 4584 deg 23706 ... 23956 s
+rep 4584/5184 deg 23706 cliques 5 best 63 maxdepth 7  23961 s
+rep 4586 deg 20228 ... 23961 s
+rep 4586/5184 deg 20228 cliques 5 best 63 maxdepth 7  23964 s
+rep 4588 deg 24212 ... 23964 s
+rep 4588/5184 deg 24212 cliques 5 best 63 maxdepth 7  23969 s
+rep 4590 deg 22998 ... 23970 s
+rep 4590/5184 deg 22998 cliques 5 best 63 maxdepth 7  23974 s
+rep 4594 deg 26750 ... 23977 s
+rep 4594/5184 deg 26750 cliques 5 best 63 maxdepth 7  23983 s
+rep 4596 deg 23888 ... 23983 s
+rep 4596/5184 deg 23888 cliques 5 best 63 maxdepth 7  23988 s
+rep 4598 deg 27526 ... 23988 s
+rep 4598/5184 deg 27526 cliques 5 best 63 maxdepth 7  23995 s
+rep 4604 deg 32070 ... 24001 s
+rep 4604/5184 deg 32070 cliques 5 best 63 maxdepth 7  24010 s
+rep 4606 deg 22832 ... 24010 s
+rep 4606/5184 deg 22832 cliques 5 best 63 maxdepth 7  24014 s
+rep 4610 deg 21764 ... 24017 s
+rep 4610/5184 deg 21764 cliques 5 best 63 maxdepth 7  24021 s
+rep 4614 deg 24084 ... 24022 s
+rep 4614/5184 deg 24084 cliques 5 best 63 maxdepth 7  24027 s
+rep 4618 deg 21789 ... 24030 s
+rep 4618/5184 deg 21789 cliques 5 best 63 maxdepth 7  24034 s
+rep 4620 deg 28378 ... 24034 s
+rep 4620/5184 deg 28378 cliques 5 best 63 maxdepth 7  24042 s
+rep 4624 deg 20472 ... 24045 s
+rep 4624/5184 deg 20472 cliques 5 best 63 maxdepth 7  24048 s
+rep 4626 deg 24907 ... 24048 s
+rep 4626/5184 deg 24907 cliques 5 best 63 maxdepth 7  24054 s
+rep 4628 deg 26103 ... 24054 s
+rep 4628/5184 deg 26103 cliques 5 best 63 maxdepth 7  24060 s
+rep 4632 deg 28964 ... 24062 s
+rep 4632/5184 deg 28964 cliques 5 best 63 maxdepth 7  24069 s
+rep 4634 deg 23070 ... 24069 s
+rep 4634/5184 deg 23070 cliques 5 best 63 maxdepth 7  24073 s
+rep 4636 deg 26953 ... 24073 s
+rep 4636/5184 deg 26953 cliques 5 best 63 maxdepth 7  24080 s
+rep 4638 deg 23411 ... 24080 s
+rep 4638/5184 deg 23411 cliques 5 best 63 maxdepth 7  24085 s
+rep 4640 deg 21644 ... 24085 s
+rep 4640/5184 deg 21644 cliques 5 best 63 maxdepth 7  24089 s
+rep 4644 deg 25858 ... 24091 s
+rep 4644/5184 deg 25858 cliques 5 best 63 maxdepth 7  24097 s
+rep 4646 deg 21058 ... 24097 s
+rep 4646/5184 deg 21058 cliques 5 best 63 maxdepth 7  24100 s
+rep 4648 deg 26843 ... 24100 s
+rep 4648/5184 deg 26843 cliques 5 best 63 maxdepth 7  24107 s
+rep 4650 deg 22000 ... 24107 s
+rep 4650/5184 deg 22000 cliques 5 best 63 maxdepth 7  24111 s
+rep 4652 deg 30374 ... 24111 s
+rep 4652/5184 deg 30374 cliques 5 best 63 maxdepth 7  24119 s
+rep 4660 deg 26976 ... 24124 s
+rep 4660/5184 deg 26976 cliques 5 best 63 maxdepth 7  24130 s
+rep 4664 deg 30994 ... 24132 s
+rep 4664/5184 deg 30994 cliques 5 best 63 maxdepth 7  24139 s
+rep 4666 deg 23951 ... 24139 s
+rep 4666/5184 deg 23951 cliques 5 best 63 maxdepth 7  24144 s
+rep 4668 deg 21057 ... 24144 s
+rep 4668/5184 deg 21057 cliques 5 best 63 maxdepth 7  24147 s
+rep 4670 deg 21436 ... 24147 s
+rep 4670/5184 deg 21436 cliques 5 best 63 maxdepth 7  24151 s
+rep 4674 deg 23319 ... 24154 s
+rep 4674/5184 deg 23319 cliques 5 best 63 maxdepth 7  24158 s
+rep 4676 deg 26843 ... 24158 s
+rep 4676/5184 deg 26843 cliques 5 best 63 maxdepth 7  24164 s
+rep 4678 deg 30340 ... 24164 s
+rep 4678/5184 deg 30340 cliques 5 best 63 maxdepth 7  24172 s
+rep 4682 deg 27391 ... 24174 s
+rep 4682/5184 deg 27391 cliques 5 best 63 maxdepth 7  24179 s
+rep 4686 deg 23600 ... 24180 s
+rep 4686/5184 deg 23600 cliques 5 best 63 maxdepth 7  24185 s
+rep 4690 deg 23614 ... 24188 s
+rep 4690/5184 deg 23614 cliques 5 best 63 maxdepth 7  24192 s
+rep 4692 deg 23571 ... 24192 s
+rep 4692/5184 deg 23571 cliques 5 best 63 maxdepth 7  24197 s
+rep 4696 deg 23435 ... 24199 s
+rep 4696/5184 deg 23435 cliques 5 best 63 maxdepth 7  24204 s
+rep 4698 deg 21902 ... 24204 s
+rep 4698/5184 deg 21902 cliques 5 best 63 maxdepth 7  24207 s
+rep 4700 deg 26130 ... 24207 s
+rep 4700/5184 deg 26130 cliques 5 best 63 maxdepth 7  24214 s
+rep 4702 deg 21098 ... 24214 s
+rep 4702/5184 deg 21098 cliques 5 best 63 maxdepth 7  24218 s
+rep 4704 deg 22131 ... 24218 s
+rep 4704/5184 deg 22131 cliques 5 best 63 maxdepth 7  24222 s
+rep 4716 deg 21165 ... 24232 s
+rep 4716/5184 deg 21165 cliques 5 best 63 maxdepth 7  24236 s
+rep 4718/5184 deg 15118 cliques 5 best 63 maxdepth 7  24238 s
+rep 4722 deg 26066 ... 24240 s
+rep 4722/5184 deg 26066 cliques 5 best 63 maxdepth 7  24245 s
+rep 4726 deg 23693 ... 24246 s
+rep 4726/5184 deg 23693 cliques 5 best 63 maxdepth 7  24251 s
+rep 4734 deg 20032 ... 24258 s
+rep 4734/5184 deg 20032 cliques 5 best 63 maxdepth 7  24261 s
+rep 4736 deg 21021 ... 24261 s
+rep 4736/5184 deg 21021 cliques 5 best 63 maxdepth 7  24265 s
+rep 4738 deg 22290 ... 24265 s
+rep 4738/5184 deg 22290 cliques 5 best 63 maxdepth 7  24270 s
+rep 4746 deg 21700 ... 24276 s
+rep 4746/5184 deg 21700 cliques 5 best 63 maxdepth 7  24280 s
+rep 4752 deg 21906 ... 24285 s
+rep 4752/5184 deg 21906 cliques 5 best 63 maxdepth 7  24290 s
+rep 4754 deg 22084 ... 24290 s
+rep 4754/5184 deg 22084 cliques 5 best 63 maxdepth 7  24293 s
+rep 4758/5184 deg 19876 cliques 5 best 63 maxdepth 7  24300 s
+rep 4766 deg 28439 ... 24304 s
+rep 4766/5184 deg 28439 cliques 5 best 63 maxdepth 7  24310 s
+rep 4774 deg 22565 ... 24315 s
+rep 4774/5184 deg 22565 cliques 5 best 63 maxdepth 7  24319 s
+rep 4790 deg 21635 ... 24331 s
+rep 4790/5184 deg 21635 cliques 5 best 63 maxdepth 7  24335 s
+rep 4798/5184 deg 16573 cliques 5 best 63 maxdepth 7  24344 s
+rep 4804 deg 21932 ... 24346 s
+rep 4804/5184 deg 21932 cliques 5 best 63 maxdepth 7  24350 s
+rep 4810 deg 20573 ... 24353 s
+rep 4810/5184 deg 20573 cliques 5 best 63 maxdepth 7  24357 s
+rep 4818 deg 20281 ... 24365 s
+rep 4818/5184 deg 20281 cliques 5 best 63 maxdepth 7  24368 s
+rep 4834 deg 20097 ... 24378 s
+rep 4834/5184 deg 20097 cliques 5 best 63 maxdepth 7  24381 s
+rep 4838/5184 deg 19942 cliques 5 best 63 maxdepth 7  24386 s
+rep 4854 deg 21367 ... 24394 s
+rep 4854/5184 deg 21367 cliques 5 best 63 maxdepth 7  24398 s
+rep 4878/5184 deg 11186 cliques 5 best 63 maxdepth 7  24414 s
+rep 4900 deg 21538 ... 24426 s
+rep 4900/5184 deg 21538 cliques 5 best 63 maxdepth 7  24430 s
+rep 4906 deg 21206 ... 24433 s
+rep 4906/5184 deg 21206 cliques 5 best 63 maxdepth 7  24437 s
+rep 4918/5184 deg 15072 cliques 5 best 63 maxdepth 7  24447 s
+rep 4958/5184 deg 16281 cliques 5 best 63 maxdepth 7  24472 s
+rep 4998/5184 deg 5265 cliques 5 best 63 maxdepth 7  24488 s
+rep 5038/5184 deg 11152 cliques 5 best 63 maxdepth 7  24502 s
+rep 5078/5184 deg 3232 cliques 5 best 63 maxdepth 7  24509 s
+rep 5118/5184 deg 4605 cliques 5 best 63 maxdepth 7  24513 s
+rep 5158/5184 deg 1839 cliques 5 best 63 maxdepth 7  24515 s
+EXACT COMPLETE: m-cliques (up to normaliser, as enumerated) 5, largest clique seen 7, best columns 63

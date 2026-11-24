@@ -1,0 +1,9 @@
+N=20 |G|=9 normaliser gens=53 target m=7 nfree=0
+starters 572838885, vertices 6513921  (9.2 s)
+normaliser orbits (representatives) 5184
+ordered by sampled degree (88 s)
+rep 2610 deg 42231 ... 88 s
+clique #1: 63 orbit columns, 0 free candidates, 0 mutually QI -> 63 columns
+DUMP w20_dump_20_63.txt  (63 orbit columns + 0 free)
+rep 2610/5184 deg 42231 cliques 5 best 63 maxdepth 7  117 s
+EXACT COMPLETE: m-cliques (up to normaliser, as enumerated) 5, largest clique seen 7, best columns 63
