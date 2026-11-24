@@ -15,7 +15,7 @@ identifiers:
     value: "10.5281/zenodo.24168009"
     description: "Release table-2026.11"
 repository-code: "https://github.com/chrispbsmolen/ca-tools"
-url: "https://chrispbsmolen.github.io/ca-tools/"
+url: "https://coveringarraytools.org/"
 license:
   - CC-BY-4.0
   - MIT

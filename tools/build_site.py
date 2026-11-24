@@ -1,0 +1,941 @@
+#!/usr/bin/env python3
+import argparse
+import collections
+import csv
+import datetime
+import html
+import json
+import os
+import re
+import sys
+
+E = html.escape
+BASE = "https://coveringarraytools.org/"
+DOI = "10.5281/zenodo.24168008"
+REPO_URL = "https://github.com/chrispbsmolen/ca-tools"
+RAW = "https://raw.githubusercontent.com/chrispbsmolen/ca-tools/main/"
+CONTACT = "contact@coveringarraytools.org"
+SNAPSHOT_DATE = "2026-08-23"
+SERIF = "Charter,'Bitstream Charter','Iowan Old Style',Georgia,serif"
+NAV = [("Table", ""), ("Library", "library/"), ("Learn", "learn/"), ("Updates", "changelog/"),
+       ("Lower bounds", "bounds/")]
+
+CSS = """
+:root{--side:56px;color-scheme:light;--fg:#1d1d1f;--bg:#fdfdfc;--mute:#5f6368;--line:#dcdcd8;--ver:#0b6e3a;--soft:#f2f2ee;--acc:#1f4e8c;--opt:#5b2a86}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.5 system-ui,-apple-system,"Segoe UI",sans-serif}
+a{color:inherit}.mute{color:var(--mute)}.num{font-variant-numeric:tabular-nums}.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.82rem}
+.tag{display:inline-block;font-size:.72rem;font-weight:600;border-radius:4px;padding:0 .35rem;border:1px solid currentColor;line-height:1.45}
+.ver{color:var(--ver)}.lit{color:var(--mute)}.opt{color:var(--opt)}
+.top{border-bottom:1px solid var(--line);background:#fff}
+.top .in{max-width:88rem;margin:0 auto;padding:0 var(--side);height:52px;display:flex;align-items:center;gap:26px;font-size:.9rem}
+.top b a{text-decoration:none;font-size:1rem}.top nav{display:flex;gap:20px;color:var(--mute)}.top nav a{text-decoration:none}.top nav a.on{color:var(--fg);font-weight:600}
+.top .sp{flex:1}.top .doi{font-size:.78rem;color:var(--mute);border:1px solid var(--line);border-radius:4px;padding:2px 8px;text-decoration:none}
+.top .gh{color:var(--mute);text-decoration:none}
+.crumb{font-size:.82rem;color:var(--mute);margin:0 0 6px}.crumb a{text-decoration:none}
+.foot{border-top:1px solid var(--line);margin-top:48px}
+.foot .in{max-width:88rem;margin:0 auto;padding:18px var(--side);font-size:.8rem;color:var(--mute);display:flex;gap:24px;flex-wrap:wrap}
+.f4{background:#1f6b45;color:#fff}.f3{background:#5fa77d;color:#1d1d1f}.f2{background:#b9dcc6}.f1{background:#e4efe7}.f0{background:#f1f1ec}
+.wrapw{max-width:88rem;margin:0 auto;padding:26px var(--side)}
+.key{display:flex;gap:18px;font-size:.78rem;color:var(--mute);margin-top:14px;align-items:center;flex-wrap:wrap}.key i{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:6px}
+.hero{background:#fff;border-bottom:1px solid var(--line)}.hero .in{max-width:88rem;margin:0 auto;padding:44px var(--side) 36px;display:grid;grid-template-columns:1fr 470px;gap:48px;align-items:center}
+.hero h1{font-size:2.5rem;line-height:1.05;margin:0 0 14px;letter-spacing:-.02em}.hero p{margin:0;color:#333;max-width:36rem}
+.look{border:1px solid var(--fg);border-radius:10px;padding:20px;background:#fff}.look h2{margin:0 0 12px;font-size:1rem}
+.lf{display:grid;grid-template-columns:repeat(3,1fr) 110px;gap:10px;align-items:end}.lf label{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mute);display:block}
+.lf input{width:100%;border:1px solid var(--line);border-radius:6px;padding:8px 10px;font:600 1.1rem system-ui;margin-top:4px}
+.lf button{background:var(--fg);color:#fff;border:0;border-radius:6px;padding:12px;font:600 1rem system-ui;cursor:pointer}
+.ans{margin-top:14px;background:var(--soft);border-radius:6px;padding:12px 14px;font-size:.9rem;min-height:48px}.ans b{font-size:1.4rem}
+.stats{max-width:88rem;margin:0 auto;padding:22px var(--side) 0;display:flex}
+.stats div{flex:1;border-left:1px solid var(--line);padding:0 16px}.stats div:first-child{border-left:0;padding-left:0}.stats b{display:block;font-size:1.6rem}.stats span{font-size:.75rem;color:var(--mute);text-transform:uppercase;letter-spacing:.05em}
+.blk{display:grid;grid-template-columns:36px repeat(12,minmax(0,1fr));gap:6px;margin-bottom:30px}
+.blk .h{font-size:.72rem;color:var(--mute);text-align:center;align-self:end}.blk .r{font-size:1rem;font-weight:700;align-self:center}
+.bl{font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--mute);margin:0 0 8px 42px}
+.el{border-radius:5px;padding:7px 9px 8px;display:grid;grid-template-rows:auto 1fr auto;min-height:104px;cursor:pointer;text-decoration:none;color:inherit}
+.el .tp{font-size:.66rem;opacity:.88}.el .n{font-size:1.7rem;font-weight:800;line-height:1;align-self:center;font-variant-numeric:tabular-nums}
+.el .n small{font-size:.7rem;font-weight:600;opacity:.88;margin-left:4px}.el .ft{display:flex;justify-content:space-between;align-items:end}
+.el .st{display:flex;flex-direction:column;font-size:.7rem;line-height:1.35;font-variant-numeric:tabular-nums}.el .st span{white-space:nowrap}
+.el .dt{font-size:.64rem;opacity:.88;white-space:nowrap}.el.sel{outline:3px solid var(--fg);outline-offset:2px}.el.none{cursor:default;background:transparent}
+.panel{position:fixed;top:120px;right:32px;width:340px;border:2px solid var(--fg);border-radius:10px;background:#fff;padding:18px 20px;box-shadow:0 18px 48px rgba(0,0,0,.18);transform:translateX(130%);transition:transform .25s ease;z-index:10}
+.panel.open{transform:none}.panel .hd{display:flex;justify-content:space-between;font-size:.8rem;color:var(--mute)}.panel .x{font-size:1.2rem;color:var(--fg);cursor:pointer;background:none;border:0;line-height:1}
+.panel .big{font-size:2.6rem;font-weight:800;line-height:1;letter-spacing:-.02em;margin:10px 0 4px}.panel .nm{font-size:.92rem;margin:0 0 14px;color:#444}
+.panel dl{display:grid;grid-template-columns:1fr auto;margin:0;font-size:.88rem}.panel dt,.panel dd{border-top:1px solid var(--line);padding:7px 0;margin:0}.panel dd{text-align:right;font-weight:600;font-variant-numeric:tabular-nums}
+.go{display:block;text-align:center;background:var(--fg);color:#fff;border-radius:6px;padding:9px;margin-top:14px;font-weight:600;text-decoration:none}
+.pageh{background:#fff;border-bottom:1px solid var(--line)}.pageh .in{max-width:88rem;margin:0 auto;padding:30px var(--side) 24px;display:flex;justify-content:space-between;align-items:end;gap:30px}
+.pageh h1{font-size:2.4rem;margin:0;line-height:1.05;letter-spacing:-.02em}.pageh p{margin:6px 0 0;color:#444;max-width:46rem}
+.btns{display:flex;gap:8px}.btns a{border:1px solid var(--fg);border-radius:6px;padding:7px 14px;font-size:.85rem;font-weight:600;text-decoration:none;white-space:nowrap}.btns a.d{background:var(--fg);color:#fff}
+table.lg{border-collapse:collapse;width:100%;font-size:.88rem}
+table.lg th{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mute);font-weight:600;text-align:left;border-bottom:1px solid var(--fg);padding:8px 10px;position:sticky;top:0;background:var(--bg)}
+table.lg td{border-bottom:1px solid var(--line);padding:9px 10px;vertical-align:top}table.lg td.n,table.lg th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+table.lg td.big{font-weight:800;font-size:1rem}table.lg td.a{white-space:nowrap}table.lg td.a a{display:inline-block;padding:4px 0}table.lg tr.closed td{background:#eef6f0}table.lg tr:target td{background:#fff6d6}
+.sub{display:block;color:var(--mute);font-size:.78rem}
+.lib{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px 24px}
+.pg{background:#fff;aspect-ratio:1/1.3;box-shadow:0 1px 2px rgba(0,0,0,.08),0 6px 16px rgba(0,0,0,.07);padding:26px 22px 18px;display:flex;flex-direction:column;font-family:@SERIF@;text-decoration:none;color:inherit}
+.pg .j{font-family:system-ui,sans-serif;font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.pg h3{font-weight:400;font-size:1.15rem;line-height:1.25;text-align:center;margin:0 0 12px}.pg .au{font-size:.85rem;text-align:center;margin:0}
+.pg .ln{margin:16px 0 0;display:flex;flex-direction:column;gap:5px}.pg .ln i{display:block;height:4px;background:#d7eadf;border-radius:2px}.pg .ln i:nth-child(3n){width:82%}
+.pg .y{margin-top:auto;font-family:system-ui,sans-serif;font-size:.72rem;color:var(--mute);display:flex;gap:12px;justify-content:space-between;border-top:1px solid var(--line);padding-top:8px;white-space:nowrap;overflow:hidden}
+.cap{font-size:.8rem;color:var(--mute);margin:8px 2px 0}
+.serifh h1{font-family:@SERIF@;font-weight:400;font-size:2.6rem;margin:0 0 8px}.serifh p{font-family:@SERIF@;font-size:1.05rem}
+.paper{max-width:none;margin:0}.paper .hd{padding:40px 0 28px;text-align:center;border-bottom:1px solid var(--line)}
+.paper .hd .j{font-size:.75rem;letter-spacing:.08em;text-transform:uppercase;color:var(--mute)}
+.paper .hd h1{font-family:@SERIF@;font-weight:400;font-size:2.4rem;line-height:1.15;margin:14px 0 12px}.paper .hd .au{font-family:@SERIF@;font-size:1.15rem;margin:0}
+.paper .hd .btns{justify-content:center;margin-top:18px}
+.paper h2{font-family:@SERIF@;font-weight:400;font-size:1.4rem;margin:30px 0 4px}.paper .lede{font-family:@SERIF@;color:#444;margin:0 0 10px}
+.pr{display:grid;grid-template-columns:200px 1fr 170px;gap:16px;padding:9px 0;border-bottom:1px solid var(--line);font-size:.92rem;align-items:baseline}
+.pr a{font-weight:700;font-variant-numeric:tabular-nums}.pr .c{color:var(--mute);font-size:.82rem;text-align:right}.pr .k{font-size:.8rem;color:var(--mute);display:block}
+.fl{font-family:@SERIF@;font-size:1rem;padding:8px 0;border-bottom:1px solid var(--line)}
+.arr{display:grid;grid-template-columns:1fr 360px;gap:40px}
+.arr dl{display:grid;grid-template-columns:150px 1fr;margin:0;font-size:.9rem;border-top:1px solid var(--line)}.arr dt,.arr dd{border-bottom:1px solid var(--line);padding:9px 0;margin:0}.arr dt{color:var(--mute)}
+.arr h2{font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin:28px 0 8px}
+.grid{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px 16px;font-family:ui-monospace,Menlo,monospace;font-size:.78rem;line-height:1.35;white-space:pre;overflow:auto;max-height:640px}
+.dlb{display:block;text-align:center;background:var(--fg);color:#fff;border-radius:6px;padding:10px;text-decoration:none;font-weight:600;margin-bottom:8px}
+.dls{display:flex;gap:8px}.dls a{flex:1;text-align:center;border:1px solid var(--line);border-radius:6px;padding:7px;font-size:.85rem;text-decoration:none}
+.sha{font-family:ui-monospace,Menlo,monospace;font-size:.72rem;word-break:break-all;color:var(--mute);margin-top:12px}
+.prose{max-width:88rem;margin:0 auto;padding:10px var(--side) 20px}.prose h2{font-family:@SERIF@;font-weight:400;font-size:1.8rem;margin:42px 0 12px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:40px}.two p{font-family:@SERIF@;font-size:1.05rem;line-height:1.6;color:#333;margin:0 0 12px}
+.statc{display:grid;grid-template-columns:1fr 1fr;gap:10px}.statc div{background:#fff;border:1px solid var(--line);border-radius:8px;padding:16px}.statc b{display:block;font-size:2.2rem;line-height:1}.statc span{font-size:.85rem;color:var(--mute)}
+.lv{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.lv div{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px 16px}.lv b{display:block}.lv span{font-size:.82rem;color:var(--mute)}
+.gl{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0 36px;margin:0}.gl div{border-top:1px solid var(--line);padding:14px 0}.gl dt{font-weight:700;margin:0 0 4px}.gl dd{margin:0;font-family:@SERIF@;line-height:1.5;color:#333}
+.board{display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:start}
+.bg{display:grid;grid-template-columns:repeat(3,52px);gap:4px}.bg .h{font-size:.72rem;color:var(--mute);text-align:center}
+.bg button{height:52px;border-radius:6px;border:0;font:700 1.2rem system-ui;cursor:pointer}.bg .z{background:#f1f1ec;color:#1d1d1f}.bg .o{background:#1f6b45;color:#fff}
+.pairs{font-size:.88rem}.pairs div{display:flex;justify-content:space-between;gap:14px;border-bottom:1px solid var(--line);padding:7px 0}.ok{color:var(--ver);font-weight:700}.miss{color:#a8321e;font-weight:700}
+.doc{max-width:88rem;margin:0 auto;padding:30px var(--side);display:grid;grid-template-columns:220px 1fr;gap:48px}
+.doc nav.side{position:sticky;top:20px;align-self:start;font-size:.88rem}.doc nav.side a{display:block;padding:5px 0;color:var(--mute);text-decoration:none}
+.doc h1{font-size:2rem;margin:0 0 8px}.doc .lede{color:#333;max-width:46rem;margin:0 0 18px}.doc h2{font-size:1.15rem;margin:30px 0 8px;padding-top:6px;border-top:1px solid var(--line)}
+.doc p,.doc li{max-width:46rem}.doc pre{background:#1d1d1f;color:#e8e8e3;border-radius:8px;padding:14px 16px;font-size:.82rem;line-height:1.5;overflow:auto}
+.doc table{border-collapse:collapse;width:100%;font-size:.86rem}.doc th{text-align:left;color:var(--mute);border-bottom:1px solid var(--fg);padding:7px 8px}.doc td{border-bottom:1px solid var(--line);padding:7px 8px;vertical-align:top}
+.cl{border-collapse:collapse;width:100%;font-size:.88rem}.cl th{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mute);text-align:left;border-bottom:1px solid var(--fg);padding:8px 10px}.cl td{border-bottom:1px solid var(--line);padding:10px;vertical-align:top}
+.cl td.d{white-space:nowrap;font-variant-numeric:tabular-nums}.cl s{color:var(--mute)}
+.rule{display:grid;grid-template-columns:1fr 120px 340px;gap:24px;padding:16px 0;border-top:1px solid var(--line);align-items:baseline}
+.rule b{font-size:1rem}.rule p{margin:4px 0 0;color:#444;max-width:44rem}.rule .cnt{font-size:.88rem;color:var(--mute)}.rule .cnt b{color:var(--fg);font-size:1.3rem}.rule .refs{font-size:.85rem;text-align:right}
+.sech{font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin:34px 0 12px}
+.two2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:30px var(--side);display:flex;flex-direction:column}
+.card .lab{font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mute)}
+.card h2{font-size:1.7rem;margin:6px 0 6px;letter-spacing:-.01em}.card .lead{color:#444;margin:0 0 22px;min-height:3em}
+.step{display:grid;grid-template-columns:44px 1fr;gap:14px;padding:14px 0;border-top:1px solid var(--line)}
+.step .no{width:34px;height:34px;border-radius:50%;background:#1f6b45;color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
+.step b{display:block}.step span{color:#555;font-size:.92rem}
+.cta{margin-top:auto;padding-top:22px;display:flex;gap:10px;align-items:center}
+.cta a{background:var(--fg);color:#fff;border-radius:8px;padding:12px 18px;font-weight:600;text-decoration:none}.cta .s{color:var(--mute);font-size:.85rem}
+.strip{margin-top:24px;background:#e4efe7;border-radius:12px;padding:22px var(--side);display:flex;justify-content:space-between;align-items:center}
+.strip b{font-size:1.1rem}.strip a{font-weight:600}
+.flow{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:0 0 30px}
+.fl4{border-radius:10px;padding:20px 20px 18px;min-height:150px;display:flex;flex-direction:column;text-decoration:none}
+.fl4 .no{font-size:2.4rem;font-weight:800;line-height:1}.fl4 b{font-size:1.1rem;margin-top:auto}.fl4 span{font-size:.85rem;opacity:.88;margin-top:4px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
+.ft{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.ftl{background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px 16px;text-decoration:none;display:block}.ftl .fmt{font-size:.68rem;font-weight:700;color:#1f6b45;letter-spacing:.05em}
+.ftl b{display:block;font-family:ui-monospace,Menlo,monospace;font-size:.85rem;margin:4px 0}.ftl span{font-size:.8rem;color:var(--mute)}
+.code{background:#1d1d1f;color:#e8e8e3;border-radius:10px;padding:18px 20px;font-family:ui-monospace,Menlo,monospace;font-size:.82rem;line-height:1.7;margin:0 0 10px;white-space:pre;overflow:auto}
+.code .c{color:#8fd0a8}
+.rules{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.rules div{border-top:3px solid #1f6b45;background:#fff;border-radius:0 0 8px 8px;padding:14px 14px 16px;font-size:.88rem}.rules b{display:block;margin-bottom:4px}
+a,button,.el,.pg,.ftl,.fl4,.card,.rules div,.lv div,.statc div,.btns a,.cta a,.go,.dlb,.dls a,.top nav a,table.lg tr,.cl tr,.pr,.rule{transition:transform .15s ease,box-shadow .15s ease,background-color .15s ease,color .15s ease,border-color .15s ease,filter .15s ease}
+a:hover{color:#1f6b45}
+.top nav a:hover{color:var(--fg)}.bsc{position:relative}.top nav a{position:relative}.top nav a:not(.po){display:inline-block}.top nav a:hover,.top nav a:focus-visible,.top .ai:hover,.top .ai:focus-visible{color:#1f6b45;transform:translateY(-2px)}.top .ai{position:relative;transition:transform .15s ease,color .15s ease}.top .in b a span,.top .in nav a,.top .in .ai,.top .in .sbm{text-transform:uppercase;letter-spacing:.06em}.top .in nav a,.top .in .ai,.top .in .sbm{font-size:14px}.top .in b a span{font-size:17px}@media (max-width:400px){.top .in b a span{font-size:15px;letter-spacing:.04em}}.top .in .srch{position:relative;flex:none;order:initial;margin-left:6px;width:38px;height:38px;box-sizing:border-box;border:1px solid var(--line);border-radius:6px;background:#fbfbf9;transition:width .22s ease,border-color .15s ease,background-color .15s ease}.top .in .srch:hover{border-color:#5fa77d}.top .in .srch.open{width:300px;border-color:#5fa77d;background:#fff}.top .in .srch.open:focus-within{box-shadow:0 0 0 2px #cfe5d7}.top .in .qb{position:absolute;left:0;top:0;width:36px;height:36px;border:0;background:none;padding:0;margin:0;display:flex;align-items:center;justify-content:center;color:var(--fg);cursor:pointer;z-index:2;border-radius:5px}.top .in .srch:hover .qb,.top .in .srch.open .qb{color:#1f6b45}.top .in .qb:focus-visible{outline:2px solid #1d1d1f;outline-offset:2px}.top .in .srch input{position:absolute;left:0;top:0;width:100%;height:100%;border:0;background:transparent;padding:0 12px 0 38px;opacity:0;visibility:hidden;transition:opacity .15s ease}.top .in .srch.open input{opacity:1;visibility:visible}.top .in .srch input{cursor:pointer}.top .in .srch.pin input{cursor:text}.top .in .srch .qr{top:44px}@media (max-width:560px){.top .in{position:relative}.top .in b{flex:0 0 calc(100% - 66px);min-width:0;min-height:38px;display:flex;align-items:center}.top .in .srch{order:2;margin-left:auto}.top .in .sbm{order:5}.top .in nav{order:6;width:auto;flex:1 1 0;min-width:0}.top .in .srch.open{position:absolute;left:var(--side);right:var(--side);top:10px;width:auto;z-index:6}.top .in .srch .qr{left:-1px;right:-1px}}@media (max-width:360px){.top .in .logo{width:50px;height:18px}.top .in b a span{font-size:13px;letter-spacing:.03em}.top .in .brand{gap:9px}}
+.ftl:hover,.pg:hover{color:inherit}.el:hover,.fl4:hover{color:var(--fg)}
+.f4,.f4:hover{color:#fff}.f3,.f3:hover{color:#1d1d1f}
+.el[data-tv]:hover,.el[href]:hover{transform:translateY(-3px);box-shadow:0 8px 18px rgba(0,0,0,.14);filter:brightness(1.05)}
+.pg:hover{transform:translateY(-4px) rotate(-.4deg);box-shadow:0 2px 4px rgba(0,0,0,.1),0 16px 30px rgba(0,0,0,.14)}
+.ftl:hover,.lv div:hover,.statc div:hover{border-color:#5fa77d;transform:translateY(-2px);box-shadow:0 6px 14px rgba(0,0,0,.08)}
+.fl4:hover{transform:translateY(-3px);box-shadow:0 10px 22px rgba(0,0,0,.14);filter:brightness(1.05)}
+.card:hover{border-color:#5fa77d;box-shadow:0 10px 28px rgba(0,0,0,.08)}
+.rules div:hover{background:#eef6f0}
+.btns a:hover,.dls a:hover{background:var(--fg);color:#fff !important}.btns a.d:hover,.cta a:hover,.go:hover,.dlb:hover,.lf button:hover{background:#1f6b45;color:#fff !important}
+.top .doi:hover,.top .gh:hover{color:var(--fg);border-color:var(--fg)}
+table.lg tbody tr:hover td,.cl tbody tr:hover td{background:#f3f8f4}
+.pr:hover,.rule:hover{background:#f3f8f4}
+.bg button:hover{filter:brightness(1.12);transform:scale(1.05)}
+.tumble i{transition:transform .3s ease}.tumble:hover i{transform:none}
+.brand{display:flex;align-items:center;gap:10px}.logo{display:block}.logo{overflow:visible}.logo rect{transform-box:fill-box;transform-origin:center;animation-duration:50s;animation-delay:8s;animation-iteration-count:infinite}@keyframes lg0{0%,0.000%{transform:translateY(0.00px) rotate(0.0deg);animation-timing-function:cubic-bezier(.5,0,.2,1)}1.360%,6.200%{transform:translateY(4.00px) rotate(0.0deg);animation-timing-function:cubic-bezier(.2,.9,.3,1)}6.680%{transform:translateY(-1.80px) rotate(9.0deg);animation-timing-function:cubic-bezier(.35,0,.35,1)}7.120%{transform:translateY(0.63px) rotate(-3.1deg);animation-timing-function:cubic-bezier(.35,0,.35,1)}7.480%{transform:translateY(-0.22px) rotate(1.1deg);animation-timing-function:cubic-bezier(.35,0,.35,1)}7.800%,100%{transform:translateY(0.00px) rotate(0.0deg)}}@keyframes lg1{0%,0.220%{transform:translateY(0.00px) rotate(14.0deg);animation-timing-function:cubic-bezier(.5,0,.2,1)}1.580%,6.040%{transform:translateY(1.00px) rotate(0.0deg);animation-timing-function:cubic-bezier(.2,.9,.3,1)}6.520%{transform:translateY(-0.45px) rotate(23.8deg);animation-timing-function:cubic-bezier(.35,0,.35,1)}6.960%{transform:translateY(0.16px) rotate(10.6deg);animation-timing-function:cubic-bezier(.35,0,.35,1)}7.320%{transform:translateY(-0.05px) rotate(15.2deg);animation-timing-function:cubic-bezier(.35,0,.35,1)}7.640%,100%{transform:translateY(0.00px) rotate(14.0deg)}}@keyframes lg2{0%,0.440%{transform:translateY(0.00px) rotate(-22.0deg);animation-timing-function:cubic-bezier(.5,0,.2,1)}1.800%,5.880%{transform:translateY(-4.00px) rotate(0.0deg);animation-timing-function:cubic-bezier(.2,.9,.3,1)}6.360%{transform:translateY(1.80px) rotate(-37.4deg);animation-timing-function:cubic-bezier(.35,0,.35,1)}6.800%{transform:translateY(-0.63px) rotate(-16.6deg);animation-timing-function:cubic-bezier(.35,0,.35,1)}7.160%{transform:translateY(0.22px) rotate(-23.8deg);animation-timing-function:cubic-bezier(.35,0,.35,1)}7.480%,100%{transform:translateY(0.00px) rotate(-22.0deg)}}@keyframes lg3{0%,0.660%{transform:translateY(0.00px) rotate(14.0deg);animation-timing-function:cubic-bezier(.5,0,.2,1)}2.020%,5.720%{transform:translateY(1.00px) rotate(0.0deg);animation-timing-function:cubic-bezier(.2,.9,.3,1)}6.200%{transform:translateY(-0.45px) rotate(23.8deg);animation-timing-function:cubic-bezier(.35,0,.35,1)}6.640%{transform:translateY(0.16px) rotate(10.6deg);animation-timing-function:cubic-bezier(.35,0,.35,1)}7.000%{transform:translateY(-0.05px) rotate(15.2deg);animation-timing-function:cubic-bezier(.35,0,.35,1)}7.320%,100%{transform:translateY(0.00px) rotate(14.0deg)}}@keyframes lg4{0%,0.880%{transform:translateY(0.00px) rotate(0.0deg);animation-timing-function:cubic-bezier(.5,0,.2,1)}2.240%,5.560%{transform:translateY(4.00px) rotate(0.0deg);animation-timing-function:cubic-bezier(.2,.9,.3,1)}6.040%{transform:translateY(-1.80px) rotate(9.0deg);animation-timing-function:cubic-bezier(.35,0,.35,1)}6.480%{transform:translateY(0.63px) rotate(-3.1deg);animation-timing-function:cubic-bezier(.35,0,.35,1)}6.840%{transform:translateY(-0.22px) rotate(1.1deg);animation-timing-function:cubic-bezier(.35,0,.35,1)}7.160%,100%{transform:translateY(0.00px) rotate(0.0deg)}}@keyframes lg5{0%,1.100%{transform:translateY(0.00px) rotate(-22.0deg);animation-timing-function:cubic-bezier(.5,0,.2,1)}2.460%,5.400%{transform:translateY(-4.00px) rotate(0.0deg);animation-timing-function:cubic-bezier(.2,.9,.3,1)}5.880%{transform:translateY(1.80px) rotate(-37.4deg);animation-timing-function:cubic-bezier(.35,0,.35,1)}6.320%{transform:translateY(-0.63px) rotate(-16.6deg);animation-timing-function:cubic-bezier(.35,0,.35,1)}6.680%{transform:translateY(0.22px) rotate(-23.8deg);animation-timing-function:cubic-bezier(.35,0,.35,1)}7.000%,100%{transform:translateY(0.00px) rotate(-22.0deg)}}.brand:hover{color:var(--fg)}.citebox{margin-top:30px;display:grid;grid-template-columns:1fr 1fr;gap:32px;background:#e4efe7;border-radius:12px;padding:24px 28px}.citebox h2{font-size:1.3rem;margin:0 0 8px}.citebox p{margin:0;color:#333}.citebox .code{margin:0 0 8px}.doil{font-weight:600}
+.srch{position:relative;flex:none;margin-left:6px}.top .ai{color:var(--mute);text-decoration:none;white-space:nowrap}.top .ai.on{color:var(--fg)}.top .ai:hover,.top .ai:focus-visible{color:#1f6b45}.top .ai.on{font-weight:600}.top .sbm{background:var(--fg);color:#fff;border-radius:6px;padding:7px 16px;font-weight:600;text-decoration:none;white-space:nowrap}.top .sbm:hover,.top .sbm.on{background:#1f6b45;color:#fff}.top b,.top nav a,.top .doi,.top .gh{white-space:nowrap}.top .in{gap:22px}.srch input{width:280px;border:1px solid var(--line);border-radius:6px;padding:6px 10px;font:.85rem system-ui;background:#fbfbf9}
+.srch input:focus{outline:none;border-color:#5fa77d;background:#fff}.srch input{transition:width .2s ease,border-color .15s ease}
+.qr{display:none;position:absolute;right:0;top:40px;width:480px;max-height:70vh;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 18px 48px rgba(0,0,0,.16);z-index:20;padding:6px 0}
+.qr.on{display:block}.qr .g{font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);padding:10px 16px 4px}
+.qr a{display:block;padding:7px 16px;text-decoration:none;color:var(--fg)}.qr a b{display:block;font-size:.92rem}.qr a span{font-size:.78rem;color:var(--mute)}
+.qr a.act,.qr a:hover{background:#eef6f0;color:var(--fg)}.qr .none{padding:12px 16px;color:var(--mute);font-size:.88rem}
+.chk{margin-top:36px;display:grid;grid-template-columns:1fr 1fr;gap:32px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:24px 28px}.chk h2{font-size:1.3rem;margin:0 0 8px}.chk p{margin:0 0 8px;color:#444}.chk .code{margin:0 0 10px}
+.skip{position:absolute;left:8px;top:-60px;background:var(--fg);color:#fff;padding:8px 14px;border-radius:6px;z-index:50;text-decoration:none}.skip:focus{top:8px;color:#fff}
+#main:focus{outline:none}
+:focus-visible{outline:3px solid #1f6b45;outline-offset:2px;border-radius:4px}
+.f4:focus-visible,.f3:focus-visible,.sbm:focus-visible,.cta a:focus-visible,.go:focus-visible,.dlb:focus-visible{outline-color:#1d1d1f}
+.panel{visibility:hidden}.panel.open{visibility:visible}.panel .big:focus{outline:none}
+@media (prefers-reduced-motion:reduce){*,*:before,*:after{transition:none !important;animation:none !important;scroll-behavior:auto !important}.el:hover,.pg:hover,.fl4:hover,.ftl:hover,.lv div:hover,.statc div:hover,.bg button:hover{transform:none !important}.tumble i{transform:none !important}}
+.top .in{height:64px;gap:26px}.top b,.top b a,.top nav a,.top .ai,.top .sbm,.srch input{font-size:16px;line-height:1}
+.top b a{font-size:18px;font-weight:700}.top nav{gap:22px}.brand{gap:12px}.logo{width:66px;height:24px}
+.top .sbm{height:38px;box-sizing:border-box;display:inline-flex;align-items:center;padding:0 18px;border:1px solid var(--fg);border-radius:6px}
+.srch input{height:38px;box-sizing:border-box;padding:0 12px;border:1px solid var(--line);border-radius:6px;font-family:system-ui,-apple-system,"Segoe UI",sans-serif}
+.hstats{max-width:88rem;margin:0 auto;padding:26px var(--side) 4px;display:grid;grid-template-columns:36px repeat(12,minmax(0,1fr));gap:6px}
+.hstats div{grid-column:span 2;border-left:1px solid var(--line);padding:2px 9px 0}
+.hstats b{display:block;font-size:1.6rem;line-height:1.15}.hstats span{display:block;font-size:.75rem;color:var(--mute);text-transform:uppercase;letter-spacing:.05em;margin-top:6px;white-space:nowrap}
+#lookup .in{grid-template-columns:36px repeat(12,minmax(0,1fr));gap:0 6px}
+#lookup .in>div{grid-column:2/span 8;padding-left:9px}#lookup .in>form{grid-column:10/span 4}
+.hstats{grid-template-columns:repeat(12,minmax(0,1fr))}.hstats>span:first-child{display:none}
+#lookup .in{grid-template-columns:repeat(12,minmax(0,1fr))}#lookup .in>div{grid-column:1/span 8;padding-left:0}#lookup .in>form{grid-column:9/span 4}
+@media (min-width:901px){.wrapw .blk{margin-left:-42px}.wrapw .bl{margin-left:0}}
+@media (max-width:900px){:root{--side:16px}}
+.ans.hit{animation:hit 1.1s ease}@keyframes hit{0%{background:#9fcdb1;box-shadow:0 0 0 3px #5fa77d}100%{background:var(--soft);box-shadow:0 0 0 0 transparent}}
+.vh{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+.nf{max-width:60rem;margin:0 auto;padding:60px var(--side);text-align:center}.nf h1{font-size:3rem;margin:0 0 10px}
+.tumble{display:flex;justify-content:center;gap:4px;margin:0 0 30px}.tumble i{display:block;width:34px;height:34px;border-radius:5px;background:#b9dcc6}
+.tumble i:nth-child(2n){background:#5fa77d;transform:translateY(14px) rotate(14deg)}.tumble i:nth-child(3n){background:#1f6b45;transform:translateY(34px) rotate(-22deg)}
+
+.strip,.citebox,.chk,.doc section,.card,.pg h3,.pg .au,.paper .hd h1{overflow-wrap:anywhere}.po{display:none}
+.lib>div,.grid2>div,.two2>div,.arr>section,.arr>aside,.doc>section,.hero .in>div{min-width:0}
+@media (max-width:1280px){.el{min-height:96px;padding:6px 7px}.el .n{font-size:clamp(1.05rem,1.6vw,1.7rem)}.el .n small{font-size:.62rem;margin-left:2px}.el .tp{font-size:.6rem}.el .st{font-size:.62rem}.el .dt{font-size:.58rem}.el .ft{flex-direction:column;align-items:flex-start;gap:1px}}
+@media (max-width:1320px){.top .in{flex-wrap:wrap;height:auto;padding-top:10px;padding-bottom:10px;row-gap:10px}.top nav{order:6;width:100%;overflow-x:auto;gap:18px;padding-top:4px;margin-top:-4px;padding-bottom:2px}.top .sp{display:none}.top .ai{margin-left:auto}}
+@media (max-width:900px){
+body{overflow-x:hidden}
+.hero .in,.arr,.two,.doc,.two2,.grid2,.chk,.citebox{grid-template-columns:1fr !important}
+.hero .in{gap:24px;padding-top:28px;padding-bottom:24px}.hero h1{font-size:1.9rem}
+#lookup .in>div,#lookup .in>form{grid-column:1/-1}
+.lf{grid-template-columns:repeat(3,minmax(0,1fr))}.lf button{grid-column:1/-1}
+.hstats{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:16px}.hstats div{grid-column:span 1}
+.stats{flex-wrap:wrap;row-gap:14px}.stats div{flex:1 1 45%}
+.bsc{overflow-x:auto;margin:0 calc(-1*var(--side));padding:0 var(--side)}
+.wrapw .blk{min-width:1100px;margin-left:0}.blk .r{position:sticky;left:0;background:var(--bg);z-index:1}
+.pageh .in{flex-wrap:wrap}.pageh h1{font-size:1.9rem}
+.lib{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 14px}
+.flow{grid-template-columns:repeat(2,minmax(0,1fr))}.ft{grid-template-columns:1fr}
+.rules{grid-template-columns:1fr}.lv{grid-template-columns:repeat(2,minmax(0,1fr))}.gl{grid-template-columns:1fr}
+.rule{grid-template-columns:1fr;gap:6px}.rule .refs{text-align:left}
+.pr{grid-template-columns:1fr;gap:2px}.pr .c{text-align:left}
+table.lg,.cl,.doc table{display:block;overflow-x:auto;white-space:normal}
+.doc nav.side{position:static;display:flex;flex-wrap:wrap;gap:4px 14px}
+.code{white-space:pre-wrap;word-break:break-all}
+.srch{flex:1 1 100%;order:4;margin-left:0}.srch input{width:100%}.qr{width:auto;left:0;right:0}
+.panel{right:12px;left:12px;width:auto;top:auto;bottom:12px}
+.foot .in{flex-direction:column;gap:8px}
+.board{grid-template-columns:1fr}
+.paper .hd h1{font-size:1.8rem}
+}
+@media (max-width:560px){.lib{grid-template-columns:1fr}.flow{grid-template-columns:1fr}.lv{grid-template-columns:1fr}.top .ai{display:none}.po{display:inline}.top b{flex:1 1 100%}.srch{order:4;flex:1 1 0;min-width:0}.top .sbm{order:5}.strip{flex-direction:column;align-items:flex-start;gap:10px}.citebox,.chk,.card{padding:20px}}
+""".replace("@SERIF@", SERIF)
+
+
+class Site:
+    def __init__(self, out, preview):
+        self.out = out
+        self.preview = preview
+        self.urls = []
+
+    def href(self, depth, path):
+        frag = ""
+        if "#" in path:
+            path, frag = path.split("#", 1)
+            frag = "#" + frag
+        if path == "" or path.endswith("/"):
+            path = path + ("index.html" if self.preview else "")
+        return "../" * depth + path + frag
+
+    def write(self, path, text, sitemap=True):
+        full = os.path.join(self.out, path)
+        os.makedirs(os.path.dirname(full), exist_ok=True)
+        with open(full, "w", encoding="utf-8") as f:
+            f.write(text)
+        if sitemap and path.endswith(".html"):
+            self.urls.append(path[:-len("index.html")] if path.endswith("index.html") else path)
+
+    def page(self, path, title, desc, body, active="", jsonld=None, script=""):
+        depth = path.count("/")
+        absolute = path == "404.html" and not self.preview
+        h = (lambda p: "/" + p) if absolute else (lambda p: self.href(depth, p))
+        root = "/" if absolute else "../" * depth
+        nav = "".join('<a href="%s"%s>%s</a>' % (h(p), ' class=on' if n == active else "", n) for n, p in NAV)
+        nav += '<a class=po href="%s"%s>For AI</a>' % (h("for-ai/"), ' aria-current=page' if active == "For AI" else "")
+        canon = ('<meta name="robots" content="noindex">' if path == "404.html" else
+                 '<link rel="canonical" href="%s">' % (BASE + (path[:-len("index.html")] if path.endswith("index.html") else path)))
+        ld = '<script type="application/ld+json">%s</script>' % jsonld if jsonld else ""
+        doc = ('<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
+               '<title>%s</title><meta name="description" content="%s">%s'
+               '<link rel="stylesheet" href="%s"><link rel="alternate" type="text/plain" title="llms.txt" href="%s">%s</head><body><a class=skip href="#main">Skip to content</a>'
+               '<div class=top><div class=in><b><a class=brand href="%s"><svg class=logo viewBox="0 0 61 22" aria-hidden="true"><rect x="1.0" y="3.0" width="8" height="8" rx="1.6" fill="#b9dcc6" style="transform:rotate(0deg);animation-name:lg0"/><rect x="11.0" y="6.0" width="8" height="8" rx="1.6" fill="#5fa77d" style="transform:rotate(14deg);animation-name:lg1"/><rect x="21.0" y="11.0" width="8" height="8" rx="1.6" fill="#1f6b45" style="transform:rotate(-22deg);animation-name:lg2"/><rect x="31.0" y="6.0" width="8" height="8" rx="1.6" fill="#5fa77d" style="transform:rotate(14deg);animation-name:lg3"/><rect x="41.0" y="3.0" width="8" height="8" rx="1.6" fill="#b9dcc6" style="transform:rotate(0deg);animation-name:lg4"/><rect x="51.0" y="11.0" width="8" height="8" rx="1.6" fill="#1f6b45" style="transform:rotate(-22deg);animation-name:lg5"/></svg><span>Covering Array Tools</span></a></b><nav>%s</nav><span class=sp></span>'
+               '<a class="ai%s" href="%s">For AI</a><a class="sbm%s" href="%s">Submit</a>'
+               '<div class=srch><button type=button class=qb aria-label="Search" aria-expanded="false" aria-controls="q"><svg width="17" height="17" viewBox="0 0 17 17" aria-hidden="true"><circle cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M11.2 11.2l4.3 4.3" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button><input id=q type=search placeholder="Search arrays, papers, people" autocomplete=off aria-label="Search"><div id=qr class=qr></div></div></div></div><div id=main tabindex=-1>%s</div>'
+               '<div class=foot><div class=in><span><a href="%s">Source data on GitHub</a>: every array, the table files and their full history. This build: commit <span class=mono>%s</span>, %s</span>'
+               '<span>Cite: DOI <a href="https://doi.org/%s">%s</a></span><span>Data CC BY 4.0</span><span><a href="mailto:%s">%s</a></span></div></div>'
+               '<script src="%s" data-root="%s" data-preview="%s" defer></script>%s</body></html>') % (
+            E(title), E(desc), canon, h("assets/site.css"), h("llms.txt"), ld, h(""), nav, " on" if active == "For AI" else "", h("for-ai/"), " on" if active == "Submit" else "", h("submit/"), body,
+            REPO_URL, self.commit, self.date, DOI, DOI, CONTACT, CONTACT, h("assets/search.js"), root, "1" if self.preview else "", script)
+        self.write(path, doc)
+
+
+SEARCH_JS = r"""(function(){var me=document.currentScript,root=me.getAttribute('data-root')||'',pv=me.getAttribute('data-preview')=='1',q=document.getElementById('q'),box=document.getElementById('qr'),loaded=false,act=-1,items=[];
+function load(cb){if(loaded){cb();return}var s=document.createElement('script');s.src=root+'assets/sindex.js';s.onload=function(){loaded=true;cb()};document.head.appendChild(s)}
+function norm(x){return x.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
+function url(p){if(pv&&(p===''||p.slice(-1)=='/'))p+='index.html';return root+p}
+var G={c:'Cells',a:'Arrays',p:'Papers'};
+function run(){var v=norm(q.value);if(!v){box.classList.remove('on');return}var tk=v.split(' '),res={c:[],a:[],p:[]};
+for(var i=0;i<SI.length;i++){var e=SI[i],k=e[4],ok=true;for(var j=0;j<tk.length;j++){var t=tk[j];if(/^\d+$/.test(t)){if((' '+k+' ').indexOf(' '+t+' ')<0){ok=false;break}}else if(k.indexOf(t)<0){ok=false;break}}
+if(ok){var sc=(k.indexOf(v)>=0?0:1)*1000+e[1].length;res[e[0]].push([sc,e])}}
+var h='',n=0;items=[];['c','a','p'].forEach(function(g){var r=res[g].sort(function(x,y){return x[0]-y[0]});if(!r.length)return;h+='<div class=g>'+G[g]+(r.length>6?' ('+r.length+')':'')+'</div>';
+r.slice(0,6).forEach(function(x){var e=x[1];h+='<a href="'+url(e[3])+'" data-i='+n+'><b>'+e[1]+'</b><span>'+e[2]+'</span></a>';items.push(url(e[3]));n++})});
+box.innerHTML=n?h:'<div class=none>Nothing found for '+q.value.replace(/</g,'&lt;')+'</div>';box.classList.add('on');act=n?0:-1;mark()}
+function mark(){var a=box.querySelectorAll('a');for(var i=0;i<a.length;i++)a[i].classList.toggle('act',i==act)}
+q.addEventListener('focus',function(){load(function(){})});q.addEventListener('input',function(){load(run)});
+q.addEventListener('keydown',function(ev){if(ev.key=='ArrowDown'){act=Math.min(act+1,items.length-1);mark();ev.preventDefault()}else if(ev.key=='ArrowUp'){act=Math.max(act-1,0);mark();ev.preventDefault()}
+else if(ev.key=='Enter'){if(act>=0&&items[act])location.href=items[act];ev.preventDefault()}else if(ev.key=='Escape'){box.classList.remove('on');q.blur()}});
+document.addEventListener('keydown',function(ev){if(ev.key=='/'&&document.activeElement!==q&&!/input|textarea/i.test(document.activeElement.tagName)){q.focus();ev.preventDefault()}});
+document.addEventListener('click',function(ev){if(!ev.target.closest('.srch'))box.classList.remove('on')})})();
+(function(){var w=document.querySelector('.srch'),bt=w&&w.querySelector('.qb'),q=document.getElementById('q'),r=document.getElementById('qr');if(!bt||!q)return;var pin=false,hov=false;
+function op(){w.classList.add('open');bt.setAttribute('aria-expanded','true')}
+function cl(){pin=false;w.classList.remove('open','pin');bt.setAttribute('aria-expanded','false');if(r)r.classList.remove('on')}
+function hold(){pin=true;w.classList.add('pin');op();setTimeout(function(){q.focus()},30)}
+w.addEventListener('mouseenter',function(){hov=true;op()});
+w.addEventListener('mouseleave',function(){hov=false;if(!pin)cl()});
+bt.addEventListener('click',function(){hold()});
+q.addEventListener('focus',function(){pin=true;w.classList.add('pin');op();if(q.value)q.dispatchEvent(new Event('input'))});
+q.addEventListener('keydown',function(e){if(e.key=='Escape'){cl();bt.focus()}});
+w.addEventListener('focusout',function(e){if(!e.relatedTarget||!w.contains(e.relatedTarget)){if(!hov)cl();else{pin=false;w.classList.remove('pin')}}});
+document.addEventListener('keydown',function(e){if(e.key=='/'&&!pin&&!/input|textarea/i.test(document.activeElement.tagName)){e.preventDefault();hold()}});
+document.addEventListener('mousedown',function(e){if(!w.contains(e.target)&&w.classList.contains('open')){cl();if(document.activeElement===q)q.blur()}})})();
+(function(){var b=document.querySelector('.brand');if(!b||!b.animate)return;var rs=b.querySelectorAll('.logo rect'),R=[0,14,-22,14,0,-22],D=[4,1,-4,1,4,-4],busy=false;
+function tf(y,r){return 'translateY('+y+'px) rotate('+r+'deg)'}
+b.addEventListener('mouseenter',function(){if(busy||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+for(var i=0;i<rs.length;i++){var a=rs[i].getAnimations().filter(function(x){return x.animationName});if(a.length){var t=(a[0].currentTime||0)-8000;if(t>=0&&t%50000<4700)return}}
+busy=true;setTimeout(function(){busy=false},1240);
+for(var i=0;i<rs.length;i++){var r=R[i],d=D[i],rr=r?r:(i%2?-9:9),ox=-d*0.45-(d?0:1),orr=(r?rr*1.7:rr)-r;
+rs[i].animate([{transform:tf(0,r)},{transform:tf(ox,r+orr),offset:.3,easing:'cubic-bezier(.35,0,.35,1)'},{transform:tf(-ox*.35,r-orr*.35),offset:.58,easing:'cubic-bezier(.35,0,.35,1)'},{transform:tf(ox*.12,r+orr*.12),offset:.8,easing:'cubic-bezier(.35,0,.35,1)'},{transform:tf(0,r)}],{duration:820,delay:(rs.length-1-i)*80,easing:'linear',composite:'replace'})}
+})})();
+"""
+
+
+def git_commit(repo):
+    g = os.path.join(repo, ".git")
+    try:
+        head = open(os.path.join(g, "HEAD")).read().strip()
+        if head.startswith("ref: "):
+            ref = head[5:]
+            p = os.path.join(g, ref)
+            if os.path.exists(p):
+                return open(p).read().strip()[:7]
+            for line in open(os.path.join(g, "packed-refs")):
+                if line.strip().endswith(ref):
+                    return line.split()[0][:7]
+        return head[:7]
+    except OSError:
+        return "unknown"
+
+
+def split_ref(r):
+    m = re.match(r"^((?:[^,]+, )*?[^,]+ and [^,]+?), (.*)$", r)
+    if m and all(re.match(r"^(?:[A-Z][a-z]*\.?[ -]?)*[A-Z][\w'-]+(?: II| Jr\.?)?$", p.strip()) for p in re.split(r", | and ", m.group(1))):
+        return m.group(1), m.group(2)
+    if ", " in r:
+        return tuple(r.split(", ", 1))
+    return "", r
+
+
+def title_of(rest):
+    m = re.search(r", (?=in:|Zenodo|arXiv|PhD|Ph\.D|https?:|[A-Z][^,]*\d)", rest)
+    return rest[:m.start()] if m else rest
+
+
+def year_of(r):
+    m = re.findall(r"\((\d{4})\)", r) or re.findall(r"\b(19\d\d|20\d\d)\b", r)
+    return m[-1] if m else ""
+
+
+SOURCE_NAME = {"S1": "Colbourn's tables", "S4": "NIST covering array library", "S5": "Dwyer CA_Database", "S6": "CAs R package data"}
+
+
+PUBLIC_TEXT = [
+    (r"\s*\(tools/own_arrays/[\w.-]*\)", ""),
+    (r"\(tools/own_arrays/[\w.-]+[,:;]\s*", "("),
+    (r",\s*tools/own_arrays/[\w.-]+(?=[,)])", ""),
+    (r"\s*\btools/own_arrays/[\w.-]+", ""),
+    (r"\bthe first version of [\w.-]+:\s*", "first version: "),
+    (r",\s*formerly published on his site \(no longer online\)", ""),
+    (r"\bpostop ?NCK\b", "post-optimization (Nayeri, Colbourn and Konjevod)"),
+    (r"\bthis project's\b", "the table's"),
+    (r"\bext2\.c\s+", ""),
+    (r" \(the search\)", " (search)"),
+    (r",?\s*entered by [a-z][a-z0-9.-]*-20\d\d-[a-z0-9.-]+", ""),
+    (r"\barray_sha256 ", "sha256 "),
+]
+
+
+def pub(c):
+    for a, b in PUBLIC_TEXT:
+        c = re.sub(a, b, c)
+    return c
+
+
+def credit_or_source(R, r):
+    c = R.credit_of(r) if r else ""
+    if c:
+        return pub(c)
+    return SOURCE_NAME.get(r.get("source_id", ""), "source not named") if r else ""
+
+
+def short_credit(c):
+    return c.split(" (")[0]
+
+
+def fam(ver, rungs):
+    s = ver / rungs if rungs else 0
+    return "f4" if s >= .9 else "f3" if s >= .5 else "f2" if s > .1 else "f1" if ver else "f0"
+
+
+PREVIEW_CELLS = 200000
+
+
+def previewable(m):
+    return not m["file"].endswith(".gz") and int(m["N"]) * int(m["k"]) <= PREVIEW_CELLS and not (m.get("location") or "").startswith("http")
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--repo", required=True)
+    ap.add_argument("--out", required=True)
+    ap.add_argument("--preview", action="store_true")
+    ap.add_argument("--sparse-list", action="store_true")
+    a = ap.parse_args()
+    tools = os.path.join(a.repo, "tools")
+    tdir = os.path.join(a.repo, "table")
+    if a.sparse_list:
+        for m in csv.DictReader(open(os.path.join(tdir, "MANIFEST.csv"), newline="", encoding="utf-8")):
+            if previewable(m):
+                print("/table/arrays/" + m["file"])
+        return
+    sys.path.insert(0, tools)
+    sys.path.insert(0, tdir)
+    import render_table as R
+    import builds_on
+    import lower_bounds
+    sys.setrecursionlimit(100000)
+    rows, manifest = R.load(tdir)
+    R.REFS.update(builds_on.load(tdir))
+    _, lb = lower_bounds.load(os.path.join(tdir, "lower_bounds.csv"))
+    for r in lb:
+        R.LB.setdefault((r[0], r[1]), []).append(r)
+    R.LB_CLOSED.update(lower_bounds.closed_steps(lb, os.path.join(tdir, "ca_frame.csv"), os.path.join(tdir, "ca_table.csv")))
+    ext = {}
+    xp = os.path.join(tdir, "EXTERNAL.csv")
+    if os.path.exists(xp):
+        for e in csv.DictReader(open(xp, newline="", encoding="utf-8")):
+            ext[e["sha256"]] = e["location"]
+    arrays = list(manifest)
+    seen_sha = {m["sha256"] for m in manifest}
+    if os.path.exists(xp):
+        for e in csv.DictReader(open(xp, newline="", encoding="utf-8")):
+            if e["sha256"] in seen_sha:
+                continue
+            seen_sha.add(e["sha256"])
+            member = e["location"].split("::")[1] if "::" in e["location"] else ""
+            arrays.append(dict(file=os.path.basename(member or e["location"].split("?")[0]), member=member, t=e["t"], v=e["v"], k=e["k"], N=e["N"],
+                               sha256=e["sha256"], verify_stamp=e.get("verify_stamp", ""), location=e["location"]))
+    site = Site(a.out, a.preview)
+    site.commit = git_commit(a.repo)
+    site.date = max(r["entered"] for r in rows)
+    os.makedirs(os.path.join(a.out, "assets"), exist_ok=True)
+    open(os.path.join(a.out, "assets", "site.css"), "w").write(CSS)
+
+    tv = collections.defaultdict(list)
+    for r in rows:
+        tv[(r["t"], r["v"])].append(r)
+    by_sha = collections.defaultdict(list)
+    for r in rows:
+        if r["array_sha256"]:
+            by_sha[r["array_sha256"]].append(r)
+    man = {m["sha256"]: m for m in arrays}
+
+    def ca(n, t, k, v):
+        return "CA(%s; %d, %s, %d)" % (format(n, ","), t, format(k, ","), v)
+
+    array_path = {}
+    stc = collections.Counter()
+    groups = collections.defaultdict(list)
+    for m in arrays:
+        groups[(int(m["N"]), int(m["t"]), int(m["k"]), int(m["v"]))].append(m["sha256"])
+    for key, shas in groups.items():
+        base = "ca/%d/%d/%d/%d/" % key
+        if len(shas) == 1:
+            array_path[shas[0]] = base
+        else:
+            for s in shas:
+                array_path[s] = base + s[:8] + "/"
+
+    cells = {}
+    for (t, v), rs in sorted(tv.items()):
+        st = R.stair(rs)
+        rungs = []
+        for n, k0, k1, ev in st:
+            ver = [e for e in ev if e["tier"] == "VERIFIED"]
+            best = (sorted(ver, key=lambda e: e["source_id"] != "S8") + list(ev))[0]
+            f = R.floor_at(t, v, k0)
+            f0 = lower_bounds.lower_bound(t, k0, v)[0]
+            f1 = lower_bounds.lower_bound(t, k1, v)[0]
+            of = R.optimal_from(t, v, k0, k1, n) if (t, v, k1, n) in R.LB_CLOSED else None
+            sha = next((e["array_sha256"] for e in sorted(ver, key=lambda e: e["source_id"] != "S8") if e["array_sha256"] in array_path), "")
+            rungs.append(dict(N=n, k0=k0, k1=k1, floor=f0, floor_k_to=f1, floor_row=f, closed=of == k0, opt_from=of,
+                              verified=bool(ver), credit=credit_or_source(R, best), construction=pub(R.page_text(R.construction_of(best) or "")),
+                              builds_on=[i for i in (best.get("builds_on") or "").split(";") if i in R.REFS], sha=sha,
+                              entered=best["entered"], new=all(e["entered"] > SNAPSHOT_DATE for e in ev)))
+        cells[(t, v)] = dict(t=t, v=v, rungs=rungs, kmax=max(r["k"] for r in rs), kmin=min(r["k"] for r in rs), last=max(r["entered"] for r in rs),
+                             nver=sum(1 for x in rungs if x["verified"]), nopt=sum(1 for x in rungs if x["opt_from"] is not None),
+                             nnew=sum(1 for x in rungs if x["new"]))
+
+    def cell_path(t, v):
+        return "t%d/v%d/" % (t, v)
+
+    def row_path(t, v, k):
+        rs = cells[(t, v)]["rungs"] if (t, v) in cells else []
+        x = next((x for x in rs if x["k0"] <= k <= x["k1"]), rs[-1] if rs and k > rs[-1]["k1"] else None)
+        return cell_path(t, v) + ("#k%d" % x["k1"] if x else "")
+
+    def ref_path(rid):
+        return "library/%s/" % re.sub(r"[^A-Za-z0-9._-]", "-", rid)
+
+    def tile(c, d, h):
+        cls = fam(c["nver"], len(c["rungs"]))
+        return ('<a class="el %s" href="%s" data-tv="%d-%d"><span class=vh>t=%d v=%d: </span><div class=tp>k to %s</div><div class=n>%d<small>rungs</small></div>'
+                '<div class=ft><div class=st><span><b>%d</b> verified</span><span><b>%d</b> optimal</span></div><span class=dt>%s</span></div></a>') % (
+            cls, h(cell_path(c["t"], c["v"])), c["t"], c["v"], c["t"], c["v"], format(c["kmax"], ","), len(c["rungs"]), c["nver"], c["nopt"], c["last"][5:])
+
+    h0 = lambda p: site.href(0, p)
+
+    def block(ts, vs, label):
+        s = '<p class=bl>%s</p><div class=bsc><div class=blk><span></span>' % label + "".join('<span class=h>v%d</span>' % v for v in vs) + "".join("<span></span>" for _ in range(12 - len(vs)))
+        for t in ts:
+            s += '<span class=r>t%d</span>' % t
+            for v in vs:
+                c = cells.get((t, v))
+                s += tile(c, 0, h0) if c else '<span class="el none"></span>'
+            s += "".join("<span></span>" for _ in range(12 - len(vs)))
+        return s + "</div></div>"
+
+    main_ts = [t for t in range(2, 7)]
+    hi_ts = sorted(t for (t, v) in cells if t >= 7)
+    nrows = len(rows)
+    nver = sum(1 for r in rows if r["tier"] == "VERIFIED")
+    narr = len(arrays)
+    nopt = sum(c["nopt"] for c in cells.values())
+    look = {}
+    for (t, v), c in cells.items():
+        look["%d-%d" % (t, v)] = dict(r=[[x["k1"], x["N"], x["opt_from"] or 0, 1 if x["verified"] else 0] for x in c["rungs"]],
+                                      f=[[r[2], r[3], r[4]] for r in R.LB.get((t, v), ())],
+                                      s=[len(c["rungs"]), c["nver"], c["nopt"], c["nnew"], c["kmax"], c["rungs"][0]["N"], c["rungs"][0]["k1"], c["last"], c["kmin"]],
+                                      p=h0(cell_path(t, v)))
+    jsonld = json.dumps({"@context": "https://schema.org", "@type": "Dataset",
+                         "name": "Covering Array Tools: best known covering arrays CA(N; t, k, v)",
+                         "alternateName": ["covering array table", "ca-tools table"],
+                         "description": "Best known sizes of covering arrays CA(N; t, k, v) for strengths 2 to 6 with up to 25 symbols and binary arrays at strengths 7 to 10, with proven lower bounds, credit, construction, published sources and checked arrays to download. %d entries and %d arrays on file." % (nrows, narr),
+                         "url": BASE, "sameAs": REPO_URL, "identifier": "https://doi.org/" + DOI,
+                         "keywords": ["covering arrays", "covering array number", "CAN(t,k,v)", "covering array table", "combinatorial testing"],
+                         "creator": {"@type": "Person", "name": "Christopher Smolen"},
+                         "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": True, "dateModified": site.date,
+                         "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": RAW + "table/ca_table.csv"}]},
+                        ensure_ascii=False).replace("</", "<\\/")
+    home = ('<div class=hero id=lookup><div class=in><div><h1>Best known covering arrays, with evidence.</h1>'
+            '<p>Every entry says who built it, how, and what it builds on. Verified entries link an array you can download and check yourself. '
+            'Proven floors sit beside every size. The table grows by pull request and rebuilds on every merge.</p></div>'
+            '<form class=look onsubmit="return look()"><h2>Look up a size</h2><div class=lf><span><label for=lt>strength t</label><input id=lt value=3 inputmode=numeric></span>'
+            '<span><label for=lv>symbols v</label><input id=lv value=3 inputmode=numeric></span><span><label for=lk>columns k</label><input id=lk value=6 inputmode=numeric></span>'
+            '<button>Find</button></div><div class=ans id=ans role=status aria-live=polite><span class=mute>Enter t, v and k, then Find.</span></div></form></div></div>'
+            '<div class=hstats><span></span><div><b class=num>%s</b><span>entries</span></div><div><b class=num>%s</b><span>verified</span></div>'
+            '<div><b class=num>%s</b><span>arrays on file</span></div><div><b class=num>%s</b><span>optimal rungs</span></div>'
+            '<div><b>2 to 6</b><span>strengths, v to 25</span></div><div><b>7 to 10</b><span>strengths, binary</span></div></div>'
+            '<main class=wrapw>%s%s%s<div class=key>%s<span>tile: k reached, rungs, verified rungs, optimal rungs, date of last change</span></div></main>'
+            '<aside class=panel id=panel role=dialog aria-labelledby=pt><div class=hd><span id=pl></span><button class=x id=px onclick="closeP()" aria-label="Close summary">&times;</button></div>'
+            '<h2 class=big id=pt tabindex=-1></h2><p class=nm id=pn></p><dl><dt>rungs</dt><dd id=p0></dd><dt>verified</dt><dd id=p1></dd><dt>optimal</dt><dd id=p2></dd>'
+            '<dt><a href="%s#new-since-the-first-release">new since the first release</a></dt><dd id=p3></dd><dt>columns covered</dt><dd id=p4></dd><dt>first rung</dt><dd id=p5></dd></dl><a class=go id=pgo></a></aside>') % (
+        format(nrows, ","), format(nver, ","), format(narr, ","), format(nopt, ","),
+        block(main_ts, list(range(2, 14)), "alphabets 2 to 13"), block(main_ts, list(range(14, 26)), "alphabets 14 to 25"),
+        block(hi_ts, [2], "binary, strengths 7 to 10") if hi_ts else "",
+        "".join('<span><i class=%s></i>%s</span>' % kv for kv in [("f4", "all rungs verified"), ("f3", "mostly verified"), ("f2", "partly verified"), ("f1", "a few verified"), ("f0", "cited only")]), h0("learn/"))
+    script = ("<script>var D=%s;var cur=null;function fmt(n){return n.toLocaleString('en-US')}"
+              "function openP(id){var c=D[id];if(!c)return;var p=id.split('-');document.querySelectorAll('.el.sel').forEach(function(e){e.classList.remove('sel')});"
+              "if(cur===id){closeP();return}cur=id;document.querySelector('[data-tv=\"'+id+'\"]').classList.add('sel');var s=c.s;"
+              "document.getElementById('pl').textContent='last change '+s[7];document.getElementById('pt').textContent='t='+p[0]+' v='+p[1];"
+              "document.getElementById('pn').textContent='Strength '+p[0]+' covering arrays on '+p[1]+' symbols';"
+              "document.getElementById('p0').textContent=fmt(s[0]);document.getElementById('p1').textContent=fmt(s[1]);document.getElementById('p2').textContent=fmt(s[2]);"
+              "document.getElementById('p3').textContent=fmt(s[3]);document.getElementById('p4').textContent=s[8]+' to '+fmt(s[4]);"
+              "document.getElementById('p5').textContent='CA('+fmt(s[5])+'; '+p[0]+', '+s[6]+', '+p[1]+')';var g=document.getElementById('pgo');g.href=c.p;g.textContent='Open t='+p[0]+' v='+p[1];"
+              "document.getElementById('panel').classList.add('open');document.getElementById('pt').focus()}"
+              "var last=null;function closeP(){if(last)last.focus();cur=null;document.getElementById('panel').classList.remove('open');document.querySelectorAll('.el.sel').forEach(function(e){e.classList.remove('sel')})}"
+              "document.querySelectorAll('.el[data-tv]').forEach(function(e){e.addEventListener('click',function(ev){ev.preventDefault();last=e;openP(e.dataset.tv)})});"
+              "document.addEventListener('keydown',function(ev){if(ev.key=='Escape'&&cur)closeP()});"
+              "document.addEventListener('click',function(ev){if(cur&&!ev.target.closest('#panel')&&!ev.target.closest('.el[data-tv]')){last=null;closeP()}});"
+              "function flash(a){a.classList.remove('hit');void a.offsetWidth;a.classList.add('hit')}"
+              "function say(a,m){a.innerHTML='<span class=mute>'+m+'</span>';flash(a);return false}"
+              "function look(){var tv=document.getElementById('lt').value.trim(),vv=document.getElementById('lv').value.trim(),kv=document.getElementById('lk').value.trim(),a=document.getElementById('ans');"
+              "if(!/^\\d+$/.test(tv)||!/^\\d+$/.test(vv)||!/^\\d+$/.test(kv))return say(a,'Enter whole numbers for t, v and k.');"
+              "var t=+tv,v=+vv,k=+kv;if(k<t)return say(a,'k must be at least t: an array of strength '+t+' needs at least '+t+' columns.');"
+              "var c=D[t+'-'+v];if(!c)return say(a,'The table has no entries for t = '+t+' and v = '+v+'.');"
+              "var r=null;for(var i=0;i<c.r.length;i++){if(c.r[i][0]>=k){r=c.r[i];break}}"
+              "if(!r)return say(a,'The table covers k up to '+fmt(c.s[4])+' for t = '+t+' and v = '+v+'.');"
+              "var f=null;for(var j=0;j<c.f.length;j++){if(c.f[j][0]<=k&&k<=c.f[j][1]){f=c.f[j][2]}}"
+              "var op=r[2]&&k>=r[2];if(op)f=r[1];a.innerHTML='CAN('+t+', '+fmt(k)+', '+v+') '+(op?'= ':'&le; ')+'<b>'+fmt(r[1])+'</b> '+(op?'<span class=\"tag opt\">optimal</span>':(r[3]?'<span class=\"tag ver\">verified</span>':'<span class=\"tag lit\">cited</span>'))"
+              "+'<br><span class=mute>'+(f?'Floor '+fmt(f)+'. ':'')+'</span><a href=\"'+c.p+'#k'+r[0]+'\">Open</a>';flash(a);return false}</script>") % json.dumps(look, separators=(",", ":"))
+    site.page("index.html", "Covering Array Tools: best known covering arrays, with evidence",
+              "Best known covering array sizes CA(N; t, k, v) with proven floors, credit, construction and checked arrays to download.",
+              home, "Table", jsonld, script)
+
+    for (t, v), c in cells.items():
+        path = cell_path(t, v) + "index.html"
+        d = 2
+        h = lambda p, d=d: site.href(d, p)
+        trs = []
+        for x in c["rungs"]:
+            gap = x["N"] - x["floor"] if x["floor"] is not None else None
+            if x["closed"]:
+                status = '<span class="tag opt">optimal</span>'
+            elif x["opt_from"] is not None:
+                status = '<span class="tag opt">optimal at k = %s</span>' % (format(x["k1"], ",") if x["opt_from"] == x["k1"] else "%s to %s" % (format(x["opt_from"], ","), format(x["k1"], ",")))
+            elif x["verified"]:
+                status = '<span class="tag ver">verified</span>'
+            else:
+                status = '<span class="tag lit">cited</span>'
+            bo = ", ".join('<a href="%s">%s</a>' % (h(ref_path(i)), E(R.ref_label(i))) for i in x["builds_on"])
+            arr = ('<a href="%s">%s</a>' % (h(array_path[x["sha"]]), ca(x["N"], t, x["k1"], v))) if x["sha"] else '<span class=mute>none on file</span>'
+            also = sorted((int(m["k"]), m["sha256"]) for m in arrays if int(m["t"]) == t and int(m["v"]) == v and int(m["N"]) == x["N"]
+                          and x["k0"] <= int(m["k"]) <= x["k1"] and m["sha256"] != x["sha"] and m["sha256"] in array_path)
+            if also:
+                arr += '<span class=sub>also on file: %s</span>' % ", ".join('<a href="%s">%s</a>' % (h(array_path[s2]), ca(x["N"], t, k2, v)) for k2, s2 in also)
+            kr = format(x["k1"], ",") if x["k0"] == x["k1"] else "%s to %s" % (format(x["k0"], ","), format(x["k1"], ","))
+            con = x["construction"]
+            trs.append('<tr id="k%d" class="%s"><td class=n>%s</td><td class="n big">%s</td><td class=n>%s</td><td class=n>%s</td><td>%s</td>'
+                       '<td>%s<span class=sub>%s</span>%s</td><td class=a>%s</td></tr>' % (
+                           x["k1"], "closed" if x["closed"] else "", kr, format(x["N"], ","), format(x["floor"], ",") if x["floor"] is not None else "",
+                           (format(gap, ",") if gap is not None else ""), status, E(short_credit(x["credit"])),
+                           E(con), ('<span class=sub>builds on %s</span>' % bo) if bo else "", arr))
+        body = ('<div class=pageh><div class=in><div><p class=crumb><a href="%s">Table</a> / t=%d v=%d</p><h1>t=%d v=%d</h1>'
+                '<p>Strength %d covering arrays on %d symbols. The smallest known number of rows N for every k up to %s, with the proven floor beside it.</p></div>'
+                '<div class=btns><a href="%s">JSON</a><a href="%s">CSV</a><a class=d href="https://doi.org/%s">Cite</a></div></div></div>'
+                '<div class=stats><div><b class=num>%d</b><span>rungs</span></div><div><b class=num>%d</b><span>verified</span></div>'
+                '<div><b class=num>%d</b><span>optimal</span></div><div><b class=num>%d</b><span><a href="%s">new since the first release</a></span></div>'
+                '<div><b class=num>%s</b><span>last change</span></div></div>'
+                '<main class=wrapw><table class=lg><thead><tr><th class=n>k</th><th class=n>best N</th><th class=n>floor</th><th class=n>gap</th><th>status</th>'
+                '<th>credit and construction</th><th>array</th></tr></thead><tbody>%s</tbody></table></main>') % (
+            h(""), t, v, t, v, t, v, format(c["kmax"], ","), h("t%d/v%d.json" % (t, v)), h("t%d/v%d.csv" % (t, v)), DOI,
+            len(c["rungs"]), c["nver"], c["nopt"], c["nnew"], h("learn/") + "#new-since-the-first-release", c["last"], "".join(trs))
+        site.page(path, "CAN(%d, k, %d): strength %d covering arrays on %d symbols" % (t, v, t, v),
+                  "Best known covering array sizes CA(N; %d, k, %d) for k up to %s, with floors, credit and arrays." % (t, v, format(c["kmax"], ",")), body, "Table")
+        recs = [dict(k_from=x["k0"], k_to=x["k1"], N=x["N"], floor=x["floor"], floor_k_to=x["floor_k_to"], optimal_from=x["opt_from"],
+                     status="optimal" if x["closed"] else ("verified" if x["verified"] else "cited"),
+                     credit=x["credit"], construction=x["construction"], builds_on=x["builds_on"], array_sha256=x["sha"],
+                     array_page=(BASE + array_path[x["sha"]]) if x["sha"] else "") for x in c["rungs"]]
+        site.write("t%d/v%d.json" % (t, v), json.dumps(dict(t=t, v=v, source=REPO_URL, doi=DOI, rungs=recs), ensure_ascii=False, indent=1), False)
+        with open(os.path.join(a.out, "t%d/v%d.csv" % (t, v)), "w", newline="", encoding="utf-8") as f:
+            w = csv.writer(f)
+            w.writerow(["t", "v", "k_from", "k_to", "N", "floor", "floor_k_to", "optimal_from", "status", "credit", "construction", "builds_on", "array_sha256"])
+            for x in recs:
+                w.writerow([t, v, x["k_from"], x["k_to"], x["N"], x["floor"] if x["floor"] is not None else "", x["floor_k_to"] if x["floor_k_to"] is not None else "", x["optimal_from"] or "", x["status"], x["credit"], x["construction"], ";".join(x["builds_on"]), x["array_sha256"]])
+
+    for sha, path in array_path.items():
+        m = man[sha]
+        t, v, k, n = int(m["t"]), int(m["v"]), int(m["k"]), int(m["N"])
+        rs = sorted(by_sha.get(sha, []), key=lambda r: r["source_id"] != "S8")
+        r = rs[0] if rs else None
+        d = path.count("/")
+        h = lambda p, d=d: site.href(d, p)
+        f = R.floor_at(t, v, k)
+        lbk = lower_bounds.lower_bound(t, k, v)
+        closed = lbk[0] == n
+        credit = credit_or_source(R, r)
+        con = pub(R.page_text(R.construction_of(r))) if r else ""
+        bo = [i for i in ((r.get("builds_on") or "").split(";") if r else []) if i in R.REFS]
+        fn = m["file"]
+        loc = (m.get("location") or "").strip()
+        if loc.startswith("http") and m.get("member"):
+            dl = loc.split("::")[0]
+            dll = "Download the deposit archive"
+        elif loc.startswith("http"):
+            dl = loc.split("::")[0]
+            dll = "Download " + fn
+        elif sha in ext:
+            dl = ext[sha].split("::")[0]
+            dll = "Download from the deposit"
+        else:
+            dl = RAW + "table/arrays/" + fn
+            dll = "Download " + fn
+        preview = ""
+        fp = os.path.join(tdir, "arrays", fn)
+        if previewable(m) and os.path.exists(fp):
+            lines = [l.rstrip("\n") for l in open(fp, encoding="utf-8")][:80]
+            preview = "\n".join("%3d  %s" % (i + 1, l if len(l) < 160 else l[:158] + " …") for i, l in enumerate(lines))
+            if n > 80:
+                preview += "\n     %d more rows in the file" % (n - 80)
+        refs = "".join('<li><a href="%s">%s</a>%s</li>' % (h(ref_path(i)), E(R.REFS[i]["reference"]),
+                                                         (' <a href="https://doi.org/%s">doi:%s</a>' % (R.REFS[i]["doi"], R.REFS[i]["doi"])) if R.REFS[i].get("doi") else "") for i in bo)
+        tag = '<span class="tag opt">optimal</span>' if closed else '<span class="tag ver">verified</span>'
+        rung = next((x for x in cells[(t, v)]["rungs"] if x["k0"] <= k <= x["k1"]), None) if (t, v) in cells else None
+        if rung is None:
+            stxt = "beyond the table's range for t=%d v=%d" % (t, v)
+        elif n <= rung["N"]:
+            stxt = "best known" if rung["sha"] == sha or n < rung["N"] else "ties best known"
+        else:
+            stxt = 'above best known (best is %s, <a href="%s">see the table row</a>)' % (format(rung["N"], ","), h(row_path(t, v, k)))
+        stc[stxt.split(" (")[0]] += 1
+        body = ('<main class=wrapw><div class=arr><section><p class=crumb><a href="%s">Table</a> / <a href="%s">t=%d v=%d</a> / k = %s</p>'
+                '<h1 style="font-size:2rem;margin:0 0 4px">%s %s</h1><p class=mute style="margin:0 0 20px">An array of %s rows and %s columns on %d symbols in which every %d columns show all %s combinations.</p>'
+                '<dl><dt>credit</dt><dd>%s</dd><dt>entered</dt><dd>%s</dd><dt>construction</dt><dd>%s</dd><dt>floor</dt><dd>%s</dd>'
+                '<dt>verify stamp</dt><dd>%s</dd><dt>status</dt><dd>%s</dd></dl>%s</section>'
+                '<aside><a class=dlb href="%s">%s</a><div class=dls><a href="%s">Table row</a><a href="%s">Verify it</a></div>'
+                '<div class=sha>sha256 %s</div>%s</aside></div>%s</main>') % (
+            h(""), h(cell_path(t, v)), t, v, format(k, ","), ca(n, t, k, v), tag, format(n, ","), format(k, ","), v, t, format(v ** t, ","),
+            E(credit), r["entered"] if r else "", E(con), (format(f[4], ",") + ", " + E(pub(f[6]))) if f else format(lbk[0], ","),
+            E(m["verify_stamp"]), stxt, ('<h2>Builds on</h2><ol>%s</ol>' % refs) if refs else "",
+            dl, E(dll), h(row_path(t, v, k)), "#check", sha,
+            ('<h2 style="font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin:24px 0 8px">The array</h2><div class=grid tabindex=0 role=region aria-label="The array, first rows">%s</div>' % E(preview)) if preview else "",
+            ('<section class=chk id=check><div><h2>Verify this array</h2><p>Download the array and the checker <a href="%sca_verify.py">ca_verify.py</a>, which needs only Python. '
+             'It looks at every set of %d columns and confirms each one shows all %s combinations of the %d symbols.</p></div>'
+             '<div><div class=code>%spython3 ca_verify.py %s %d %d</div><p class=mute>A correct array prints <span class=mono>VERIFIED: CA(N=%d; t=%d, k=%d, v=%d)</span>. '
+             'Anything missing is listed by column and value. For large arrays the faster C checker <a href="%sca_verify.c">ca_verify.c</a> gives the same answer.</p></div></section>') % (
+                RAW, t, format(v ** t, ","), v, ("unzip %s %s\n" % (E(os.path.basename(loc.split("::")[0])), E(m["member"]))) if m.get("member") else ("gunzip %s\n" % E(fn)) if fn.endswith(".gz") else "", E(m["member"] if m.get("member") else fn[:-3] if fn.endswith(".gz") else fn), t, v, n, t, k, v, RAW))
+        site.page(path + "index.html", "%s covering array" % ca(n, t, k, v),
+                  "A verified covering array %s: %s rows, strength %d, %s columns, %d symbols, with credit, construction and download." % (ca(n, t, k, v), format(n, ","), t, format(k, ","), v),
+                  body, "Table")
+
+    use = collections.defaultdict(list)
+    for r in rows:
+        for i in (r.get("builds_on") or "").split(";"):
+            if i in R.REFS:
+                use[i].append(r)
+    flo = collections.defaultdict(list)
+    for r in lb:
+        for i in set(filter(None, r[7].split(";"))):
+            if i in R.REFS:
+                flo[i].append(r)
+    cards = []
+    for rid in sorted(R.REFS, key=lambda i: (-len(use[i]), -len(flo[i]))):
+        ref = R.REFS[rid]["reference"]
+        au, rest = split_ref(ref)
+        ti = title_of(rest)
+        j = rest[len(ti) + 2:]
+        jh = re.sub(r"\s*\d.*$", "", j) or j
+        u = use[rid]
+        na = len({x["array_sha256"] for x in u if x["array_sha256"]})
+        cap = ", ".join(s for s in [("%s rows" % format(len(u), ",")) if u else "", ("%d array%s" % (na, "" if na == 1 else "s")) if na else "",
+                                     ("%d floor%s" % (len(flo[rid]), "" if len(flo[rid]) == 1 else "s")) if flo[rid] else ""] if s)
+        doi = R.REFS[rid].get("doi") or ""
+        cards.append('<div><a class=pg href="%s"><div class=j>%s</div><h3>%s</h3><p class=au>%s</p><div class=ln>%s</div><div class=y><span>%s</span><span style="overflow:hidden;text-overflow:ellipsis">%s</span></div></a><p class=cap>%s</p></div>' % (
+            site.href(1, ref_path(rid)), E(jh), E(ti), E(au), "<i></i>" * 7, year_of(ref), E(("doi:" + doi) if doi and not doi.lower().startswith("arxiv") else doi), cap))
+        d = 2
+        h = lambda p, d=d: site.href(d, p)
+        prs = []
+        for x in sorted(u, key=lambda r: (r["t"], r["v"], r["k"], r["N"]))[:400]:
+            link = h(array_path[x["array_sha256"]]) if x["array_sha256"] in array_path else h(row_path(x["t"], x["v"], x["k"]))
+            c2 = pub(R.page_text(R.construction_of(x) or ""))
+            prs.append('<div class=pr><span><a href="%s">%s</a><span class=k>%s</span></span><span>%s</span><span class=c>%s</span></div>' % (
+                link, ca(x["N"], x["t"], x["k"], x["v"]), "verified" if x["tier"] == "VERIFIED" else "cited", E(c2), E(short_credit(credit_or_source(R, x)))))
+        more = ('<p class=lede>%s more rows build on it. The full list is in the table data.</p>' % format(len(u) - 400, ",")) if len(u) > 400 else ""
+        fls = "".join('<div class=fl>CAN(%d, %s, %d) &ge; %s</div>' % (r[0], (format(r[2], ",") if r[2] == r[3] else "%s to %s" % (format(r[2], ","), format(r[3], ","))), r[1], format(r[4], ",")) for r in flo[rid])
+        body = ('<main class=wrapw><div class=paper><p class=crumb><a href="%s">Library</a> / %s</p><div class=hd><div class=j>%s</div><h1>%s</h1><p class=au>%s</p>'
+                '<div class=btns>%s</div></div>%s%s</div></main>') % (
+            h("library/"), E(R.ref_label(rid)), E(j), E(ti), E(au),
+            ('<a class=d href="https://doi.org/%s">doi:%s</a>' % (doi, doi)) if doi and not doi.lower().startswith("arxiv") else ('<a class=d href="https://arxiv.org/abs/%s">%s</a>' % (doi.split(":", 1)[-1], doi) if doi else ""),
+            ('<h2>In the table</h2><p class=lede>%s %s build on this paper.</p>%s%s' % (format(len(u), ","), "row" if len(u) == 1 else "rows", "".join(prs), more)) if u else "",
+            ('<h2>Floors that cite it</h2>%s' % fls) if fls else "")
+        site.page(ref_path(rid) + "index.html", "%s, %s" % (ti, R.ref_label(rid)), "%s. What in the covering array table builds on it." % ref[:150], body, "Library")
+    lib = ('<div class="pageh serifh"><div class=in><div><h1>Library</h1><p>Every paper the table rests on. Each entry links the paper and says what in the table is built on it. Open one to see those arrays and floors.</p></div></div></div>'
+           '<main class=wrapw><div class=lib>%s</div></main>') % "".join(cards)
+    site.page("library/index.html", "Library: the papers behind the covering array table", "Every paper the covering array table rests on, with the arrays and floors built on each.", lib, "Library")
+
+    board_rows = ["000", "011", "101", "110"]
+    btns = "".join('<button class="%s" data-r=%d data-c=%d>%s</button>' % ("o" if ch == "1" else "z", i, j, ch) for i, r in enumerate(board_rows) for j, ch in enumerate(r))
+    gl = [("t, strength", "How many columns at a time must show every combination."), ("v, symbols", "How many values a cell can take. On and off is v = 2."),
+          ("k, columns", "How many factors, settings or parameters the array covers."), ("N, rows", "How many rows, or tests, the array uses. Smaller is better."),
+          ("Rung", "A stretch of k where the smallest known N stays the same. Each cell of the table is a stair of rungs."),
+          ("Floor", "A proven lower bound on N. No array can have fewer rows than its floor."),
+          ("Verified", "An array of that size is on file and has been checked exactly, every set of t columns."),
+          ("Cited", "The size comes from a published paper or table. No array for it is on file here yet."),
+          ("Optimal", "The best known size equals the floor and a verified array is on file. Nothing smaller exists."),
+          ("New since the first release", "The table was first published on 23 August 2026, built from the 2024 snapshot of Colbourn's tables and the other sources it names. A rung is new when every entry that sets it was entered after that date.")]
+    learn = ('<div class=hero><div class=in><div><p class=crumb>Learn</p><h1 style="font-family:%s;font-weight:400">What is a covering array?</h1>'
+             '<p style="font-family:%s;font-size:1.1rem;line-height:1.55">A grid of symbols, chosen so that any few columns, looked at together, show every possible combination somewhere in their rows.</p>'
+             '<p style="font-family:%s;font-size:1.1rem;line-height:1.55;margin-top:10px">Here are three on and off switches. Every pair of switches is seen in all four combinations, 00, 01, 10 and 11, using only four rows instead of eight. '
+             'That is a covering array of strength 2, written CA(4; 2, 3, 2).</p></div>'
+             '<div><div class=board><div class=bg><span class=h>col 1</span><span class=h>col 2</span><span class=h>col 3</span>%s</div><div class=pairs id=pairs></div></div>'
+             '<p class=cap>Tap a cell to change it and watch a combination go missing.</p></div></div></div>'
+             '<div class=prose><h2>Why they matter</h2><div class=two><div><p>Studies of real software failures found most were triggered by one or two settings, fewer by three or more, and nearly all by six or fewer (<a href="https://doi.org/10.1109/TSE.2004.24">Kuhn, Wallace and Gallo 2004</a>, and later NIST studies). Testing every combination of settings is out of reach. Ten on and off switches already give 1,024 cases.</p>'
+             '<p>A covering array of strength 2 tests every pair of those ten switches in 6 rows. Strength 3 catches every triple. The smaller the array, the fewer tests to run, which is why the race for the smallest N has gone on for decades.</p></div>'
+             '<div class=statc><div><b>1,024</b><span>tests for every combination of 10 switches</span></div><div><b>6</b><span>tests for every pair, CA(6; 2, 10, 2)</span></div></div></div>'
+             '<h2>See it in the table</h2><div class=lv><div><b><a href="%s">t=2 v=2</a></b><span>on and off, every pair</span></div><div><b><a href="%s">t=3 v=2</a></b><span>on and off, every triple</span></div>'
+             '<div><b><a href="%s">t=2 v=3</a></b><span>three values, every pair</span></div><div><b><a href="%s">t=3 v=3</a></b><span>three values, every triple</span></div></div>'
+             '<h2>How to read the table</h2><dl class=gl>%s</dl></div>') % (
+        SERIF, SERIF, SERIF, btns, site.href(1, "t2/v2/"), site.href(1, "t3/v2/"), site.href(1, "t2/v3/"), site.href(1, "t3/v3/"),
+        "".join('<div id="%s"><dt>%s</dt><dd>%s</dd></div>' % (re.sub(r"[^a-z0-9]+", "-", x.lower()).strip("-"), E(x), E(y)) for x, y in gl))
+    lscript = ("<script>function upd(){var b=[].slice.call(document.querySelectorAll('.bg button'));var g=[[],[],[],[]];b.forEach(function(x){g[+x.dataset.r][+x.dataset.c]=x.textContent});"
+               "var out='';[[0,1],[0,2],[1,2]].forEach(function(p){var s={};g.forEach(function(r){s[r[p[0]]+r[p[1]]]=1});var seen=Object.keys(s).sort();"
+               "var all=seen.length==4;out+='<div><span>columns '+(p[0]+1)+' and '+(p[1]+1)+'</span><b>'+seen.join(' ')+'</b><span class='+(all?'ok':'miss')+'>'+(all?'all 4':(4-seen.length)+' missing')+'</span></div>'});"
+               "document.getElementById('pairs').innerHTML=out}"
+               "document.querySelectorAll('.bg button').forEach(function(x){x.addEventListener('click',function(){x.textContent=x.textContent=='1'?'0':'1';x.className=x.textContent=='1'?'o':'z';upd()})});upd();</script>")
+    site.page("learn/index.html", "What is a covering array? Learn to read the table", "What a covering array is, why it matters for testing, and how to read the covering array table.", learn, "Learn", None, lscript)
+
+    def ftile(fmt, name, url, what):
+        return '<a class=ftl href="%s"><span class=fmt>%s</span><b>%s</b><span>%s</span></a>' % (url, fmt, name, what)
+    forai = ('<div class=pageh><div class=in><div><h1>For AI agents</h1><p>Everything an agent needs to read the table, choose an open size, build an array, check it and submit it. A named person answers for every submission.</p></div>'
+             '<div class=btns><a class=d href="%s">llms.txt</a></div></div></div>'
+             '<main class=wrapw><div class=flow>'
+             '<a class="fl4 f4" href="#data"><span class=no>1</span><b>Read the data</b><span>Plain CSV and JSON, rebuilt on every merge</span></a>'
+             '<a class="fl4 f3" href="%stable/wanted.csv"><span class=no>2</span><b>Pick a target</b><span>wanted.csv lists every open size</span></a>'
+             '<a class="fl4 f2" href="#check"><span class=no>3</span><b>Check locally</b><span>The same exact check the pull request runs</span></a>'
+             '<a class="fl4 f1" href="%s"><span class=no>4</span><b>Submit</b><span>One folder in a pull request</span></a></div>'
+             '<div class=grid2><div><p class=sech id=data style="margin-top:0">Data</p><div class=ft>%s%s%s%s%s%s</div></div>'
+             '<div><p class=sech id=check style="margin-top:0">Check and submit</p>'
+             '<div class=code><span class=c># check one array exactly</span>\npython3 ca_verify.py CA_33_3_6_3.txt 3 3\n<span class=c># run the pull request check locally</span>\npython3 tools/check_submission.py submissions/your-name</div>'
+             '<div class=code><span class=c># one new folder, nothing else changed</span>\nsubmissions/your-name/\n  claims.csv   t,v,k,N,file,source_detail,construction,builds_on,credit,notes\n  HOW.md       how the arrays were built\n  CA_33_3_6_3.txt</div>'
+             '<p class=mute style="font-size:.88rem">Full guide: <a href="%s/blob/main/submissions/README.md">submissions/README.md</a></p></div></div>'
+             '<p class=sech>Rules</p><div class=rules>'
+             '<div><b>Arrays, not claims</b>A size enters only with an array or a certificate the table can check.</div>'
+             '<div><b>Say how</b>HOW.md is required. Naming the AI system is welcome.</div>'
+             '<div><b>A person answers</b>A named person with an email and affiliation, never an AI alone.</div>'
+             '<div><b>Withdrawn arrays</b>Never submitted or used as a start or ingredient. The check compares against them.</div>'
+             '<div><b>Licence</b>Opening a pull request licenses the arrays under CC BY 4.0.</div></div>'
+             '<div class=citebox id=cite><div><p class=sech style="margin:0 0 6px">Cite</p><h2>Any use of this data cites the DOI</h2>'
+             '<p>When an agent or a paper uses sizes, arrays or floors from this table, cite the table by its DOI and cite the authors of the rows used. Each row names its source.</p>'
+             '<p style="margin-top:10px">The data compiled here is licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, which requires this credit. '
+             'Rows taken from other sources keep their own terms, and each row names its source. See <a href="%s/blob/main/LICENSE-DATA">LICENSE-DATA</a>.</p></div>'
+             '<div><div class=code>C. Smolen, ca-tools: a maintained table of covering arrays,\ndoi:%s</div><a class=doil href="https://doi.org/%s">https://doi.org/%s</a></div></div></main>') % (
+        site.href(1, "llms.txt"), RAW, site.href(1, "submit/"),
+        ftile("CSV", "ca_table.csv", RAW + "table/ca_table.csv", "Every row, with tier, credit and construction"),
+        ftile("CSV", "wanted.csv", RAW + "table/wanted.csv", "Open sizes: no_array, array_above_best, beat_best"),
+        ftile("CSV", "lower_bounds.csv", RAW + "table/lower_bounds.csv", "Proven floors with theorem and references"),
+        ftile("CSV", "MANIFEST.csv", RAW + "table/MANIFEST.csv", "Every stored array: file name, t, v, k, N and sha256"),
+        ftile("JSON CSV", "t3/v3.json", site.href(1, "t3/v3.json"), "Any one cell, same pattern for every t and v"),
+        ftile("CSV", "references.csv", RAW + "table/references.csv", "The papers the table rests on"),
+        REPO_URL, REPO_URL, DOI, DOI, DOI)
+    site.page("for-ai/index.html", "For AI agents: read, check and submit covering arrays", "Data files, open targets, the local check and the submission format for agents working on the covering array table.", forai, "For AI")
+
+    pri = sorted(csv.DictReader(open(os.path.join(tdir, "priority.csv"), newline="", encoding="utf-8")), key=lambda p: p["date"], reverse=True)
+    bysub = collections.defaultdict(list)
+    for r in rows:
+        m = re.search(r"submission ([A-Za-z0-9._-]+)", r.get("notes") or "")
+        if m:
+            bysub[m.group(1)].append(r)
+        else:
+            m2 = re.search(r"from submissions/([A-Za-z0-9._-]+)", r.get("notes") or "")
+            if m2:
+                bysub[m2.group(1)].append(r)
+    trs = []
+    for p in pri:
+        rs = bysub.get(p["slug"], [])
+        new, tie, other = [], 0, 0
+        for x in rs:
+            n = x.get("notes") or ""
+            mm = re.search(r"previous best (\d+)", n)
+            if re.search(r";\s*equals table", n):
+                tie += 1
+            elif mm and x["N"] < int(mm.group(1)):
+                new.append((x, int(mm.group(1))))
+            else:
+                other += 1
+        parts = ['<a href="%s">t%d v%d k%s</a> <s>%s</s> &rarr; <b>%s</b>' % (
+            site.href(1, row_path(x["t"], x["v"], x["k"])), x["t"], x["v"], format(x["k"], ","), format(old, ","), format(x["N"], ",")) for x, old in new[:3]]
+        if len(new) > 3:
+            parts.append('<span class=mute>and %d more</span>' % (len(new) - 3))
+        if tie:
+            parts.append('<span class=mute>%d tie%s</span>' % (tie, "" if tie == 1 else "s"))
+        if other:
+            parts.append('<span class=mute>%d entered</span>' % other)
+        who = (R.credit_of(rs[0]) if rs else "") or p["slug"].split("-20")[0]
+        ev = ('<a href="%s">pull request %s</a>' % (p["evidence"], p["evidence"].rsplit("/", 1)[-1])) if p["basis"] == "pull_request" else '<span class=mono>%s</span>' % E(p["evidence"])
+        trs.append('<tr><td class=d>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>' % (p["date"][:10], E(who.split(" (")[0]), '<a href="%s/tree/main/submissions/%s">files</a>' % (REPO_URL, E(p["slug"])), "<br>".join(parts) or '<span class=mute>recorded</span>', ev))
+    cl = ('<div class=pageh><div class=in><div><h1>Updates</h1><p>Every submission to the table, newest first, with who submitted it, when, and the sizes that fell.</p></div></div></div>'
+          '<main class=wrapw><table class=cl><thead><tr><th>date</th><th>submitter</th><th>submission</th><th>sizes that fell</th><th>evidence</th></tr></thead><tbody>%s</tbody></table></main>') % "".join(trs)
+    site.page("changelog/index.html", "Updates: records in the covering array table", "Every submission to the covering array table with submitter, date and the sizes that fell.", cl, "Changelog")
+
+    groups = [("Every combination must appear", "A covering array needs at least v<sup>t</sup> rows, one for each combination.", ["R0"]),
+              ("Fixing a symbol", "Fix one column to one symbol and the rows left over form a smaller array, so the floor for strength t comes from the floor for t minus 1.", ["R2"]),
+              ("Published exact values", "Sizes proven optimal by exhaustive search in published work.", ["R5"]),
+              ("Kleitman and Spencer", "The classical bounds for binary arrays, exact at strength 2.", ["R3", "R7", "R8"]),
+              ("Counting set systems", "Bounds from how many columns a given number of rows can support.", ["R10", "R16", "R17"]),
+              ("Strength 2 above v squared", "Strength 2 arrays need at least v<sup>2</sup>+3 rows once k is past v+1.", ["R12"]),
+              ("No orthogonal array", "When no perfect array exists at a size, the floor rises above it.", ["R13", "R14", "R15"]),
+              ("Binary strength 3 treads", "Extra rows forced at the ends of stretches of binary strength 3.", ["R6"])]
+    byrule = collections.defaultdict(list)
+    for r in lb:
+        byrule[r[5]].append(r)
+    known = {x for _, _, rs in groups for x in rs}
+    extra = sorted(set(byrule) - known)
+    if extra:
+        groups.append(("Other", "Further published bounds.", extra))
+    rl = ""
+    for name, desc, rs in groups:
+        n = sum(len(byrule[x]) for x in rs)
+        if not n:
+            continue
+        cnt = collections.Counter()
+        for x in rs:
+            for r in byrule[x]:
+                for i in filter(None, r[7].split(";")):
+                    if i in R.REFS:
+                        cnt[i] += 1
+        refs = ", ".join('<a href="%s">%s</a>' % (site.href(1, ref_path(i)), E(R.ref_label(i))) for i, _ in cnt.most_common(3))
+        rl += '<div class=rule><div><b>%s</b><p>%s</p></div><span class=cnt><b>%s</b> floors</span><span class=refs>%s</span></div>' % (
+            name, desc, format(n, ","), refs or '<span class=mute>definition</span>')
+    tot_r = sum(len(c["rungs"]) for c in cells.values())
+    tot_o = sum(c["nopt"] for c in cells.values())
+    bd = ('<div class=pageh><div class=in><div><h1>Lower bounds</h1><p>A floor is the fewest rows any covering array could possibly have, proven by a theorem. '
+          'When the best known size reaches its floor, that size is optimal and the question is closed. The gap between the two is how much room is left.</p></div>'
+          '<div class=btns><a href="%stable/lower_bounds.csv">CSV</a></div></div></div>'
+          '<div class=stats><div><b class=num>%s</b><span>floors on record</span></div><div><b class=num>%s</b><span>optimal rungs</span></div>'
+          '<div><b class=num>%s</b><span>rungs still open</span></div><div><b class=num>%d</b><span>kinds of proof</span></div></div>'
+          '<main class=wrapw><p class=sech>How the floors are proven</p>%s'
+          '<p class=mute style="margin-top:22px;font-size:.88rem">Each rung on a t and v page shows its floor and the gap to it. The full list of floors is in the CSV.</p></main>') % (
+        RAW, format(len(lb), ","), format(tot_o, ","), format(tot_r - tot_o, ","), sum(1 for g in groups if sum(len(byrule[x]) for x in g[2])), rl)
+    site.page("bounds/index.html", "Lower bounds for covering array numbers", "Proven lower bounds on CAN(t, k, v) with the theorem and references for each.", bd, "Lower bounds")
+
+    sub = ('<div class=pageh><div class=in><div><h1>Submit</h1><p>The table grows by submission. Every array is checked exactly before it goes in, and every entry is credited to the people who built it.</p></div></div></div>'
+           '<main class=wrapw><div class=two2>'
+           '<div class=card><span class=lab>Arrays</span><h2>I have arrays</h2><p class=lead>An array that ties or beats the best known size enters the table under your name.</p>'
+           '<div class=step><span class=no>1</span><div><b>Describe them</b><span>Write t, v, k, N, how you built them and what they build on in claims.csv, and how they were built in HOW.md.</span></div></div>'
+           '<div class=step><span class=no>2</span><div><b>Open a pull request</b><span>Add the folder on GitHub in your browser. No command line needed.</span></div></div>'
+           '<div class=step><span class=no>3</span><div><b>The check runs</b><span>Every array is verified exactly and the report comes back on the pull request within minutes.</span></div></div>'
+           '<div class=cta><a href="%s/blob/main/submissions/README.md">Start a submission</a><span class=s>Large arrays go in a Zenodo deposit</span></div></div>'
+           '<div class=card><span class=lab>Papers</span><h2>I published a size</h2><p class=lead>A size from a paper needs no array. It enters as a cited row with credit to its authors.</p>'
+           '<div class=step><span class=no>1</span><div><b>Give the paper</b><span>The DOI or arXiv link, and the theorem or table the size comes from.</span></div></div>'
+           '<div class=step><span class=no>2</span><div><b>List the sizes</b><span>As CA(N; t, k, v). The same form corrects a credit that is wrong.</span></div></div>'
+           '<div class=step><span class=no>3</span><div><b>It is reviewed</b><span>The maintainer checks the paper and enters it, and the paper joins the library.</span></div></div>'
+           '<div class=cta><a href="%s/issues/new?template=published-bound.md">Report a published size</a><span class=s>Opens a form on GitHub</span></div></div></div>'
+           '<div class=strip><div><b>No GitHub account, or something else?</b><br><span class=mute>Write and it will be entered by hand.</span></div><a href="mailto:%s">%s</a></div></main>') % (REPO_URL, REPO_URL, CONTACT, CONTACT)
+    site.page("submit/index.html", "Submit covering arrays or published sizes", "How to submit covering arrays, published sizes or credit corrections to the table.", sub, "Submit")
+
+
+    nf = ('<div class=nf><div class=tumble>%s</div><h1>Not found</h1><p class=mute>This page fell out of the table. Try the <a href="/">grid</a> or the <a href="/library/">library</a>.</p></div>') % ("<i></i>" * 9)
+    nf_root = "/" if not a.preview else site.href(0, "")
+    nf_lib = "/library/" if not a.preview else site.href(0, "library/")
+    site.page("404.html", "Page not found", "Page not found.", nf.replace('href="/"', 'href="%s"' % nf_root).replace('href="/library/"', 'href="%s"' % nf_lib), "")
+    site.urls.remove("404.html")
+    open(os.path.join(a.out, "assets", "search.js"), "w").write(SEARCH_JS)
+    def nk(*parts):
+        return re.sub(r"[^a-z0-9]+", " ", " ".join(str(p) for p in parts).lower()).strip()
+    si = []
+    for (t, v), c in sorted(cells.items()):
+        si.append(["c", "t=%d v=%d" % (t, v), "%d rungs, k to %s, %d verified, %d optimal" % (len(c["rungs"]), format(c["kmax"], ","), c["nver"], c["nopt"]),
+                   cell_path(t, v), nk("t%d v%d t %d v %d" % (t, v, t, v), "strength", t, v, "symbols", "can", t, v)])
+    for sha, path in array_path.items():
+        m = man[sha]
+        t, v, k, n = int(m["t"]), int(m["v"]), int(m["k"]), int(m["N"])
+        rs = sorted(by_sha.get(sha, []), key=lambda r: r["source_id"] != "S8")
+        cr = short_credit(credit_or_source(R, rs[0])) if rs else ""
+        con = pub(R.page_text(R.construction_of(rs[0]))) if rs else ""
+        si.append(["a", ca(n, t, k, v), E(cr + ((" , " + con[:70]) if con else "")).replace(" , ", ", "), path,
+                   nk("ca", n, t, k, v, "can", t, k, v, cr, con, "t%d v%d k%d" % (t, v, k))])
+    for rid in R.REFS:
+        ref = R.REFS[rid]["reference"]
+        au, rest = split_ref(ref)
+        si.append(["p", E(title_of(rest)), E(au + " " + year_of(ref)), ref_path(rid), nk(ref, R.REFS[rid].get("doi", ""))])
+    open(os.path.join(a.out, "assets", "sindex.js"), "w").write("var SI=" + json.dumps(si, ensure_ascii=False, separators=(",", ":")) + ";")
+
+    der = os.path.join(a.repo, "docs", "derived.html")
+    if os.path.exists(der):
+        open(os.path.join(a.out, "derived.html"), "w", encoding="utf-8").write(open(der, encoding="utf-8").read())
+    llms = os.path.join(a.repo, "docs", "llms.txt")
+    if os.path.exists(llms):
+        open(os.path.join(a.out, "llms.txt"), "w").write(open(llms, encoding="utf-8").read())
+    open(os.path.join(a.out, "robots.txt"), "w").write("User-agent: *\nAllow: /\nSitemap: %ssitemap.xml\n" % BASE)
+    with open(os.path.join(a.out, "sitemap.xml"), "w") as f:
+        f.write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n')
+        for u in sorted(site.urls):
+            f.write("<url><loc>%s%s</loc><lastmod>%s</lastmod></url>\n" % (BASE, u, site.date))
+        f.write("</urlset>\n")
+    print("pages %d, cells %d, arrays %d, papers %d, commit %s, date %s" % (len(site.urls), len(cells), len(array_path), len(R.REFS), site.commit, site.date))
+    print("array status: %s" % ", ".join("%s %d" % kv for kv in sorted(stc.items())))
+
+
+if __name__ == "__main__":
+    main()

@@ -1,8 +1,16 @@
-# ca-tools: a maintained table of covering arrays
+# Covering Array Tools: the table of best known covering arrays
 
-> An open table of the best known sizes of covering arrays CA(N; t, k, v), with checked arrays, proven lower bounds, and the tools that verify them. Anyone can submit an array by pull request. Every submission is checked exactly and credited to the submitter on its row.
+> An open table of the best known sizes of covering arrays CA(N; t, k, v) and the covering array numbers CAN(t, k, v), with checked arrays, proven lower bounds, credit, constructions and published sources. Site: https://coveringarraytools.org/ . Repository: https://github.com/chrispbsmolen/ca-tools . Anyone can submit an array by pull request. Every submission is checked exactly and credited to the submitter on its row.
 
-The table covers strengths 2 to 6, at most 25 symbols and at most 100,000 columns. Each row gives t, v, k, the size N, its tier (VERIFIED with a stored, checked array, or CITED from the literature with no array here), the source and the credit. Proven lower bounds are kept per (t, v) and k range, each with the theorem that proves it.
+The table covers strengths 2 to 6 with at most 25 symbols, binary arrays at strengths 7 to 10, and at most 100,000 columns. Each row gives t, v, k, the size N, its tier (VERIFIED with a checked array, or CITED from the literature with no array here), the source and the credit. Proven lower bounds are kept per (t, v) and k range, each with the theorem that proves it.
+
+## Read the table
+
+- [coveringarraytools.org](https://coveringarraytools.org/): the table, one cell per (t, v), and a size lookup.
+- One page per cell: https://coveringarraytools.org/t{t}/v{v}/ , for example [t3/v3](https://coveringarraytools.org/t3/v3/).
+- One JSON and one CSV file per cell, every size step with N, floor, status, credit, construction and the sha256 of its array: https://coveringarraytools.org/t{t}/v{v}.json and https://coveringarraytools.org/t{t}/v{v}.csv , for example [t3/v3.json](https://coveringarraytools.org/t3/v3.json).
+- One page per array: https://coveringarraytools.org/ca/{N}/{t}/{k}/{v}/ , with the download link and how to check it.
+- [For AI](https://coveringarraytools.org/for-ai/): how to read and cite the data.
 
 ## Open targets
 
@@ -21,8 +29,8 @@ The table covers strengths 2 to 6, at most 25 symbols and at most 100,000 column
 
 - [table/ca_table.csv](https://raw.githubusercontent.com/chrispbsmolen/ca-tools/main/table/ca_table.csv): every row of the table.
 - [table/lower_bounds.csv](https://raw.githubusercontent.com/chrispbsmolen/ca-tools/main/table/lower_bounds.csv): proven lower bounds with theorem and reference.
-- [table/arrays/](https://github.com/chrispbsmolen/ca-tools/tree/main/table/arrays): the stored arrays, one per file, whitespace-separated symbols, one row per line.
-- [Table page](https://chrispbsmolen.github.io/ca-tools/)
+- [table/MANIFEST.csv](https://raw.githubusercontent.com/chrispbsmolen/ca-tools/main/table/MANIFEST.csv): every array stored in the repository, with its file name in table/arrays/ (files over 1 MiB are gzip-compressed, .txt.gz), t, v, k, N and the sha256 of its canonical form. Find arrays here, not from a folder listing.
+- [table/EXTERNAL.csv](https://raw.githubusercontent.com/chrispbsmolen/ca-tools/main/table/EXTERNAL.csv): arrays kept in a public deposit (Zenodo), with location and sha256.
 
 ## Checking an array
 

@@ -27,7 +27,7 @@ import credit_text  # noqa: E402  (the one reader of a row's credit)
 REPO_URL = "https://github.com/chrispbsmolen/ca-tools"
 RAW_CSV = "https://raw.githubusercontent.com/chrispbsmolen/ca-tools/main/table/ca_table.csv"
 
-PAGE_URL = "https://chrispbsmolen.github.io/ca-tools/"
+PAGE_URL = "https://coveringarraytools.org/"
 DOI_ALL = "10.5281/zenodo.24168008"
 PAGE_TITLE = "Covering Array Tables: best known covering arrays, by Christopher Smolen"
 PAGE_DESC = ("Best known covering array sizes for strengths 2 to 6, and for binary arrays at strengths 7 to 10, "

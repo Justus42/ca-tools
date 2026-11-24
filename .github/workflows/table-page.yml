@@ -8,7 +8,8 @@
 # picks the submission up. Then regenerate table/derived.csv (tools/derive_table.py), the frame file
 # table/ca_frame.csv and the gzipped copy table/ca_table.csv.gz (tools/build_frame.py), the R data file and the
 # generated counts in table/README.md from table/ca_table.csv, rebuild the
-# page docs/index.html (served by GitHub Pages from docs/ on main), run the
+# page docs/index.html (kept in the repository; the public site at coveringarraytools.org is built and
+# deployed by site.yml after this workflow succeeds), run the
 # consistency checks and the self-test, and commit what changed. Runs never
 # overlap, and each starts from the newest main, so submissions are added
 # one at a time and their rows never collide. A submission that does not
