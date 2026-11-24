@@ -23,8 +23,10 @@ line in the change log at the end.
 - Tier: the evidence class of a row (section 3). This document says "tier", never "status". Two
   files have their own column named status with other meanings: in `table/MANIFEST.csv` it compares
   an array with the table at entry (equals_best, exceeds_snapshot, above_snapshot, above_best,
-  screened), in `table/EXTERNAL.csv` it is verified when a VERIFIED row carries the deposit's hash.
-  The page's column headed status shows the MANIFEST status and will be relabelled.
+  screened) and is not updated when a later array beats it, in `table/EXTERNAL.csv` it is verified
+  when a VERIFIED row carries the deposit's hash.
+  The page does not show the MANIFEST status. The column headed status in its submission tables shows
+  the row's tier (verified or screened).
 - Provenance class: the column `source_id` (S1 Colbourn snapshot, S4 NIST covering array library,
   S5 Dwyer's CA_Database, S6 data objects of the CAs package, S7 literature and submissions, S8
   arrays built in this project). S2 and S3 are defined in the README and have no rows. This column

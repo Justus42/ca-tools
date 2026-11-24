@@ -49,7 +49,11 @@ the array files and these documents agree.
   (below). An array that comes through the submission check above the
   best known size at entry is stored with status `above_best`, and one
   that was screened rather than verified in full with status
-  `screened`. File names are `CA_N_t_k_v.txt`, with a hash suffix
+  `screened`. The status records the comparison at entry and is not
+  updated when a smaller array is entered later, so an array entered as
+  `equals_best` may since have been beaten. The current best at any
+  point is the stair-step (`ca_frame.csv` and the page).
+  File names are `CA_N_t_k_v.txt`, with a hash suffix
   where two distinct arrays share parameters. An array that came
   through the submission check and is larger than 1 MiB as text (since
   2026-11-01; before that, larger than 50 MiB) is stored compressed with
