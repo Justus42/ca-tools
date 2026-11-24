@@ -8,6 +8,7 @@ import json
 import os
 import re
 import sys
+import unicodedata
 
 E = html.escape
 BASE = "https://coveringarraytools.org/"
@@ -18,7 +19,7 @@ CONTACT = "contact@coveringarraytools.org"
 SNAPSHOT_DATE = "2026-08-23"
 SERIF = "Charter,'Bitstream Charter','Iowan Old Style',Georgia,serif"
 NAV = [("Table", ""), ("Library", "library/"), ("Learn", "learn/"), ("Updates", "changelog/"),
-       ("Lower bounds", "bounds/")]
+       ("Lower bounds", "bounds/"), ("Contributors", "contributors/")]
 
 CSS = """
 :root{--side:56px;color-scheme:light;--fg:#1d1d1f;--bg:#fdfdfc;--mute:#5f6368;--line:#dcdcd8;--ver:#0b6e3a;--soft:#f2f2ee;--acc:#1f4e8c;--opt:#5b2a86}
@@ -33,7 +34,7 @@ a{color:inherit}.mute{color:var(--mute)}.num{font-variant-numeric:tabular-nums}.
 .top .gh{color:var(--mute);text-decoration:none}
 .crumb{font-size:.82rem;color:var(--mute);margin:0 0 6px}.crumb a{text-decoration:none}
 .foot{border-top:1px solid var(--line);margin-top:48px}
-.foot .in{max-width:88rem;margin:0 auto;padding:18px var(--side);font-size:.8rem;color:var(--mute);display:flex;gap:24px;flex-wrap:wrap}
+.foot .in{max-width:88rem;margin:0 auto;padding:18px var(--side);font-size:.8rem;color:var(--mute);display:flex;gap:6px 18px;flex-wrap:wrap}
 .f4{background:#1f6b45;color:#fff}.f3{background:#5fa77d;color:#1d1d1f}.f2{background:#b9dcc6}.f1{background:#e4efe7}.f0{background:#f1f1ec}
 .wrapw{max-width:88rem;margin:0 auto;padding:26px var(--side)}
 .key{display:flex;gap:18px;font-size:.78rem;color:var(--mute);margin-top:14px;align-items:center;flex-wrap:wrap}.key i{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:6px}
@@ -161,7 +162,25 @@ table.lg tbody tr:hover td,.cl tbody tr:hover td{background:#f3f8f4}
 :focus-visible{outline:3px solid #1f6b45;outline-offset:2px;border-radius:4px}
 .f4:focus-visible,.f3:focus-visible,.sbm:focus-visible,.cta a:focus-visible,.go:focus-visible,.dlb:focus-visible{outline-color:#1d1d1f}
 .panel{visibility:hidden}.panel.open{visibility:visible}.panel .big:focus{outline:none}
-@media (prefers-reduced-motion:reduce){*,*:before,*:after{transition:none !important;animation:none !important;scroll-behavior:auto !important}.el:hover,.pg:hover,.fl4:hover,.ftl:hover,.lv div:hover,.statc div:hover,.bg button:hover{transform:none !important}.tumble i{transform:none !important}}
+.chips{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 16px}.chips .l{color:var(--mute);margin-right:6px;font-size:.9rem}
+.chips button{font:inherit;font-size:.9rem;padding:7px 15px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--fg);cursor:pointer}.chips button[aria-pressed=true]{background:var(--fg);color:#fff;border-color:var(--fg)}
+.az{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 20px}.az a,.az span{min-width:30px;height:30px;display:inline-flex;align-items:center;justify-content:center;border-radius:6px;font-size:.88rem}
+.az a{border:1px solid var(--line);background:#fff;text-decoration:none}.az a:hover,.az a:focus-visible{border-color:#1f6b45;color:#1f6b45}.az span{color:#b5b5b0}
+.pp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.pp .pc[hidden]{display:none}
+.pc{display:flex;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;text-decoration:none;color:var(--fg);scroll-margin-top:16px}
+.pc:hover,.pc:focus-visible{border-color:#1f6b45;transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.06)}
+.pc i,.ph i{flex:none;border-radius:50%;background:#b9dcc6;display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:700}
+.pc i{width:46px;height:46px;font-size:.95rem}.pc b{display:block;font-size:1.02rem}.pc span span{display:block;color:var(--mute);font-size:.86rem;margin-top:3px;line-height:1.35}
+.ph{display:flex;gap:22px;align-items:center}.ph i{width:76px;height:76px;font-size:1.5rem}
+.two3{display:grid;grid-template-columns:1fr 1fr;gap:20px 48px}.two3 h2{font-size:1.1rem;margin:0 0 10px}.two3 ul{list-style:none;margin:0 0 26px;padding:0}
+.two3 li{display:flex;gap:12px;align-items:baseline;border-bottom:1px solid var(--line);padding:8px 0}.two3 ul.cnt{display:grid;grid-template-columns:1fr 1fr;column-gap:28px}.cnt li{justify-content:space-between}.cnt .num{color:var(--mute);font-size:.88rem}
+.ent .d{color:var(--mute);font-size:.82rem;font-variant-numeric:tabular-nums;flex:none}.ent .tag{margin-left:auto}
+.pap li{flex-direction:column;gap:2px}.pap span{color:var(--mute);font-size:.85rem}
+.ab{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:22px 40px}.ab section{background:#fff;border:1px solid var(--line);border-radius:12px;padding:22px 24px}.ab h2{font-size:1.15rem;margin:0 0 8px}.ab p{margin:0;line-height:1.55}
+@media (max-width:1100px){.pp{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:760px){.two3,.ab{grid-template-columns:1fr}}
+@media (max-width:560px){.pp{grid-template-columns:1fr}.ph{gap:14px}.ph i{width:56px;height:56px;font-size:1.1rem}}
+@media (prefers-reduced-motion:reduce){*,*:before,*:after{transition:none !important;animation:none !important;scroll-behavior:auto !important}.el:hover,.pg:hover,.pc:hover,.fl4:hover,.ftl:hover,.lv div:hover,.statc div:hover,.bg button:hover{transform:none !important}.tumble i{transform:none !important}}
 .top .in{height:64px;gap:26px}.top b,.top b a,.top nav a,.top .ai,.top .sbm,.srch input{font-size:16px;line-height:1}
 .top b a{font-size:18px;font-weight:700}.top nav{gap:22px}.brand{gap:12px}.logo{width:66px;height:24px}
 .top .sbm{height:38px;box-sizing:border-box;display:inline-flex;align-items:center;padding:0 18px;border:1px solid var(--fg);border-radius:6px}
@@ -252,12 +271,12 @@ class Site:
                '<link rel="stylesheet" href="%s"><link rel="alternate" type="text/plain" title="llms.txt" href="%s">%s</head><body><a class=skip href="#main">Skip to content</a>'
                '<header class=top><div class=in><b><a class=brand href="%s"><svg class=logo viewBox="0 0 61 22" aria-hidden="true"><rect x="1.0" y="3.0" width="8" height="8" rx="1.6" fill="#b9dcc6" style="transform:rotate(0deg);animation-name:lg0"/><rect x="11.0" y="6.0" width="8" height="8" rx="1.6" fill="#5fa77d" style="transform:rotate(14deg);animation-name:lg1"/><rect x="21.0" y="11.0" width="8" height="8" rx="1.6" fill="#1f6b45" style="transform:rotate(-22deg);animation-name:lg2"/><rect x="31.0" y="6.0" width="8" height="8" rx="1.6" fill="#5fa77d" style="transform:rotate(14deg);animation-name:lg3"/><rect x="41.0" y="3.0" width="8" height="8" rx="1.6" fill="#b9dcc6" style="transform:rotate(0deg);animation-name:lg4"/><rect x="51.0" y="11.0" width="8" height="8" rx="1.6" fill="#1f6b45" style="transform:rotate(-22deg);animation-name:lg5"/></svg><span>Covering Array Tools</span></a></b><nav>%s</nav><span class=sp></span>'
                '<a class="ai%s" href="%s">For AI</a><a class="sbm%s" href="%s">Submit</a>'
-               '<div class=srch><button type=button class=qb aria-label="Search" aria-expanded="false" aria-controls="q"><svg width="17" height="17" viewBox="0 0 17 17" aria-hidden="true"><circle cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M11.2 11.2l4.3 4.3" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button><input id=q type=search placeholder="Search sizes, arrays, papers" autocomplete=off aria-label="Search" role=combobox aria-autocomplete=list aria-controls=qr aria-expanded=false><div id=qr class=qr role=listbox aria-label="Search results"></div><span id=qn class=vh aria-live=polite></span></div></div></header><div id=main tabindex=-1>%s</div>'
+               '<div class=srch><button type=button class=qb aria-label="Search" aria-expanded="false" aria-controls="q"><svg width="17" height="17" viewBox="0 0 17 17" aria-hidden="true"><circle cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M11.2 11.2l4.3 4.3" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button><input id=q type=search placeholder="Search sizes, arrays, papers, people" autocomplete=off aria-label="Search" role=combobox aria-autocomplete=list aria-controls=qr aria-expanded=false><div id=qr class=qr role=listbox aria-label="Search results"></div><span id=qn class=vh aria-live=polite></span></div></div></header><div id=main tabindex=-1>%s</div>'
                '<div class=foot><div class=in><span><a href="%s">Source data on GitHub</a>: every array, the table files and their full history. This build: commit <span class=mono>%s</span>, %s</span>'
-               '<span>Cite: DOI <a href="https://doi.org/%s">%s</a></span><span>Data CC BY 4.0</span><span><a href="mailto:%s">%s</a></span></div></div>'
+               '<span>Cite: DOI <a href="https://doi.org/%s">%s</a></span><span>Data CC BY 4.0</span><span><a href="%s">About</a></span><span><a href="mailto:%s">%s</a></span></div></div>'
                '<script src="%s" data-root="%s" data-preview="%s" defer></script>%s%s</body></html>') % (
             E(title), E(desc), canon, h("assets/site.css"), h("llms.txt"), ld, h(""), nav, " on" if active == "For AI" else "", h("for-ai/"), " on" if active == "Submit" else "", h("submit/"), body,
-            REPO_URL, self.commit, self.date, DOI, DOI, CONTACT, CONTACT, h("assets/search.js"), root, "1" if self.preview else "", script, "" if self.preview else COUNTER)
+            REPO_URL, self.commit, self.date, DOI, DOI, h("about/"), CONTACT, CONTACT, h("assets/search.js"), root, "1" if self.preview else "", script, "" if self.preview else COUNTER)
         self.write(path, doc)
 
 
@@ -265,13 +284,13 @@ SEARCH_JS = r"""(function(){var me=document.currentScript,root=me.getAttribute('
 function load(cb){if(loaded){cb();return}var s=document.createElement('script');s.src=root+'assets/sindex.js';s.onload=function(){loaded=true;cb()};document.head.appendChild(s)}
 function norm(x){return x.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
 function url(p){if(pv&&(p===''||p.slice(-1)=='/'))p+='index.html';return root+p}
-var G={x:'Size',c:'Cells',a:'Arrays',p:'Papers'};
+var G={x:'Size',c:'Cells',a:'Arrays',p:'Papers',u:'People'};
 function close(){box.classList.remove('on');q.setAttribute('aria-expanded','false');q.removeAttribute('aria-activedescendant')}
 function sizes(raw,res){var m=raw.match(/^\s*can\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*$/i),c,e,i,t,k,vv,n;if(m){t=+m[1];k=+m[2];vv=+m[3]}else{m=raw.match(/^\s*ca\s*\(\s*(\d+)\s*;\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*$/i);if(!m)return false;n=+m[1];t=+m[2];k=+m[3];vv=+m[4];for(i=0;i<SI.length;i++){e=SI[i];if(e[0]=='a'&&e[3].indexOf('ca/'+n+'/'+t+'/'+k+'/'+vv+'/')==0)res.x.push([0,e])}}c='t'+t+'/v'+vv+'/';for(i=0;i<SI.length;i++){e=SI[i];if(e[0]=='c'&&e[3]==c){res.x.push([1,['x','CAN('+t+', '+k+', '+vv+')','the row for k = '+k+' on the t='+t+' v='+vv+' page',c,'',k]]);break}}return res.x.length>0}
-function run(){var v=norm(q.value);if(!v){close();return}var tk=v.split(' '),res={x:[],c:[],a:[],p:[]};if(!sizes(q.value,res)){
+function run(){var v=norm(q.value);if(!v){close();return}var tk=v.split(' '),res={x:[],c:[],a:[],p:[],u:[]};if(!sizes(q.value,res)){
 for(var i=0;i<SI.length;i++){var e=SI[i],k=e[4],ok=true;for(var j=0;j<tk.length;j++){var t=tk[j];if(/^\d+$/.test(t)){if((' '+k+' ').indexOf(' '+t+' ')<0){ok=false;break}}else if(k.indexOf(t)<0){ok=false;break}}
 if(ok){var sc=(k.indexOf(v)>=0?0:1)*1000+e[1].length;res[e[0]].push([sc,e])}}}
-var h='',n=0;items=[];['x','c','a','p'].forEach(function(g){var r=res[g].sort(function(x,y){return x[0]-y[0]});if(!r.length)return;h+='<div class=g role=presentation>'+G[g]+(r.length>6?' ('+r.length+')':'')+'</div>';
+var h='',n=0;items=[];['x','c','u','a','p'].forEach(function(g){var r=res[g].sort(function(x,y){return x[0]-y[0]});if(!r.length)return;h+='<div class=g role=presentation>'+G[g]+(r.length>6?' ('+r.length+')':'')+'</div>';
 r.slice(0,6).forEach(function(x){var e=x[1],u=url(e[3])+(e[5]?'#k='+e[5]:'');h+='<a href="'+u+'" data-i='+n+' id=qo'+n+' role=option aria-selected=false><b>'+e[1]+'</b><span>'+e[2]+'</span></a>';items.push(u);n++})});
 box.innerHTML=n?h:'<div class=none>Nothing found for '+q.value.replace(/</g,'&lt;')+'</div>';box.classList.add('on');q.setAttribute('aria-expanded','true');act=n?0:-1;mark();document.getElementById('qn').textContent=n?n+(n==1?' result':' results'):'Nothing found'}
 function mark(){var a=box.querySelectorAll('a');for(var i=0;i<a.length;i++){a[i].classList.toggle('act',i==act);a[i].setAttribute('aria-selected',i==act?'true':'false')}if(act>=0&&a[act])q.setAttribute('aria-activedescendant',a[act].id);else q.removeAttribute('aria-activedescendant')}
@@ -322,11 +341,52 @@ def git_commit(repo):
 
 def split_ref(r):
     m = re.match(r"^((?:[^,]+, )*?[^,]+ and [^,]+?), (.*)$", r)
-    if m and all(re.match(r"^(?:[A-Z][a-z]*\.?[ -]?)*[A-Z][\w'-]+(?: II| Jr\.?)?$", p.strip()) for p in re.split(r", | and ", m.group(1))):
+    if m and all(re.match(r"^(?:[A-Z][a-z]*\.?[ -]?)*[A-Z][\w'-]+(?: II| Jr\.?)?$", fold(p.strip())) for p in re.split(r", | and ", m.group(1))):
         return m.group(1), m.group(2)
     if ", " in r:
         return tuple(r.split(", ", 1))
     return "", r
+
+
+def fold(s):
+    return "".join(c for c in unicodedata.normalize("NFKD", s) if not unicodedata.combining(c))
+
+
+NAME_ORDER = {"Bai XunDi": ("Bai", "XunDi"), "Tran Van Trung": ("Tran Van Trung", "")}
+
+
+def name_parts(n):
+    n = re.sub(r"\s+", " ", n).strip()
+    if n in NAME_ORDER:
+        return NAME_ORDER[n]
+    tk = re.sub(r" (II|Jr\.?)$", "", n).split(" ")
+    dot = [i for i, x in enumerate(tk) if x.endswith(".")]
+    if dot:
+        return " ".join(tk[dot[-1] + 1:]), " ".join(tk[:dot[-1] + 1])
+    if len(tk) == 1:
+        return tk[0], ""
+    return tk[-1], " ".join(tk[:-1])
+
+
+def person_key(sur, given):
+    return fold(sur).lower(), fold(given)[:1].lower()
+
+
+def outside_parens(s):
+    o, d = [], 0
+    for ch in s:
+        if ch == "(":
+            d += 1
+        elif ch == ")":
+            d = max(0, d - 1)
+        elif not d:
+            o.append(ch)
+    return "".join(o)
+
+
+def credit_names(c):
+    c = re.sub(r"\b(19|20)\d\d\b", "", outside_parens(pub(c)))
+    return [x.strip() for x in re.split(r",|\band\b|\bwith\b|\bor\b", c) if x.strip() and not re.search(r"\d", x)]
 
 
 def title_of(rest):
@@ -477,7 +537,7 @@ def main():
             rungs.append(dict(N=n, k0=k0, k1=k1, floor=f0, floor_k_to=f1, floor_row=f, closed=of == k0, opt_from=of,
                               verified=bool(ver), credit=credit_or_source(R, best), construction=pub(R.page_text(R.construction_of(best) or "")),
                               builds_on=[i for i in (best.get("builds_on") or "").split(";") if i in R.REFS], sha=sha,
-                              entered=best["entered"], new=all(e["entered"] > SNAPSHOT_DATE for e in ev)))
+                              entered=best["entered"], row=best, new=all(e["entered"] > SNAPSHOT_DATE for e in ev)))
         cells[(t, v)] = dict(t=t, v=v, rungs=rungs, kmax=max(r["k"] for r in rs), kmin=min(r["k"] for r in rs), last=max(r["entered"] for r in rs),
                              nver=sum(1 for x in rungs if x["verified"]), nopt=sum(1 for x in rungs if x["opt_from"] is not None),
                              nnew=sum(1 for x in rungs if x["new"]))
@@ -748,6 +808,165 @@ def main():
            '<main class=wrapw><div class=lib>%s</div></main>') % "".join(cards)
     site.page("library/index.html", "Library: the papers behind the covering array table", "Every paper the covering array table rests on, with the arrays and floors built on each.", lib, "Library")
 
+    people = {}
+
+    def person(key, shown):
+        p = people.get(key)
+        if p is None:
+            p = people[key] = dict(key=key, names=set(), rows=[], held=[], papers=[], floors=set())
+        p["names"].add(shown)
+        return p
+
+    for rid in R.REFS:
+        au, _ = split_ref(R.REFS[rid]["reference"])
+        for n in filter(None, (x.strip() for x in re.split(r", | and ", au))):
+            p = person(person_key(*name_parts(n)), n)
+            if rid not in p["papers"]:
+                p["papers"].append(rid)
+    by_sur = collections.defaultdict(set)
+
+    def index_names():
+        by_sur.clear()
+        for k in people:
+            by_sur[k[0]].add(k)
+
+    def resolve(n):
+        f = fold(n).lower()
+        if len(by_sur.get(f, ())) == 1:
+            return people[next(iter(by_sur[f]))]
+        sur, given = name_parts(n)
+        k = person_key(sur, given)
+        if not given and len(by_sur.get(k[0], ())) == 1:
+            return people[next(iter(by_sur[k[0]]))]
+        p = person(k, n)
+        by_sur[k[0]].add(k)
+        return p
+
+    index_names()
+    credited = collections.defaultdict(list)
+    for r in rows:
+        c = R.credit_of(r)
+        if c and r["tier"] in ("VERIFIED", "CITED"):
+            for n in credit_names(c):
+                credited[id(resolve(n))].append(r)
+    for p in people.values():
+        seen = set()
+        p["rows"] = [r for r in credited.get(id(p), []) if not (id(r) in seen or seen.add(id(r)))]
+    for c in cells.values():
+        for x in c["rungs"]:
+            cr = R.credit_of(x["row"])
+            if cr:
+                for p in {id(resolve(n)): resolve(n) for n in credit_names(cr)}.values():
+                    p["held"].append(x)
+    for p in people.values():
+        for rid in p["papers"]:
+            p["floors"].update(id(r) for r in flo[rid])
+
+    def shown_name(p):
+        return max(p["names"], key=lambda n: (len(re.sub(r"[^A-Za-z]", "", name_parts(n)[1])), sum(1 for ch in n if ord(ch) > 127), len(n)))
+
+    ppl = [p for p in people.values() if p["rows"] or p["papers"]]
+    for p in ppl:
+        p["name"] = shown_name(p)
+        p["sur"], p["given"] = name_parts(p["name"])
+        p["ver"] = sum(1 for r in p["rows"] if r["tier"] == "VERIFIED")
+        p["cit"] = len(p["rows"]) - p["ver"]
+        p["built"] = len({id(r) for rid in p["papers"] for r in use[rid]})
+        p["cells"] = sorted({(x["row"]["t"], x["row"]["v"]) for x in p["held"]} | {(r["t"], r["v"]) for r in p["rows"]})
+    ppl.sort(key=lambda p: (fold(p["sur"]).lower(), fold(p["given"]).lower()))
+    slugs = collections.Counter(re.sub(r"[^a-z0-9]+", "-", fold(p["sur"]).lower()).strip("-") for p in ppl)
+    for p in ppl:
+        b = re.sub(r"[^a-z0-9]+", "-", fold(p["sur"]).lower()).strip("-")
+        p["slug"] = b if slugs[b] == 1 else b + "-" + re.sub(r"[^a-z]", "", fold(p["given"]).lower())[:3]
+        p["path"] = "contributors/%s/" % p["slug"]
+
+    def plural(n, one, many=None):
+        return "%s %s" % (format(n, ","), one if n == 1 else (many or one + "s"))
+
+    def summary(p):
+        return ", ".join(s for s in [plural(p["ver"], "array") if p["ver"] else "", plural(p["cit"], "published size") if p["cit"] else "",
+                                     plural(len(p["papers"]), "paper") if p["papers"] else "", plural(len(p["floors"]), "floor") if p["floors"] else ""] if s)
+
+    def initials(p):
+        w = [x for x in re.split(r"[\s.-]+", p["name"]) if x[:1].isalpha()]
+        return (w[0][0] + w[-1][0]).upper() if len(w) > 1 else w[0][0].upper()
+
+    h1 = lambda q: site.href(1, q)
+    letters = {}
+    cards = []
+    for p in ppl:
+        L = fold(p["sur"])[0].upper()
+        kinds = " ".join(k for k, n in (("a", p["ver"]), ("s", p["cit"]), ("p", len(p["papers"])), ("f", len(p["floors"]))) if n)
+        cards.append('<a class=pc href="%s" data-k="%s"%s><i aria-hidden="true">%s</i><span><b>%s</b><span>%s</span></span></a>' % (
+            h1(p["path"]), kinds, (' id="l-%s"' % L.lower()) if L not in letters else "", initials(p), E(p["name"]), summary(p)))
+        letters.setdefault(L, p)
+    az = "".join(('<a href="#l-%s">%s</a>' % (L.lower(), L)) if L in letters else '<span aria-hidden="true">%s</span>' % L for L in "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+    chips = "".join('<button type=button data-f="%s" aria-pressed="%s">%s</button>' % (f, "true" if not f else "false", n) for f, n in
+                    (("", "Everyone"), ("a", "Arrays"), ("s", "Published sizes"), ("p", "Papers"), ("f", "Floors")))
+    body = ('<div class=pageh><div class=in><div><h1>Contributors</h1><p>Everyone whose arrays, published sizes, papers or proofs the table rests on, with what each contributed. '
+            'Built from the table\'s own credits and its library; nobody signs up and nobody is ranked. %d people.</p></div></div></div>'
+            '<main class=wrapw><div class=chips role=group aria-label="Show"><span class=l>Show</span>%s</div><nav class=az aria-label="Jump to letter">%s</nav>'
+            '<div class=pp id=pp>%s</div><p class=mute id=pn aria-live=polite></p></main>') % (len(ppl), chips, az, "".join(cards))
+    pscript = ("<script>(function(){var bs=document.querySelectorAll('.chips button'),cs=document.querySelectorAll('#pp .pc'),pn=document.getElementById('pn');"
+               "bs.forEach(function(b){b.addEventListener('click',function(){var f=b.getAttribute('data-f'),n=0;bs.forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});"
+               "cs.forEach(function(c){var on=!f||(' '+c.getAttribute('data-k')+' ').indexOf(' '+f+' ')>=0;c.hidden=!on;if(on)n++});pn.textContent=f?n+(n==1?' person':' people'):''})})})()</script>")
+    site.page("contributors/index.html", "Contributors to the covering array table", "Everyone whose arrays, published sizes, papers or proofs the covering array table rests on, with what each contributed.", body, "Contributors", None, pscript)
+
+    for p in ppl:
+        h = lambda q: site.href(2, q)
+        st = [(p["ver"], "array", "arrays"), (p["cit"], "published size", "published sizes"), (len(p["held"]), "best known size held", "best known sizes held"),
+              (len(p["papers"]), "paper in the library", "papers in the library"), (p["built"], "entry builds on their papers", "entries build on their papers"),
+              (len(p["floors"]), "floor from their papers", "floors from their papers")]
+        stats = "".join('<div><b class=num>%s</b><span>%s</span></div>' % (format(n, ","), one if n == 1 else many) for n, one, many in st if n)
+        held = collections.Counter((x["row"]["t"], x["row"]["v"]) for x in p["held"])
+        left = ""
+        if held:
+            left += '<h2>Best known sizes held</h2><ul class=cnt>%s</ul>' % "".join(
+                '<li><a href="%s">t=%d v=%d</a><span class=num>%s</span></li>' % (h(cell_path(t, v)), t, v, plural(n, "size")) for (t, v), n in sorted(held.items()))
+        if p["rows"]:
+            rs = sorted(p["rows"], key=lambda r: (r["entered"], r["t"], r["v"], r["k"]), reverse=True)
+            items = "".join('<li><span class=d>%s</span><a href="%s">%s</a><span class="tag %s">%s</span></li>' % (
+                r["entered"], h(array_path[r["array_sha256"]]) if r["array_sha256"] in array_path else h(row_path(r["t"], r["v"], r["k"])),
+                ca(r["N"], r["t"], r["k"], r["v"]), "ver" if r["tier"] == "VERIFIED" else "lit", "verified" if r["tier"] == "VERIFIED" else "cited") for r in rs[:15])
+            more = ('<p class=mute>%s more in the <a href="%s">table data</a>.</p>' % (format(len(rs) - 15, ","), RAW + "table/ca_table.csv")) if len(rs) > 15 else ""
+            left += '<h2>Latest entries</h2><ul class=ent>%s</ul>%s' % (items, more)
+        right = ""
+        if p["papers"]:
+            pl = []
+            for rid in sorted(p["papers"], key=lambda i: (-len(use[i]), -len(flo[i]), year_of(R.REFS[i]["reference"]))):
+                au, rest = split_ref(R.REFS[rid]["reference"])
+                what = ", ".join(s for s in [plural(len(use[rid]), "entry builds", "entries build") + " on it" if use[rid] else "",
+                                             plural(len(flo[rid]), "floor") if flo[rid] else ""] if s)
+                pl.append('<li><a href="%s">%s</a><span>%s%s</span></li>' % (h(ref_path(rid)), E(title_of(rest)), year_of(R.REFS[rid]["reference"]), (", " + what) if what else ""))
+            right += '<h2>Papers in the library</h2><ul class=pap>%s</ul>' % "".join(pl)
+        if not left and not right:
+            continue
+        lede = []
+        if p["rows"]:
+            lede.append("Credited on %s in the table" % plural(len(p["rows"]), "entry", "entries"))
+        if p["papers"]:
+            lede.append(("author of " if lede else "Author of ") + plural(len(p["papers"]), "paper") + " in the library")
+        pbody = ('<div class=pageh><div class=in><div class=ph><i aria-hidden="true">%s</i><div><p class=crumb><a href="%s">Contributors</a> / %s</p><h1>%s</h1><p>%s.</p></div></div></div></div>'
+                 '<div class=stats>%s</div><main class=wrapw><div class=two3><div>%s</div><div>%s</div></div></main>') % (
+            initials(p), h("contributors/"), E(p["sur"]), E(p["name"]), " and ".join(lede), stats, left, right)
+        site.page(p["path"] + "index.html", "%s: contributor to the covering array table" % p["name"],
+                  "%s in the covering array table: %s." % (p["name"], summary(p) or "credited entries"), pbody, "Contributors")
+
+    about = ('<div class=pageh><div class=in><div><h1>About</h1><p>Covering Array Tools is an open table of the best known covering arrays: every size, the proof of its floor, who built it, and the checked array to download.</p></div></div></div>'
+             '<main class=wrapw><div class=ab>'
+             '<section><h2>Who keeps it</h2><p>Kept by Christopher Smolen (<a href="https://orcid.org/0009-0002-9537-7961">ORCID</a>), first released on %s. It starts from Charles J. Colbourn\'s covering array tables as of November 2024, '
+             'preserved in Ulrike Groemping\'s <a href="https://github.com/ugroempi/CAs">CAs R package</a>, and adds every array submitted and checked here and published bounds from the literature.</p></section>'
+             '<section><h2>How arrays are checked</h2><p>Every array is checked before it is entered: every set of t columns must show every combination of symbols. A size marked verified has an array checked exactly. '
+             'Arrays too large to check in one run are split into parts, and the parts are shown together to cover every set of columns once. A size marked cited is a published bound with no array here yet.</p></section>'
+             '<section><h2>How it changes</h2><p>Anyone can submit an array, a published size or a correction to a credit. The checks run in public on GitHub, and the site rebuilds itself after every change. '
+             'The literature is checked every month. Each submission is listed on <a href="%s">Updates</a>.</p></section>'
+             '<section><h2>Licence and citation</h2><p>The data compiled here is <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> and the code is MIT. Data from other sources keeps its own terms, and each row names its source. '
+             'Cite the table with <a href="https://doi.org/%s">doi:%s</a>, and cite the authors of the rows you use.</p></section>'
+             '<section><h2>Contact</h2><p><a href="mailto:%s">%s</a> for corrections, missing papers or anything else. A problem with a row can also be raised as a <a href="%s/issues">GitHub issue</a>.</p></section>'
+             '<section><h2>Credit</h2><p>Arrays come from many builders and papers. Each row names who built it or where it comes from, and <a href="%s">Contributors</a> gathers everyone named, with what each contributed.</p></section>'
+             '</div></main>') % (datetime.date.fromisoformat(SNAPSHOT_DATE).strftime("%-d %B %Y"), site.href(1, "changelog/"), DOI, DOI, CONTACT, CONTACT, REPO_URL, site.href(1, "contributors/"))
+    site.page("about/index.html", "About Covering Array Tools", "Who keeps the covering array table, how arrays are checked, how it changes, and how to cite it.", about, "About")
+
     board_rows = ["000", "011", "101", "110"]
     btns = "".join('<button class="%s" data-r=%d data-c=%d aria-label="row %d, column %d: %s">%s</button>' % ("o" if ch == "1" else "z", i, j, i + 1, j + 1, ch, ch) for i, r in enumerate(board_rows) for j, ch in enumerate(r))
     gl = [("t, strength", "How many columns at a time must show every combination."), ("v, symbols", "How many values a cell can take. On and off is v = 2."),
@@ -850,7 +1069,7 @@ def main():
         trs.append('<tr><td class=d>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>' % (p["date"][:10], E(who.split(" (")[0]), '<a href="%s/tree/main/submissions/%s">files</a>' % (REPO_URL, E(p["slug"])), "<br>".join(parts) or '<span class=mute>recorded</span>', ev))
     cl = ('<div class=pageh><div class=in><div><h1>Updates</h1><p>Every submission to the table, newest first, with who submitted it, when, and the sizes that fell.</p></div></div></div>'
           '<main class=wrapw><table class=cl><thead><tr><th>date</th><th>submitter</th><th>submission</th><th>sizes that fell</th><th>evidence</th></tr></thead><tbody>%s</tbody></table></main>') % "".join(trs)
-    site.page("changelog/index.html", "Updates: records in the covering array table", "Every submission to the covering array table with submitter, date and the sizes that fell.", cl, "Changelog")
+    site.page("changelog/index.html", "Updates: records in the covering array table", "Every submission to the covering array table with submitter, date and the sizes that fell.", cl, "Updates")
 
     groups = [("Every combination must appear", "A covering array needs at least v<sup>t</sup> rows, one for each combination.", ["R0"]),
               ("Fixing a symbol", "Fix one column to one symbol and the rows left over form a smaller array, so the floor for strength t comes from the floor for t minus 1.", ["R2"]),
@@ -933,6 +1152,8 @@ def main():
         ref = R.REFS[rid]["reference"]
         au, rest = split_ref(ref)
         si.append(["p", E(title_of(rest)), E(au + " " + year_of(ref)), ref_path(rid), nk(ref, R.REFS[rid].get("doi", ""))])
+    for p in ppl:
+        si.append(["u", E(p["name"]), summary(p), p["path"], nk(p["name"], fold(p["name"]), " ".join(p["names"]), fold(" ".join(p["names"])))])
     open(os.path.join(a.out, "assets", "sindex.js"), "w").write("var SI=" + json.dumps(si, ensure_ascii=False, separators=(",", ":")) + ";")
 
     der = os.path.join(a.repo, "docs", "derived.html")
