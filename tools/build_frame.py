@@ -153,7 +153,7 @@ GET_VALUES = ("file", "deposit", "url", "cas", "certificate", "construction", "n
 BASIS_VALUES = ("row", "derived")
 CR_BASIS_VALUES = ("exact", "lower_bound", "inherited")
 ALL_SEP = " || "
-ID_RE = re.compile(r"^t[2-9]-v[0-9]+-k[0-9]+-[0-9]+$")
+ID_RE = re.compile(r"^t[0-9]+-v[0-9]+-k[0-9]+-[0-9]+$")
 NIST = "https://math.nist.gov/coveringarrays/ipof/cas/t=%s/v=%s/%s"         # as CAs::nistCA builds it
 DWYER = "https://raw.githubusercontent.com/aadwyer/CA_Database/main/Repository/CA/%s"   # CAs::dwyerCA
 CAS_CALL = re.compile(r"^(CAs::(?!nistCA|dwyerCA)\w+\([^)]*\))")

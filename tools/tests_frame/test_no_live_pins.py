@@ -38,7 +38,7 @@ REPO = os.path.dirname(os.path.dirname(HERE))
 LIVE_RE = re.compile(r"""\b_?(?:REPO|ROOT|TOP|BASE)\w*\s*[,/]\s*["']table["']|\]\s*/\s*["']table["']"""
                      r"""|\(\s*["'](?:\./)?table/[A-Za-z_]+\.csv""")
 DERIVE_LAWS_RE = re.compile(r"\b(?:L|derive_laws)\.(?:load\(|rows\b)")
-ID_RE = re.compile(r"^t[2-9]-v\d+-k\d+-\d+$")
+ID_RE = re.compile(r"^t\d+-v\d+-k\d+-\d+$")
 
 # Units that only copy the live table/ (its support files: references, lists, certificates) into a temporary
 # table or repository, where the test then builds its own rows. They read no size, so they neither count as a
