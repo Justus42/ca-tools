@@ -421,8 +421,9 @@ the frame file only.
 
 ## 11. Scope, licence and citation
 
-- Scope: strengths 2 to 6, at most 25 symbols, at most 100,000 columns. The checks refuse claims
-  outside it. Fused sizes are never rows. Proven ones count in the frame file (section 6).
+- Scope: strengths 2 to 6 with at most 25 symbols, binary arrays at strengths 7 to 10, at most
+  100,000 columns. The checks refuse claims outside it. Fused sizes are never rows. Proven ones
+  count in the frame file (section 6).
 - Licence: the compilation (selection, arrangement, identifiers, verification stamps, and the arrays
   and certificates built by this project) is CC BY 4.0. Each row's size and array remain under the
   terms of the source the row names. Sizes themselves are facts and may be reused with a citation.

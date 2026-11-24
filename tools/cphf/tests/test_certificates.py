@@ -22,7 +22,7 @@ Works on a temporary copy of table/ (without arrays/), never on the repository's
   fill         family_sha256 filled once in the existing certificate rows: allowed from empty to the
                listing's value, refused for another value, on another row, or once set (needs git)
   light        the pull request check through check_submission.py
-  scope        claims with t outside 2..6, v above 25 or k above 100,000 refused by check_certificates.py
+  scope        claims with t outside 2..10, t of 7..10 with v above 2, v above 25 or k above 100,000 refused by check_certificates.py
                and check_submission.py; table rows outside the scope flagged by consistency.py
   pairs        the rule smc-1-affine+pairs on tests/pairs_3_4_32.txt (rows 0,1 and 2,3 agree in their first two
                coordinates): mode 'auto affine pairs 2,2' with N = 220 passes and enters VERIFIED with the hash of
@@ -480,10 +480,14 @@ def run_all(tmp):
     record("light check: bad mode fails with the mode message", code == 1 and "sideways" in rep
            and "is not empty, 'auto'" in rep, rep[-300:])
 
-    # the scope of the table (strengths 2 to 6, alphabets up to 25, widths up to 100,000): a claim
-    # outside it is refused by both routes, and a table row outside it is a consistency problem
-    out_of_scope = [(7, 5, 5, "strength t=7"), (1, 5, 5, "strength t=1"), (2, 26, 5, "alphabet v=26"),
-                    (2, 5, 100001, "width k=100001")]
+    # the scope of the table (strengths 2 to 6 with alphabets up to 25, binary arrays at strengths 7 to 10,
+    # widths up to 100,000): a claim outside it is refused by both routes, and a table row outside it is a
+    # consistency problem
+    out_of_scope = [(7, 5, 5, "strength t=7"), (11, 2, 15, "strength t=11"), (1, 5, 5, "strength t=1"),
+                    (2, 26, 5, "alphabet v=26"), (2, 5, 100001, "width k=100001")]
+    record("scope: binary arrays at strengths 7 to 10 are inside the scope",
+           all(cs.scope_problem(t, 2, k) is None for t, k in ((7, 10), (8, 11), (9, 12), (10, 100000)))
+           and cs.scope_problem(7, 3, 10) is not None, "")
     for t, v, k, what in out_of_scope:
         write_claims(sub2, [claim(t, v, k, 25, "aff.txt", "")])
         code, out = cert([sub2, "--table-dir", tdir, "--threads", "2"])

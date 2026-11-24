@@ -13,8 +13,8 @@ from the `docs/` folder of `main` and regenerated on every push to
 ## What the table covers
 
 The table records covering arrays of strength 2 to 6 with at most 25
-symbols and at most 100,000 columns. The check refuses a claim outside
-these limits. A size that follows from a table row by fusing symbols,
+symbols, binary covering arrays of strength 7 to 10, and at most
+100,000 columns. The check refuses a claim outside these limits. A size that follows from a table row by fusing symbols,
 with no array of its own, is not entered as a row. It appears in the
 derived lookup (`../table/derived.csv`) and, where the fusing is proven,
 as a derived line of the frame file (`../table/ca_frame.csv`), both

@@ -94,8 +94,16 @@ END = "<!-- end of generated block -->"
 # the scope of the table (submissions/README.md, "What the table covers"); the same limits as
 # tools/check_submission.py, which refuses claims outside them
 SCOPE_T = (2, 6)
+SCOPE_T_BINARY = (7, 10)
 SCOPE_V_MAX = 25
 SCOPE_K_MAX = 100000
+
+
+def in_scope(t, v, k):
+    """True if (t, v, k) is inside the table's scope"""
+    if SCOPE_T_BINARY[0] <= t <= SCOPE_T_BINARY[1]:
+        return v == 2 and k <= SCOPE_K_MAX
+    return SCOPE_T[0] <= t <= SCOPE_T[1] and v <= SCOPE_V_MAX and k <= SCOPE_K_MAX
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 DATE = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
@@ -297,12 +305,11 @@ def check_structure(raw, rows, man):
                 problem("%s: %s is not a positive integer: %r" % (where, f, r[f]))
         if not re.fullmatch(r"\d+", r["N"] or ""):
             problem("%s: N is not an integer: %r" % (where, r["N"]))
-        elif all(r[f].isdigit() for f in ("t", "v", "k")) and not (
-                SCOPE_T[0] <= int(r["t"]) <= SCOPE_T[1] and int(r["v"]) <= SCOPE_V_MAX
-                and int(r["k"]) <= SCOPE_K_MAX):
-            problem("%s: t=%s v=%s k=%s is outside the table's scope (strengths %d to %d, alphabets up to %d, "
-                    "widths up to %d; submissions/README.md)" % (where, r["t"], r["v"], r["k"], SCOPE_T[0],
-                                                                 SCOPE_T[1], SCOPE_V_MAX, SCOPE_K_MAX))
+        elif all(r[f].isdigit() for f in ("t", "v", "k")) and not in_scope(int(r["t"]), int(r["v"]), int(r["k"])):
+            problem("%s: t=%s v=%s k=%s is outside the table's scope (strengths %d to %d with alphabets up to %d, "
+                    "binary arrays at strengths %d to %d, widths up to %d; submissions/README.md)"
+                    % (where, r["t"], r["v"], r["k"], SCOPE_T[0], SCOPE_T[1], SCOPE_V_MAX, SCOPE_T_BINARY[0],
+                       SCOPE_T_BINARY[1], SCOPE_K_MAX))
         if not DATE.match(r["entered"]):
             problem("%s: entered is not a date: %r" % (where, r["entered"]))
         fam = r.get("family_sha256") or ""
