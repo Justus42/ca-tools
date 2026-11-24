@@ -27,6 +27,39 @@ import credit_text  # noqa: E402  (the one reader of a row's credit)
 REPO_URL = "https://github.com/chrispbsmolen/ca-tools"
 RAW_CSV = "https://raw.githubusercontent.com/chrispbsmolen/ca-tools/main/table/ca_table.csv"
 
+PAGE_URL = "https://chrispbsmolen.github.io/ca-tools/"
+DOI_ALL = "10.5281/zenodo.24168008"
+PAGE_TITLE = "Covering Array Tables: best known covering arrays, by Christopher Smolen"
+PAGE_DESC = ("Best known covering array sizes for strengths 2 to 6, continuing Charles Colbourn's tables "
+             "from November 2024, with checked arrays to download and a way to submit new ones.")
+
+
+def dataset_jsonld(date, nrows, narrays):
+    import json
+    d = {
+        "@context": "https://schema.org",
+        "@type": "Dataset",
+        "name": "Covering Array Table: best known covering arrays CA(N; t, k, v)",
+        "alternateName": ["covering array tables", "ca-tools table"],
+        "description": PAGE_DESC + " %d entries and %d arrays on file. Data compiled here is CC BY 4.0; data from other sources keeps its own terms, and each row names its source." % (nrows, narrays),
+        "url": PAGE_URL,
+        "sameAs": REPO_URL,
+        "identifier": "https://doi.org/" + DOI_ALL,
+        "keywords": ["covering arrays", "covering array tables", "best known covering arrays",
+                     "covering array number", "CAN(t,k,v)", "combinatorial testing",
+                     "combinatorial interaction testing", "combinatorial design"],
+        "creator": {"@type": "Person", "name": "Christopher Smolen",
+                    "url": "https://chrispbsmolen.github.io/",
+                    "sameAs": ["https://orcid.org/0009-0002-9537-7961", "https://github.com/chrispbsmolen"]},
+        "license": "https://creativecommons.org/licenses/by/4.0/",
+        "usageInfo": "https://github.com/chrispbsmolen/ca-tools/blob/main/LICENSE-DATA",
+        "isAccessibleForFree": True,
+        "dateModified": date[:10],
+        "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": RAW_CSV}],
+    }
+    return json.dumps(d, ensure_ascii=False).replace("</", "<\\/")
+
+
 CSS = """
 :root { color-scheme: light dark; --fg:#1d1d1f; --bg:#fdfdfc; --mute:#5f6368;
   --line:#dcdcd8; --ver:#0b6e3a; --scr:#8a5a00; --dis:#a8321e; --soft:#f2f2ee; --opt:#1f5fa8; }
@@ -539,8 +572,25 @@ def render(rows, manifest, date):
     H = []
     H.append("<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\">"
              "<meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">"
-             "<title>Covering Array Table</title><style>%s</style></head><body><main>" % CSS)
+             "<title>%s</title>"
+             "<meta name=\"description\" content=\"%s\">"
+             "<meta name=\"author\" content=\"Christopher Smolen\">"
+             "<link rel=\"canonical\" href=\"%s\">"
+             "<meta property=\"og:title\" content=\"%s\">"
+             "<meta property=\"og:description\" content=\"%s\">"
+             "<meta property=\"og:url\" content=\"%s\">"
+             "<script type=\"application/ld+json\">%s</script>"
+             "<style>%s</style></head><body><main>"
+             % (PAGE_TITLE, html.escape(PAGE_DESC), PAGE_URL, PAGE_TITLE, html.escape(PAGE_DESC),
+                PAGE_URL, dataset_jsonld(date, len(rows), len(manifest)), CSS))
     H.append("<h1>Best known covering arrays, with evidence</h1>")
+    H.append("<p class=\"mute\">The covering array table maintained by "
+             "<a href=\"https://chrispbsmolen.github.io/\">Christopher Smolen</a> "
+             "(<a href=\"https://orcid.org/0009-0002-9537-7961\">ORCID</a>). "
+             "Cite: <a href=\"https://doi.org/%s\">doi:%s</a>. "
+             "<a href=\"%s/blob/main/submissions/README.md\"><b>Submit an array</b></a> "
+             "· <a href=\"%s\">Download the table (CSV)</a></p>"
+             % (DOI_ALL, DOI_ALL, REPO_URL, RAW_CSV))
     H.append("<p>A covering array CA(N; t, k, v) is an N by k array over v symbols in which "
              "every choice of t columns shows every one of the v<sup>t</sup> value "
              "combinations in some row. This table records, for each strength t and "
