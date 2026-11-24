@@ -169,6 +169,7 @@ table.lg tbody tr:hover td,.cl tbody tr:hover td{background:#f3f8f4}
 .pp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.pp .pc[hidden]{display:none}
 .pc{display:flex;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;text-decoration:none;color:var(--fg);scroll-margin-top:16px}
 .pc:hover,.pc:focus-visible{border-color:#1f6b45;transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.06)}
+.top nav a,.top .ai,.el,.pg,.ftl,.lv div,.statc div,.fl4,.pc{position:relative}.top nav a:after,.top .ai:after,.el:after,.pg:after,.ftl:after,.lv div:after,.statc div:after,.fl4:after,.pc:after{content:"";position:absolute;left:0;right:0;top:100%;height:5px}
 .pc i,.ph i{flex:none;border-radius:50%;background:#b9dcc6;display:flex;align-items:center;justify-content:center;font-style:normal;font-weight:700}
 .pc i{width:46px;height:46px;font-size:.95rem}.pc b{display:block;font-size:1.02rem}.pc span span{display:block;color:var(--mute);font-size:.86rem;margin-top:3px;line-height:1.35}
 .ph{display:flex;gap:22px;align-items:center}.ph i{width:76px;height:76px;font-size:1.5rem}
