@@ -18,7 +18,7 @@ with credit to its authors; a wrong credit is corrected with a line in
 - Theorem, corollary or table (with the numbering of the version you read):
 
 **The sizes**
-One per line, as CA(N; t, k, v), with t from 2 to 6, at most 25 symbols and at most 100,000 columns:
+One per line, as CA(N; t, k, v), with t from 2 to 6 and at most 25 symbols, or t from 7 to 10 and 2 symbols, and at most 100,000 columns:
 
     CA(N; t, k, v)
 
