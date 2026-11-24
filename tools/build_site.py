@@ -66,7 +66,7 @@ a{color:inherit}.mute{color:var(--mute)}.num{font-variant-numeric:tabular-nums}.
 table.lg{border-collapse:collapse;width:100%;font-size:.88rem}
 table.lg th{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mute);font-weight:600;text-align:left;border-bottom:1px solid var(--fg);padding:8px 10px;position:sticky;top:0;background:var(--bg)}
 table.lg td{border-bottom:1px solid var(--line);padding:9px 10px;vertical-align:top}table.lg td.n,table.lg th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-table.lg td.big{font-weight:800;font-size:1rem}table.lg td.a{white-space:nowrap}table.lg td.a a{display:inline-block;padding:4px 0}table.lg tr.closed td{background:#eef6f0}table.lg tr:target td{background:#fff6d6}
+table.lg td.big{font-weight:800;font-size:1rem}table.lg td.a{white-space:nowrap}table.lg td.rb{min-width:9em}table.lg a.ck{color:inherit;text-decoration:underline dotted;text-underline-offset:3px}table.lg td.rb a,table.lg a.ck{display:inline-block;padding:4px 0}table.lg td.a a{display:inline-block;padding:4px 0}table.lg tr.closed td{background:#eef6f0}table.lg tr:target td{background:#fff6d6}
 .sub{display:block;color:var(--mute);font-size:.78rem}
 .lib{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px 24px}
 .pg{background:#fff;aspect-ratio:1/1.3;box-shadow:0 1px 2px rgba(0,0,0,.08),0 6px 16px rgba(0,0,0,.07);padding:26px 22px 18px;display:flex;flex-direction:column;font-family:@SERIF@;text-decoration:none;color:inherit}
@@ -446,6 +446,19 @@ def short_credit(c):
     return c.split(" (")[0]
 
 
+def reached_by(R, r):
+    c = R.credit_of(r)
+    if c:
+        c = short_credit(pub(c))
+        return (c if re.search(r"\b(19|20)\d\d\b", c) else "%s %s" % (c, r["entered"][:4])), []
+    refs = [i for i in (r.get("builds_on") or "").split(";") if i in R.REFS]
+    if refs:
+        return "", refs
+    src = SOURCE_NAME.get(r.get("source_id", ""), "source not named")
+    lab = pub(R.page_text(R.construction_of(r) or ""))
+    return ("%s (%s)" % (src, lab) if lab and r.get("source_id") == "S1" else src), []
+
+
 def fam(ver, rungs):
     s = ver / rungs if rungs else 0
     return "f4" if s >= .9 else "f3" if s >= .5 else "f2" if s > .1 else "f1" if ver else "f0"
@@ -479,6 +492,13 @@ def main():
     import lower_bounds
     sys.setrecursionlimit(100000)
     rows, manifest = R.load(tdir)
+    import build_frame
+    by_id = dict(zip(build_frame.row_ids(rows), rows))
+    first = {}
+    with open(os.path.join(tdir, "ca_frame.csv"), newline="", encoding="utf-8") as f:
+        for fr in csv.DictReader(f):
+            if fr["basis"] == "row" and fr["first_reached"] in by_id:
+                first[(int(fr["t"]), int(fr["v"]), int(fr["k"]), int(fr["N"]))] = by_id[fr["first_reached"]]
     R.REFS.update(builds_on.load(tdir))
     _, lb = lower_bounds.load(os.path.join(tdir, "lower_bounds.csv"))
     for r in lb:
@@ -545,7 +565,7 @@ def main():
             rungs.append(dict(N=n, k0=k0, k1=k1, floor=f0, floor_k_to=f1, floor_row=f, closed=of == k0, opt_from=of,
                               verified=bool(ver), credit=credit_or_source(R, best), construction=pub(R.page_text(R.construction_of(best) or "")),
                               builds_on=[i for i in (best.get("builds_on") or "").split(";") if i in R.REFS], sha=sha,
-                              entered=best["entered"], row=best, new=all(e["entered"] > SNAPSHOT_DATE for e in ev)))
+                              entered=best["entered"], row=best, first=first.get((t, v, k1, n)) or min(ev, key=lambda e: e["entered"]), new=all(e["entered"] > SNAPSHOT_DATE for e in ev)))
         cells[(t, v)] = dict(t=t, v=v, rungs=rungs, kmax=max(r["k"] for r in rs), kmin=min(r["k"] for r in rs), last=max(r["entered"] for r in rs),
                              nver=sum(1 for x in rungs if x["verified"]), nopt=sum(1 for x in rungs if x["opt_from"] is not None),
                              nnew=sum(1 for x in rungs if x["new"]))
@@ -563,7 +583,7 @@ def main():
 
     def tile(c, d, h):
         cls = fam(c["nver"], len(c["rungs"]))
-        return ('<a class="el %s" href="%s" data-tv="%d-%d"><span class=vh>t=%d v=%d: </span><div class=tp>k to %s</div><div class=n>%d<small>rungs</small></div>'
+        return ('<a class="el %s" href="%s" data-tv="%d-%d"><span class=vh>t=%d v=%d: </span><div class=tp>k to %s</div><div class=n>%d<small>sizes</small></div>'
                 '<div class=ft><div class=st><span><b>%d</b> verified</span><span><b>%d</b> optimal</span></div><span class=dt>%s</span></div></a>') % (
             cls, h(cell_path(c["t"], c["v"])), c["t"], c["v"], c["t"], c["v"], format(c["kmax"], ","), len(c["rungs"]), c["nver"], c["nopt"], c["last"][5:])
 
@@ -603,21 +623,21 @@ def main():
                         ensure_ascii=False).replace("</", "<\\/")
     home = ('<div class=hero id=lookup><div class=in><div><h1>Best known covering arrays, with evidence.</h1>'
             '<p>Every entry names who built it or where it comes from, how it was built, and what it builds on. Verified entries link an array you can download and check yourself. '
-            'Proven floors sit beside every size. The table grows by pull request and rebuilds on every merge.</p></div>'
+            'Proven lower bounds sit beside every size. The table grows by pull request and rebuilds on every merge.</p></div>'
             '<form class=look onsubmit="return look()"><h2>Look up a size</h2><div class=lf><span><label for=lt>strength t</label><input id=lt value=3 inputmode=numeric></span>'
             '<span><label for=lv>symbols v</label><input id=lv value=3 inputmode=numeric></span><span><label for=lk>columns k</label><input id=lk value=6 inputmode=numeric></span>'
             '<button>Find</button></div><div class=ans id=ans role=status aria-live=polite><span class=mute>Enter t, v and k, then Find.</span></div></form></div></div>'
             '<div class=hstats><span></span><div><b class=num>%s</b><span>entries</span></div><div><b class=num>%s</b><span>verified entries</span></div>'
-            '<div><b class=num>%s</b><span>arrays on file</span></div><div><b class=num>%s</b><span>optimal rungs</span></div>'
+            '<div><b class=num>%s</b><span>arrays on file</span></div><div><b class=num>%s</b><span>optimal sizes</span></div>'
             '<div><b>2 to 6</b><span>strengths, v to 25</span></div><div><b>7 to 10</b><span>strengths, binary</span></div></div>'
-            '<main class=wrapw>%s%s%s<div class=key>%s<span>tile: k reached, rungs, verified rungs, optimal rungs, date of last change</span></div></main>'
+            '<main class=wrapw>%s%s%s<div class=key>%s<span>tile: k reached, sizes, verified sizes, optimal sizes, date of last change</span></div></main>'
             '<aside class=panel id=panel role=dialog aria-labelledby=pt><div class=hd><span id=pl></span><button class=x id=px onclick="closeP()" aria-label="Close summary">&times;</button></div>'
-            '<h2 class=big id=pt tabindex=-1></h2><p class=nm id=pn></p><dl><dt>rungs</dt><dd id=p0></dd><dt>verified</dt><dd id=p1></dd><dt>optimal</dt><dd id=p2></dd>'
-            '<dt><a href="%s#new-since-the-first-release">new since the first release</a></dt><dd id=p3></dd><dt>columns covered</dt><dd id=p4></dd><dt>first rung</dt><dd id=p5></dd></dl><a class=go id=pgo></a></aside>') % (
+            '<h2 class=big id=pt tabindex=-1></h2><p class=nm id=pn></p><dl><dt>sizes</dt><dd id=p0></dd><dt>verified</dt><dd id=p1></dd><dt>optimal</dt><dd id=p2></dd>'
+            '<dt><a href="%s#new-since-the-first-release">new since the first release</a></dt><dd id=p3></dd><dt>columns covered</dt><dd id=p4></dd><dt>first size</dt><dd id=p5></dd></dl><a class=go id=pgo></a></aside>') % (
         format(nrows, ","), format(nver, ","), format(narr, ","), format(nopt, ","),
         block(main_ts, list(range(2, 14)), "alphabets 2 to 13"), block(main_ts, list(range(14, 26)), "alphabets 14 to 25"),
         block(hi_ts, [2], "binary, strengths 7 to 10") if hi_ts else "",
-        "".join('<span><i class=%s></i>%s</span>' % kv for kv in [("f4", "all rungs verified"), ("f3", "mostly verified"), ("f2", "partly verified"), ("f1", "a few verified"), ("f0", "cited only")]), h0("learn/"))
+        "".join('<span><i class=%s></i>%s</span>' % kv for kv in [("f4", "all sizes verified"), ("f3", "mostly verified"), ("f2", "partly verified"), ("f1", "a few verified"), ("f0", "cited only")]), h0("learn/"))
     script = ("<script>var D=%s;var cur=null;function fmt(n){return n.toLocaleString('en-US')}"
               "function openP(id){var c=D[id];if(!c)return;var p=id.split('-');document.querySelectorAll('.el.sel').forEach(function(e){e.classList.remove('sel')});"
               "if(cur===id){closeP();return}cur=id;document.querySelector('[data-tv=\"'+id+'\"]').classList.add('sel');var s=c.s;"
@@ -641,9 +661,9 @@ def main():
               "if(!r)return say(a,'The table covers k up to '+fmt(c.s[4])+' for t = '+t+' and v = '+v+'.');"
               "var f=null;for(var j=0;j<c.f.length;j++){if(c.f[j][0]<=k&&k<=c.f[j][1]){f=c.f[j][2]}}"
               "var op=r[2]&&k>=r[2];if(op)f=r[1];a.innerHTML='CAN('+t+', '+fmt(k)+', '+v+') '+(op?'= ':'&le; ')+'<b>'+fmt(r[1])+'</b> '+(op?'<span class=\"tag opt\">optimal</span>':(r[3]?'<span class=\"tag ver\">verified</span>':'<span class=\"tag lit\">cited</span>'))"
-              "+'<br><span class=mute>'+(f?'Floor '+fmt(f)+'. ':'')+'</span><a href=\"'+c.p+'#k'+r[0]+'\">Open</a>';flash(a);return false}</script>") % json.dumps(look, separators=(",", ":"))
+              "+'<br><span class=mute>'+(f?'Lower bound '+fmt(f)+'. ':'')+'</span><a href=\"'+c.p+'#k'+r[0]+'\">Open</a>';flash(a);return false}</script>") % json.dumps(look, separators=(",", ":"))
     site.page("index.html", "Covering Array Tools: best known covering arrays, with evidence",
-              "Best known covering array sizes CA(N; t, k, v) with proven floors, credit, construction and checked arrays to download.",
+              "Best known covering array sizes CA(N; t, k, v) with proven lower bounds, credit, construction and checked arrays to download.",
               home, "Table", jsonld, script)
 
     for (t, v), c in cells.items():
@@ -669,24 +689,33 @@ def main():
                 arr += '<span class=sub>also on file: %s</span>' % ", ".join('<a href="%s">%s</a>' % (h(array_path[s2]), ca(x["N"], t, k2, v)) for k2, s2 in also)
             kr = format(x["k1"], ",") if x["k0"] == x["k1"] else "%s to %s" % (format(x["k0"], ","), format(x["k1"], ","))
             con = x["construction"]
+            rb, rrefs = reached_by(R, x["first"])
+            key = h("learn/") + "#colbourn-labels"
+            if x["row"].get("source_id") == "S1" and con:
+                con_h = '<a class=ck href="%s">%s</a>' % (key, E(con))
+            else:
+                con_h = E(con)
+            rbh = (('<a class=ck href="%s">%s</a>' % (key, E(rb))) if x["first"].get("source_id") == "S1" else E(rb)) if rb else ", ".join('<a href="%s">%s</a>' % (h(ref_path(i)), E(R.ref_label(i))) for i in rrefs)
+            if x["sha"]:
+                arr += '<span class=sub>%s %s</span>' % ("built by" if R.credit_of(x["row"]) else "from", E(short_credit(x["credit"])))
             trs.append('<tr id="k%d" class="%s"><td class=n>%s</td><td class="n big">%s</td><td class=n>%s</td><td class=n>%s</td><td>%s</td>'
-                       '<td>%s<span class=sub>%s</span>%s</td><td class=a>%s</td></tr>' % (
+                       '<td class=rb>%s</td><td>%s%s</td><td class=a>%s</td></tr>' % (
                            x["k1"], "closed" if x["closed"] else "", kr, format(x["N"], ","), format(x["floor"], ",") if x["floor"] is not None else "",
-                           (format(gap, ",") if gap is not None else ""), status, E(short_credit(x["credit"])),
-                           E(con), ('<span class=sub>builds on %s</span>' % bo) if bo else "", arr))
+                           (format(gap, ",") if gap is not None else ""), status, rbh,
+                           con_h, ('<span class=sub>builds on %s</span>' % bo) if bo else "", arr))
         body = ('<div class=pageh><div class=in><div><p class=crumb><a href="%s">Table</a> / t=%d v=%d</p><h1>t=%d v=%d</h1>'
-                '<p>Strength %d covering arrays on %d symbols. The smallest known number of rows N for every k up to %s, with the proven floor beside it.</p></div>'
+                '<p>Strength %d covering arrays on %d symbols. The smallest known number of rows N for every k up to %s, with the proven lower bound beside it.</p></div>'
                 '<div class=btns><a href="%s">JSON</a><a href="%s">CSV</a><a class=d href="https://doi.org/%s">Cite</a></div></div></div>'
-                '<div class=stats><div><b class=num>%d</b><span>rungs</span></div><div><b class=num>%d</b><span>verified</span></div>'
+                '<div class=stats><div><b class=num>%d</b><span>sizes</span></div><div><b class=num>%d</b><span>verified</span></div>'
                 '<div><b class=num>%d</b><span>optimal</span></div><div><b class=num>%d</b><span><a href="%s">new since the first release</a></span></div>'
                 '<div><b class=num>%s</b><span>last change</span></div></div>'
-                '<main class=wrapw><table class=lg><thead><tr><th class=n>k</th><th class=n>best N</th><th class=n>floor</th><th class=n>gap</th><th>status</th>'
-                '<th>credit and construction</th><th>array</th></tr></thead><tbody>%s</tbody></table></main>') % (
+                '<main class=wrapw><table class=lg><thead><tr><th class=n>k</th><th class=n>best N</th><th class=n>lower bound</th><th class=n>gap</th><th>status</th>'
+                '<th>first reached by</th><th>construction</th><th>array</th></tr></thead><tbody>%s</tbody></table></main>') % (
             h(""), t, v, t, v, t, v, format(c["kmax"], ","), h("t%d/v%d.json" % (t, v)), h("t%d/v%d.csv" % (t, v)), DOI,
             len(c["rungs"]), c["nver"], c["nopt"], c["nnew"], h("learn/") + "#new-since-the-first-release", c["last"], "".join(trs))
         cld = json.dumps({"@context": "https://schema.org", "@type": "Dataset",
                           "name": "CAN(t, k, v) best known covering array sizes, t=%d v=%d" % (t, v),
-                          "description": "Best known sizes N of covering arrays CA(N; %d, k, %d) for k up to %s, with proven floors, credit, construction and the sha256 of each stored array." % (t, v, format(c["kmax"], ",")),
+                          "description": "Best known sizes N of covering arrays CA(N; %d, k, %d) for k up to %s, with proven lower bounds, credit, construction and the sha256 of each stored array." % (t, v, format(c["kmax"], ",")),
                           "url": BASE + path[:-len("index.html")], "identifier": "https://doi.org/" + DOI,
                           "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": True,
                           "creator": {"@type": "Person", "name": "Christopher Smolen"}, "dateModified": c["last"][:10],
@@ -694,17 +723,18 @@ def main():
                           "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": BASE + "t%d/v%d.json" % (t, v)},
                                            {"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": BASE + "t%d/v%d.csv" % (t, v)}]}, ensure_ascii=False)
         site.page(path, "CAN(%d, k, %d): strength %d covering arrays on %d symbols" % (t, v, t, v),
-                  "Best known covering array sizes CA(N; %d, k, %d) for k up to %s, with floors, credit and arrays." % (t, v, format(c["kmax"], ",")), body, "Table", cld, KHASH)
+                  "Best known covering array sizes CA(N; %d, k, %d) for k up to %s, with lower bounds, credit and arrays." % (t, v, format(c["kmax"], ",")), body, "Table", cld, KHASH)
         recs = [dict(k_from=x["k0"], k_to=x["k1"], N=x["N"], floor=x["floor"], floor_k_to=x["floor_k_to"], optimal_from=x["opt_from"],
                      status="optimal" if x["closed"] else ("verified" if x["verified"] else "cited"),
                      credit=x["credit"], construction=x["construction"], builds_on=x["builds_on"], array_sha256=x["sha"],
-                     array_page=(BASE + array_path[x["sha"]]) if x["sha"] else "") for x in c["rungs"]]
+                     array_page=(BASE + array_path[x["sha"]]) if x["sha"] else "",
+                     first_reached_by=(lambda rb: rb[0] or ", ".join(R.ref_label(i) for i in rb[1]))(reached_by(R, x["first"]))) for x in c["rungs"]]
         site.write("t%d/v%d.json" % (t, v), json.dumps(dict(t=t, v=v, source=REPO_URL, doi=DOI, rungs=recs), ensure_ascii=False, indent=1), False)
         with open(os.path.join(a.out, "t%d/v%d.csv" % (t, v)), "w", newline="", encoding="utf-8") as f:
             w = csv.writer(f)
-            w.writerow(["t", "v", "k_from", "k_to", "N", "floor", "floor_k_to", "optimal_from", "status", "credit", "construction", "builds_on", "array_sha256"])
+            w.writerow(["t", "v", "k_from", "k_to", "N", "floor", "floor_k_to", "optimal_from", "status", "credit", "construction", "builds_on", "array_sha256", "first_reached_by"])
             for x in recs:
-                w.writerow([t, v, x["k_from"], x["k_to"], x["N"], x["floor"] if x["floor"] is not None else "", x["floor_k_to"] if x["floor_k_to"] is not None else "", x["optimal_from"] or "", x["status"], x["credit"], x["construction"], ";".join(x["builds_on"]), x["array_sha256"]])
+                w.writerow([t, v, x["k_from"], x["k_to"], x["N"], x["floor"] if x["floor"] is not None else "", x["floor_k_to"] if x["floor_k_to"] is not None else "", x["optimal_from"] or "", x["status"], x["credit"], x["construction"], ";".join(x["builds_on"]), x["array_sha256"], x["first_reached_by"]])
 
     for sha, path in array_path.items():
         m = man[sha]
@@ -751,14 +781,18 @@ def main():
         else:
             stxt = 'above best known (best is %s, <a href="%s">see the table row</a>)' % (format(rung["N"], ","), h(row_path(t, v, k)))
         stc[stxt.split(" (")[0]] += 1
+        fr_dd = ""
+        if rung is not None and n == rung["N"]:
+            rb, rrefs = reached_by(R, rung["first"])
+            fr_dd = "<dt>size first reached by</dt><dd>%s</dd>" % (E(rb) if rb else ", ".join('<a href="%s">%s</a>' % (h(ref_path(i)), E(R.ref_label(i))) for i in rrefs))
         body = ('<main class=wrapw><div class=arr><section><p class=crumb><a href="%s">Table</a> / <a href="%s">t=%d v=%d</a> / k = %s</p>'
                 '<h1 style="font-size:2rem;margin:0 0 4px">%s %s</h1><p class=mute style="margin:0 0 20px">An array of %s rows and %s columns on %d symbols in which every %d columns show all %s combinations.</p>'
-                '<dl><dt>credit</dt><dd>%s</dd><dt>entered</dt><dd>%s</dd><dt>construction</dt><dd>%s</dd><dt>floor</dt><dd>%s</dd>'
+                '<dl><dt>built by</dt><dd>%s</dd>%s<dt>entered</dt><dd>%s</dd><dt>construction</dt><dd>%s</dd><dt>lower bound</dt><dd>%s</dd>'
                 '<dt>verify stamp</dt><dd>%s</dd><dt>status</dt><dd>%s</dd></dl>%s</section>'
                 '<aside><a class=dlb href="%s">%s</a><div class=dls><a href="%s">Table row</a><a href="%s">Verify it</a></div>'
                 '<div class=sha>sha256 %s</div>%s</aside></div>%s</main>') % (
             h(""), h(cell_path(t, v)), t, v, format(k, ","), ca(n, t, k, v), tag, format(n, ","), format(k, ","), v, t, format(v ** t, ","),
-            E(credit), r["entered"] if r else "", E(con), (format(f[4], ",") + ", " + E(pub(f[6]))) if f else format(lbk[0], ","),
+            E(credit), fr_dd, r["entered"] if r else "", E(con), (format(f[4], ",") + ", " + E(pub(f[6]))) if f else format(lbk[0], ","),
             E(m["verify_stamp"]), stxt, ('<h2>Builds on</h2><ol>%s</ol>' % refs) if refs else "",
             dl, E(dll), h(row_path(t, v, k)), "#check", sha,
             ('<h2 style="font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin:24px 0 8px">The array</h2><div class=grid tabindex=0 role=region aria-label="The array, first rows">%s</div>' % E(preview)) if preview else "",
@@ -791,7 +825,7 @@ def main():
         u = use[rid]
         na = len({x["array_sha256"] for x in u if x["array_sha256"]})
         cap = ", ".join(s for s in [("%s entries" % format(len(u), ",")) if u else "", ("%d array%s" % (na, "" if na == 1 else "s")) if na else "",
-                                     ("%d floor%s" % (len(flo[rid]), "" if len(flo[rid]) == 1 else "s")) if flo[rid] else ""] if s)
+                                     ("%d lower bound%s" % (len(flo[rid]), "" if len(flo[rid]) == 1 else "s")) if flo[rid] else ""] if s)
         doi = R.REFS[rid].get("doi") or ""
         cards.append(('<div data-s="%s">' % E(fold(" ".join([ti, au, jh, year_of(ref), doi, rid])).lower(), quote=True)) + '<a class=pg href="%s"><div class=j>%s</div><h2>%s</h2><p class=au>%s</p><div class=ln>%s</div><div class=y><span>%s</span><span style="overflow:hidden;text-overflow:ellipsis">%s</span></div></a><p class=cap>%s</p></div>' % (
             site.href(1, ref_path(rid)), E(jh), E(ti), E(au), "<i></i>" * 7, year_of(ref), E(("doi:" + doi) if doi and not doi.lower().startswith("arxiv") else doi), cap))
@@ -810,9 +844,9 @@ def main():
             h("library/"), E(R.ref_label(rid)), E(j), E(ti), E(au),
             ('<a class=d href="https://doi.org/%s">doi:%s</a>' % (doi, doi)) if doi and not doi.lower().startswith("arxiv") else ('<a class=d href="https://arxiv.org/abs/%s">%s</a>' % (doi.split(":", 1)[-1], doi) if doi else ""),
             ('<h2>In the table</h2><p class=lede>%s %s build on this paper.</p>%s%s' % (format(len(u), ","), "row" if len(u) == 1 else "rows", "".join(prs), more)) if u else "",
-            ('<h2>Floors that cite it</h2>%s' % fls) if fls else "")
+            ('<h2>Lower bounds that cite it</h2>%s' % fls) if fls else "")
         site.page(ref_path(rid) + "index.html", "%s, %s" % (ti, R.ref_label(rid)), "%s. What in the covering array table builds on it." % ref[:150], body, "Library")
-    lib = ('<div class="pageh serifh"><div class=in><div><h1>Library</h1><p>Every paper the table rests on. Each entry links the paper and says what in the table is built on it. Open one to see those arrays and floors.</p></div>'
+    lib = ('<div class="pageh serifh"><div class=in><div><h1>Library</h1><p>Every paper the table rests on. Each entry links the paper and says what in the table is built on it. Open one to see those arrays and lower bounds.</p></div>'
            '<div class=lfind><label for=lq class=vh>Search the library</label><svg width="17" height="17" viewBox="0 0 17 17" aria-hidden="true"><circle cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M11.2 11.2l4.3 4.3" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>'
            '<input id=lq type=search autocomplete=off spellcheck=false placeholder="Title, author, journal or year"><span id=ln class=mute aria-live=polite>%d papers</span></div></div></div>'
            '<main class=wrapw><div class=lib id=lib>%s</div><p class=lnone id=lnone hidden>No paper in the library matches that. If one is missing, <a href="mailto:%s">tell us</a>.</p></main>') % (len(cards), "".join(cards), CONTACT)
@@ -820,7 +854,7 @@ def main():
                "function f(){var t=q.value.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase().split(/\\s+/).filter(Boolean),k=0;"
                "cs.forEach(function(c){var s=c.getAttribute('data-s'),on=t.every(function(w){return s.indexOf(w)>=0});c.hidden=!on;if(on)k++});"
                "n.textContent=t.length?k+' of '+all+' papers':all+' papers';z.hidden=k>0}q.addEventListener('input',f)})()</script>")
-    site.page("library/index.html", "Library: the papers behind the covering array table", "Every paper the covering array table rests on, with the arrays and floors built on each.", lib, "Library", None, lscript)
+    site.page("library/index.html", "Library: the papers behind the covering array table", "Every paper the covering array table rests on, with the arrays and lower bounds built on each.", lib, "Library", None, lscript)
 
     people = {}
 
@@ -868,10 +902,13 @@ def main():
         p["rows"] = [r for r in credited.get(id(p), []) if not (id(r) in seen or seen.add(id(r)))]
     for c in cells.values():
         for x in c["rungs"]:
-            cr = R.credit_of(x["row"])
+            cr = R.credit_of(x["first"])
             if cr:
-                for p in {id(resolve(n)): resolve(n) for n in credit_names(cr)}.values():
-                    p["held"].append(x)
+                got = {id(resolve(n)): resolve(n) for n in credit_names(cr)}
+            else:
+                got = {id(p): p for rid in reached_by(R, x["first"])[1] for p in people.values() if rid in p["papers"]}
+            for p in got.values():
+                p["held"].append(x)
     for p in people.values():
         for rid in p["papers"]:
             p["floors"].update(id(r) for r in flo[rid])
@@ -899,7 +936,7 @@ def main():
 
     def summary(p):
         return ", ".join(s for s in [plural(p["ver"], "array") if p["ver"] else "", plural(p["cit"], "published size") if p["cit"] else "",
-                                     plural(len(p["papers"]), "paper") if p["papers"] else "", plural(len(p["floors"]), "floor") if p["floors"] else ""] if s)
+                                     plural(len(p["papers"]), "paper") if p["papers"] else "", plural(len(p["floors"]), "lower bound") if p["floors"] else ""] if s)
 
     def initials(p):
         w = [x for x in re.split(r"[\s.-]+", p["name"]) if x[:1].isalpha()]
@@ -916,7 +953,7 @@ def main():
         letters.setdefault(L, p)
     az = "".join(('<a href="#l-%s">%s</a>' % (L.lower(), L)) if L in letters else '<span aria-hidden="true">%s</span>' % L for L in "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
     chips = "".join('<button type=button data-f="%s" aria-pressed="%s">%s</button>' % (f, "true" if not f else "false", n) for f, n in
-                    (("", "Everyone"), ("a", "Arrays"), ("s", "Published sizes"), ("p", "Papers"), ("f", "Floors")))
+                    (("", "Everyone"), ("a", "Arrays"), ("s", "Published sizes"), ("p", "Papers"), ("f", "Lower bounds")))
     body = ('<div class=pageh><div class=in><div><h1>Contributors</h1><p>Everyone whose arrays, published sizes, papers or proofs the table rests on, with what each contributed. '
             'Built from the table\'s own credits and its library; nobody signs up and nobody is ranked. %d people.</p></div></div></div>'
             '<main class=wrapw><div class=chips role=group aria-label="Show"><span class=l>Show</span>%s</div><nav class=az aria-label="Jump to letter">%s</nav>'
@@ -928,14 +965,14 @@ def main():
 
     for p in ppl:
         h = lambda q: site.href(2, q)
-        st = [(p["ver"], "array", "arrays"), (p["cit"], "published size", "published sizes"), (len(p["held"]), "best known size held", "best known sizes held"),
+        st = [(p["ver"], "array", "arrays"), (p["cit"], "published size", "published sizes"), (len(p["held"]), "best known size first reached", "best known sizes first reached"),
               (len(p["papers"]), "paper in the library", "papers in the library"), (p["built"], "entry builds on their papers", "entries build on their papers"),
-              (len(p["floors"]), "floor from their papers", "floors from their papers")]
+              (len(p["floors"]), "lower bound from their papers", "lower bounds from their papers")]
         stats = "".join('<div><b class=num>%s</b><span>%s</span></div>' % (format(n, ","), one if n == 1 else many) for n, one, many in st if n)
         held = collections.Counter((x["row"]["t"], x["row"]["v"]) for x in p["held"])
         left = ""
         if held:
-            left += '<h2>Best known sizes held</h2><ul class=cnt>%s</ul>' % "".join(
+            left += '<h2>Best known sizes first reached</h2><ul class=cnt>%s</ul>' % "".join(
                 '<li><a href="%s">t=%d v=%d</a><span class=num>%s</span></li>' % (h(cell_path(t, v)), t, v, plural(n, "size")) for (t, v), n in sorted(held.items()))
         if p["rows"]:
             rs = sorted(p["rows"], key=lambda r: (r["entered"], r["t"], r["v"], r["k"]), reverse=True)
@@ -950,7 +987,7 @@ def main():
             for rid in sorted(p["papers"], key=lambda i: (-len(use[i]), -len(flo[i]), year_of(R.REFS[i]["reference"]))):
                 au, rest = split_ref(R.REFS[rid]["reference"])
                 what = ", ".join(s for s in [plural(len(use[rid]), "entry builds", "entries build") + " on it" if use[rid] else "",
-                                             plural(len(flo[rid]), "floor") if flo[rid] else ""] if s)
+                                             plural(len(flo[rid]), "lower bound") if flo[rid] else ""] if s)
                 pl.append('<li><a href="%s">%s</a><span>%s%s</span></li>' % (h(ref_path(rid)), E(title_of(rest)), year_of(R.REFS[rid]["reference"]), (", " + what) if what else ""))
             right += '<h2>Papers in the library</h2><ul class=pap>%s</ul>' % "".join(pl)
         if not left and not right:
@@ -966,7 +1003,7 @@ def main():
         site.page(p["path"] + "index.html", "%s: contributor to the covering array table" % p["name"],
                   "%s in the covering array table: %s." % (p["name"], summary(p) or "credited entries"), pbody, "Contributors")
 
-    about = ('<div class=pageh><div class=in><div><h1>About</h1><p>Covering Array Tools is an open table of the best known covering arrays: every size, the proof of its floor, who built it, and the checked array to download.</p></div></div></div>'
+    about = ('<div class=pageh><div class=in><div><h1>About</h1><p>Covering Array Tools is an open table of the best known covering arrays: every size, the proof of its lower bound, who built it, and the checked array to download.</p></div></div></div>'
              '<main class=wrapw><div class=ab>'
              '<section><h2>Who keeps it</h2><p>Kept by Christopher Smolen (<a href="https://orcid.org/0009-0002-9537-7961">ORCID</a>), first released on %s. It starts from Charles J. Colbourn\'s covering array tables as of November 2024, '
              'preserved in Ulrike Groemping\'s <a href="https://github.com/ugroempi/CAs">CAs R package</a>, and adds every array submitted and checked here and published bounds from the literature.</p></section>'
@@ -977,20 +1014,40 @@ def main():
              '<section><h2>Licence and citation</h2><p>The data compiled here is <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> and the code is MIT. Data from other sources keeps its own terms, and each row names its source. '
              'Cite the table with <a href="https://doi.org/%s">doi:%s</a>, and cite the authors of the rows you use.</p></section>'
              '<section><h2>Contact</h2><p><a href="mailto:%s">%s</a> for corrections, missing papers or anything else. A problem with a row can also be raised as a <a href="%s/issues">GitHub issue</a>. The site counts page views, downloads and searches with <a href="https://www.goatcounter.com/">GoatCounter</a>, which sets no cookies and keeps nothing about who you are.</p></section>'
-             '<section><h2>Credit</h2><p>Arrays come from many builders and papers. Each row names who built it or where it comes from, and <a href="%s">Contributors</a> gathers everyone named, with what each contributed.</p></section>'
+             '<section><h2>Credit</h2><p>Arrays come from many builders and papers. Each size names who first reached it and who built the array on file, which are not always the same, and <a href="%s">Contributors</a> gathers everyone named, with what each contributed.</p></section>'
              '</div></main>') % (datetime.date.fromisoformat(SNAPSHOT_DATE).strftime("%-d %B %Y"), site.href(1, "changelog/"), DOI, DOI, CONTACT, CONTACT, REPO_URL, site.href(1, "contributors/"))
     site.page("about/index.html", "About Covering Array Tools", "Who keeps the covering array table, how arrays are checked, how it changes, and how to cite it.", about, "About")
+
+    lab2id = {R.ref_label(i): i for i in R.REFS}
+
+    def rl(lab):
+        return ('<a href="%s">%s</a>' % (site.href(1, ref_path(lab2id[lab])), E(lab))) if lab in lab2id else E(lab)
+
+    def colbourn_key():
+        return [("Power CTq^s", "The power construction of %s. A hash family is made from the Bush orthogonal array over q symbols with strength s, so it has q^s columns, and each of its rows is replaced by a small covering array. Power CT11^3 reaches 1,331 columns." % rl("Colbourn and Torres-Jimenez 2010")),
+                ("T followed by a number", "Levels removed from one row of that hash family: T7 removes seven. Each T after the first acts on another row. A row with fewer levels needs a smaller covering array, so the result has fewer rows and fewer columns."),
+                ("c, +1, +2", "Not explained in any published source we know of. Gr\u00f6mping reads the c as an ingredient chosen to have constant rows."),
+                ("Power CZ", "The power construction of %s, which uses quilted arrays in place of covering arrays." % rl("Colbourn and Zhou 2012")),
+                ("Power N-CT, S, Arc", "Source not known. The experts Gr\u00f6mping asked could not say what they mean, and these sizes are cited here as Colbourn gives them."),
+                ("Derive from strength t", "Take an array of strength one higher, keep the rows with one symbol in one column, and delete that column. The result has strength one lower and at most one v-th of the rows, by choosing the symbol that appears least."),
+                ("Add a factor", "Adds a column to a known array at the cost of more rows."),
+                ("Author codes", "A code in parentheses names who found the array or hash family: " + ", ".join("%s is %s" % (E(c), rl(l)) for c, l in (
+                    ("TJ-RT", "Torres-Jimenez and Rodriguez-Tello 2012"), ("TJ-AG", "Torres-Jimenez et al. 2018"), ("LCDST", "Lobb et al. 2012"), ("CKRS", "Colbourn et al. 2010"),
+                    ("CCL", "Cohen et al. 2008"), ("Nurmela", "Nurmela 2004"), ("Younis", "Younis and Zamli 2011"), ("Zekaoui", "Zekaoui 2006"))) +
+                 ". Other codes, such as CL, CLS, WCS, TJ-IM, TJ-RC, C and TATA, are kept as Colbourn wrote them, and each of their rows links the paper of the construction it uses.")]
 
     board_rows = ["000", "011", "101", "110"]
     btns = "".join('<button class="%s" data-r=%d data-c=%d aria-label="row %d, column %d: %s">%s</button>' % ("o" if ch == "1" else "z", i, j, i + 1, j + 1, ch, ch) for i, r in enumerate(board_rows) for j, ch in enumerate(r))
     gl = [("t, strength", "How many columns at a time must show every combination."), ("v, symbols", "How many values a cell can take. On and off is v = 2."),
           ("k, columns", "How many factors, settings or parameters the array covers."), ("N, rows", "How many rows, or tests, the array uses. Smaller is better."),
-          ("Rung", "A stretch of k where the smallest known N stays the same. Each cell of the table is a stair of rungs."),
-          ("Floor", "A proven lower bound on N. No array can have fewer rows than its floor."),
+          ("Size", "A stretch of k where the smallest known N stays the same. Each cell of the table is a staircase of sizes, one per row of its table."),
+          ("Lower bound", "A proven bound on N: no array can have fewer rows. Sometimes called the floor."),
+          ("First reached by", "Who first reached that size, from the earliest entry, paper or table that reaches it. Rows from Colbourn's tables name the papers they build on, or Colbourn's tables with his label when they name none."),
+          ("Array", "The array file kept for that size and who built it. It can be a later array of the same size: the builder of the file is not always the first to reach the size."),
           ("Verified", "An array of that size is on file and has been checked exactly, every set of t columns."),
           ("Cited", "The size comes from a published paper or table. No array for it is on file here yet."),
-          ("Optimal", "The best known size equals the floor and a verified array is on file. Nothing smaller exists."),
-          ("New since the first release", "The table was first published on 23 August 2026, built from the 2024 snapshot of Colbourn's tables and the other sources it names. A rung is new when every entry that sets it was entered after that date.")]
+          ("Optimal", "The best known size equals the lower bound and a verified array is on file. Nothing smaller exists."),
+          ("New since the first release", "The table was first published on 23 August 2026, built from the 2024 snapshot of Colbourn's tables and the other sources it names. A size is new when every entry that sets it was entered after that date.")]
     learn = ('<main><div class=hero><div class=in><div><p class=crumb>Learn</p><h1 style="font-family:%s;font-weight:400">What is a covering array?</h1>'
              '<p style="font-family:%s;font-size:1.1rem;line-height:1.55">A grid of symbols, chosen so that any few columns, looked at together, show every possible combination somewhere in their rows.</p>'
              '<p style="font-family:%s;font-size:1.1rem;line-height:1.55;margin-top:10px">Here are three on and off switches. Every pair of switches is seen in all four combinations, 00, 01, 10 and 11, using only four rows instead of eight. '
@@ -1002,9 +1059,12 @@ def main():
              '<div class=statc><div><b>1,024</b><span>tests for every combination of 10 switches</span></div><div><b>6</b><span>tests for every pair, CA(6; 2, 10, 2)</span></div></div></div>'
              '<h2>See it in the table</h2><div class=lv><div><b><a href="%s">t=2 v=2</a></b><span>on and off, every pair</span></div><div><b><a href="%s">t=3 v=2</a></b><span>on and off, every triple</span></div>'
              '<div><b><a href="%s">t=2 v=3</a></b><span>three values, every pair</span></div><div><b><a href="%s">t=3 v=3</a></b><span>three values, every triple</span></div></div>'
-             '<h2>How to read the table</h2><dl class=gl>%s</dl></div></main>') % (
+             '<h2>How to read the table</h2><dl class=gl>%s</dl>'
+             '<h2 id=colbourn-labels tabindex=-1>Reading Colbourn\'s labels</h2><p>Sizes taken from Colbourn\'s tables keep his label for how each was made. The labels are short, and some parts of them have never been published. '
+             'This key says what is known, and where it is not. The main written account is <a href="https://www1.bht-berlin.de/FB_II/reports/Report-2026-001.pdf">Gr\u00f6mping 2026</a>, Section 7.</p><dl class=gl>%s</dl></div></main>') % (
         SERIF, SERIF, SERIF, btns, site.href(1, "t2/v2/"), site.href(1, "t3/v2/"), site.href(1, "t2/v3/"), site.href(1, "t3/v3/"),
-        "".join('<div id="%s"><dt>%s</dt><dd>%s</dd></div>' % (re.sub(r"[^a-z0-9]+", "-", x.lower()).strip("-"), E(x), E(y)) for x, y in gl))
+        "".join('<div id="%s"><dt>%s</dt><dd>%s</dd></div>' % (re.sub(r"[^a-z0-9]+", "-", x.lower()).strip("-"), E(x), E(y)) for x, y in gl),
+        "".join('<div><dt>%s</dt><dd>%s</dd></div>' % (E(x), y) for x, y in colbourn_key()))
     lscript = ("<script>function upd(){var b=[].slice.call(document.querySelectorAll('.bg button'));var g=[[],[],[],[]];b.forEach(function(x){g[+x.dataset.r][+x.dataset.c]=x.textContent});"
                "var out='';[[0,1],[0,2],[1,2]].forEach(function(p){var s={};g.forEach(function(r){s[r[p[0]]+r[p[1]]]=1});var seen=Object.keys(s).sort();"
                "var all=seen.length==4,miss=['00','01','10','11'].filter(function(z){return !s[z]});out+='<div><span>columns '+(p[0]+1)+' and '+(p[1]+1)+'</span><b>'+seen.join(' ')+'</b><span class='+(all?'ok':'miss')+'>'+(all?'all 4':'missing: '+miss.join(' '))+'</span></div>'});"
@@ -1033,14 +1093,14 @@ def main():
              '<div><b>Withdrawn arrays</b>Never submitted or used as a start or ingredient. The check compares against them.</div>'
              '<div><b>Licence</b>Opening a pull request licenses the arrays under CC BY 4.0.</div></div>'
              '<div class=citebox id=cite><div><p class=sech style="margin:0 0 6px">Cite</p><h2>Any use of this data cites the DOI</h2>'
-             '<p>When an agent or a paper uses sizes, arrays or floors from this table, cite the table by its DOI and cite the authors of the rows used. Each row names its source.</p>'
+             '<p>When an agent or a paper uses sizes, arrays or lower bounds from this table, cite the table by its DOI and cite the authors of the rows used. Each row names its source.</p>'
              '<p style="margin-top:10px">The data compiled here is licensed <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>, which requires this credit. '
              'Rows taken from other sources keep their own terms, and each row names its source. See <a href="%s/blob/main/LICENSE-DATA">LICENSE-DATA</a>.</p></div>'
              '<div><div class=code>C. Smolen, ca-tools: a maintained table of covering arrays,\ndoi:%s</div><a class=doil href="https://doi.org/%s">https://doi.org/%s</a></div></div></main>') % (
         site.href(1, "llms.txt"), RAW, site.href(1, "submit/"),
         ftile("CSV", "ca_table.csv", RAW + "table/ca_table.csv", "Every row, with tier, credit and construction"),
         ftile("CSV", "wanted.csv", RAW + "table/wanted.csv", "Open sizes: no_array, array_above_best, beat_best"),
-        ftile("CSV", "lower_bounds.csv", RAW + "table/lower_bounds.csv", "Proven floors with theorem and references"),
+        ftile("CSV", "lower_bounds.csv", RAW + "table/lower_bounds.csv", "Proven lower bounds with theorem and references"),
         ftile("CSV", "MANIFEST.csv", RAW + "table/MANIFEST.csv", "Every stored array: file name, t, v, k, N and sha256"),
         ftile("JSON CSV", "t3/v3.json", site.href(1, "t3/v3.json"), "Any one cell, same pattern for every t and v"),
         ftile("CSV", "references.csv", RAW + "table/references.csv", "The papers the table rests on"),
@@ -1086,12 +1146,12 @@ def main():
     site.page("changelog/index.html", "Updates: records in the covering array table", "Every submission to the covering array table with submitter, date and the sizes that fell.", cl, "Updates")
 
     groups = [("Every combination must appear", "A covering array needs at least v<sup>t</sup> rows, one for each combination.", ["R0"]),
-              ("Fixing a symbol", "Fix one column to one symbol and the rows left over form a smaller array, so the floor for strength t comes from the floor for t minus 1.", ["R2"]),
+              ("Fixing a symbol", "Fix one column to one symbol and the rows left over form a smaller array, so the lower bound for strength t comes from the lower bound for t minus 1.", ["R2"]),
               ("Published exact values", "Sizes proven optimal by exhaustive search in published work.", ["R5"]),
               ("Kleitman and Spencer", "The classical bounds for binary arrays, exact at strength 2.", ["R3", "R7", "R8"]),
               ("Counting set systems", "Bounds from how many columns a given number of rows can support.", ["R10", "R16", "R17"]),
               ("Strength 2 above v squared", "Strength 2 arrays need at least v<sup>2</sup>+3 rows once k is past v+1.", ["R12"]),
-              ("No orthogonal array", "When no perfect array exists at a size, the floor rises above it.", ["R13", "R14", "R15"]),
+              ("No orthogonal array", "When no perfect array exists at a size, the lower bound rises above it.", ["R13", "R14", "R15"]),
               ("Binary strength 3 treads", "Extra rows forced at the ends of stretches of binary strength 3.", ["R6"])]
     byrule = collections.defaultdict(list)
     for r in lb:
@@ -1112,17 +1172,17 @@ def main():
                     if i in R.REFS:
                         cnt[i] += 1
         refs = ", ".join('<a href="%s">%s</a>' % (site.href(1, ref_path(i)), E(R.ref_label(i))) for i, _ in cnt.most_common(3))
-        rl += '<div class=rule><div><h2>%s</h2><p>%s</p></div><span class=cnt><b>%s</b> floors</span><span class=refs>%s</span></div>' % (
+        rl += '<div class=rule><div><h2>%s</h2><p>%s</p></div><span class=cnt><b>%s</b> lower bounds</span><span class=refs>%s</span></div>' % (
             name, desc, format(n, ","), refs or '<span class=mute>definition</span>')
     tot_r = sum(len(c["rungs"]) for c in cells.values())
     tot_o = sum(c["nopt"] for c in cells.values())
-    bd = ('<div class=pageh><div class=in><div><h1>Lower bounds</h1><p>A floor is the fewest rows any covering array could possibly have, proven by a theorem. '
-          'When the best known size reaches its floor, that size is optimal and the question is closed. The gap between the two is how much room is left.</p></div>'
+    bd = ('<div class=pageh><div class=in><div><h1>Lower bounds</h1><p>A lower bound is the fewest rows any covering array could possibly have, proven by a theorem. '
+          'When the best known size reaches its lower bound, that size is optimal and the question is closed. The gap between the two is how much room is left.</p></div>'
           '<div class=btns><a href="%stable/lower_bounds.csv">CSV</a></div></div></div>'
-          '<div class=stats><div><b class=num>%s</b><span>floors on record</span></div><div><b class=num>%s</b><span>optimal rungs</span></div>'
-          '<div><b class=num>%s</b><span>rungs still open</span></div><div><b class=num>%d</b><span>kinds of proof</span></div></div>'
-          '<main class=wrapw><p class=sech>How the floors are proven</p>%s'
-          '<p class=mute style="margin-top:22px;font-size:.88rem">Each rung on a t and v page shows its floor and the gap to it. The full list of floors is in the CSV.</p></main>') % (
+          '<div class=stats><div><b class=num>%s</b><span>lower bounds on record</span></div><div><b class=num>%s</b><span>optimal sizes</span></div>'
+          '<div><b class=num>%s</b><span>sizes still open</span></div><div><b class=num>%d</b><span>kinds of proof</span></div></div>'
+          '<main class=wrapw><p class=sech>How the lower bounds are proven</p>%s'
+          '<p class=mute style="margin-top:22px;font-size:.88rem">Each size on a t and v page shows its lower bound and the gap to it. The full list of lower bounds is in the CSV.</p></main>') % (
         RAW, format(len(lb), ","), format(tot_o, ","), format(tot_r - tot_o, ","), sum(1 for g in groups if sum(len(byrule[x]) for x in g[2])), rl)
     site.page("bounds/index.html", "Lower bounds for covering array numbers", "Proven lower bounds on CAN(t, k, v) with the theorem and references for each.", bd, "Lower bounds")
 
@@ -1152,7 +1212,7 @@ def main():
         return re.sub(r"[^a-z0-9]+", " ", " ".join(str(p) for p in parts).lower()).strip()
     si = []
     for (t, v), c in sorted(cells.items()):
-        si.append(["c", "t=%d v=%d" % (t, v), "%d rungs, k to %s, %d verified, %d optimal" % (len(c["rungs"]), format(c["kmax"], ","), c["nver"], c["nopt"]),
+        si.append(["c", "t=%d v=%d" % (t, v), "%d sizes, k to %s, %d verified, %d optimal" % (len(c["rungs"]), format(c["kmax"], ","), c["nver"], c["nopt"]),
                    cell_path(t, v), nk("t%d v%d t %d v %d" % (t, v, t, v), "strength", t, v, "symbols", "can", t, v)])
     for sha, path in array_path.items():
         m = man[sha]
