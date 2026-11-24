@@ -181,6 +181,11 @@ table.lg tbody tr:hover td,.cl tbody tr:hover td{background:#f3f8f4}
 @media (max-width:1100px){.pp{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (max-width:760px){.two3,.ab{grid-template-columns:1fr}}
 @media (max-width:560px){.pp{grid-template-columns:1fr}.ph{gap:14px}.ph i{width:56px;height:56px;font-size:1.1rem}}
+.lfind{position:relative;flex:none;width:340px;align-self:end;display:flex;flex-direction:column;margin-bottom:2px}.lfind svg{position:absolute;left:13px;bottom:14px;color:var(--mute)}
+.lfind input{width:100%;border:1px solid var(--line);border-radius:8px;padding:11px 14px 11px 38px;font:1rem system-ui,-apple-system,"Segoe UI",sans-serif;background:#fff;color:var(--fg)}
+.lfind input:focus{outline:2px solid #1f6b45;outline-offset:1px;border-color:#1f6b45}.lfind span{order:-1;display:block;font-size:.8rem;margin:0 0 6px;text-align:right}
+#lib>div[hidden]{display:none}.lnone{margin:10px 0 0;color:var(--mute)}
+@media (max-width:900px){.lfind{width:100%}}
 @media (prefers-reduced-motion:reduce){*,*:before,*:after{transition:none !important;animation:none !important;scroll-behavior:auto !important}.el:hover,.pg:hover,.pc:hover,.fl4:hover,.ftl:hover,.lv div:hover,.statc div:hover,.bg button:hover{transform:none !important}.tumble i{transform:none !important}}
 .top .in{height:64px;gap:26px}.top b,.top b a,.top nav a,.top .ai,.top .sbm,.srch input{font-size:16px;line-height:1}
 .top b a{font-size:18px;font-weight:700}.top nav{gap:22px}.brand{gap:12px}.logo{width:66px;height:24px}
@@ -788,7 +793,7 @@ def main():
         cap = ", ".join(s for s in [("%s entries" % format(len(u), ",")) if u else "", ("%d array%s" % (na, "" if na == 1 else "s")) if na else "",
                                      ("%d floor%s" % (len(flo[rid]), "" if len(flo[rid]) == 1 else "s")) if flo[rid] else ""] if s)
         doi = R.REFS[rid].get("doi") or ""
-        cards.append('<div><a class=pg href="%s"><div class=j>%s</div><h2>%s</h2><p class=au>%s</p><div class=ln>%s</div><div class=y><span>%s</span><span style="overflow:hidden;text-overflow:ellipsis">%s</span></div></a><p class=cap>%s</p></div>' % (
+        cards.append(('<div data-s="%s">' % E(fold(" ".join([ti, au, jh, year_of(ref), doi, rid])).lower(), quote=True)) + '<a class=pg href="%s"><div class=j>%s</div><h2>%s</h2><p class=au>%s</p><div class=ln>%s</div><div class=y><span>%s</span><span style="overflow:hidden;text-overflow:ellipsis">%s</span></div></a><p class=cap>%s</p></div>' % (
             site.href(1, ref_path(rid)), E(jh), E(ti), E(au), "<i></i>" * 7, year_of(ref), E(("doi:" + doi) if doi and not doi.lower().startswith("arxiv") else doi), cap))
         d = 2
         h = lambda p, d=d: site.href(d, p)
@@ -807,9 +812,15 @@ def main():
             ('<h2>In the table</h2><p class=lede>%s %s build on this paper.</p>%s%s' % (format(len(u), ","), "row" if len(u) == 1 else "rows", "".join(prs), more)) if u else "",
             ('<h2>Floors that cite it</h2>%s' % fls) if fls else "")
         site.page(ref_path(rid) + "index.html", "%s, %s" % (ti, R.ref_label(rid)), "%s. What in the covering array table builds on it." % ref[:150], body, "Library")
-    lib = ('<div class="pageh serifh"><div class=in><div><h1>Library</h1><p>Every paper the table rests on. Each entry links the paper and says what in the table is built on it. Open one to see those arrays and floors.</p></div></div></div>'
-           '<main class=wrapw><div class=lib>%s</div></main>') % "".join(cards)
-    site.page("library/index.html", "Library: the papers behind the covering array table", "Every paper the covering array table rests on, with the arrays and floors built on each.", lib, "Library")
+    lib = ('<div class="pageh serifh"><div class=in><div><h1>Library</h1><p>Every paper the table rests on. Each entry links the paper and says what in the table is built on it. Open one to see those arrays and floors.</p></div>'
+           '<div class=lfind><label for=lq class=vh>Search the library</label><svg width="17" height="17" viewBox="0 0 17 17" aria-hidden="true"><circle cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M11.2 11.2l4.3 4.3" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>'
+           '<input id=lq type=search autocomplete=off spellcheck=false placeholder="Title, author, journal or year"><span id=ln class=mute aria-live=polite>%d papers</span></div></div></div>'
+           '<main class=wrapw><div class=lib id=lib>%s</div><p class=lnone id=lnone hidden>No paper in the library matches that. If one is missing, <a href="mailto:%s">tell us</a>.</p></main>') % (len(cards), "".join(cards), CONTACT)
+    lscript = ("<script>(function(){var q=document.getElementById('lq'),cs=document.querySelectorAll('#lib>div'),n=document.getElementById('ln'),z=document.getElementById('lnone'),all=cs.length;"
+               "function f(){var t=q.value.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase().split(/\\s+/).filter(Boolean),k=0;"
+               "cs.forEach(function(c){var s=c.getAttribute('data-s'),on=t.every(function(w){return s.indexOf(w)>=0});c.hidden=!on;if(on)k++});"
+               "n.textContent=t.length?k+' of '+all+' papers':all+' papers';z.hidden=k>0}q.addEventListener('input',f)})()</script>")
+    site.page("library/index.html", "Library: the papers behind the covering array table", "Every paper the covering array table rests on, with the arrays and floors built on each.", lib, "Library", None, lscript)
 
     people = {}
 
