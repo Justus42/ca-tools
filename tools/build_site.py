@@ -70,7 +70,7 @@ table.lg td.big{font-weight:800;font-size:1rem}table.lg td.a{white-space:nowrap}
 .lib{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px 24px}
 .pg{background:#fff;aspect-ratio:1/1.3;box-shadow:0 1px 2px rgba(0,0,0,.08),0 6px 16px rgba(0,0,0,.07);padding:26px 22px 18px;display:flex;flex-direction:column;font-family:@SERIF@;text-decoration:none;color:inherit}
 .pg .j{font-family:system-ui,sans-serif;font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);border-bottom:1px solid var(--line);padding-bottom:8px;margin-bottom:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.pg h3{font-weight:400;font-size:1.15rem;line-height:1.25;text-align:center;margin:0 0 12px}.pg .au{font-size:.85rem;text-align:center;margin:0}
+.pg h2{font-weight:400;font-size:1.15rem;line-height:1.25;text-align:center;margin:0 0 12px}.pg .au{font-size:.85rem;text-align:center;margin:0}
 .pg .ln{margin:16px 0 0;display:flex;flex-direction:column;gap:5px}.pg .ln i{display:block;height:4px;background:#d7eadf;border-radius:2px}.pg .ln i:nth-child(3n){width:82%}
 .pg .y{margin-top:auto;font-family:system-ui,sans-serif;font-size:.72rem;color:var(--mute);display:flex;gap:12px;justify-content:space-between;border-top:1px solid var(--line);padding-top:8px;white-space:nowrap;overflow:hidden}
 .cap{font-size:.8rem;color:var(--mute);margin:8px 2px 0}
@@ -107,7 +107,7 @@ table.lg td.big{font-weight:800;font-size:1rem}table.lg td.a{white-space:nowrap}
 .cl{border-collapse:collapse;width:100%;font-size:.88rem}.cl th{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mute);text-align:left;border-bottom:1px solid var(--fg);padding:8px 10px}.cl td{border-bottom:1px solid var(--line);padding:10px;vertical-align:top}
 .cl td.d{white-space:nowrap;font-variant-numeric:tabular-nums}.cl s{color:var(--mute)}
 .rule{display:grid;grid-template-columns:1fr 120px 340px;gap:24px;padding:16px 0;border-top:1px solid var(--line);align-items:baseline}
-.rule b{font-size:1rem}.rule p{margin:4px 0 0;color:#444;max-width:44rem}.rule .cnt{font-size:.88rem;color:var(--mute)}.rule .cnt b{color:var(--fg);font-size:1.3rem}.rule .refs{font-size:.85rem;text-align:right}
+.rule b{font-size:1rem}.rule h2{font-size:1rem;margin:0;font-weight:700}table.lg tr.hit td{box-shadow:inset 0 2px 0 #1f6b45,inset 0 -2px 0 #1f6b45}.rule p{margin:4px 0 0;color:#444;max-width:44rem}.rule .cnt{font-size:.88rem;color:var(--mute)}.rule .cnt b{color:var(--fg);font-size:1.3rem}.rule .refs{font-size:.85rem;text-align:right}
 .sech{font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin:34px 0 12px}
 .two2{display:grid;grid-template-columns:1fr 1fr;gap:24px}
 .card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:30px var(--side);display:flex;flex-direction:column}
@@ -181,7 +181,7 @@ table.lg tbody tr:hover td,.cl tbody tr:hover td{background:#f3f8f4}
 .tumble{display:flex;justify-content:center;gap:4px;margin:0 0 30px}.tumble i{display:block;width:34px;height:34px;border-radius:5px;background:#b9dcc6}
 .tumble i:nth-child(2n){background:#5fa77d;transform:translateY(14px) rotate(14deg)}.tumble i:nth-child(3n){background:#1f6b45;transform:translateY(34px) rotate(-22deg)}
 
-.strip,.citebox,.chk,.doc section,.card,.pg h3,.pg .au,.paper .hd h1{overflow-wrap:anywhere}.po{display:none}
+.strip,.citebox,.chk,.doc section,.card,.pg h2,.pg .au,.paper .hd h1{overflow-wrap:anywhere}.po{display:none}
 .lib>div,.grid2>div,.two2>div,.arr>section,.arr>aside,.doc>section,.hero .in>div{min-width:0}
 @media (max-width:1280px){.el{min-height:96px;padding:6px 7px}.el .n{font-size:clamp(1.05rem,1.6vw,1.7rem)}.el .n small{font-size:.62rem;margin-left:2px}.el .tp{font-size:.6rem}.el .st{font-size:.62rem}.el .dt{font-size:.58rem}.el .ft{flex-direction:column;align-items:flex-start;gap:1px}}
 @media (max-width:1320px){.top .in{flex-wrap:wrap;height:auto;padding-top:10px;padding-bottom:10px;row-gap:10px}.top nav{order:6;width:100%;overflow-x:auto;gap:18px;padding-top:4px;margin-top:-4px;padding-bottom:2px}.top .sp{display:none}.top .ai{margin-left:auto}}
@@ -250,14 +250,14 @@ class Site:
         doc = ('<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
                '<title>%s</title><meta name="description" content="%s">%s'
                '<link rel="stylesheet" href="%s"><link rel="alternate" type="text/plain" title="llms.txt" href="%s">%s</head><body><a class=skip href="#main">Skip to content</a>'
-               '<div class=top><div class=in><b><a class=brand href="%s"><svg class=logo viewBox="0 0 61 22" aria-hidden="true"><rect x="1.0" y="3.0" width="8" height="8" rx="1.6" fill="#b9dcc6" style="transform:rotate(0deg);animation-name:lg0"/><rect x="11.0" y="6.0" width="8" height="8" rx="1.6" fill="#5fa77d" style="transform:rotate(14deg);animation-name:lg1"/><rect x="21.0" y="11.0" width="8" height="8" rx="1.6" fill="#1f6b45" style="transform:rotate(-22deg);animation-name:lg2"/><rect x="31.0" y="6.0" width="8" height="8" rx="1.6" fill="#5fa77d" style="transform:rotate(14deg);animation-name:lg3"/><rect x="41.0" y="3.0" width="8" height="8" rx="1.6" fill="#b9dcc6" style="transform:rotate(0deg);animation-name:lg4"/><rect x="51.0" y="11.0" width="8" height="8" rx="1.6" fill="#1f6b45" style="transform:rotate(-22deg);animation-name:lg5"/></svg><span>Covering Array Tools</span></a></b><nav>%s</nav><span class=sp></span>'
+               '<header class=top><div class=in><b><a class=brand href="%s"><svg class=logo viewBox="0 0 61 22" aria-hidden="true"><rect x="1.0" y="3.0" width="8" height="8" rx="1.6" fill="#b9dcc6" style="transform:rotate(0deg);animation-name:lg0"/><rect x="11.0" y="6.0" width="8" height="8" rx="1.6" fill="#5fa77d" style="transform:rotate(14deg);animation-name:lg1"/><rect x="21.0" y="11.0" width="8" height="8" rx="1.6" fill="#1f6b45" style="transform:rotate(-22deg);animation-name:lg2"/><rect x="31.0" y="6.0" width="8" height="8" rx="1.6" fill="#5fa77d" style="transform:rotate(14deg);animation-name:lg3"/><rect x="41.0" y="3.0" width="8" height="8" rx="1.6" fill="#b9dcc6" style="transform:rotate(0deg);animation-name:lg4"/><rect x="51.0" y="11.0" width="8" height="8" rx="1.6" fill="#1f6b45" style="transform:rotate(-22deg);animation-name:lg5"/></svg><span>Covering Array Tools</span></a></b><nav>%s</nav><span class=sp></span>'
                '<a class="ai%s" href="%s">For AI</a><a class="sbm%s" href="%s">Submit</a>'
-               '<div class=srch><button type=button class=qb aria-label="Search" aria-expanded="false" aria-controls="q"><svg width="17" height="17" viewBox="0 0 17 17" aria-hidden="true"><circle cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M11.2 11.2l4.3 4.3" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button><input id=q type=search placeholder="Search arrays, papers, people" autocomplete=off aria-label="Search"><div id=qr class=qr></div></div></div></div><div id=main tabindex=-1>%s</div>'
+               '<div class=srch><button type=button class=qb aria-label="Search" aria-expanded="false" aria-controls="q"><svg width="17" height="17" viewBox="0 0 17 17" aria-hidden="true"><circle cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M11.2 11.2l4.3 4.3" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button><input id=q type=search placeholder="Search sizes, arrays, papers" autocomplete=off aria-label="Search" role=combobox aria-autocomplete=list aria-controls=qr aria-expanded=false><div id=qr class=qr role=listbox aria-label="Search results"></div><span id=qn class=vh aria-live=polite></span></div></div></header><div id=main tabindex=-1>%s</div>'
                '<div class=foot><div class=in><span><a href="%s">Source data on GitHub</a>: every array, the table files and their full history. This build: commit <span class=mono>%s</span>, %s</span>'
                '<span>Cite: DOI <a href="https://doi.org/%s">%s</a></span><span>Data CC BY 4.0</span><span><a href="mailto:%s">%s</a></span></div></div>'
-               '<script src="%s" data-root="%s" data-preview="%s" defer></script>%s</body></html>') % (
+               '<script src="%s" data-root="%s" data-preview="%s" defer></script>%s%s</body></html>') % (
             E(title), E(desc), canon, h("assets/site.css"), h("llms.txt"), ld, h(""), nav, " on" if active == "For AI" else "", h("for-ai/"), " on" if active == "Submit" else "", h("submit/"), body,
-            REPO_URL, self.commit, self.date, DOI, DOI, CONTACT, CONTACT, h("assets/search.js"), root, "1" if self.preview else "", script)
+            REPO_URL, self.commit, self.date, DOI, DOI, CONTACT, CONTACT, h("assets/search.js"), root, "1" if self.preview else "", script, "" if self.preview else COUNTER)
         self.write(path, doc)
 
 
@@ -265,19 +265,21 @@ SEARCH_JS = r"""(function(){var me=document.currentScript,root=me.getAttribute('
 function load(cb){if(loaded){cb();return}var s=document.createElement('script');s.src=root+'assets/sindex.js';s.onload=function(){loaded=true;cb()};document.head.appendChild(s)}
 function norm(x){return x.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
 function url(p){if(pv&&(p===''||p.slice(-1)=='/'))p+='index.html';return root+p}
-var G={c:'Cells',a:'Arrays',p:'Papers'};
-function run(){var v=norm(q.value);if(!v){box.classList.remove('on');return}var tk=v.split(' '),res={c:[],a:[],p:[]};
+var G={x:'Size',c:'Cells',a:'Arrays',p:'Papers'};
+function close(){box.classList.remove('on');q.setAttribute('aria-expanded','false');q.removeAttribute('aria-activedescendant')}
+function sizes(raw,res){var m=raw.match(/^\s*can\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*$/i),c,e,i,t,k,vv,n;if(m){t=+m[1];k=+m[2];vv=+m[3]}else{m=raw.match(/^\s*ca\s*\(\s*(\d+)\s*;\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*$/i);if(!m)return false;n=+m[1];t=+m[2];k=+m[3];vv=+m[4];for(i=0;i<SI.length;i++){e=SI[i];if(e[0]=='a'&&e[3].indexOf('ca/'+n+'/'+t+'/'+k+'/'+vv+'/')==0)res.x.push([0,e])}}c='t'+t+'/v'+vv+'/';for(i=0;i<SI.length;i++){e=SI[i];if(e[0]=='c'&&e[3]==c){res.x.push([1,['x','CAN('+t+', '+k+', '+vv+')','the row for k = '+k+' on the t='+t+' v='+vv+' page',c,'',k]]);break}}return res.x.length>0}
+function run(){var v=norm(q.value);if(!v){close();return}var tk=v.split(' '),res={x:[],c:[],a:[],p:[]};if(!sizes(q.value,res)){
 for(var i=0;i<SI.length;i++){var e=SI[i],k=e[4],ok=true;for(var j=0;j<tk.length;j++){var t=tk[j];if(/^\d+$/.test(t)){if((' '+k+' ').indexOf(' '+t+' ')<0){ok=false;break}}else if(k.indexOf(t)<0){ok=false;break}}
-if(ok){var sc=(k.indexOf(v)>=0?0:1)*1000+e[1].length;res[e[0]].push([sc,e])}}
-var h='',n=0;items=[];['c','a','p'].forEach(function(g){var r=res[g].sort(function(x,y){return x[0]-y[0]});if(!r.length)return;h+='<div class=g>'+G[g]+(r.length>6?' ('+r.length+')':'')+'</div>';
-r.slice(0,6).forEach(function(x){var e=x[1];h+='<a href="'+url(e[3])+'" data-i='+n+'><b>'+e[1]+'</b><span>'+e[2]+'</span></a>';items.push(url(e[3]));n++})});
-box.innerHTML=n?h:'<div class=none>Nothing found for '+q.value.replace(/</g,'&lt;')+'</div>';box.classList.add('on');act=n?0:-1;mark()}
-function mark(){var a=box.querySelectorAll('a');for(var i=0;i<a.length;i++)a[i].classList.toggle('act',i==act)}
+if(ok){var sc=(k.indexOf(v)>=0?0:1)*1000+e[1].length;res[e[0]].push([sc,e])}}}
+var h='',n=0;items=[];['x','c','a','p'].forEach(function(g){var r=res[g].sort(function(x,y){return x[0]-y[0]});if(!r.length)return;h+='<div class=g role=presentation>'+G[g]+(r.length>6?' ('+r.length+')':'')+'</div>';
+r.slice(0,6).forEach(function(x){var e=x[1],u=url(e[3])+(e[5]?'#k='+e[5]:'');h+='<a href="'+u+'" data-i='+n+' id=qo'+n+' role=option aria-selected=false><b>'+e[1]+'</b><span>'+e[2]+'</span></a>';items.push(u);n++})});
+box.innerHTML=n?h:'<div class=none>Nothing found for '+q.value.replace(/</g,'&lt;')+'</div>';box.classList.add('on');q.setAttribute('aria-expanded','true');act=n?0:-1;mark();document.getElementById('qn').textContent=n?n+(n==1?' result':' results'):'Nothing found'}
+function mark(){var a=box.querySelectorAll('a');for(var i=0;i<a.length;i++){a[i].classList.toggle('act',i==act);a[i].setAttribute('aria-selected',i==act?'true':'false')}if(act>=0&&a[act])q.setAttribute('aria-activedescendant',a[act].id);else q.removeAttribute('aria-activedescendant')}
 q.addEventListener('focus',function(){load(function(){})});q.addEventListener('input',function(){load(run)});
 q.addEventListener('keydown',function(ev){if(ev.key=='ArrowDown'){act=Math.min(act+1,items.length-1);mark();ev.preventDefault()}else if(ev.key=='ArrowUp'){act=Math.max(act-1,0);mark();ev.preventDefault()}
-else if(ev.key=='Enter'){if(act>=0&&items[act])location.href=items[act];ev.preventDefault()}else if(ev.key=='Escape'){box.classList.remove('on');q.blur()}});
+else if(ev.key=='Enter'){if(act>=0&&items[act])location.href=items[act];ev.preventDefault()}else if(ev.key=='Escape'){close();q.blur()}});
 document.addEventListener('keydown',function(ev){if(ev.key=='/'&&document.activeElement!==q&&!/input|textarea/i.test(document.activeElement.tagName)){q.focus();ev.preventDefault()}});
-document.addEventListener('click',function(ev){if(!ev.target.closest('.srch'))box.classList.remove('on')})})();
+document.addEventListener('click',function(ev){if(!ev.target.closest('.srch'))close()})})();
 (function(){var w=document.querySelector('.srch'),bt=w&&w.querySelector('.qb'),q=document.getElementById('q'),r=document.getElementById('qr');if(!bt||!q)return;var pin=false,hov=false;
 function op(){w.classList.add('open');bt.setAttribute('aria-expanded','true')}
 function cl(){pin=false;w.classList.remove('open','pin');bt.setAttribute('aria-expanded','false');if(r)r.classList.remove('on')}
@@ -337,6 +339,9 @@ def year_of(r):
     return m[-1] if m else ""
 
 
+KHASH = ("<script>(function(){var m=location.hash.match(/^#k=(\\d+)$/);if(!m)return;var k=+m[1],rs=document.querySelectorAll('table.lg tbody tr[id^=k]');"
+         "for(var i=0;i<rs.length;i++){var p=rs[i].cells[0].textContent.replace(/,/g,'').split(' to '),a=+p[0],b=+(p[1]||p[0]);if(k>=a&&k<=b){rs[i].classList.add('hit');rs[i].scrollIntoView({block:'center'});break}}})()</script>")
+COUNTER = '<script data-goatcounter="https://coveringarraytools.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>'
 SOURCE_NAME = {"S1": "Colbourn's tables", "S4": "NIST covering array library", "S5": "Dwyer CA_Database", "S6": "CAs R package data"}
 
 
@@ -529,12 +534,12 @@ def main():
                          "distribution": [{"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": RAW + "table/ca_table.csv"}]},
                         ensure_ascii=False).replace("</", "<\\/")
     home = ('<div class=hero id=lookup><div class=in><div><h1>Best known covering arrays, with evidence.</h1>'
-            '<p>Every entry says who built it, how, and what it builds on. Verified entries link an array you can download and check yourself. '
+            '<p>Every entry names who built it or where it comes from, how it was built, and what it builds on. Verified entries link an array you can download and check yourself. '
             'Proven floors sit beside every size. The table grows by pull request and rebuilds on every merge.</p></div>'
             '<form class=look onsubmit="return look()"><h2>Look up a size</h2><div class=lf><span><label for=lt>strength t</label><input id=lt value=3 inputmode=numeric></span>'
             '<span><label for=lv>symbols v</label><input id=lv value=3 inputmode=numeric></span><span><label for=lk>columns k</label><input id=lk value=6 inputmode=numeric></span>'
             '<button>Find</button></div><div class=ans id=ans role=status aria-live=polite><span class=mute>Enter t, v and k, then Find.</span></div></form></div></div>'
-            '<div class=hstats><span></span><div><b class=num>%s</b><span>entries</span></div><div><b class=num>%s</b><span>verified</span></div>'
+            '<div class=hstats><span></span><div><b class=num>%s</b><span>entries</span></div><div><b class=num>%s</b><span>verified entries</span></div>'
             '<div><b class=num>%s</b><span>arrays on file</span></div><div><b class=num>%s</b><span>optimal rungs</span></div>'
             '<div><b>2 to 6</b><span>strengths, v to 25</span></div><div><b>7 to 10</b><span>strengths, binary</span></div></div>'
             '<main class=wrapw>%s%s%s<div class=key>%s<span>tile: k reached, rungs, verified rungs, optimal rungs, date of last change</span></div></main>'
@@ -611,8 +616,17 @@ def main():
                 '<th>credit and construction</th><th>array</th></tr></thead><tbody>%s</tbody></table></main>') % (
             h(""), t, v, t, v, t, v, format(c["kmax"], ","), h("t%d/v%d.json" % (t, v)), h("t%d/v%d.csv" % (t, v)), DOI,
             len(c["rungs"]), c["nver"], c["nopt"], c["nnew"], h("learn/") + "#new-since-the-first-release", c["last"], "".join(trs))
+        cld = json.dumps({"@context": "https://schema.org", "@type": "Dataset",
+                          "name": "CAN(t, k, v) best known covering array sizes, t=%d v=%d" % (t, v),
+                          "description": "Best known sizes N of covering arrays CA(N; %d, k, %d) for k up to %s, with proven floors, credit, construction and the sha256 of each stored array." % (t, v, format(c["kmax"], ",")),
+                          "url": BASE + path[:-len("index.html")], "identifier": "https://doi.org/" + DOI,
+                          "license": "https://creativecommons.org/licenses/by/4.0/", "isAccessibleForFree": True,
+                          "creator": {"@type": "Person", "name": "Christopher Smolen"}, "dateModified": c["last"][:10],
+                          "isPartOf": {"@type": "Dataset", "name": "Covering Array Table: best known covering arrays CA(N; t, k, v)", "url": BASE},
+                          "distribution": [{"@type": "DataDownload", "encodingFormat": "application/json", "contentUrl": BASE + "t%d/v%d.json" % (t, v)},
+                                           {"@type": "DataDownload", "encodingFormat": "text/csv", "contentUrl": BASE + "t%d/v%d.csv" % (t, v)}]}, ensure_ascii=False)
         site.page(path, "CAN(%d, k, %d): strength %d covering arrays on %d symbols" % (t, v, t, v),
-                  "Best known covering array sizes CA(N; %d, k, %d) for k up to %s, with floors, credit and arrays." % (t, v, format(c["kmax"], ",")), body, "Table")
+                  "Best known covering array sizes CA(N; %d, k, %d) for k up to %s, with floors, credit and arrays." % (t, v, format(c["kmax"], ",")), body, "Table", cld, KHASH)
         recs = [dict(k_from=x["k0"], k_to=x["k1"], N=x["N"], floor=x["floor"], floor_k_to=x["floor_k_to"], optimal_from=x["opt_from"],
                      status="optimal" if x["closed"] else ("verified" if x["verified"] else "cited"),
                      credit=x["credit"], construction=x["construction"], builds_on=x["builds_on"], array_sha256=x["sha"],
@@ -708,10 +722,10 @@ def main():
         jh = re.sub(r"\s*\d.*$", "", j) or j
         u = use[rid]
         na = len({x["array_sha256"] for x in u if x["array_sha256"]})
-        cap = ", ".join(s for s in [("%s rows" % format(len(u), ",")) if u else "", ("%d array%s" % (na, "" if na == 1 else "s")) if na else "",
+        cap = ", ".join(s for s in [("%s entries" % format(len(u), ",")) if u else "", ("%d array%s" % (na, "" if na == 1 else "s")) if na else "",
                                      ("%d floor%s" % (len(flo[rid]), "" if len(flo[rid]) == 1 else "s")) if flo[rid] else ""] if s)
         doi = R.REFS[rid].get("doi") or ""
-        cards.append('<div><a class=pg href="%s"><div class=j>%s</div><h3>%s</h3><p class=au>%s</p><div class=ln>%s</div><div class=y><span>%s</span><span style="overflow:hidden;text-overflow:ellipsis">%s</span></div></a><p class=cap>%s</p></div>' % (
+        cards.append('<div><a class=pg href="%s"><div class=j>%s</div><h2>%s</h2><p class=au>%s</p><div class=ln>%s</div><div class=y><span>%s</span><span style="overflow:hidden;text-overflow:ellipsis">%s</span></div></a><p class=cap>%s</p></div>' % (
             site.href(1, ref_path(rid)), E(jh), E(ti), E(au), "<i></i>" * 7, year_of(ref), E(("doi:" + doi) if doi and not doi.lower().startswith("arxiv") else doi), cap))
         d = 2
         h = lambda p, d=d: site.href(d, p)
@@ -721,7 +735,7 @@ def main():
             c2 = pub(R.page_text(R.construction_of(x) or ""))
             prs.append('<div class=pr><span><a href="%s">%s</a><span class=k>%s</span></span><span>%s</span><span class=c>%s</span></div>' % (
                 link, ca(x["N"], x["t"], x["k"], x["v"]), "verified" if x["tier"] == "VERIFIED" else "cited", E(c2), E(short_credit(credit_or_source(R, x)))))
-        more = ('<p class=lede>%s more rows build on it. The full list is in the table data.</p>' % format(len(u) - 400, ",")) if len(u) > 400 else ""
+        more = ('<p class=lede>%s more entries build on it. The full list is in the table data.</p>' % format(len(u) - 400, ",")) if len(u) > 400 else ""
         fls = "".join('<div class=fl>CAN(%d, %s, %d) &ge; %s</div>' % (r[0], (format(r[2], ",") if r[2] == r[3] else "%s to %s" % (format(r[2], ","), format(r[3], ","))), r[1], format(r[4], ",")) for r in flo[rid])
         body = ('<main class=wrapw><div class=paper><p class=crumb><a href="%s">Library</a> / %s</p><div class=hd><div class=j>%s</div><h1>%s</h1><p class=au>%s</p>'
                 '<div class=btns>%s</div></div>%s%s</div></main>') % (
@@ -735,7 +749,7 @@ def main():
     site.page("library/index.html", "Library: the papers behind the covering array table", "Every paper the covering array table rests on, with the arrays and floors built on each.", lib, "Library")
 
     board_rows = ["000", "011", "101", "110"]
-    btns = "".join('<button class="%s" data-r=%d data-c=%d>%s</button>' % ("o" if ch == "1" else "z", i, j, ch) for i, r in enumerate(board_rows) for j, ch in enumerate(r))
+    btns = "".join('<button class="%s" data-r=%d data-c=%d aria-label="row %d, column %d: %s">%s</button>' % ("o" if ch == "1" else "z", i, j, i + 1, j + 1, ch, ch) for i, r in enumerate(board_rows) for j, ch in enumerate(r))
     gl = [("t, strength", "How many columns at a time must show every combination."), ("v, symbols", "How many values a cell can take. On and off is v = 2."),
           ("k, columns", "How many factors, settings or parameters the array covers."), ("N, rows", "How many rows, or tests, the array uses. Smaller is better."),
           ("Rung", "A stretch of k where the smallest known N stays the same. Each cell of the table is a stair of rungs."),
@@ -744,25 +758,25 @@ def main():
           ("Cited", "The size comes from a published paper or table. No array for it is on file here yet."),
           ("Optimal", "The best known size equals the floor and a verified array is on file. Nothing smaller exists."),
           ("New since the first release", "The table was first published on 23 August 2026, built from the 2024 snapshot of Colbourn's tables and the other sources it names. A rung is new when every entry that sets it was entered after that date.")]
-    learn = ('<div class=hero><div class=in><div><p class=crumb>Learn</p><h1 style="font-family:%s;font-weight:400">What is a covering array?</h1>'
+    learn = ('<main><div class=hero><div class=in><div><p class=crumb>Learn</p><h1 style="font-family:%s;font-weight:400">What is a covering array?</h1>'
              '<p style="font-family:%s;font-size:1.1rem;line-height:1.55">A grid of symbols, chosen so that any few columns, looked at together, show every possible combination somewhere in their rows.</p>'
              '<p style="font-family:%s;font-size:1.1rem;line-height:1.55;margin-top:10px">Here are three on and off switches. Every pair of switches is seen in all four combinations, 00, 01, 10 and 11, using only four rows instead of eight. '
              'That is a covering array of strength 2, written CA(4; 2, 3, 2).</p></div>'
-             '<div><div class=board><div class=bg><span class=h>col 1</span><span class=h>col 2</span><span class=h>col 3</span>%s</div><div class=pairs id=pairs></div></div>'
+             '<div><div class=board><div class=bg><span class=h>col 1</span><span class=h>col 2</span><span class=h>col 3</span>%s</div><div class=pairs id=pairs aria-live=polite></div></div>'
              '<p class=cap>Tap a cell to change it and watch a combination go missing.</p></div></div></div>'
              '<div class=prose><h2>Why they matter</h2><div class=two><div><p>Studies of real software failures found most were triggered by one or two settings, fewer by three or more, and nearly all by six or fewer (<a href="https://doi.org/10.1109/TSE.2004.24">Kuhn, Wallace and Gallo 2004</a>, and later NIST studies). Testing every combination of settings is out of reach. Ten on and off switches already give 1,024 cases.</p>'
              '<p>A covering array of strength 2 tests every pair of those ten switches in 6 rows. Strength 3 catches every triple. The smaller the array, the fewer tests to run, which is why the race for the smallest N has gone on for decades.</p></div>'
              '<div class=statc><div><b>1,024</b><span>tests for every combination of 10 switches</span></div><div><b>6</b><span>tests for every pair, CA(6; 2, 10, 2)</span></div></div></div>'
              '<h2>See it in the table</h2><div class=lv><div><b><a href="%s">t=2 v=2</a></b><span>on and off, every pair</span></div><div><b><a href="%s">t=3 v=2</a></b><span>on and off, every triple</span></div>'
              '<div><b><a href="%s">t=2 v=3</a></b><span>three values, every pair</span></div><div><b><a href="%s">t=3 v=3</a></b><span>three values, every triple</span></div></div>'
-             '<h2>How to read the table</h2><dl class=gl>%s</dl></div>') % (
+             '<h2>How to read the table</h2><dl class=gl>%s</dl></div></main>') % (
         SERIF, SERIF, SERIF, btns, site.href(1, "t2/v2/"), site.href(1, "t3/v2/"), site.href(1, "t2/v3/"), site.href(1, "t3/v3/"),
         "".join('<div id="%s"><dt>%s</dt><dd>%s</dd></div>' % (re.sub(r"[^a-z0-9]+", "-", x.lower()).strip("-"), E(x), E(y)) for x, y in gl))
     lscript = ("<script>function upd(){var b=[].slice.call(document.querySelectorAll('.bg button'));var g=[[],[],[],[]];b.forEach(function(x){g[+x.dataset.r][+x.dataset.c]=x.textContent});"
                "var out='';[[0,1],[0,2],[1,2]].forEach(function(p){var s={};g.forEach(function(r){s[r[p[0]]+r[p[1]]]=1});var seen=Object.keys(s).sort();"
-               "var all=seen.length==4;out+='<div><span>columns '+(p[0]+1)+' and '+(p[1]+1)+'</span><b>'+seen.join(' ')+'</b><span class='+(all?'ok':'miss')+'>'+(all?'all 4':(4-seen.length)+' missing')+'</span></div>'});"
+               "var all=seen.length==4,miss=['00','01','10','11'].filter(function(z){return !s[z]});out+='<div><span>columns '+(p[0]+1)+' and '+(p[1]+1)+'</span><b>'+seen.join(' ')+'</b><span class='+(all?'ok':'miss')+'>'+(all?'all 4':'missing: '+miss.join(' '))+'</span></div>'});"
                "document.getElementById('pairs').innerHTML=out}"
-               "document.querySelectorAll('.bg button').forEach(function(x){x.addEventListener('click',function(){x.textContent=x.textContent=='1'?'0':'1';x.className=x.textContent=='1'?'o':'z';upd()})});upd();</script>")
+               "document.querySelectorAll('.bg button').forEach(function(x){x.addEventListener('click',function(){x.textContent=x.textContent=='1'?'0':'1';x.className=x.textContent=='1'?'o':'z';x.setAttribute('aria-label','row '+(+x.dataset.r+1)+', column '+(+x.dataset.c+1)+': '+x.textContent);upd()})});upd();</script>")
     site.page("learn/index.html", "What is a covering array? Learn to read the table", "What a covering array is, why it matters for testing, and how to read the covering array table.", learn, "Learn", None, lscript)
 
     def ftile(fmt, name, url, what):
@@ -865,7 +879,7 @@ def main():
                     if i in R.REFS:
                         cnt[i] += 1
         refs = ", ".join('<a href="%s">%s</a>' % (site.href(1, ref_path(i)), E(R.ref_label(i))) for i, _ in cnt.most_common(3))
-        rl += '<div class=rule><div><b>%s</b><p>%s</p></div><span class=cnt><b>%s</b> floors</span><span class=refs>%s</span></div>' % (
+        rl += '<div class=rule><div><h2>%s</h2><p>%s</p></div><span class=cnt><b>%s</b> floors</span><span class=refs>%s</span></div>' % (
             name, desc, format(n, ","), refs or '<span class=mute>definition</span>')
     tot_r = sum(len(c["rungs"]) for c in cells.values())
     tot_o = sum(c["nopt"] for c in cells.values())
@@ -895,7 +909,7 @@ def main():
     site.page("submit/index.html", "Submit covering arrays or published sizes", "How to submit covering arrays, published sizes or credit corrections to the table.", sub, "Submit")
 
 
-    nf = ('<div class=nf><div class=tumble>%s</div><h1>Not found</h1><p class=mute>This page fell out of the table. Try the <a href="/">grid</a> or the <a href="/library/">library</a>.</p></div>') % ("<i></i>" * 9)
+    nf = ('<main><div class=nf><div class=tumble>%s</div><h1>Not found</h1><p class=mute>This page fell out of the table. Try the <a href="/">grid</a> or the <a href="/library/">library</a>.</p></div></main>') % ("<i></i>" * 9)
     nf_root = "/" if not a.preview else site.href(0, "")
     nf_lib = "/library/" if not a.preview else site.href(0, "library/")
     site.page("404.html", "Page not found", "Page not found.", nf.replace('href="/"', 'href="%s"' % nf_root).replace('href="/library/"', 'href="%s"' % nf_lib), "")

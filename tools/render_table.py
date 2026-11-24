@@ -50,7 +50,7 @@ def dataset_jsonld(date, nrows, narrays):
                      "covering array number", "CAN(t,k,v)", "combinatorial testing",
                      "combinatorial interaction testing", "combinatorial design"],
         "creator": {"@type": "Person", "name": "Christopher Smolen",
-                    "url": "https://chrispbsmolen.github.io/",
+                    "url": "https://github.com/chrispbsmolen",
                     "sameAs": ["https://orcid.org/0009-0002-9537-7961", "https://github.com/chrispbsmolen"]},
         "license": "https://creativecommons.org/licenses/by/4.0/",
         "usageInfo": "https://github.com/chrispbsmolen/ca-tools/blob/main/LICENSE-DATA",
@@ -612,7 +612,7 @@ def render(rows, manifest, date):
                 PAGE_URL, dataset_jsonld(date, len(rows), len(manifest)), CSS))
     H.append("<h1>Best known covering arrays, with evidence</h1>")
     H.append("<p class=\"mute\">The covering array table maintained by "
-             "<a href=\"https://chrispbsmolen.github.io/\">Christopher Smolen</a> "
+             "<a href=\"https://github.com/chrispbsmolen\">Christopher Smolen</a> "
              "(<a href=\"https://orcid.org/0009-0002-9537-7961\">ORCID</a>). "
              "Cite: <a href=\"https://doi.org/%s\">doi:%s</a>. "
              "<a href=\"%s/blob/main/submissions/README.md\"><b>Submit an array</b></a> "
