@@ -68,7 +68,7 @@ a{color:inherit}.mute{color:var(--mute)}.num{font-variant-numeric:tabular-nums}.
 table.lg{border-collapse:collapse;width:100%;font-size:.88rem}
 table.lg th{font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--mute);font-weight:600;text-align:left;border-bottom:1px solid var(--fg);padding:8px 10px;position:sticky;top:0;background:var(--bg)}
 table.lg td{border-bottom:1px solid var(--line);padding:9px 10px;vertical-align:top}table.lg td.n,table.lg th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
-table.lg td.big{font-weight:800;font-size:1rem}table.lg td.a{white-space:nowrap}table.lg td.rb{min-width:9em}table.lg a.ck{color:inherit;text-decoration:underline dotted;text-underline-offset:3px}table.lg td.rb a,table.lg a.ck{display:inline-block;padding:4px 0}table.lg td.a a{display:inline-block;padding:4px 0}table.lg tr.closed td{background:#eef6f0}table.lg tr:target td{background:#fff6d6}
+table.lg td.big{font-weight:800;font-size:1rem}table.lg td.a{white-space:nowrap}table.lg td.rb{min-width:9em}table.lg a.ck{color:inherit;text-decoration:underline dotted;text-underline-offset:3px}table.lg a.ck{display:inline-block;padding:4px 0}table.lg td.rb .rbi{display:inline-block;padding:4px 0}table.lg td.a a{display:inline-block;padding:4px 0}table.lg tr.closed td{background:#eef6f0}table.lg tr:target td{background:#fff6d6}
 .sub{display:block;color:var(--mute);font-size:.78rem}
 .lib{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:28px 24px}
 .pg{background:#fff;aspect-ratio:1/1.3;box-shadow:0 1px 2px rgba(0,0,0,.08),0 6px 16px rgba(0,0,0,.07);padding:26px 22px 18px;display:flex;flex-direction:column;font-family:@SERIF@;text-decoration:none;color:inherit}
@@ -201,7 +201,13 @@ table.mt td{border-bottom:1px solid var(--line);padding:7px 8px}table.mt .n{text
 .ctw{overflow-x:auto;margin:18px 0}table.ctg{border-collapse:separate;border-spacing:6px}table.ctg th{font-size:.8rem;color:var(--mute);font-weight:600;padding:2px 6px;text-align:center;white-space:nowrap}
 table.ctg td{padding:0;min-width:92px}a.ct{display:flex;flex-direction:column;align-items:flex-start;gap:2px;background:#b9dcc6;border-radius:6px;padding:8px 10px;text-decoration:none;color:var(--fg);position:relative}
 a.ct:hover,a.ct:focus-visible{background:#8fc5a4}a.ct b{font-size:1.25rem}a.ct span{font-size:.75rem}
-@media (prefers-reduced-motion:reduce){*,*:before,*:after{transition:none !important;animation:none !important;scroll-behavior:auto !important}.el:hover,.pg:hover,.pc:hover,.mi:hover,.fl4:hover,.ftl:hover,.lv div:hover,.statc div:hover,.bg button:hover{transform:none !important}.tumble i{transform:none !important}}
+.hub{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin:0 0 36px}.hub a{display:flex;flex-direction:column;gap:6px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;text-decoration:none;color:var(--fg);position:relative}
+.hub a:hover,.hub a:focus-visible{border-color:#1f6b45;transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.06)}.hub a:after{content:"";position:absolute;left:0;right:0;top:100%;height:5px}
+.hub a.hl{background:#eef6f0;border-color:#5fa77d}.hub b{font-size:1.05rem}.hub .big{font-size:1.7rem;font-weight:800;line-height:1;color:var(--fg)}.hub span{color:var(--mute);font-size:.84rem;line-height:1.4}.hub em{font-style:normal;font-size:.8rem;color:#1f6b45;margin-top:auto;padding-top:6px}
+.msec{scroll-margin-top:16px}
+@media (max-width:1100px){.hub{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:700px){.hub{grid-template-columns:repeat(2,minmax(0,1fr))}.hub a{padding:14px}.hub span:not(.big){display:none}.hub em{display:none}}
+@media (prefers-reduced-motion:reduce){*,*:before,*:after{transition:none !important;animation:none !important;scroll-behavior:auto !important}.el:hover,.pg:hover,.pc:hover,.mi:hover,.hub a:hover,.fl4:hover,.ftl:hover,.lv div:hover,.statc div:hover,.bg button:hover{transform:none !important}.tumble i{transform:none !important}}
 .top .in{height:64px;gap:26px}.top b,.top b a,.top nav a,.top .ai,.top .sbm,.srch input{font-size:16px;line-height:1}
 .top b a{font-size:18px;font-weight:700}.top nav{gap:22px}.brand{gap:12px}.logo{width:66px;height:24px}
 .top .sbm{height:38px;box-sizing:border-box;display:inline-flex;align-items:center;padding:0 18px;border:1px solid var(--fg);border-radius:6px}
@@ -515,6 +521,20 @@ def main():
             if fr["basis"] == "row" and fr["first_reached"] in by_id:
                 first[(int(fr["t"]), int(fr["v"]), int(fr["k"]), int(fr["N"]))] = by_id[fr["first_reached"]]
     R.REFS.update(builds_on.load(tdir))
+    certs = {}
+    cfile0 = os.path.join(tdir, "certificates", "CERTIFICATES.csv")
+    if os.path.exists(cfile0):
+        for x in csv.DictReader(open(cfile0, newline="", encoding="utf-8")):
+            m = re.match(r"CPHF\((\d+); (\d+), (\d+), (\d+)\)", x["family"])
+            if m:
+                cf = dict(family="CPHF(%s; %s, %s, %s)" % m.groups(), t=int(m.group(4)), q=int(m.group(3)), file=x["file"])
+                certs.setdefault(x["array_sha256"], cf)
+                certs.setdefault("f:" + x["family_sha256"], cf)
+
+    def cert_of(r):
+        if not r:
+            return None
+        return certs.get(r.get("array_sha256") or "-") or certs.get("f:" + (r.get("family_sha256") or "-"))
     _, lb = lower_bounds.load(os.path.join(tdir, "lower_bounds.csv"))
     for r in lb:
         R.LB.setdefault((r[0], r[1]), []).append(r)
@@ -580,7 +600,7 @@ def main():
             rungs.append(dict(N=n, k0=k0, k1=k1, floor=f0, floor_k_to=f1, floor_row=f, closed=of == k0, opt_from=of,
                               verified=bool(ver), credit=credit_or_source(R, best), construction=pub(R.page_text(R.construction_of(best) or "")),
                               builds_on=[i for i in (best.get("builds_on") or "").split(";") if i in R.REFS], sha=sha,
-                              entered=best["entered"], row=best, first=first.get((t, v, k1, n)) or min(ev, key=lambda e: e["entered"]), new=all(e["entered"] > SNAPSHOT_DATE for e in ev)))
+                              entered=best["entered"], row=best, cert=next((cert_of(e) for e in ev if cert_of(e)), None), cert_row=next((e for e in ev if cert_of(e)), None), first=first.get((t, v, k1, n)) or min(ev, key=lambda e: e["entered"]), new=all(e["entered"] > SNAPSHOT_DATE for e in ev)))
         cells[(t, v)] = dict(t=t, v=v, rungs=rungs, kmax=max(r["k"] for r in rs), kmin=min(r["k"] for r in rs), last=max(r["entered"] for r in rs),
                              nver=sum(1 for x in rungs if x["verified"]), nopt=sum(1 for x in rungs if x["opt_from"] is not None),
                              nnew=sum(1 for x in rungs if x["new"]))
@@ -710,9 +730,15 @@ def main():
                 con_h = '<a class=ck href="%s">%s</a>' % (key, E(con))
             else:
                 con_h = E(con)
-            rbh = (('<a class=ck href="%s">%s</a>' % (key, E(rb))) if x["first"].get("source_id") == "S1" else E(rb)) if rb else ", ".join('<a href="%s">%s</a>' % (h(ref_path(i)), E(R.ref_label(i))) for i in rrefs)
+            rbh = (('<a class=ck href="%s">%s</a>' % (key, E(rb))) if x["first"].get("source_id") == "S1" else E(rb)) if rb else " ".join('<span class=rbi><a href="%s">%s</a>%s</span>' % (h(ref_path(i)), E(R.ref_label(i)), "," if j < len(rrefs) - 1 else "") for j, i in enumerate(rrefs))
             if x["sha"]:
                 arr += '<span class=sub>%s %s</span>' % ("built by" if R.credit_of(x["row"]) else "from", E(short_credit(x["credit"])))
+            cf = x["cert"]
+            if cf and x["sha"]:
+                arr += '<span class=sub>family: <a href="%s">%s</a></span>' % (h("cphf/t%d/q%d/" % (cf["t"], cf["q"])), E(cf["family"]))
+            elif cf:
+                arr = '<a href="%s">%s</a><span class=sub>family on file</span>%s' % (
+                    h("cphf/t%d/q%d/" % (cf["t"], cf["q"])), E(cf["family"]), ('<span class=sub>built by %s</span>' % E(short_credit(credit_or_source(R, x["cert_row"])))) if R.credit_of(x["cert_row"]) else "")
             trs.append('<tr id="k%d" class="%s"><td class=n>%s</td><td class="n big">%s</td><td class=n>%s</td><td class=n>%s</td><td>%s</td>'
                        '<td class=rb>%s</td><td>%s%s</td><td class=a>%s</td></tr>' % (
                            x["k1"], "closed" if x["closed"] else "", kr, format(x["N"], ","), format(x["floor"], ",") if x["floor"] is not None else "",
@@ -797,9 +823,12 @@ def main():
             stxt = 'above best known (best is %s, <a href="%s">see the table row</a>)' % (format(rung["N"], ","), h(row_path(t, v, k)))
         stc[stxt.split(" (")[0]] += 1
         fr_dd = ""
+        cf = cert_of(r)
+        if cf:
+            fr_dd += '<dt>family</dt><dd><a href="%s">%s</a>, <a href="%s">certificate</a></dd>' % (h("cphf/t%d/q%d/" % (cf["t"], cf["q"])), E(cf["family"]), RAW + "table/certificates/" + cf["file"])
         if rung is not None and n == rung["N"]:
             rb, rrefs = reached_by(R, rung["first"])
-            fr_dd = "<dt>size first reached by</dt><dd>%s</dd>" % (E(rb) if rb else ", ".join('<a href="%s">%s</a>' % (h(ref_path(i)), E(R.ref_label(i))) for i in rrefs))
+            fr_dd += "<dt>size first reached by</dt><dd>%s</dd>" % (E(rb) if rb else " ".join('<span class=rbi><a href="%s">%s</a>%s</span>' % (h(ref_path(i)), E(R.ref_label(i)), "," if j < len(rrefs) - 1 else "") for j, i in enumerate(rrefs)))
         body = ('<main class=wrapw><div class=arr><section><p class=crumb><a href="%s">Table</a> / <a href="%s">t=%d v=%d</a> / k = %s</p>'
                 '<h1 style="font-size:2rem;margin:0 0 4px">%s %s</h1><p class=mute style="margin:0 0 20px">An array of %s rows and %s columns on %d symbols in which every %d columns show all %s combinations.</p>'
                 '<dl><dt>built by</dt><dd>%s</dd>%s<dt>entered</dt><dd>%s</dd><dt>construction</dt><dd>%s</dd><dt>lower bound</dt><dd>%s</dd>'
@@ -1098,18 +1127,26 @@ def main():
                                      plural(m["ver"], "array on file", "arrays on file") if m["ver"] else ""] if s) or plural(m["rows"], "entry", "entries")
 
     sections = []
+    hub = []
+    cert_n = len({c["file"] for c in certs.values()})
+    if cert_n:
+        hub.append('<a class=hl href="%s"><b>Covering perfect hash families</b><span class=big>%s</span><span>families on file, each checked exactly. %s best known sizes in the table come from families like these.</span><em>Open the CPHF tables</em></a>' % (
+            site.href(1, "cphf/"), format(cert_n, ","), format(sum(len(M[f]["head"]) for f in ("cphfCA", "scphfCA") if f in M), ",")))
     for kid, kname, kdesc in KIND:
         ms = sorted((m for m in mlist if m["f"]["kind"] == kid), key=lambda m: (-len(m["first"]), -len(m["head"]), -m["rows"], m["title"]))
         if not ms:
             continue
-        sections.append('<section class=msec><h2>%s</h2><p class=mute>%s</p><div class=ml>%s</div></section>' % (E(kname), E(kdesc), "".join(
+        if kid:
+            hub.append('<a href="#g-%s"><b>%s</b><span class=big>%d</span><span>%s, %s. %s</span><em>%s and more</em></a>' % (
+                kid, E(kname), len(ms), "method" if len(ms) == 1 else "methods", plural(sum(len(m["first"]) for m in ms), "size first reached", "sizes first reached"), E(kdesc), E(", ".join(m["title"] for m in ms[:2]))))
+        sections.append('<section class=msec id="g-%s"><h2>%s</h2><p class=mute>%s</p><div class=ml>%s</div></section>' % (kid or "other", E(kname), E(kdesc), "".join(
             '<a class=mi href="%s"><b>%s</b><span>%s</span><span class=mm>%s</span></a>' % (site.href(1, m["path"]), E(m["title"]), E(mline(m)), E(m["f"]["meaning"]))
             for m in ms)))
     body = ('<div class=pageh><div class=in><div><h1>Methods</h1><p>Every way the sizes in the table were made, grouped by kind. Each method lists the papers it rests on and every cell where it gives a best known size.</p></div>'
             '<div class=lfind><label for=mq class=vh>Search the methods</label><svg width="17" height="17" viewBox="0 0 17 17" aria-hidden="true"><circle cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M11.2 11.2l4.3 4.3" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>'
             '<input id=mq type=search autocomplete=off spellcheck=false placeholder="Method, author or idea"><span id=mn class=mute aria-live=polite>%d methods</span></div></div></div>'
-            '<main class=wrapw>%s<p class=mute style="margin-top:26px;font-size:.88rem">The covering perfect hash families on file are listed on their own: <a href="%s">CPHFs</a>. Each entry is placed in a method by its construction text, using the list in <a href="%s">table/lexicon.csv</a>. Corrections are welcome by issue or email.</p></main>') % (
-        len(mlist), "".join(sections), site.href(1, "cphf/"), REPO_URL + "/blob/main/table/lexicon.csv")
+            '<main class=wrapw><nav class=hub aria-label="Kinds of method">%s</nav>%s<p class=mute style="margin-top:26px;font-size:.88rem">The covering perfect hash families on file are listed on their own: <a href="%s">CPHFs</a>. Each entry is placed in a method by its construction text, using the list in <a href="%s">table/lexicon.csv</a>. Corrections are welcome by issue or email.</p></main>') % (
+        len(mlist), "".join(hub), "".join(sections), site.href(1, "cphf/"), REPO_URL + "/blob/main/table/lexicon.csv")
     mscript = ("<script>(function(){var q=document.getElementById('mq'),cs=document.querySelectorAll('.mi'),n=document.getElementById('mn'),all=cs.length;"
                "q.addEventListener('input',function(){var t=q.value.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase().split(/\\s+/).filter(Boolean),k=0;"
                "cs.forEach(function(c){var s=c.textContent.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase(),on=t.every(function(w){return s.indexOf(w)>=0});c.hidden=!on;if(on)k++});"
