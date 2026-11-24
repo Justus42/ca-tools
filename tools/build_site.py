@@ -19,7 +19,9 @@ CONTACT = "contact@coveringarraytools.org"
 SNAPSHOT_DATE = "2026-08-23"
 SERIF = "Charter,'Bitstream Charter','Iowan Old Style',Georgia,serif"
 NAV = [("Table", ""), ("Library", "library/"), ("Learn", "learn/"), ("Updates", "changelog/"),
-       ("Lower bounds", "bounds/"), ("Contributors", "contributors/")]
+       ("Lower bounds", "bounds/"), ("Methods", "methods/"), ("Contributors", "contributors/")]
+
+METHOD_TITLES = {'KSK': 'Kleitman-Spencer and Katona', 'PALEY': 'Paley matrices', 'CAEX': 'CA Extender', 'CYCLOTOMY': 'Cyclotomy', 'CKRS': 'Colbourn, Kéri, Rivas Soriano and Schlage-Puchta', 'RMScopiesCA': 'Raaphorst, Moura and Stevens, strength 3 from finite fields', 'miscCA': 'Single stored arrays', 'recBoseCA_PCA': 'Recursive Bose, partitioned', 'recBoseCA_CA': 'Recursive Bose', 'SCA_Busht': 'Orthogonal arrays of index one (Bush, Bose)', 'fuseBoseCA': 'Fused Bose orthogonal arrays', 'fuseBushtCA': 'Fused Bush orthogonal arrays', 'projBoseCA': 'Projected Bose orthogonal arrays', 'compositCA': 'Composition of alphabets', 'WKS': 'Wagner, Kampel and Simos, strength 6', 'CS_MS': 'Cover starters of Meagher and Stevens', 'CS_LCDST': 'Cover starters of Lobb, Colbourn, Danziger, Stevens and Torres-Jimenez', 'CS_CK': 'Cyclic binary arrays of Colbourn and Kéri', 'powerCT': 'Power construction (Colbourn and Torres-Jimenez)', 'DWYER': "Dwyer's CA_Database", 'NIST': 'NIST covering array library (IPOG-F)', 'TJ': 'Torres-Jimenez binary arrays', 'CK_doublingCA': 'Chateauneuf-Kreher doubling', 'CK_NRB': 'Chateauneuf, Colbourn and Kreher group construction', 'FullFactorial': 'Full factorial', 'CS_CMMSSY': 'Cover starters of Colbourn, Martirosyan, Mullen, Shasha, Sherwood and Yucas', 'ODbasedCA': 'Ordered designs', 'pcaCA': 'Product of partitioned covering arrays', 'dpCA': 'Direct product', 'scphfCA': 'Sherwood covering perfect hash families', 'cphfCA': 'Covering perfect hash families', 'dpGeneralized': 'Generalized direct product', 'profileProduct': 'Product from profiles', 'powerNCT': 'Power N-CT', 'powerCZ': 'Power construction with quilted arrays (Colbourn and Zhou)', 'PHF': 'Perfect hash families', 'CMTW': 'Roux-type, Colbourn, Martirosyan, Trung and Walker', 'MTVT': 'Roux-type, Martirosyan and Tran Van Trung', 'MC': 'Martirosyan and Colbourn', 'CCL': 'Strength 3 from two strength 2 arrays (Cohen, Colbourn and Ling)', 'add1': 'Add factors', 'addFactor': 'Add a factor, other forms', 'addSymbol': 'Add a symbol', 'derive': 'Derive from higher strength', 'augmentOA': 'Augmented orthogonal arrays', 'projection': 'Projection', 'transversalDesign': 'Transversal designs and difference matrices', 'density': 'Density algorithms', 'groupOrbit': 'Arrays invariant under a group', 'ShokriMoura': 'Constructions of Shokri and Moura', 'polynomial': 'Polynomial constructions', 'weightClass': 'Weight classes', 'CIJSSS': 'Orthogoval affine planes', 'rouxDoubling': 'Roux doubling', 'annealing': 'Simulated annealing', 'tabu': 'Tabu search', 'SAT': 'SAT solver', 'IPO': 'IPO family algorithms', 'twoStage': 'Two-stage methods', 'columnExtension': 'Column extension', 'postop': 'Post-optimization', 'other': 'Other'}
 
 CSS = """
 :root{--side:56px;color-scheme:light;--fg:#1d1d1f;--bg:#fdfdfc;--mute:#5f6368;--line:#dcdcd8;--ver:#0b6e3a;--soft:#f2f2ee;--acc:#1f4e8c;--opt:#5b2a86}
@@ -186,7 +188,15 @@ table.lg tbody tr:hover td,.cl tbody tr:hover td{background:#f3f8f4}
 .lfind input:focus{outline:2px solid #1f6b45;outline-offset:1px;border-color:#1f6b45}.lfind span{order:-1;display:block;font-size:.8rem;margin:0 0 6px;text-align:right}
 #lib>div[hidden]{display:none}.lnone{margin:10px 0 0;color:var(--mute)}
 @media (max-width:900px){.lfind{width:100%}}
-@media (prefers-reduced-motion:reduce){*,*:before,*:after{transition:none !important;animation:none !important;scroll-behavior:auto !important}.el:hover,.pg:hover,.pc:hover,.fl4:hover,.ftl:hover,.lv div:hover,.statc div:hover,.bg button:hover{transform:none !important}.tumble i{transform:none !important}}
+.msec{margin:0 0 34px}.msec h2{font-size:1.25rem;margin:0 0 4px}.msec>p{margin:0 0 14px}.msec[hidden]{display:none}
+.ml{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.mi{display:flex;flex-direction:column;gap:4px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;text-decoration:none;color:var(--fg);position:relative}
+.mi[hidden]{display:none}.mi:hover,.mi:focus-visible{border-color:#1f6b45;transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.06)}.mi:after{content:"";position:absolute;left:0;right:0;top:100%;height:5px}
+.mi b{font-size:1rem}.mi span{color:var(--mute);font-size:.84rem;line-height:1.4}.mi .mm{color:var(--fg);opacity:.8}
+table.mt{width:100%;border-collapse:collapse;margin:0 0 26px}table.mt th{text-align:left;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);font-weight:600;border-bottom:1px solid var(--fg);padding:6px 8px}
+table.mt td{border-bottom:1px solid var(--line);padding:7px 8px}table.mt .n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}table.mt td a{display:inline-block;padding:3px 0}
+@media (max-width:1100px){.ml{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.ml{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){*,*:before,*:after{transition:none !important;animation:none !important;scroll-behavior:auto !important}.el:hover,.pg:hover,.pc:hover,.mi:hover,.fl4:hover,.ftl:hover,.lv div:hover,.statc div:hover,.bg button:hover{transform:none !important}.tumble i{transform:none !important}}
 .top .in{height:64px;gap:26px}.top b,.top b a,.top nav a,.top .ai,.top .sbm,.srch input{font-size:16px;line-height:1}
 .top b a{font-size:18px;font-weight:700}.top nav{gap:22px}.brand{gap:12px}.logo{width:66px;height:24px}
 .top .sbm{height:38px;box-sizing:border-box;display:inline-flex;align-items:center;padding:0 18px;border:1px solid var(--fg);border-radius:6px}
@@ -209,7 +219,8 @@ table.lg tbody tr:hover td,.cl tbody tr:hover td{background:#f3f8f4}
 .strip,.citebox,.chk,.doc section,.card,.pg h2,.pg .au,.paper .hd h1{overflow-wrap:anywhere}.po{display:none}
 .lib>div,.grid2>div,.two2>div,.arr>section,.arr>aside,.doc>section,.hero .in>div{min-width:0}
 @media (max-width:1280px){.el{min-height:96px;padding:6px 7px}.el .n{font-size:clamp(1.05rem,1.6vw,1.7rem)}.el .n small{font-size:.62rem;margin-left:2px}.el .tp{font-size:.6rem}.el .st{font-size:.62rem}.el .dt{font-size:.58rem}.el .ft{flex-direction:column;align-items:flex-start;gap:1px}}
-@media (max-width:1320px){.top .in{flex-wrap:wrap;height:auto;padding-top:10px;padding-bottom:10px;row-gap:10px}.top nav{order:6;width:100%;overflow-x:auto;gap:18px;padding-top:4px;margin-top:-4px;padding-bottom:2px}.top .sp{display:none}.top .ai{margin-left:auto}}
+@media (max-width:1520px){.top nav{gap:17px}.top .in{gap:22px}}
+@media (max-width:1400px){.top .in{flex-wrap:wrap;height:auto;padding-top:10px;padding-bottom:10px;row-gap:10px}.top nav{order:6;width:100%;overflow-x:auto;gap:18px;padding-top:4px;margin-top:-4px;padding-bottom:2px}.top .sp{display:none}.top .ai{margin-left:auto}}
 @media (max-width:900px){
 body{overflow-x:hidden}
 .hero .in,.arr,.two,.doc,.two2,.grid2,.chk,.citebox{grid-template-columns:1fr !important}
@@ -290,13 +301,13 @@ SEARCH_JS = r"""(function(){var me=document.currentScript,root=me.getAttribute('
 function load(cb){if(loaded){cb();return}var s=document.createElement('script');s.src=root+'assets/sindex.js';s.onload=function(){loaded=true;cb()};document.head.appendChild(s)}
 function norm(x){return x.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
 function url(p){if(pv&&(p===''||p.slice(-1)=='/'))p+='index.html';return root+p}
-var G={x:'Size',c:'Cells',a:'Arrays',p:'Papers',u:'People'};
+var G={x:'Size',c:'Cells',a:'Arrays',p:'Papers',u:'People',m:'Methods'};
 function close(){box.classList.remove('on');q.setAttribute('aria-expanded','false');q.removeAttribute('aria-activedescendant')}
 function sizes(raw,res){var m=raw.match(/^\s*can\s*\(\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*$/i),c,e,i,t,k,vv,n;if(m){t=+m[1];k=+m[2];vv=+m[3]}else{m=raw.match(/^\s*ca\s*\(\s*(\d+)\s*;\s*(\d+)\s*,\s*(\d+)\s*,\s*(\d+)\s*\)\s*$/i);if(!m)return false;n=+m[1];t=+m[2];k=+m[3];vv=+m[4];for(i=0;i<SI.length;i++){e=SI[i];if(e[0]=='a'&&e[3].indexOf('ca/'+n+'/'+t+'/'+k+'/'+vv+'/')==0)res.x.push([0,e])}}c='t'+t+'/v'+vv+'/';for(i=0;i<SI.length;i++){e=SI[i];if(e[0]=='c'&&e[3]==c){res.x.push([1,['x','CAN('+t+', '+k+', '+vv+')','the row for k = '+k+' on the t='+t+' v='+vv+' page',c,'',k]]);break}}return res.x.length>0}
-function run(){var v=norm(q.value);if(!v){close();return}var tk=v.split(' '),res={x:[],c:[],a:[],p:[],u:[]};if(!sizes(q.value,res)){
+function run(){var v=norm(q.value);if(!v){close();return}var tk=v.split(' '),res={x:[],c:[],a:[],p:[],u:[],m:[]};if(!sizes(q.value,res)){
 for(var i=0;i<SI.length;i++){var e=SI[i],k=e[4],ok=true;for(var j=0;j<tk.length;j++){var t=tk[j];if(/^\d+$/.test(t)){if((' '+k+' ').indexOf(' '+t+' ')<0){ok=false;break}}else if(k.indexOf(t)<0){ok=false;break}}
 if(ok){var sc=(k.indexOf(v)>=0?0:1)*1000+e[1].length;res[e[0]].push([sc,e])}}}
-var h='',n=0;items=[];['x','c','u','a','p'].forEach(function(g){var r=res[g].sort(function(x,y){return x[0]-y[0]});if(!r.length)return;h+='<div class=g role=presentation>'+G[g]+(r.length>6?' ('+r.length+')':'')+'</div>';
+var h='',n=0;items=[];['x','c','u','m','a','p'].forEach(function(g){var r=res[g].sort(function(x,y){return x[0]-y[0]});if(!r.length)return;h+='<div class=g role=presentation>'+G[g]+(r.length>6?' ('+r.length+')':'')+'</div>';
 r.slice(0,6).forEach(function(x){var e=x[1],u=url(e[3])+(e[5]?'#k='+e[5]:'');h+='<a href="'+u+'" data-i='+n+' id=qo'+n+' role=option aria-selected=false><b>'+e[1]+'</b><span>'+e[2]+'</span></a>';items.push(u);n++})});
 box.innerHTML=n?h:'<div class=none>Nothing found for '+q.value.replace(/</g,'&lt;')+'</div>';box.classList.add('on');q.setAttribute('aria-expanded','true');act=n?0:-1;mark();document.getElementById('qn').textContent=n?n+(n==1?' result':' results'):'Nothing found'}
 function mark(){var a=box.querySelectorAll('a');for(var i=0;i<a.length;i++){a[i].classList.toggle('act',i==act);a[i].setAttribute('aria-selected',i==act?'true':'false')}if(act>=0&&a[act])q.setAttribute('aria-activedescendant',a[act].id);else q.removeAttribute('aria-activedescendant')}
@@ -1036,6 +1047,92 @@ def main():
                     ("CCL", "Cohen et al. 2008"), ("Nurmela", "Nurmela 2004"), ("Younis", "Younis and Zamli 2011"), ("Zekaoui", "Zekaoui 2006"))) +
                  ". Other codes, such as CL, CLS, WCS, TJ-IM, TJ-RC, C and TATA, are kept as Colbourn wrote them, and each of their rows links the paper of the construction it uses.")]
 
+    import lexicon
+    fams, pats = lexicon.load()
+    famd = {f["family"]: f for f in fams}
+    famcache = {}
+
+    def fam_of(r):
+        txt = r.get("construction") or ""
+        if txt not in famcache:
+            famcache[txt] = lexicon.family(txt, pats) or "other"
+        return famcache[txt] or "other"
+
+    M = {f["family"]: dict(f=f, head=[], first=[], rows=0, ver=0, refs=collections.Counter()) for f in fams}
+    for r in rows:
+        if r["tier"] not in ("VERIFIED", "CITED"):
+            continue
+        m = M[fam_of(r)]
+        m["rows"] += 1
+        if r["tier"] == "VERIFIED" and r["array_sha256"] in array_path:
+            m["ver"] += 1
+        for i in (r.get("builds_on") or "").split(";"):
+            if i in R.REFS:
+                m["refs"][i] += 1
+    for c in cells.values():
+        for x in c["rungs"]:
+            M[fam_of(x["row"])]["head"].append(x)
+            M[fam_of(x["first"])]["first"].append(x)
+    KIND = [("direct", "Direct constructions", "Arrays written down from an algebraic or combinatorial object."),
+            ("recursive", "Built from smaller arrays", "Arrays made by combining, extending or cutting down arrays already known."),
+            ("search", "Computer search", "Arrays found by a search program."),
+            ("data", "Collections", "Published sets of arrays, credited to their collection when the method of each array is not recorded."),
+            ("", "Other", "Rows with a name and no description.")]
+    mlist = [m for m in M.values() if m["rows"]]
+    for m in mlist:
+        fid = m["f"]["family"]
+        m["title"] = METHOD_TITLES.get(fid, fid)
+        m["slug"] = "-".join(re.sub(r"[^a-z0-9]+", " ", fold(m["title"]).lower().replace("'s", "")).split())
+        m["path"] = "methods/%s/" % m["slug"]
+        m["opt"] = sum(1 for x in m["head"] if x["opt_from"] is not None)
+        m["cells"] = collections.Counter((x["row"]["t"], x["row"]["v"]) for x in m["head"])
+        m["fcells"] = collections.Counter((x["row"]["t"], x["row"]["v"]) for x in m["first"])
+
+    def mline(m):
+        return ", ".join(s for s in [plural(len(m["first"]), "size first reached", "sizes first reached") if m["first"] else "",
+                                     plural(len(m["head"]), "best known size", "best known sizes") if m["head"] else "",
+                                     plural(m["ver"], "array on file", "arrays on file") if m["ver"] else ""] if s) or plural(m["rows"], "entry", "entries")
+
+    sections = []
+    for kid, kname, kdesc in KIND:
+        ms = sorted((m for m in mlist if m["f"]["kind"] == kid), key=lambda m: (-len(m["first"]), -len(m["head"]), -m["rows"], m["title"]))
+        if not ms:
+            continue
+        sections.append('<section class=msec><h2>%s</h2><p class=mute>%s</p><div class=ml>%s</div></section>' % (E(kname), E(kdesc), "".join(
+            '<a class=mi href="%s"><b>%s</b><span>%s</span><span class=mm>%s</span></a>' % (site.href(1, m["path"]), E(m["title"]), E(mline(m)), E(m["f"]["meaning"]))
+            for m in ms)))
+    body = ('<div class=pageh><div class=in><div><h1>Methods</h1><p>Every way the sizes in the table were made, grouped by kind. Each method lists the papers it rests on and every cell where it gives a best known size.</p></div>'
+            '<div class=lfind><label for=mq class=vh>Search the methods</label><svg width="17" height="17" viewBox="0 0 17 17" aria-hidden="true"><circle cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M11.2 11.2l4.3 4.3" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>'
+            '<input id=mq type=search autocomplete=off spellcheck=false placeholder="Method, author or idea"><span id=mn class=mute aria-live=polite>%d methods</span></div></div></div>'
+            '<main class=wrapw>%s<p class=mute style="margin-top:26px;font-size:.88rem">Each entry is placed in a method by its construction text, using the list in <a href="%s">table/lexicon.csv</a>. Corrections are welcome by issue or email.</p></main>') % (
+        len(mlist), "".join(sections), REPO_URL + "/blob/main/table/lexicon.csv")
+    mscript = ("<script>(function(){var q=document.getElementById('mq'),cs=document.querySelectorAll('.mi'),n=document.getElementById('mn'),all=cs.length;"
+               "q.addEventListener('input',function(){var t=q.value.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase().split(/\\s+/).filter(Boolean),k=0;"
+               "cs.forEach(function(c){var s=c.textContent.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase(),on=t.every(function(w){return s.indexOf(w)>=0});c.hidden=!on;if(on)k++});"
+               "document.querySelectorAll('.msec').forEach(function(s){s.hidden=!s.querySelector('.mi:not([hidden])')});n.textContent=t.length?k+' of '+all+' methods':all+' methods'})})()</script>")
+    site.page("methods/index.html", "Methods: how the covering arrays in the table are made", "Every construction behind the best known covering array sizes, grouped by kind, with its papers and where it is used.", body, "Methods", None, mscript)
+
+    for m in mlist:
+        h = lambda q: site.href(2, q)
+        kname = next(n for k, n, _ in KIND if k == m["f"]["kind"])
+        st = [(len(m["first"]), "size first reached", "sizes first reached"), (len(m["head"]), "best known size", "best known sizes"),
+              (m["ver"], "array on file", "arrays on file"), (m["opt"], "optimal size", "optimal sizes"), (len(m["cells"] | m["fcells"]), "cell", "cells")]
+        stats = "".join('<div><b class=num>%s</b><span>%s</span></div>' % (format(n, ","), one if n == 1 else many) for n, one, many in st if n)
+        refs = "".join('<li><a href="%s">%s</a><span>%s</span></li>' % (h(ref_path(i)), E(R.ref_label(i)), plural(n, "entry builds", "entries build") + " on it")
+                       for i, n in m["refs"].most_common(8))
+        keys = sorted(set(m["cells"]) | set(m["fcells"]))
+        trs = "".join('<tr><td><a href="%s">t=%d v=%d</a></td><td class=n>%s</td><td class=n>%s</td><td class=n>%s</td></tr>' % (
+            h(cell_path(t, v)), t, v, format(m["fcells"][(t, v)], ",") if m["fcells"][(t, v)] else "", format(m["cells"][(t, v)], ",") if m["cells"][(t, v)] else "",
+            (lambda xs: ("%s to %s" % (format(min(x["k0"] for x in xs), ","), format(max(x["k1"] for x in xs), ","))) if xs else "")([x for x in m["head"] if (x["row"]["t"], x["row"]["v"]) == (t, v)]))
+            for t, v in keys)
+        cas = ('<p class=mute>In the CAs R package this is %s.</p>' % E(m["f"]["cas_label"])) if m["f"]["cas_label"] else ""
+        pbody = ('<div class=pageh><div class=in><div><p class=crumb><a href="%s">Methods</a> / %s</p><h1>%s</h1><p>%s</p>%s</div></div></div>'
+                 '<div class=stats>%s</div><main class=wrapw><div class=two3><div><h2>Where it gives a best known size</h2>%s</div><div>%s</div></div></main>') % (
+            h("methods/"), E(kname), E(m["title"]), E(m["f"]["meaning"]), cas, stats,
+            ('<table class=mt><thead><tr><th>cell</th><th class=n>first reached</th><th class=n>best known</th><th class=n>k</th></tr></thead><tbody>%s</tbody></table>' % trs) if trs else '<p class=mute>No best known size in the table uses it at present.</p>',
+            ('<h2>Papers it rests on</h2><ul class=pap>%s</ul>' % refs) if refs else '<h2>Papers it rests on</h2><p class=mute>No paper is linked to these entries yet.</p>')
+        site.page(m["path"] + "index.html", "%s: covering array method" % m["title"], "%s. %s" % (m["title"], m["f"]["meaning"]), pbody, "Methods")
+
     board_rows = ["000", "011", "101", "110"]
     btns = "".join('<button class="%s" data-r=%d data-c=%d aria-label="row %d, column %d: %s">%s</button>' % ("o" if ch == "1" else "z", i, j, i + 1, j + 1, ch, ch) for i, r in enumerate(board_rows) for j, ch in enumerate(r))
     gl = [("t, strength", "How many columns at a time must show every combination."), ("v, symbols", "How many values a cell can take. On and off is v = 2."),
@@ -1226,6 +1323,8 @@ def main():
         ref = R.REFS[rid]["reference"]
         au, rest = split_ref(ref)
         si.append(["p", E(title_of(rest)), E(au + " " + year_of(ref)), ref_path(rid), nk(ref, R.REFS[rid].get("doi", ""))])
+    for m in mlist:
+        si.append(["m", E(m["title"]), mline(m), m["path"], nk(m["title"], m["f"]["meaning"], m["f"]["family"], m["f"]["cas_label"])])
     for p in ppl:
         si.append(["u", E(p["name"]), summary(p), p["path"], nk(p["name"], fold(p["name"]), " ".join(p["names"]), fold(" ".join(p["names"])))])
     open(os.path.join(a.out, "assets", "sindex.js"), "w").write("var SI=" + json.dumps(si, ensure_ascii=False, separators=(",", ":")) + ";")
