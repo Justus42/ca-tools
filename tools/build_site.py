@@ -198,6 +198,9 @@ table.mt td{border-bottom:1px solid var(--line);padding:7px 8px}table.mt .n{text
 @media (max-width:560px){.ml{grid-template-columns:1fr}}
 @media (min-width:561px){.top .in .srch{z-index:6;transition:width .22s ease,margin-left .22s ease,border-color .15s ease,background-color .15s ease}.top .in .srch.open{margin-left:-256px}.top .in .srch.open:before{content:"";position:absolute;right:100%;top:-2px;bottom:-2px;width:56px;background:linear-gradient(to right,rgba(255,255,255,0),#fff 70%);pointer-events:none}}
 @media (min-width:561px) and (max-width:1310px){.top .in .srch.open{margin-left:auto}.top .in .srch.open:before{display:none}}
+.ctw{overflow-x:auto;margin:18px 0}table.ctg{border-collapse:separate;border-spacing:6px}table.ctg th{font-size:.8rem;color:var(--mute);font-weight:600;padding:2px 6px;text-align:center;white-space:nowrap}
+table.ctg td{padding:0;min-width:92px}a.ct{display:flex;flex-direction:column;align-items:flex-start;gap:2px;background:#b9dcc6;border-radius:6px;padding:8px 10px;text-decoration:none;color:var(--fg);position:relative}
+a.ct:hover,a.ct:focus-visible{background:#8fc5a4}a.ct b{font-size:1.25rem}a.ct span{font-size:.75rem}
 @media (prefers-reduced-motion:reduce){*,*:before,*:after{transition:none !important;animation:none !important;scroll-behavior:auto !important}.el:hover,.pg:hover,.pc:hover,.mi:hover,.fl4:hover,.ftl:hover,.lv div:hover,.statc div:hover,.bg button:hover{transform:none !important}.tumble i{transform:none !important}}
 .top .in{height:64px;gap:26px}.top b,.top b a,.top nav a,.top .ai,.top .sbm,.srch input{font-size:16px;line-height:1}
 .top b a{font-size:18px;font-weight:700}.top nav{gap:22px}.brand{gap:12px}.logo{width:66px;height:24px}
@@ -495,6 +498,7 @@ def main():
         for m in csv.DictReader(open(os.path.join(tdir, "MANIFEST.csv"), newline="", encoding="utf-8")):
             if previewable(m):
                 print("/table/arrays/" + m["file"])
+        print("/table/certificates/CERTIFICATES.csv")
         return
     sys.path.insert(0, tools)
     sys.path.insert(0, tdir)
@@ -1104,8 +1108,8 @@ def main():
     body = ('<div class=pageh><div class=in><div><h1>Methods</h1><p>Every way the sizes in the table were made, grouped by kind. Each method lists the papers it rests on and every cell where it gives a best known size.</p></div>'
             '<div class=lfind><label for=mq class=vh>Search the methods</label><svg width="17" height="17" viewBox="0 0 17 17" aria-hidden="true"><circle cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M11.2 11.2l4.3 4.3" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>'
             '<input id=mq type=search autocomplete=off spellcheck=false placeholder="Method, author or idea"><span id=mn class=mute aria-live=polite>%d methods</span></div></div></div>'
-            '<main class=wrapw>%s<p class=mute style="margin-top:26px;font-size:.88rem">Each entry is placed in a method by its construction text, using the list in <a href="%s">table/lexicon.csv</a>. Corrections are welcome by issue or email.</p></main>') % (
-        len(mlist), "".join(sections), REPO_URL + "/blob/main/table/lexicon.csv")
+            '<main class=wrapw>%s<p class=mute style="margin-top:26px;font-size:.88rem">The covering perfect hash families on file are listed on their own: <a href="%s">CPHFs</a>. Each entry is placed in a method by its construction text, using the list in <a href="%s">table/lexicon.csv</a>. Corrections are welcome by issue or email.</p></main>') % (
+        len(mlist), "".join(sections), site.href(1, "cphf/"), REPO_URL + "/blob/main/table/lexicon.csv")
     mscript = ("<script>(function(){var q=document.getElementById('mq'),cs=document.querySelectorAll('.mi'),n=document.getElementById('mn'),all=cs.length;"
                "q.addEventListener('input',function(){var t=q.value.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase().split(/\\s+/).filter(Boolean),k=0;"
                "cs.forEach(function(c){var s=c.textContent.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase(),on=t.every(function(w){return s.indexOf(w)>=0});c.hidden=!on;if(on)k++});"
@@ -1126,12 +1130,96 @@ def main():
             (lambda xs: ("%s to %s" % (format(min(x["k0"] for x in xs), ","), format(max(x["k1"] for x in xs), ","))) if xs else "")([x for x in m["head"] if (x["row"]["t"], x["row"]["v"]) == (t, v)]))
             for t, v in keys)
         cas = ('<p class=mute>In the CAs R package this is %s.</p>' % E(m["f"]["cas_label"])) if m["f"]["cas_label"] else ""
+        if m["f"]["family"] in ("cphfCA", "scphfCA"):
+            cas += '<p><a href="%s">The covering perfect hash families on file</a></p>' % h("cphf/")
         pbody = ('<div class=pageh><div class=in><div><p class=crumb><a href="%s">Methods</a> / %s</p><h1>%s</h1><p>%s</p>%s</div></div></div>'
                  '<div class=stats>%s</div><main class=wrapw><div class=two3><div><h2>Where it gives a best known size</h2>%s</div><div>%s</div></div></main>') % (
             h("methods/"), E(kname), E(m["title"]), E(m["f"]["meaning"]), cas, stats,
             ('<table class=mt><thead><tr><th>cell</th><th class=n>first reached</th><th class=n>best known</th><th class=n>k</th></tr></thead><tbody>%s</tbody></table>' % trs) if trs else '<p class=mute>No best known size in the table uses it at present.</p>',
             ('<h2>Papers it rests on</h2><ul class=pap>%s</ul>' % refs) if refs else '<h2>Papers it rests on</h2><p class=mute>No paper is linked to these entries yet.</p>')
         site.page(m["path"] + "index.html", "%s: covering array method" % m["title"], "%s. %s" % (m["title"], m["f"]["meaning"]), pbody, "Methods")
+
+    cph = []
+    cfile = os.path.join(tdir, "certificates", "CERTIFICATES.csv")
+    if os.path.exists(cfile):
+        by_arr = {}
+        by_fam = {}
+        for r in rows:
+            if r["tier"] == "VERIFIED":
+                if r["array_sha256"]:
+                    by_arr.setdefault(r["array_sha256"], r)
+                if r.get("family_sha256"):
+                    by_fam.setdefault(r["family_sha256"], r)
+        seenf = {}
+        for x in csv.DictReader(open(cfile, newline="", encoding="utf-8")):
+            if x["file"] in seenf:
+                seenf[x["file"]]["checks"].append(x["check"].split(":")[0])
+                continue
+            m = re.match(r"CPHF\((\d+); (\d+), (\d+), (\d+)\)(.*)", x["family"])
+            if not m:
+                continue
+            n, k, q, t = map(int, m.groups()[:4])
+            r = by_arr.get(x["array_sha256"]) or by_fam.get(x["family_sha256"])
+            N = int(x["N"])
+            rung = next((y for y in cells[(t, q)]["rungs"] if y["k0"] <= k <= y["k1"]), None) if (t, q) in cells else None
+            cph.append(dict(n=n, k=k, q=q, t=t, N=N, extra=m.group(5).strip(" ,"), file=x["file"], exp=x["expansion"], checks=[x["check"].split(":")[0]], row=r,
+                            best=bool(rung and rung["N"] == N), credit=short_credit(credit_or_source(R, r)) if r else ""))
+            seenf[x["file"]] = cph[-1]
+    cgroups = collections.defaultdict(list)
+    for x in cph:
+        cgroups[(x["t"], x["q"])].append(x)
+    for g in cgroups.values():
+        for x in g:
+            x["top"] = not any(y is not x and y["n"] <= x["n"] and y["k"] >= x["k"] and (y["n"], -y["k"]) < (x["n"], -x["k"]) for y in g)
+    if cph:
+        qs = sorted({x["q"] for x in cph})
+        ts = sorted({x["t"] for x in cph})
+        h1 = lambda p: site.href(1, p)
+        head = "".join('<th scope=col>q=%d</th>' % q for q in qs)
+        body_rows = []
+        for t in ts:
+            tds = []
+            for q in qs:
+                g = cgroups.get((t, q))
+                if g:
+                    tds.append('<td><a class=ct href="%s"><b>%d</b><span>%s</span><span>%s</span></a></td>' % (
+                        h1("cphf/t%d/q%d/" % (t, q)), len(g), "family" if len(g) == 1 else "families",
+                        (lambda a, b: "n = %d" % a if a == b else "n %d to %d" % (a, b))(min(x["n"] for x in g), max(x["n"] for x in g))))
+                else:
+                    tds.append("<td></td>")
+            body_rows.append('<tr><th scope=row>t=%d</th>%s</tr>' % (t, "".join(tds)))
+        cbody = ('<div class=pageh><div class=in><div><h1>Covering perfect hash families</h1><p>A covering perfect hash family CPHF(n; k, q, t) is an n by k array of vectors over the field with q elements, '
+                 'chosen so that for every t columns some row has t independent vectors in them. Each one gives a covering array: CA(n(q^t - 1) + 1; t, k, q) by the construction of '
+                 '<a href="%s">Sherwood, Martirosyan and Colbourn 2006</a>, or CA(n(q^t - q) + q; t, k, q) when the family also meets their affine condition. '
+                 '%s of the best known sizes in the table are made this way.</p></div></div></div>'
+                 '<div class=stats><div><b class=num>%s</b><span>families on file</span></div><div><b class=num>%s</b><span>give a best known size</span></div>'
+                 '<div><b class=num>%s</b><span>strengths</span></div><div><b class=num>%s</b><span>field sizes</span></div></div>'
+                 '<main class=wrapw><p>Every family here is stored as a certificate, checked exactly over all sets of t columns, and expands to an array in the table. '
+                 'Sizes cited from Colbourn\'s tables come without their families, so only those sizes are in the table.</p>'
+                 '<div class=ctw><table class=ctg><thead><tr><th scope=col>t \\ q</th>%s</tr></thead><tbody>%s</tbody></table></div>'
+                 '<p class=mute style="font-size:.88rem">All families: <a href="%s">table/certificates/CERTIFICATES.csv</a>. How to rebuild and recheck them: <a href="%s">tools/cphf/README.md</a>.</p></main>') % (
+            h1(ref_path("cphf-smc2006")) if "cphf-smc2006" in R.REFS else REPO_URL, format(sum(len(M[f]["head"]) for f in ("cphfCA", "scphfCA") if f in M), ","), format(len(cph), ","), format(sum(1 for x in cph if x["best"]), ","), len(ts), len(qs), head, "".join(body_rows),
+            REPO_URL + "/blob/main/table/certificates/CERTIFICATES.csv", REPO_URL + "/blob/main/tools/cphf/README.md")
+        site.page("cphf/index.html", "Covering perfect hash families: certificates on file", "Covering perfect hash families CPHF(n; k, q, t) behind the covering array table, each checked exactly, with the array it gives.", cbody, "Methods")
+        for (t, q), g in sorted(cgroups.items()):
+            h = lambda p: site.href(3, p)
+            trs = []
+            for x in sorted(g, key=lambda x: (x["n"], -x["k"])):
+                ca_h = ca(x["N"], t, x["k"], q)
+                if x["row"] is not None and x["row"]["array_sha256"] in array_path:
+                    ca_l = '<a href="%s">%s</a>' % (h(array_path[x["row"]["array_sha256"]]), ca_h)
+                else:
+                    ca_l = '<a href="%s">%s</a>' % (h(row_path(t, q, x["k"])), ca_h)
+                tags = ('<span class="tag opt">best on file</span>' if x["top"] else "") + (' <span class="tag ver">best known size</span>' if x["best"] else "")
+                trs.append('<tr><td class=n>%d</td><td class=n>%s</td><td class=a>%s</td><td>%s</td><td>%s</td><td><a href="%s">%s</a><span class=sub>%s</span></td></tr>' % (
+                    x["n"], format(x["k"], ","), ca_l, tags, E(x["credit"]), RAW + "table/certificates/" + x["file"], E(x["file"]),
+                    E(("affine, " if "affine" in x["exp"] else "") + "; ".join(x["checks"]))))
+            pb = ('<div class=pageh><div class=in><div><p class=crumb><a href="%s">CPHFs</a> / t=%d q=%d</p><h1>CPHF(n; k, %d, %d)</h1>'
+                  '<p>Covering perfect hash families of strength %d over the field with %d elements on file, smallest n first. Best on file marks the families no other here beats: none has n as small with k as large.</p></div></div></div>'
+                  '<main class=wrapw><table class=lg><thead><tr><th class=n>n</th><th class=n>k</th><th>gives</th><th>status</th><th>built by</th><th>certificate</th></tr></thead><tbody>%s</tbody></table></main>') % (
+                h("cphf/"), t, q, q, t, t, q, "".join(trs))
+            site.page("cphf/t%d/q%d/index.html" % (t, q), "CPHF(n; k, %d, %d): covering perfect hash families" % (q, t),
+                      "Covering perfect hash families of strength %d over GF(%d) on file, with the covering arrays they give." % (t, q), pb, "Methods")
 
     board_rows = ["000", "011", "101", "110"]
     btns = "".join('<button class="%s" data-r=%d data-c=%d aria-label="row %d, column %d: %s">%s</button>' % ("o" if ch == "1" else "z", i, j, i + 1, j + 1, ch, ch) for i, r in enumerate(board_rows) for j, ch in enumerate(r))
@@ -1323,6 +1411,8 @@ def main():
         ref = R.REFS[rid]["reference"]
         au, rest = split_ref(ref)
         si.append(["p", E(title_of(rest)), E(au + " " + year_of(ref)), ref_path(rid), nk(ref, R.REFS[rid].get("doi", ""))])
+    for (t, q), g in sorted(cgroups.items()):
+        si.append(["m", "CPHF t=%d q=%d" % (t, q), plural(len(g), "family on file", "families on file"), "cphf/t%d/q%d/" % (t, q), nk("cphf", "CPHF(n; k, %d, %d)" % (q, t), "hash family")])
     for m in mlist:
         si.append(["m", E(m["title"]), mline(m), m["path"], nk(m["title"], m["f"]["meaning"], m["f"]["family"], m["f"]["cas_label"])])
     for p in ppl:
