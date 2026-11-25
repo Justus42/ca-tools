@@ -243,7 +243,7 @@ body{overflow-x:hidden}
 .hstats{grid-template-columns:repeat(2,minmax(0,1fr));row-gap:16px}.hstats div{grid-column:span 1}
 .stats{flex-wrap:wrap;row-gap:14px}.stats div{flex:1 1 45%}
 .bsc{overflow-x:auto;margin:0 calc(-1*var(--side));padding:0 var(--side)}
-.wrapw .blk{min-width:1100px;margin-left:0}.blk .r{position:sticky;left:0;background:var(--bg);z-index:1}
+.wrapw .blk{min-width:1100px;margin-left:0}.blk .r,.blk>span:first-child{position:sticky;left:0;background:var(--bg);z-index:2;align-self:stretch;display:flex;align-items:center;justify-content:center;box-shadow:calc(-1*var(--side)) 0 0 var(--bg),6px 0 0 var(--bg),7px 0 0 var(--line)}
 .pageh .in{flex-wrap:wrap}.pageh h1{font-size:1.9rem}
 .lib{grid-template-columns:repeat(2,minmax(0,1fr));gap:20px 14px}
 .flow{grid-template-columns:repeat(2,minmax(0,1fr))}.ft{grid-template-columns:1fr}
@@ -260,6 +260,38 @@ table.lg,.cl,.doc table{display:block;overflow-x:auto;white-space:normal}
 .paper .hd h1{font-size:1.8rem}
 }
 @media (max-width:560px){.lib{grid-template-columns:1fr}.flow{grid-template-columns:1fr}.lv{grid-template-columns:1fr}.top .ai{display:none}.po{display:inline}.top b{flex:1 1 100%}.srch{order:4;flex:1 1 0;min-width:0}.top .sbm{order:5}.strip{flex-direction:column;align-items:flex-start;gap:10px}.citebox,.chk,.card{padding:20px}}
+.mb,.qbt,.top nav .ns{display:none}
+@media (max-width:1310px){:root{--bh:40px;--bw:var(--bh);--sw:86px;--nf:26px;--lh:calc(var(--nf)*.955);--ic:calc(var(--nf)*.9);--ly:calc(var(--nf)*-.06)}
+.top .in{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;column-gap:16px;row-gap:12px;height:auto;padding-top:12px;padding-bottom:12px;position:relative}
+.top .sp,.top .ai{display:none}
+.top .in>b{grid-column:2;grid-row:1;justify-self:center;min-width:0;order:0;flex:none;height:var(--bh);display:flex;align-items:center}.top .in>b .brand{height:var(--bh);align-items:center;line-height:1}.top .in>b .brand span{line-height:1;white-space:nowrap}
+.top .in .mb{grid-column:1;grid-row:1;justify-self:start;margin-left:calc((var(--ic)*16/14 - var(--bw))/2) !important}
+.top .in .srch{display:contents}
+.top .in .qb{grid-column:3;grid-row:1;justify-self:end;margin:0 calc(var(--sw) + 8px) 0 0;position:static;z-index:auto}
+.top .in .sbm{grid-column:3;grid-row:1;justify-self:end;margin:0;order:0}
+.top .in .mb,.top .in .qb{width:var(--bw);padding:0 !important}.top .in .sbm{width:var(--sw);height:32px;padding:0;font-size:14px;letter-spacing:.06em;border-radius:6px}.top .in .mbt,.top .in .qbt{display:none !important}.top .in .mb svg{height:var(--ic);width:calc(var(--ic)*18/14);position:relative;top:var(--ly)}.top .in .qb svg{height:calc(var(--ic)*1.06);width:calc(var(--ic)*1.06);position:relative;top:var(--ly)}.top .in .mb,.top .in .qb{border-color:transparent !important;background:transparent !important}.top .in .mb:hover,.top .in .qb:hover,.top .in .mb[aria-expanded=true],.top .in .qb[aria-expanded=true]{color:#1f6b45;background:#eef6f0 !important}.top .in .mb:focus-visible,.top .in .qb:focus-visible{outline:2px solid #1d1d1f;outline-offset:2px}
+.top .in>b .brand,.top .in>b .brand span{font-size:var(--nf);letter-spacing:.06em}.top .in>b .brand{gap:calc(var(--nf)*.6)}.top .in>b .logo{height:var(--lh);width:calc(var(--lh)*61/22);position:relative;top:var(--ly)}
+.top .in .mb,.top .in .qb,.top .in .sbm{height:var(--bh);box-sizing:border-box;padding:0 10px;display:inline-flex;align-items:center;justify-content:center;gap:8px;font:inherit;font-size:14px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;line-height:1;border-radius:8px;cursor:pointer}
+.top .in .mb,.top .in .qb{background:#fff;color:var(--fg);border:1px solid #c9c9c4}
+.top .in .mb:hover,.top .in .qb:hover,.top .in .mb:focus-visible,.top .in .qb:focus-visible,.top .in .mb[aria-expanded=true],.top .in .qb[aria-expanded=true]{border-color:#1f6b45;color:#1f6b45;background:#f3f8f5}
+.top .in .sbm{border:1px solid var(--fg)}.qbt{display:inline}
+.top .in .srch input,.top .in .srch.open input{display:none;grid-column:1/-1;grid-row:2;position:static;width:100%;height:44px;margin:0;padding:0 14px;font-size:16px;border:1px solid #1f6b45;border-radius:8px;background:#fff;opacity:1;visibility:visible;transform:none;cursor:text}
+.top .in .srch.pin input{display:block}
+.top .in .srch .qr{left:var(--side);right:var(--side);width:auto;top:100%;margin-top:4px;max-height:65vh}
+.top .in nav{display:none;position:absolute;left:var(--side);right:auto;top:100%;margin:6px 0 0;width:auto;min-width:320px;max-width:calc(100% - 2*var(--side));z-index:20;background:#fff;border:1px solid var(--line);border-radius:12px;box-shadow:0 12px 32px rgba(0,0,0,.14);padding:8px;grid-template-columns:1fr 1fr;gap:4px;overflow:visible;order:0}
+.top .in nav.open{display:grid}
+.top nav a,.top nav a:not(.po){display:block;padding:12px;border:0;border-radius:8px;font-size:14px;color:var(--fg);transform:none !important}
+.top nav a.on{background:#eef6f0;color:#1f6b45}.top nav a:hover,.top nav a:focus-visible{background:#f4f4f1}.top .in nav a.ns{display:none}}
+@media (max-width:1100px){:root{--bh:40px;--nf:24px}}
+@media (max-width:800px){:root{--bh:40px;--nf:21px}.top .in .mb,.top .in .qb{padding:0}.mbt,.qbt{display:none}
+.top .in .sbm{display:none}.top .in .qb{margin-right:calc((var(--ic)*.96 - var(--bw))/2)}.top .in{column-gap:12px}
+.top .in nav{right:var(--side);min-width:0;max-width:none}
+.top .in nav a.ns{display:block;grid-column:1/-1;margin-top:4px;background:var(--fg);color:#fff;text-align:center;font-weight:600}.top .in nav a.ns:hover,.top .in nav a.ns:focus-visible{background:#1f6b45;color:#fff}}
+@media (max-width:520px){:root{--bh:38px;--nf:18px}}
+@media (max-width:440px){:root{--bh:38px;--nf:16px}.top .in>b .brand,.top .in>b .brand span{letter-spacing:.04em}}
+@media (max-width:400px){:root{--nf:15px}}
+@media (max-width:374px){:root{--bh:36px;--nf:14px}.top .in>b .brand,.top .in>b .brand span{letter-spacing:.02em}}
+@media (max-width:340px){:root{--bh:34px;--nf:12px}.top .in{column-gap:8px}}
 """.replace("@SERIF@", SERIF)
 
 
@@ -292,14 +324,15 @@ class Site:
         h = (lambda p: "/" + p) if absolute else (lambda p: self.href(depth, p))
         root = "/" if absolute else "../" * depth
         nav = "".join('<a href="%s"%s>%s</a>' % (h(p), ' class=on' if n == active else "", n) for n, p in NAV)
+        nav += '<a class=ns href="%s">Submit</a>' % h("submit/")
         canon = ('<meta name="robots" content="noindex">' if path == "404.html" else
                  '<link rel="canonical" href="%s">' % (BASE + (path[:-len("index.html")] if path.endswith("index.html") else path)))
         ld = '<script type="application/ld+json">%s</script>' % jsonld if jsonld else ""
         doc = ('<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">'
                '<title>%s</title><meta name="description" content="%s">%s'
                '<link rel="stylesheet" href="%s"><link rel="alternate" type="text/plain" title="llms.txt" href="%s">%s</head><body><a class=skip href="#main">Skip to content</a>'
-               '<header class=top><div class=in><b><a class=brand href="%s"><svg class=logo viewBox="0 0 61 22" aria-hidden="true"><rect x="1.0" y="3.0" width="8" height="8" rx="1.6" fill="#b9dcc6" style="transform:rotate(0deg);animation-name:lg0"/><rect x="11.0" y="6.0" width="8" height="8" rx="1.6" fill="#5fa77d" style="transform:rotate(14deg);animation-name:lg1"/><rect x="21.0" y="11.0" width="8" height="8" rx="1.6" fill="#1f6b45" style="transform:rotate(-22deg);animation-name:lg2"/><rect x="31.0" y="6.0" width="8" height="8" rx="1.6" fill="#5fa77d" style="transform:rotate(14deg);animation-name:lg3"/><rect x="41.0" y="3.0" width="8" height="8" rx="1.6" fill="#b9dcc6" style="transform:rotate(0deg);animation-name:lg4"/><rect x="51.0" y="11.0" width="8" height="8" rx="1.6" fill="#1f6b45" style="transform:rotate(-22deg);animation-name:lg5"/></svg><span>Covering Array Tools</span></a></b><nav>%s</nav><span class=sp></span>'
-               '<div class=srch><button type=button class=qb aria-label="Search" aria-expanded="false" aria-controls="q"><svg width="17" height="17" viewBox="0 0 17 17" aria-hidden="true"><circle cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M11.2 11.2l4.3 4.3" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg></button><input id=q type=search placeholder="Search sizes, arrays, papers, people" autocomplete=off aria-label="Search" role=combobox aria-autocomplete=list aria-controls=qr aria-expanded=false><div id=qr class=qr role=listbox aria-label="Search results"></div><span id=qn class=vh aria-live=polite></span></div><a class="sbm%s" href="%s">Submit</a></div></header><div id=main tabindex=-1>%s</div>'
+               '<header class=top><div class=in><b><a class=brand href="%s"><svg class=logo viewBox="0 0 61 22" aria-hidden="true"><rect x="1.0" y="3.0" width="8" height="8" rx="1.6" fill="#b9dcc6" style="transform:rotate(0deg);animation-name:lg0"/><rect x="11.0" y="6.0" width="8" height="8" rx="1.6" fill="#5fa77d" style="transform:rotate(14deg);animation-name:lg1"/><rect x="21.0" y="11.0" width="8" height="8" rx="1.6" fill="#1f6b45" style="transform:rotate(-22deg);animation-name:lg2"/><rect x="31.0" y="6.0" width="8" height="8" rx="1.6" fill="#5fa77d" style="transform:rotate(14deg);animation-name:lg3"/><rect x="41.0" y="3.0" width="8" height="8" rx="1.6" fill="#b9dcc6" style="transform:rotate(0deg);animation-name:lg4"/><rect x="51.0" y="11.0" width="8" height="8" rx="1.6" fill="#1f6b45" style="transform:rotate(-22deg);animation-name:lg5"/></svg><span>Covering Array Tools</span></a></b><button type=button class=mb aria-label="Menu" aria-expanded="false" aria-controls="nv"><svg width="18" height="14" viewBox="0 0 18 14" aria-hidden="true"><path d="M1 1h16M1 7h16M1 13h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg><span class=mbt>Menu</span></button><nav id=nv aria-label="Main">%s</nav><span class=sp></span>'
+               '<div class=srch><button type=button class=qb aria-label="Search" aria-expanded="false" aria-controls="q"><svg width="17" height="17" viewBox="0 0 17 17" aria-hidden="true"><circle cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M11.2 11.2l4.3 4.3" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg><span class=qbt>Search</span></button><input id=q type=search placeholder="Search sizes, arrays, papers, people" autocomplete=off aria-label="Search" role=combobox aria-autocomplete=list aria-controls=qr aria-expanded=false><div id=qr class=qr role=listbox aria-label="Search results"></div><span id=qn class=vh aria-live=polite></span></div><a class="sbm%s" href="%s">Submit</a></div></header><div id=main tabindex=-1>%s</div>'
                '<div class=foot><div class=in><span><a href="%s">Source data on GitHub</a>, with the full history of the table. This build: commit <span class=mono>%s</span>, %s</span>'
                '<span>Cite: DOI <a href="https://doi.org/%s">%s</a></span><span>Data CC BY 4.0</span><span><a href="%s">About</a></span><span><a href="%s">For AI</a></span><span><a href="mailto:%s">%s</a></span></div></div>'
                '<script src="%s" data-root="%s" data-preview="%s" defer></script>%s%s</body></html>') % (
@@ -308,7 +341,7 @@ class Site:
         self.write(path, doc)
 
 
-SEARCH_JS = r"""(function(){var me=document.currentScript,root=me.getAttribute('data-root')||'',pv=me.getAttribute('data-preview')=='1',q=document.getElementById('q'),box=document.getElementById('qr'),loaded=false,act=-1,items=[];
+SEARCH_JS = r"""(function(){var b=document.querySelector('.mb'),n=document.getElementById('nv');if(!b||!n)return;function sh(o){n.classList.toggle('open',o);b.setAttribute('aria-expanded',o?'true':'false')}b.addEventListener('click',function(){sh(!n.classList.contains('open'))});document.addEventListener('keydown',function(e){if(e.key=='Escape'&&n.classList.contains('open')){sh(false);b.focus()}});document.addEventListener('click',function(e){if(n.classList.contains('open')&&!n.contains(e.target)&&!b.contains(e.target))sh(false)})})();(function(){var me=document.currentScript,root=me.getAttribute('data-root')||'',pv=me.getAttribute('data-preview')=='1',q=document.getElementById('q'),box=document.getElementById('qr'),loaded=false,act=-1,items=[];
 function load(cb){if(loaded){cb();return}var s=document.createElement('script');s.src=root+'assets/sindex.js';s.onload=function(){loaded=true;cb()};document.head.appendChild(s)}
 function norm(x){return x.toLowerCase().replace(/[^a-z0-9]+/g,' ').trim()}
 function url(p){if(pv&&(p===''||p.slice(-1)=='/'))p+='index.html';return root+p}
@@ -335,7 +368,7 @@ function cl(){pin=false;w.classList.remove('open','pin');bt.setAttribute('aria-e
 function hold(){pin=true;w.classList.add('pin');op();setTimeout(function(){q.focus()},30)}
 w.addEventListener('mouseenter',function(){hov=true;op()});
 w.addEventListener('mouseleave',function(){hov=false;if(!pin)cl()});
-bt.addEventListener('click',function(){hold()});
+bt.addEventListener('click',function(){if(pin&&matchMedia('(max-width:1310px)').matches){cl();return}hold()});
 q.addEventListener('focus',function(){pin=true;w.classList.add('pin');op();if(q.value)q.dispatchEvent(new Event('input'))});
 q.addEventListener('keydown',function(e){if(e.key=='Escape'){cl();bt.focus()}});
 w.addEventListener('focusout',function(e){if(!e.relatedTarget||!w.contains(e.relatedTarget)){if(!hov)cl();else{pin=false;w.classList.remove('pin')}}});
