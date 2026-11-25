@@ -167,8 +167,10 @@ table.lg tbody tr:hover td,.cl tbody tr:hover td{background:#f3f8f4}
 .panel{visibility:hidden}.panel.open{visibility:visible}.panel .big:focus{outline:none}
 .chips{display:flex;gap:8px;align-items:center;flex-wrap:wrap;margin:0 0 16px}.chips .l{color:var(--mute);margin-right:6px;font-size:.9rem}
 .chips button{font:inherit;font-size:.9rem;padding:7px 15px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--fg);cursor:pointer}.chips button[aria-pressed=true]{background:var(--fg);color:#fff;border-color:var(--fg)}
-.az{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 20px}.az a,.az span{min-width:30px;height:30px;display:inline-flex;align-items:center;justify-content:center;border-radius:6px;font-size:.88rem}
-.az a{border:1px solid var(--line);background:#fff;text-decoration:none}.az a:hover,.az a:focus-visible{border-color:#1f6b45;color:#1f6b45}.az span{color:#b5b5b0}
+.pf{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin:0 0 10px}.pf input{font:inherit;font-size:.95rem;padding:8px 12px;border:1px solid #8a8a84;border-radius:8px;width:18rem;max-width:100%}
+.pn{font-size:.88rem;color:var(--mute);margin:0 0 20px}
+.az{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 8px}.az button,.az span{min-width:30px;height:30px;padding:0 6px;display:inline-flex;align-items:center;justify-content:center;border-radius:6px;font:inherit;font-size:.88rem}
+.az button{border:1px solid var(--line);background:#fff;color:var(--fg);cursor:pointer}.az button:hover,.az button:focus-visible{border-color:#1f6b45;color:#1f6b45}.az button[aria-pressed=true]{background:#1f6b45;border-color:#1f6b45;color:#fff}.az span{color:#767670}
 .pp{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px}.pp .pc[hidden]{display:none}
 .pc{display:flex;gap:14px;align-items:center;background:#fff;border:1px solid var(--line);border-radius:12px;padding:16px 18px;text-decoration:none;color:var(--fg);scroll-margin-top:16px}
 .pc:hover,.pc:focus-visible{border-color:#1f6b45;transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.06)}
@@ -1253,18 +1255,26 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
     cards = []
     for p in ppl:
         L = fold(p["sur"])[0].upper()
-        cards.append('<a class=pc href="%s"%s><i aria-hidden="true">%s</i><span><b>%s</b><span>%s</span></span></a>' % (
-            h1(p["path"]), (' id="l-%s"' % L.lower()) if L not in letters else "", initials(p), E(p["name"]), summary(p)))
+        cards.append('<a class=pc href="%s" data-l="%s" data-n="%s"><i aria-hidden="true">%s</i><span><b>%s</b><span>%s</span></span></a>' % (
+            h1(p["path"]), L, E(fold(p["name"]).lower()), initials(p), E(p["name"]), summary(p)))
         letters.setdefault(L, p)
-    az = "".join(('<a href="#l-%s">%s</a>' % (L.lower(), L)) if L in letters else '<span aria-hidden="true">%s</span>' % L for L in "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
+    az = '<button type=button data-l="" aria-pressed="true">All</button>' + "".join(
+        ('<button type=button data-l="%s" aria-pressed="false">%s</button>' % (L, L)) if L in letters else '<span aria-hidden="true">%s</span>' % L for L in "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
     body = ('<div class=pageh><div class=in><div><h1>Contributors</h1><p>Everyone whose arrays, constructions, papers or proofs the table rests on, with what each contributed. '
             'Built from the table\'s own credits and its library.</p>'
             '<p class=mute style="font-size:.9rem">How the counts are made, from each entry\'s credit. Arrays built: verified arrays whose credit names the person as builder, and two collections whose arrays carry no credit: the binary arrays of Torres-Jimenez and the CA Extender arrays of Torres-Jimenez, Acevedo-Juarez and Avila-George, both kept in the CAs package. Arrays from their collection: arrays the table took from a collection the person keeps (Aaron Dwyer\'s CA_Database), credited to their builders. '
             'Credited sizes: entries whose credit names their construction, method or result. Entries that use their work: their array or method was an ingredient or a tool. '
             'Best known sizes first reached: the people the credit of the first row to reach the size names for the size; when it names no one for the size, its builder; when it names no builder, the authors of its method or result. An entry with no credit counts for the authors of the papers it builds on, as on the table pages, and otherwise for the collections above.</p></div></div></div>'
-            '<main class=wrapw><nav class=az aria-label="Jump to letter">%s</nav>'
-            '<div class=pp id=pp>%s</div></main>') % (az, "".join(cards))
-    site.page("contributors/index.html", "Contributors to the covering array table", "Everyone whose arrays, published sizes, papers or proofs the covering array table rests on, with what each contributed.", body, "Contributors")
+            '<main class=wrapw><div class=pf><label for=pq class=vh>Find a contributor by name</label><input id=pq type=search placeholder="Find a name" autocomplete=off></div>'
+            '<div class=az role=group aria-label="Show surnames starting with">%s</div><p class=pn id=pn aria-live=polite>%s</p>'
+            '<div class=pp id=pp>%s</div></main>') % (az, plural(len(cards), "contributor"), "".join(cards))
+    pscript = ("<script>(function(){var q=document.getElementById('pq'),n=document.getElementById('pn'),bs=document.querySelectorAll('.az button'),"
+               "cs=document.querySelectorAll('#pp .pc'),L='';function run(){var t=q.value.trim().toLowerCase().normalize('NFKD').replace(/[\u0300-\u036f]/g,''),c=0;"
+               "cs.forEach(function(e){var s=(!L||e.dataset.l===L)&&(!t||e.dataset.n.indexOf(t)>=0);e.hidden=!s;if(s)c++});"
+               "n.textContent=(c===1?'1 contributor':c.toLocaleString('en-US')+' contributors')+(L?' with surnames starting '+L:'')+(t?' matching \u201c'+q.value.trim()+'\u201d':'')}"
+               "bs.forEach(function(b){b.addEventListener('click',function(){L=b.dataset.l;bs.forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});run()})});"
+               "q.addEventListener('input',run)})()</script>")
+    site.page("contributors/index.html", "Contributors to the covering array table", "Everyone whose arrays, published sizes, papers or proofs the covering array table rests on, with what each contributed.", body, "Contributors", script=pscript)
 
     for p in ppl:
         h = lambda q: site.href(2, q)
