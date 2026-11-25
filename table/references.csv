@@ -74,8 +74,9 @@ singer-cphf-bai2026,"zenodo\.2378705[234]|two-row covering perfect hash","X. Bai
 quilt-c2014,S1793830914500347|quilting arrays|augmentation of colbourn 2014,"C. J. Colbourn, Covering arrays, augmentation, and quilting arrays, Discrete Math. Algorithms Appl. 6 (2014) 1450034",10.1142/S1793830914500347
 polychrome-bai2026,zenodo\.2378705[01](?!\d)|line.polychromatic,"X. Bai, Covering arrays from line-polychromatic colourings of affine planes, preprint, Zenodo (2026)",10.5281/zenodo.23787051
 twoblock-bai2026,zenodo\.2405537[01](?!\d)|two.block covering arrays,"X. Bai, Two-block covering arrays from elliptic curves and curves of genus two, preprint, Zenodo (2026)",10.5281/zenodo.24055371
-pgl-s2026,zenodo\.23842218|zenodo\.24208931|new upper bounds for covering arrays of strengths 3 to 6,"T. N. Sitjar, New upper bounds for covering arrays of strengths 3 to 6, preprint, Zenodo (2026)",10.5281/zenodo.23842218
+pgl-s2026,zenodo\.2384221[89](?!\d)|zenodo\.23846184|zenodo\.23885259|zenodo\.23962626|zenodo\.24208931|new upper bounds for covering arrays of strengths 3 to 6,"T. N. Sitjar, New upper bounds for covering arrays of strengths 3 to 6, preprint, Zenodo (2026)",10.5281/zenodo.23842218
 psl-g2026,"zenodo\.2387772[01](?!\d)|PSL\(2, ?5\) (group.)?orbit","K. Grey, Improved upper bounds for strength-3 covering arrays over six symbols via mixed short and regular PSL(2, 5) orbits, preprint, Zenodo (2026)",10.5281/zenodo.23877721
+excursion-g2026,zenodo\.2409623[01](?!\d)|excursion.capped,"K. Grey, An explicit covering array CA(411; 3, 11, 6) via excursion-capped tabu search, preprint, Zenodo (2026)",10.5281/zenodo.24096230
 lb-smm1998,,"B. Stevens, L. Moura and E. Mendelsohn, Lower bounds for transversal covers, Des. Codes Cryptogr. 15 (1998) 279-299",10.1023/A:1008329410829
 lb-pt1989,,"S. Poljak and Z. Tuza, On the maximum number of qualitatively independent partitions, J. Combin. Theory Ser. A 51 (1989) 111-116",10.1016/0097-3165(89)90081-2
 lb-kp1975,,"S. Kounias and C. I. Petros, Orthogonal arrays of strength three and four with index unity, Sankhya Ser. B 37 (1975) 228-240",
