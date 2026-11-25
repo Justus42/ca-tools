@@ -1250,24 +1250,18 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
     cards = []
     for p in ppl:
         L = fold(p["sur"])[0].upper()
-        kinds = " ".join(k for k, n in (("a", p["ver"]), ("s", p["cit"] + p["used"]), ("p", len(p["papers"])), ("f", len(p["floors"]))) if n)
-        cards.append('<a class=pc href="%s" data-k="%s"%s><i aria-hidden="true">%s</i><span><b>%s</b><span>%s</span></span></a>' % (
-            h1(p["path"]), kinds, (' id="l-%s"' % L.lower()) if L not in letters else "", initials(p), E(p["name"]), summary(p)))
+        cards.append('<a class=pc href="%s"%s><i aria-hidden="true">%s</i><span><b>%s</b><span>%s</span></span></a>' % (
+            h1(p["path"]), (' id="l-%s"' % L.lower()) if L not in letters else "", initials(p), E(p["name"]), summary(p)))
         letters.setdefault(L, p)
     az = "".join(('<a href="#l-%s">%s</a>' % (L.lower(), L)) if L in letters else '<span aria-hidden="true">%s</span>' % L for L in "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
-    chips = "".join('<button type=button data-f="%s" aria-pressed="%s">%s</button>' % (f, "true" if not f else "false", n) for f, n in
-                    (("", "Everyone"), ("a", "Arrays built"), ("s", "Credited work"), ("p", "Papers"), ("f", "Lower bounds")))
     body = ('<div class=pageh><div class=in><div><h1>Contributors</h1><p>Everyone whose arrays, constructions, papers or proofs the table rests on, with what each contributed. '
             'Built from the table\'s own credits and its library.</p>'
             '<p class=mute style="font-size:.9rem">How the counts are made, from each entry\'s credit. Arrays built: verified arrays whose credit names the person as builder, and three collections whose arrays carry no credit: the binary arrays of Torres-Jimenez and the CA Extender arrays of Torres-Jimenez, Acevedo-Juarez and Avila-George, both kept in the CAs package, and Aaron Dwyer\'s CA_Database. '
             'Credited sizes: entries whose credit names their construction, method or result. Entries that use their work: their array or method was an ingredient or a tool. '
             'Best known sizes first reached: the people the credit of the first row to reach the size names for the size; when it names no one for the size, its builder; when it names no builder, the authors of its method or result. An entry with no credit counts for the authors of the papers it builds on, as on the table pages, and otherwise for the collections above.</p></div></div></div>'
-            '<main class=wrapw><div class=chips role=group aria-label="Show"><span class=l>Show</span>%s</div><nav class=az aria-label="Jump to letter">%s</nav>'
-            '<div class=pp id=pp>%s</div><p class=mute id=pn aria-live=polite></p></main>') % (chips, az, "".join(cards))
-    pscript = ("<script>(function(){var bs=document.querySelectorAll('.chips button'),cs=document.querySelectorAll('#pp .pc'),pn=document.getElementById('pn');"
-               "bs.forEach(function(b){b.addEventListener('click',function(){var f=b.getAttribute('data-f'),n=0;bs.forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false')});"
-               "cs.forEach(function(c){var on=!f||(' '+c.getAttribute('data-k')+' ').indexOf(' '+f+' ')>=0;c.hidden=!on;if(on)n++});pn.textContent=f?n+(n==1?' person':' people'):''})})})()</script>")
-    site.page("contributors/index.html", "Contributors to the covering array table", "Everyone whose arrays, published sizes, papers or proofs the covering array table rests on, with what each contributed.", body, "Contributors", None, pscript)
+            '<main class=wrapw><nav class=az aria-label="Jump to letter">%s</nav>'
+            '<div class=pp id=pp>%s</div></main>') % (az, "".join(cards))
+    site.page("contributors/index.html", "Contributors to the covering array table", "Everyone whose arrays, published sizes, papers or proofs the covering array table rests on, with what each contributed.", body, "Contributors")
 
     for p in ppl:
         h = lambda q: site.href(2, q)
