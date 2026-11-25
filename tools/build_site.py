@@ -260,7 +260,7 @@ table.lg,.cl,.doc table{display:block;overflow-x:auto;white-space:normal}
 .paper .hd h1{font-size:1.8rem}
 }
 @media (max-width:560px){.lib{grid-template-columns:1fr}.flow{grid-template-columns:1fr}.lv{grid-template-columns:1fr}.top .ai{display:none}.po{display:inline}.top b{flex:1 1 100%}.srch{order:4;flex:1 1 0;min-width:0}.top .sbm{order:5}.strip{flex-direction:column;align-items:flex-start;gap:10px}.citebox,.chk,.card{padding:20px}}
-.mb,.qbt,.top nav .ns{display:none}
+.mb,.qbt,.top .in nav a.ns{display:none}
 @media (max-width:1310px){:root{--bh:40px;--bw:var(--bh);--sw:86px;--nf:26px;--lh:calc(var(--nf)*.955);--ic:calc(var(--nf)*.9);--ly:calc(var(--nf)*-.06)}
 .top .in{display:grid;grid-template-columns:minmax(0,1fr) auto minmax(0,1fr);align-items:center;column-gap:16px;row-gap:12px;height:auto;padding-top:12px;padding-bottom:12px;position:relative}
 .top .sp,.top .ai{display:none}
