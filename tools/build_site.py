@@ -1237,6 +1237,7 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
 
     def summary(p):
         return ", ".join(s for s in [plural(p["ver"], "array built", "arrays built") if p["ver"] else "", plural(p["cit"], "credited size") if p["cit"] else "",
+                                     plural(len(p["held"]), "best known size first reached", "best known sizes first reached") if p["held"] else "",
                                      plural(p["used"], "entry uses their work", "entries use their work") if p["used"] and not (p["ver"] or p["cit"] or p["papers"]) else "",
                                      plural(len(p["papers"]), "paper") if p["papers"] else "", plural(len(p["floors"]), "lower bound") if p["floors"] else ""] if s)
 
