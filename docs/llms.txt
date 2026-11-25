@@ -1,8 +1,8 @@
 # Covering Array Tools: the table of best known covering arrays
 
-> An open table of the best known sizes of covering arrays CA(N; t, k, v) and the covering array numbers CAN(t, k, v), with checked arrays, proven lower bounds, credit, constructions and published sources. Site: https://coveringarraytools.org/ . Repository: https://github.com/chrispbsmolen/ca-tools . Anyone can submit an array by pull request. Every submission is checked exactly and credited to the submitter on its row.
+> An open table of the best known sizes of covering arrays CA(N; t, k, v) and the covering array numbers CAN(t, k, v), with checked arrays, proven lower bounds, credit, constructions and published sources. Site: https://coveringarraytools.org/ . Repository: https://github.com/chrispbsmolen/ca-tools . Anyone can submit an array by pull request. Every submission is checked before it enters, exactly or, for an array too large for the public exact check, on random column windows until its exact check passes, and credited to the submitter on its row.
 
-The table covers strengths 2 to 6 with at most 25 symbols, binary arrays at strengths 7 to 10, and at most 100,000 columns. Each row gives t, v, k, the size N, its tier (VERIFIED with a checked array, or CITED from the literature with no array here), the source and the credit. Proven lower bounds are kept per (t, v) and k range, each with the theorem that proves it.
+The table covers strengths 2 to 6 with at most 25 symbols, binary arrays at strengths 7 to 10, and at most 100,000 columns. Each row gives t, v, k, the size N, its tier (VERIFIED with a checked array, or CITED from the literature with no array here), the source and the credit. A few rows have other tiers: SCREENED (checked on random column windows only, not counted as best known until its exact check passes), DISPUTED (beside a CITED row whose construction, built and checked here, did not give a covering array at that size; the CITED row still counts) and FAILED_PENDING_RECHECK (three rows kept as history). Best known sizes follow the Colbourn rule of table/CONVENTIONS.md, section 4: CITED and VERIFIED rows count. Proven lower bounds are kept per (t, v) and k range, each with the theorem that proves it.
 
 ## Read the table
 
@@ -38,4 +38,4 @@ The table covers strengths 2 to 6 with at most 25 symbols, binary arrays at stre
 
 ## Licence and citation
 
-The table data is under CC BY 4.0 and the code under the MIT licence. Cite the table as C. Smolen, ca-tools: a maintained table of covering arrays, doi:10.5281/zenodo.24168008, and cite the authors of the rows you use.
+The table data is under CC BY 4.0 and the code under the MIT licence, except r/cafast and r/countkernel, which are under GPL (>= 3). Cite the table as C. Smolen, ca-tools: a maintained table of covering arrays, doi:10.5281/zenodo.24168008, and cite the authors of the rows you use.
