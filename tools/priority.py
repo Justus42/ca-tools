@@ -114,10 +114,11 @@ def known_slugs(repo):
     return out
 
 
-def row_dates(rows, table_dir):
-    """the priority date of every row, in file order"""
+def row_dates(rows, table_dir, known=None):
+    """the priority date of every row, in file order; known: the submission folder names, when the folders
+    themselves are not checked out"""
     repo = os.path.dirname(os.path.abspath(table_dir))
-    known = known_slugs(repo)
+    known = known_slugs(repo) if known is None else known
     sub = submission_dates(table_dir)
     out = []
     for r in rows:

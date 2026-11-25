@@ -7,6 +7,7 @@ import html
 import json
 import os
 import re
+import subprocess
 import sys
 import unicodedata
 
@@ -468,22 +469,103 @@ def credit_or_source(R, r):
     c = R.credit_of(r) if r else ""
     if c:
         return pub(c)
-    return SOURCE_NAME.get(r.get("source_id", ""), "source not named") if r else ""
+    return source_name(r) if r else ""
 
 
-def short_credit(c):
-    return c.split(" (")[0]
+CAS_DATA = {"TJ2level_CAs": "J. Torres-Jimenez, via the CAs R package",
+            "CAEX_CAs": "Torres-Jimenez, Acevedo-Juarez and Avila-George 2021, via the CAs R package"}
+
+
+def source_name(r):
+    if r.get("source_id") == "S6":
+        m = re.match(r"CAs data (\w+)", r.get("source_detail") or "")
+        if m and m.group(1) in CAS_DATA:
+            return CAS_DATA[m.group(1)]
+    return SOURCE_NAME.get(r.get("source_id", ""), "source not named")
+
+
+def segments(c):
+    out, d, cur = [], 0, ""
+    i = 0
+    while i < len(c):
+        ch = c[i]
+        if ch == "(":
+            d += 1
+        elif ch == ")":
+            d = max(0, d - 1)
+        if not d and ch == ")" and c[i + 1:i + 3] == ", ":
+            out.append(cur + ch)
+            cur = ""
+            i += 3
+            continue
+        cur += ch
+        i += 1
+    if cur.strip():
+        out.append(cur)
+    segs = []
+    for x in out:
+        x = x.strip()
+        m = re.match(r"^(.*?)\s*\((.*)\)$", x, re.S)
+        name, role = (m.group(1), m.group(2)) if m else (x, "")
+        r = role.lower()
+        if re.match(r"^(19|20)\d\d$", role):
+            name, role, r = name + " " + role, "", ""
+        if r.startswith(("the derivation", "the array", "the search", "this project's", "the post-optimisation")):
+            kind = "builder"
+        elif "function" in r and "package" in r:
+            kind = "tool"
+        elif re.match(r"^(the method|the doubling|the product|the direct product|corollary|lemma|theorem|construction)", r):
+            kind = "method"
+        elif "ingredient" in r or "starting array" in r or r.startswith("the construction of the"):
+            kind = "ingredient"
+        elif re.search(r"\bsearch\b", r):
+            kind = "builder"
+        elif "the size" in r:
+            kind = "size"
+        elif re.match(r"^(the method|the doubling|the product|the direct product|corollary|lemma|theorem|construction)", r):
+            kind = "method"
+        else:
+            kind = "author" if re.search(r"\b(19|20)\d\d\b", name) else "plain"
+        segs.append(dict(name=pub(name).strip(), kind=kind))
+    return segs
+
+
+def names(segs, kinds):
+    return "; ".join(s["name"] for s in segs if s["kind"] in kinds)
+
+
+def builders_of(c):
+    segs = segments(c)
+    b = names(segs, ("builder",))
+    if not b and all(s["kind"] == "plain" for s in segs):
+        b = names(segs, ("plain",))
+    return b
+
+
+def array_by_text(R, r):
+    c = R.credit_of(r) if r else ""
+    if not c:
+        return ("from " + source_name(r)) if r else ""
+    b = builders_of(c)
+    return ("built by " + b) if b else ("credit: " + names(segments(c), ("size", "author", "ingredient", "method", "plain")))
+
+
+def row_who(R, r):
+    c = R.credit_of(r)
+    if not c:
+        return source_name(r)
+    return builders_of(c) or names(segments(c), ("size", "author", "ingredient", "method", "plain"))
 
 
 def reached_by(R, r):
     c = R.credit_of(r)
     if c:
-        c = short_credit(pub(c))
-        return (c if re.search(r"\b(19|20)\d\d\b", c) else "%s %s" % (c, r["entered"][:4])), []
+        segs = segments(c)
+        return (names(segs, ("size",)) or builders_of(c) or names(segs, ("author", "method", "plain")) or names(segs, ("ingredient",)) or names(segs, ("tool",))), []
     refs = [i for i in (r.get("builds_on") or "").split(";") if i in R.REFS]
     if refs:
         return "", refs
-    src = SOURCE_NAME.get(r.get("source_id", ""), "source not named")
+    src = source_name(r)
     lab = pub(R.page_text(R.construction_of(r) or ""))
     return ("%s (%s)" % (src, lab) if lab and r.get("source_id") == "S1" else src), []
 
@@ -594,22 +676,53 @@ def main():
             for s in shas:
                 array_path[s] = base + s[:8] + "/"
 
+    import priority
+    known = priority.known_slugs(a.repo)
+    try:
+        ls = subprocess.run(["git", "-C", a.repo, "ls-tree", "-d", "--name-only", "HEAD", "submissions/", "table/constructions/"], capture_output=True, text=True).stdout
+        known |= {os.path.basename(x) for x in ls.split()}
+    except OSError:
+        pass
+    prio = priority.row_dates(rows, tdir, known)
+    gpos, fsnap = {}, {}
+    for i, r in enumerate(rows):
+        key = (r.get("snapshot_id") or "", r.get("entered") or "")
+        gpos[id(r)] = (prio[i], fsnap.setdefault(key, i) if key[0] else i, i)
+
+    def reach_pieces(rs, n, k0, k1):
+        cand = [r for r in R.counted(rs) if r["N"] <= n and r["k"] >= k0]
+        out, k = [], k0
+        while k <= k1:
+            live = [r for r in cand if r["k"] >= k]
+            w = min(live, key=lambda r: gpos[id(r)])
+            hi = min([r["k"] for r in live] + [k1])
+            rb = reached_by(R, w)
+            same = sorted(re.findall(r"[^\W\d]+|\d{4}", (rb[0] or " ".join(R.ref_label(i) for i in rb[1])).replace(" and ", " ")))
+            if out and out[-1][4] == same:
+                out[-1][1] = hi
+                if rb[0] and not out[-1][3][0]:
+                    out[-1][2:4] = [w, (rb[0], tuple(rb[1]))]
+            else:
+                out.append([k, hi, w, (rb[0], tuple(rb[1])), same])
+            k = hi + 1
+        return out
+
     cells = {}
     for (t, v), rs in sorted(tv.items()):
         st = R.stair(rs)
         rungs = []
         for n, k0, k1, ev in st:
             ver = [e for e in ev if e["tier"] == "VERIFIED"]
-            best = (sorted(ver, key=lambda e: e["source_id"] != "S8") + list(ev))[0]
+            sha = next((e["array_sha256"] for e in sorted(ver, key=lambda e: e["source_id"] != "S8") if e["array_sha256"] in array_path), "")
+            best = next((e for e in sorted(ver, key=lambda e: e["source_id"] != "S8") if sha and e["array_sha256"] == sha), None) or (sorted(ver, key=lambda e: e["source_id"] != "S8") + list(ev))[0]
             f = R.floor_at(t, v, k0)
             f0 = lower_bounds.lower_bound(t, k0, v)[0]
             f1 = lower_bounds.lower_bound(t, k1, v)[0]
             of = R.optimal_from(t, v, k0, k1, n) if (t, v, k1, n) in R.LB_CLOSED else None
-            sha = next((e["array_sha256"] for e in sorted(ver, key=lambda e: e["source_id"] != "S8") if e["array_sha256"] in array_path), "")
             rungs.append(dict(N=n, k0=k0, k1=k1, floor=f0, floor_k_to=f1, floor_row=f, closed=of == k0, opt_from=of,
                               verified=bool(ver), credit=credit_or_source(R, best), construction=pub(R.page_text(R.construction_of(best) or "")),
                               builds_on=[i for i in (best.get("builds_on") or "").split(";") if i in R.REFS], sha=sha,
-                              entered=best["entered"], row=best, cert=next((cert_of(e) for e in ev if cert_of(e)), None), cert_row=next((e for e in ev if cert_of(e)), None), first=first.get((t, v, k1, n)) or min(ev, key=lambda e: e["entered"]), new=all(e["entered"] > SNAPSHOT_DATE for e in ev)))
+                              entered=best["entered"], row=best, cert=next((cert_of(e) for e in ev if cert_of(e)), None), cert_row=next((e for e in ev if cert_of(e)), None), first=first.get((t, v, k1, n)) or min(ev, key=lambda e: e["entered"]), pieces=reach_pieces(rs, n, k0, k1), new=all(e["entered"] > SNAPSHOT_DATE for e in ev)))
         cells[(t, v)] = dict(t=t, v=v, rungs=rungs, kmax=max(r["k"] for r in rs), kmin=min(r["k"] for r in rs), last=max(r["entered"] for r in rs),
                              nver=sum(1 for x in rungs if x["verified"]), nopt=sum(1 for x in rungs if x["opt_from"] is not None),
                              nnew=sum(1 for x in rungs if x["new"]))
@@ -770,21 +883,28 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
                 arr += '<span class=sub>also on file: %s</span>' % ", ".join('<a href="%s">%s</a>' % (h(array_path[s2]), ca(x["N"], t, k2, v)) for k2, s2 in also)
             kr = format(x["k1"], ",") if x["k0"] == x["k1"] else "%s to %s" % (format(x["k0"], ","), format(x["k1"], ","))
             con = x["construction"]
-            rb, rrefs = reached_by(R, x["first"])
             key = h("learn/") + "#colbourn-labels"
             if x["row"].get("source_id") == "S1" and con:
                 con_h = '<a class=ck href="%s">%s</a>' % (key, E(con))
             else:
                 con_h = E(con)
-            rbh = (('<a class=ck href="%s">%s</a>' % (key, E(rb))) if x["first"].get("source_id") == "S1" else E(rb)) if rb else " ".join('<span class=rbi><a href="%s">%s</a>%s</span>' % (h(ref_path(i)), E(R.ref_label(i)), "," if j < len(rrefs) - 1 else "") for j, i in enumerate(rrefs))
+
+            def rb_html(p):
+                rb, rrefs = p[3]
+                if rb:
+                    return ('<a class=ck href="%s">%s</a>' % (key, E(rb))) if p[2].get("source_id") == "S1" else E(rb)
+                return " ".join('<span class=rbi><a href="%s">%s</a>%s</span>' % (h(ref_path(i)), E(R.ref_label(i)), "," if j < len(rrefs) - 1 else "") for j, i in enumerate(rrefs))
+            ps = x["pieces"]
+            rbh = rb_html(ps[0]) if len(ps) == 1 else "".join('<span class=sub>%s</span>%s' % (
+                "k = " + format(p[0], ",") if p[0] == p[1] else "k = %s to %s" % (format(p[0], ","), format(p[1], ",")), rb_html(p)) for p in ps)
             if x["sha"]:
-                arr += '<span class=sub>%s %s</span>' % ("built by" if R.credit_of(x["row"]) else "from", E(short_credit(x["credit"])))
+                arr += '<span class=sub>%s</span>' % E(array_by_text(R, x["row"]))
             cf = x["cert"]
             if cf and x["sha"]:
                 arr += '<span class=sub>family: <a href="%s">%s</a></span>' % (h("cphf/t%d/q%d/" % (cf["t"], cf["q"])), E(cf["family"]))
             elif cf:
                 arr = '<a href="%s">%s</a><span class=sub>family on file</span>%s' % (
-                    h("cphf/t%d/q%d/" % (cf["t"], cf["q"])), E(cf["family"]), ('<span class=sub>built by %s</span>' % E(short_credit(credit_or_source(R, x["cert_row"])))) if R.credit_of(x["cert_row"]) else "")
+                    h("cphf/t%d/q%d/" % (cf["t"], cf["q"])), E(cf["family"]), ('<span class=sub>%s</span>' % E(array_by_text(R, x["cert_row"]))) if R.credit_of(x["cert_row"]) else "")
             trs.append('<tr id="k%d" class="%s" data-f="%s"><td class=n>%s</td><td class="n big">%s</td><td class=n>%s</td><td class=n>%s</td><td>%s</td>'
                        '<td class=rb>%s</td><td>%s%s</td><td class=a>%s</td></tr>' % (
                            x["k1"], "closed" if x["closed"] else "", " ".join(["all"] + (["arr"] if (x["sha"] or x["cert"]) else []) + (["ver"] if x["verified"] else []) + (["opt"] if x["opt_from"] is not None else [])), kr, format(x["N"], ","), format(x["floor"], ",") if x["floor"] is not None else "",
@@ -816,9 +936,9 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
                      status="optimal" if x["closed"] else ("verified" if x["verified"] else "cited"),
                      credit=x["credit"], construction=x["construction"], builds_on=x["builds_on"], array_sha256=x["sha"],
                      array_page=(BASE + array_path[x["sha"]]) if x["sha"] else "",
-                     first_reached_by=(lambda rb: rb[0] or ", ".join(R.ref_label(i) for i in rb[1]))(reached_by(R, x["first"])),
+                     first_reached_by="; ".join(((("k = %d: " % p[0] if p[0] == p[1] else "k = %d to %d: " % (p[0], p[1])) if len(x["pieces"]) > 1 else "") + (p[3][0] or ", ".join(R.ref_label(i) for i in p[3][1]))) for p in x["pieces"]),
                      builds_on_names=[R.ref_label(i) for i in x["builds_on"]],
-                     array_by=(("built by " if R.credit_of(x["row"]) else "from ") + short_credit(x["credit"])) if x["sha"] else ((("built by " + short_credit(credit_or_source(R, x["cert_row"]))) if R.credit_of(x["cert_row"]) else "") if x["cert"] else ""),
+                     array_by=array_by_text(R, x["row"]) if x["sha"] else ((array_by_text(R, x["cert_row"]) if R.credit_of(x["cert_row"]) else "") if x["cert"] else ""),
                      family=x["cert"]["family"] if x["cert"] else "", family_page=("cphf/t%d/q%d/" % (x["cert"]["t"], x["cert"]["q"])) if x["cert"] else "") for x in c["rungs"]]
         site.write("t%d/v%d.json" % (t, v), json.dumps(dict(t=t, v=v, source=REPO_URL, doi=DOI, rungs=recs), ensure_ascii=False, indent=1), False)
         with open(os.path.join(a.out, "t%d/v%d.csv" % (t, v)), "w", newline="", encoding="utf-8") as f:
@@ -837,7 +957,6 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
         f = R.floor_at(t, v, k)
         lbk = lower_bounds.lower_bound(t, k, v)
         closed = lbk[0] == n
-        credit = credit_or_source(R, r)
         con = pub(R.page_text(R.construction_of(r))) if r else ""
         bo = [i for i in ((r.get("builds_on") or "").split(";") if r else []) if i in R.REFS]
         fn = m["file"]
@@ -872,21 +991,27 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
         else:
             stxt = 'above best known (best is %s, <a href="%s">see the table row</a>)' % (format(rung["N"], ","), h(row_path(t, v, k)))
         stc[stxt.split(" (")[0]] += 1
+        bb = array_by_text(R, r) if r else ""
+        full = (pub(R.credit_of(r)) or source_name(r)) if r else ""
+        if bb.startswith("built by "):
+            by_dd = "<dt>built by</dt><dd>%s</dd>" % E(bb[9:]) + ("<dt>credit</dt><dd>%s</dd>" % E(full) if full != bb[9:] else "")
+        else:
+            by_dd = "<dt>%s</dt><dd>%s</dd>" % ("credit" if R.credit_of(r) else "from", E(full)) if r else ""
         fr_dd = ""
         cf = cert_of(r)
         if cf:
             fr_dd += '<dt>family</dt><dd><a href="%s">%s</a>, <a href="%s">certificate</a></dd>' % (h("cphf/t%d/q%d/" % (cf["t"], cf["q"])), E(cf["family"]), RAW + "table/certificates/" + cf["file"])
         if rung is not None and n == rung["N"]:
-            rb, rrefs = reached_by(R, rung["first"])
+            rb, rrefs = next(p for p in rung["pieces"] if p[0] <= k <= p[1])[3]
             fr_dd += "<dt>size first reached by</dt><dd>%s</dd>" % (E(rb) if rb else " ".join('<span class=rbi><a href="%s">%s</a>%s</span>' % (h(ref_path(i)), E(R.ref_label(i)), "," if j < len(rrefs) - 1 else "") for j, i in enumerate(rrefs)))
         body = ('<main class=wrapw><div class=arr><section><p class=crumb><a href="%s">Table</a> / <a href="%s">t=%d v=%d</a> / k = %s</p>'
                 '<h1 style="font-size:2rem;margin:0 0 4px">%s %s</h1><p class=mute style="margin:0 0 20px">An array of %s rows and %s columns on %d symbols in which every %d columns show all %s combinations.</p>'
-                '<dl><dt>built by</dt><dd>%s</dd>%s<dt>entered</dt><dd>%s</dd><dt>construction</dt><dd>%s</dd><dt>lower bound</dt><dd>%s</dd>'
+                '<dl>%s%s<dt>entered</dt><dd>%s</dd><dt>construction</dt><dd>%s</dd><dt>lower bound</dt><dd>%s</dd>'
                 '<dt>verify stamp</dt><dd>%s</dd><dt>status</dt><dd>%s</dd></dl>%s</section>'
                 '<aside><a class=dlb href="%s">%s</a><div class=dls><a href="%s">Table row</a><a href="%s">Verify it</a></div>'
                 '<div class=sha>sha256 %s</div>%s</aside></div>%s</main>') % (
             h(""), h(cell_path(t, v)), t, v, format(k, ","), ca(n, t, k, v), tag, format(n, ","), format(k, ","), v, t, format(v ** t, ","),
-            E(credit), fr_dd, r["entered"] if r else "", E(con), (format(f[4], ",") + ", " + E(pub(f[6]))) if f else format(lbk[0], ","),
+            by_dd, fr_dd, r["entered"] if r else "", E(con), (format(f[4], ",") + ", " + E(pub(f[6]))) if f else format(lbk[0], ","),
             E(m["verify_stamp"]), stxt, ('<h2>Builds on</h2><ol>%s</ol>' % refs) if refs else "",
             dl, E(dll), h(row_path(t, v, k)), "#check", sha,
             ('<h2 style="font-size:.75rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);margin:24px 0 8px">The array</h2><div class=grid tabindex=0 role=region aria-label="The array, first rows">%s</div>' % E(preview)) if preview else "",
@@ -930,7 +1055,7 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
             link = h(array_path[x["array_sha256"]]) if x["array_sha256"] in array_path else h(row_path(x["t"], x["v"], x["k"]))
             c2 = pub(R.page_text(R.construction_of(x) or ""))
             prs.append('<div class=pr><span><a href="%s">%s</a><span class=k>%s</span></span><span>%s</span><span class=c>%s</span></div>' % (
-                link, ca(x["N"], x["t"], x["k"], x["v"]), "verified" if x["tier"] == "VERIFIED" else "cited", E(c2), E(short_credit(credit_or_source(R, x)))))
+                link, ca(x["N"], x["t"], x["k"], x["v"]), "verified" if x["tier"] == "VERIFIED" else "cited", E(c2), E(row_who(R, x))))
         more = ('<p class=lede>%s more entries build on it. The full list is in the table data.</p>' % format(len(u) - 400, ",")) if len(u) > 400 else ""
         fls = "".join('<div class=fl>CAN(%d, %s, %d) &ge; %s</div>' % (r[0], (format(r[2], ",") if r[2] == r[3] else "%s to %s" % (format(r[2], ","), format(r[3], ","))), r[1], format(r[4], ",")) for r in flo[rid])
         body = ('<main class=wrapw><div class=paper><p class=crumb><a href="%s">Library</a> / %s</p><div class=hd><div class=j>%s</div><h1>%s</h1><p class=au>%s</p>'
@@ -1250,7 +1375,7 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
             N = int(x["N"])
             rung = next((y for y in cells[(t, q)]["rungs"] if y["k0"] <= k <= y["k1"]), None) if (t, q) in cells else None
             cph.append(dict(n=n, k=k, q=q, t=t, N=N, extra=m.group(5).strip(" ,"), file=x["file"], exp=x["expansion"], checks=[x["check"].split(":")[0]], row=r,
-                            best=bool(rung and rung["N"] == N), credit=short_credit(credit_or_source(R, r)) if r else ""))
+                            best=bool(rung and rung["N"] == N), credit=row_who(R, r) if r else ""))
             seenf[x["file"]] = cph[-1]
     cgroups = collections.defaultdict(list)
     for x in cph:
@@ -1490,7 +1615,7 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
         m = man[sha]
         t, v, k, n = int(m["t"]), int(m["v"]), int(m["k"]), int(m["N"])
         rs = sorted(by_sha.get(sha, []), key=lambda r: r["source_id"] != "S8")
-        cr = short_credit(credit_or_source(R, rs[0])) if rs else ""
+        cr = row_who(R, rs[0]) if rs else ""
         con = pub(R.page_text(R.construction_of(rs[0]))) if rs else ""
         si.append(["a", ca(n, t, k, v), E(cr + ((" , " + con[:70]) if con else "")).replace(" , ", ", "), path,
                    nk("ca", n, t, k, v, "can", t, k, v, cr, con, "t%d v%d k%d" % (t, v, k))])
