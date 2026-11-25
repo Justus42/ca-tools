@@ -65,19 +65,24 @@ sa-ath2012,simulated annealing \(AG-TJ-H\)|ternary covering arrays using a paral
 postop-tr2017,rodriguez.cristerna|post.optimi[sz]ation of the NIST,"J. Torres-Jimenez and A. Rodriguez-Cristerna, Metaheuristic post-optimization of the NIST repository of covering arrays, CAAI Trans. Intell. Technol. 2 (2017) 31-38",10.1016/j.trit.2016.12.006
 web-tj,^torres.?jim(e|é)nez$|cinvestav|simulated annealing \(torres|cyclotomy \(torres,"J. Torres-Jimenez, Covering arrays repository, formerly at https://www.tamps.cinvestav.mx/~oc/ (no longer online)",
 bt-yz2008,"yan jun|yan.{0,5}zhang|backtracking search tool","J. Yan and J. Zhang, A backtracking search tool for constructing combinatorial test suites, J. Syst. Softw. 81 (2008) 1681-1693",10.1016/j.jss.2008.02.034
-tabu-z2006,zekaoui,"L. Zekaoui, Mixed covering arrays on graphs and tabu search algorithms, M.Sc. thesis, University of Ottawa (2006), http://hdl.handle.net/10393/27433",
+tabu-z2006,zekaoui,"L. Zekaoui, Mixed covering arrays on graphs and tabu search algorithms, M.Sc. thesis, University of Ottawa (2006), http://hdl.handle.net/10393/27433",10.20381/ruor-12082
 deposit-bai2026,zenodo\.23787055,"X. Bai, Covering arrays: verified improvements to the ca-tools table (data, certificates, verification code, Lean sources), Zenodo, version 1.0 (2026)",10.5281/zenodo.23787055
 thesis-s2026,ruor-31663|constructing new families of covering arrays using finite geometry,"K. Shokri, Constructing New Families of Covering Arrays Using Finite Geometry and Finite Fields, PhD thesis, University of Ottawa (2026)",10.20381/ruor-31663
 orthogoval-cijsss2024,"C64163845|colbourn, ingalls|ingalls, jedwab|mutually orthogoval","C. J. Colbourn, C. Ingalls, J. Jedwab, M. Saaltink, K. W. Smith and B. Stevens, Sets of mutually orthogoval projective and affine planes, Combin. Theory 4(1) (2024) #8",10.5070/C64163845
 pcphf-c2026,zenodo\.23839216|partly cyclic covering perfect hash,"A. Canli, New upper bounds for covering array numbers from partly cyclic covering perfect hash families, preprint, Zenodo (2026)",10.5281/zenodo.23839216
 singer-cphf-bai2026,"zenodo\.2378705[234]|two-row covering perfect hash","X. Bai, Two-row covering perfect hash families from Singer cycles, and upper bounds for their length, Zenodo (2026), version 2",10.5281/zenodo.24054350
+quilt-c2014,S1793830914500347|quilting arrays|augmentation of colbourn 2014,"C. J. Colbourn, Covering arrays, augmentation, and quilting arrays, Discrete Math. Algorithms Appl. 6 (2014) 1450034",10.1142/S1793830914500347
+polychrome-bai2026,zenodo\.2378705[01](?!\d)|line.polychromatic,"X. Bai, Covering arrays from line-polychromatic colourings of affine planes, preprint, Zenodo (2026)",10.5281/zenodo.23787051
+twoblock-bai2026,zenodo\.2405537[01](?!\d)|two.block covering arrays,"X. Bai, Two-block covering arrays from elliptic curves and curves of genus two, preprint, Zenodo (2026)",10.5281/zenodo.24055371
+pgl-s2026,zenodo\.23842218|zenodo\.24208931|new upper bounds for covering arrays of strengths 3 to 6,"T. N. Sitjar, New upper bounds for covering arrays of strengths 3 to 6, preprint, Zenodo (2026)",10.5281/zenodo.23842218
+psl-g2026,"zenodo\.2387772[01](?!\d)|PSL\(2, ?5\) (group.)?orbit","K. Grey, Improved upper bounds for strength-3 covering arrays over six symbols via mixed short and regular PSL(2, 5) orbits, preprint, Zenodo (2026)",10.5281/zenodo.23877721
 lb-smm1998,,"B. Stevens, L. Moura and E. Mendelsohn, Lower bounds for transversal covers, Des. Codes Cryptogr. 15 (1998) 279-299",10.1023/A:1008329410829
 lb-pt1989,,"S. Poljak and Z. Tuza, On the maximum number of qualitatively independent partitions, J. Combin. Theory Ser. A 51 (1989) 111-116",10.1016/0097-3165(89)90081-2
 lb-kp1975,,"S. Kounias and C. I. Petros, Orthogonal arrays of strength three and four with index unity, Sankhya Ser. B 37 (1975) 228-240",
-lb-lkklf2011,,"J. Lawrence, R. N. Kacker, Y. Lei, D. R. Kuhn and M. Forbes, A survey of binary covering arrays, Electron. J. Combin. 18 (2011) P84",
-lb-cko2012,,"S. Choi, H. K. Kim and D. Y. Oh, Structures and lower bounds for binary covering arrays, arXiv:1111.0587",
-lb-kmnnos2020,,"J. I. Kokkala, K. Meagher, R. Naserasr, K. J. Nurmela, P. R. J. Östergård and B. Stevens, On the structure of small strength-2 covering arrays, J. Combin. Des. 28 (2020), arXiv:1901.03594",
-lb-it2019,,"I. Izquierdo-Marquez and J. Torres-Jimenez, New covering array numbers, Appl. Math. Comput. 353 (2019) 134-146, arXiv:1711.10040",
-lb-hk2025,,"I. Hiess and L. Kampel, Determining covering array numbers via balanced covering arrays, arXiv:2510.17596",
+lb-lkklf2011,,"J. Lawrence, R. N. Kacker, Y. Lei, D. R. Kuhn and M. Forbes, A survey of binary covering arrays, Electron. J. Combin. 18 (2011) P84",10.37236/571
+lb-cko2012,,"S. Choi, H. K. Kim and D. Y. Oh, Structures and lower bounds for binary covering arrays, Discrete Math. 312 (2012) 2958-2968, arXiv:1111.0587",10.1016/j.disc.2012.06.013
+lb-kmnnos2020,,"J. I. Kokkala, K. Meagher, R. Naserasr, K. J. Nurmela, P. R. J. Östergård and B. Stevens, On the structure of small strength-2 covering arrays, J. Combin. Des. 28 (2020) 5-24, arXiv:1901.03594",10.1002/jcd.21671
+lb-it2019,,"I. Izquierdo-Marquez and J. Torres-Jimenez, New covering array numbers, Appl. Math. Comput. 353 (2019) 134-146, arXiv:1711.10040",10.1016/j.amc.2019.01.069
+lb-hk2025,,"I. Hiess and L. Kampel, Determining covering array numbers via balanced covering arrays, Discrete Math. 350 (2027) 115553, arXiv:2510.17596",10.1016/j.disc.2026.115553
 lb-khks2023,,"L. Kampel, I. Hiess, I. S. Kotsireas and D. E. Simos, Balanced covering arrays: a classification of covering arrays and packing arrays via exact methods, J. Combin. Des. 31 (2023) 205-261, data https://srd.sba-research.org/data/balca",10.1002/jcd.21876
 direct-tiga2015,,"J. Torres-Jimenez, I. Izquierdo-Marquez, A. Gonzalez-Gomez and H. Avila-George, A branch and bound algorithm to derive a direct construction for binary covering arrays, in: G. Sidorov and S. N. Galicia-Haro (eds.), MICAI 2015, Part I, LNAI 9413, Springer, 2015, pp. 1-20",10.1007/978-3-319-27060-9_13

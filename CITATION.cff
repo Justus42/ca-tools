@@ -14,6 +14,9 @@ identifiers:
   - type: doi
     value: "10.5281/zenodo.24168009"
     description: "Release table-2026.11"
+  - type: doi
+    value: "10.5281/zenodo.24229301"
+    description: "Release table-2026.11.14"
 repository-code: "https://github.com/chrispbsmolen/ca-tools"
 url: "https://coveringarraytools.org/"
 license:

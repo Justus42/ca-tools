@@ -16,7 +16,7 @@ THEOREMS = {
     "R2": ("CAN(t,k,v) >= v CAN(t-1,k-1,v) (fixing a symbol)", "lb-lkklf2011", ""),
     "R3": ("CAN(2,k,2) = least N with C(N-1, ceil(N/2)) >= k", "binary-ks1973;binary-k1973", "Kleitman and Spencer 1973, Theorem 1"),
     "R5": ("published value", "", ""),
-    "R6": ("binary strength 3, extra row at the end of a tread", "lb-cko2012", "Choi, Kim and Oh, Theorems 4.7 and 4.8"),
+    "R6": ("binary strength 3, extra rows near the end of each strength 2 stair step", "lb-cko2012", "Choi, Kim and Oh 2012, Theorems 4.7 and 4.8"),
     "R7": ("binary strength t >= 3, Kleitman-Spencer bound (17)", "binary-ks1973", "Kleitman and Spencer 1973, (17) p. 261"),
     "R8": ("binary strength t >= 3, Kleitman-Spencer bound (8)", "binary-ks1973", "Kleitman and Spencer 1973, (8) p. 259"),
     "R9": ("CAN(2,k,v) >= v^2+2 for k >= v+2, v >= 3", "lb-smm1998", "Stevens, Moura and Mendelsohn 1998, Section 4.1, p. 291"),
@@ -142,7 +142,7 @@ def lower_bound(t, k, v):
     else:
         if t >= 3:
             b, rule, ref, text = lower_bound(t - 1, k - 1, v)
-            take(v * b, "R2", ";".join(x for x in (THEOREMS["R2"][1], ref) if x),
+            take(v * b, "R2", ";".join(dict.fromkeys(x for x in (THEOREMS["R2"][1] + ";" + ref).split(";") if x)),
                  "R2 %d x CAN(%d,%d,%d) >= %d [%s]" % (v, t - 1, k - 1, v, b, text))
         for kk, val, ref, detail in seeds().get((t, v), []):
             if k >= kk:

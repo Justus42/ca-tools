@@ -1,4 +1,4 @@
-# Conventions of the covering array table (version 1.11, November 2026)
+# Conventions of the covering array table (version 1.12, November 2026)
 
 Parts that describe files not built yet say "will" or "planned". Anything that changes what the CAs package
 reads is announced to its author before it goes live (section 5).
@@ -142,8 +142,8 @@ which is why none is entered without notice. Readers are asked to filter on tier
 
 ## 5. Stability: what may be relied on
 
-The promises below hold from now on. Of the files they name, the gzipped copy and CHANGES.md exist.
-The legend and the releases are planned and do not exist yet.
+The promises below hold from now on. Of the files they name, the gzipped copy, CHANGES.md and two
+releases exist. The legend is planned and does not exist yet.
 
 This section is the promise to everyone who reads the table by program, CAs first.
 
@@ -172,9 +172,12 @@ This section is the promise to everyone who reads the table by program, CAs firs
   gives the same bytes.
 - Frozen releases: a dated tag table-YYYY.MM with the CSV, the gzipped CSV, the frame file, the label
   list, the legend, the R data file and a SHA256SUMS file, archived on Zenodo with a DOI through
-  GitHub's integration. This is what a paper cites and what CAs can bundle for frozen=TRUE. The first
-  is planned as table-2026.12, once the columns of section 7 exist and are
-  checked.
+  GitHub's integration. This is what a paper cites and what CAs can bundle for frozen=TRUE. Two
+  releases exist, table-2026.11 (12 November 2026, doi:10.5281/zenodo.24168009) and table-2026.11.14
+  (14 November 2026, doi:10.5281/zenodo.24229301). Each is a copy of the whole repository at its tag.
+  Both hold the CSV, the gzipped CSV, the frame file and the R data file, and table-2026.11.14 also the
+  label list. Neither has the legend or a SHA256SUMS file. The first release with every file named here
+  is planned as table-2026.12, once the columns of section 7 exist and are checked.
 - If the maintainer stops, the Zenodo record and the frozen copy in CAs remain, and the repository can
   be forked under its code and data licences (section 11).
 
@@ -406,7 +409,12 @@ the frame file only.
 
 - Corrections of any kind are welcome by issue or email.
 
-## 10. A machine view for programs and AI [planned, nothing of this exists yet]
+## 10. A machine view for programs and AI [api/v1 planned]
+
+- What exists today is the website coveringarraytools.org, generated from this repository by
+  `tools/build_site.py`. It gives every (t, v) cell as JSON and CSV (`t<t>/v<v>.json` and
+  `t<t>/v<v>.csv`), with a page For AI and `llms.txt`. It is computed from the table and never edited
+  by hand. The rest of this section, `api/v1/`, is still planned.
 
 - `api/v1/` (in docs/) on the project's GitHub page will be a view of the table for programs, generated
   from `table/ca_table.csv` and the files it names by `render_api.py` (in tools/), never edited by hand,
@@ -431,9 +439,10 @@ the frame file only.
 - Licence: the compilation (selection, arrangement, identifiers, verification stamps, and the arrays
   and certificates built by this project) is CC BY 4.0. Each row's size and array remain under the
   terms of the source the row names. Sizes themselves are facts and may be reused with a citation.
-  The code is MIT.
-- Citation: through `CITATION.cff` and the Zenodo DOI of the frozen release used (both planned with
-  the first release).
+  The code is MIT, except `r/cafast` and `r/countkernel`, which are GPL (>= 3) (README, Status and
+  license).
+- Citation: through `CITATION.cff` and the Zenodo DOI of the release used. doi:10.5281/zenodo.24168008
+  names every version, and each release has its own DOI (section 5).
 
 ## Change log
 
@@ -491,3 +500,6 @@ the frame file only.
   with the same value as status, because the name status read like the array's current standing. status
   is kept, filled with the same value as before, for programs that read it, and the tools now read
   status_at_entry. No value changed.
+- Version 1.12 (November 2026). Wording only, after the audit of 2026-11-24; no rule changed. Section 5
+  names the two releases that exist and what they hold, section 10 the site's JSON and CSV files, and
+  section 11 the DOIs to cite and the two GPL folders of the code.
