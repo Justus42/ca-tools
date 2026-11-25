@@ -189,9 +189,9 @@ table.lg tbody tr:hover td,.cl tbody tr:hover td{background:#f3f8f4}
 .lfind input:focus{outline:2px solid #1f6b45;outline-offset:1px;border-color:#1f6b45}.lfind span{order:-1;display:block;font-size:.8rem;margin:0 0 6px;text-align:right}
 #lib>div[hidden]{display:none}.lnone{margin:10px 0 0;color:var(--mute)}
 @media (max-width:900px){.lfind{width:100%}}
-.opts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin:6px 0 10px}.opt{display:flex;flex-direction:column;gap:8px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px 20px 18px;text-decoration:none;color:var(--fg);min-height:190px;position:relative}.opt:after{content:"";position:absolute;left:0;right:0;top:100%;height:5px}
-.opt:hover,.opt:focus-visible{border-color:#1f6b45;box-shadow:0 6px 18px rgba(0,0,0,.08);transform:translateY(-2px)}.opt b{font-size:1.08rem;line-height:1.3}.opt p{margin:0;color:var(--mute);font-size:.88rem;line-height:1.45}.opt .ft{margin-top:auto;display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line);padding-top:12px;font-size:.84rem}.opt .go{color:#1f6b45;font-weight:600;background:none;padding:0}.opt .ct{color:var(--fg);font-weight:600}
-@media (max-width:1100px){.opts{grid-template-columns:repeat(3,minmax(0,1fr))}}@media (max-width:700px){.opts{grid-template-columns:repeat(2,minmax(0,1fr))}.opt{min-height:0}}@media (max-width:440px){.opts{grid-template-columns:1fr}}
+.mopts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin:6px 0 10px}.mopt{display:flex;flex-direction:column;gap:8px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px 20px 18px;text-decoration:none;color:var(--fg);min-height:190px;position:relative}.mopt:after{content:"";position:absolute;left:0;right:0;top:100%;height:5px}
+.mopt:hover,.mopt:focus-visible{border-color:#1f6b45;box-shadow:0 6px 18px rgba(0,0,0,.08);transform:translateY(-2px)}.mopt b{font-size:1.08rem;line-height:1.3}.mopt p{margin:0;color:var(--mute);font-size:.88rem;line-height:1.45}.mopt .ft{margin-top:auto;display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line);padding-top:12px;font-size:.84rem}.mopt .go{color:#1f6b45;font-weight:600;background:none;padding:0}.mopt .ct{color:var(--fg);font-weight:600}
+@media (max-width:1100px){.mopts{grid-template-columns:repeat(3,minmax(0,1fr))}}@media (max-width:700px){.mopts{grid-template-columns:repeat(2,minmax(0,1fr))}.mopt{min-height:0}}@media (max-width:440px){.mopts{grid-template-columns:1fr}}
 .gmw{overflow-x:auto}table.gm{width:100%;border-collapse:collapse;font-size:.92rem}table.gm th{text-align:left;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);font-weight:600;border-bottom:1px solid var(--fg);padding:10px}table.gm th.n,table.gm td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
 table.gm td{border-bottom:1px solid var(--line);padding:14px 10px;vertical-align:top}table.gm td a{font-weight:600;font-size:1rem;display:inline-block;padding:2px 0}table.gm td span{display:block;color:var(--mute);font-size:.84rem;margin-top:3px;line-height:1.4}table.gm tr:hover td{background:#fff}@media (max-width:560px){table.gm thead{display:none}table.gm tr{display:flex;flex-wrap:wrap;gap:4px 16px;border-bottom:1px solid var(--line);padding:12px 0}table.gm td{display:block;border:0;padding:0}table.gm td:first-child{width:100%}table.gm td.n{text-align:left;font-size:.84rem}table.gm td.n:before{content:attr(data-l) " ";color:var(--mute)}}
 table.mt{width:100%;border-collapse:collapse;margin:0 0 26px}table.mt th{text-align:left;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);font-weight:600;border-bottom:1px solid var(--fg);padding:6px 8px}
@@ -1347,7 +1347,7 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
     tiles = []
     cert_n = len({c["file"] for c in certs.values()})
     if cert_n:
-        tiles.append('<a class=opt href="%s"><b>Covering perfect hash families</b><p>Families on file, each checked, and the arrays they give.</p><div class=ft><span class=ct>%s</span><span class=go>Open &rarr;</span></div></a>' % (
+        tiles.append('<a class=mopt href="%s"><b>Covering perfect hash families</b><p>Families on file, each checked, and the arrays they give.</p><div class=ft><span class=ct>%s</span><span class=go>Open &rarr;</span></div></a>' % (
             site.href(1, "cphf/"), plural(cert_n, "family", "families")))
     other = [m for m in mlist if m["f"]["kind"] not in GSLUG]
     for kid, kname, kdesc in KIND:
@@ -1355,7 +1355,7 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
         if not ms or kid not in GSLUG:
             continue
         gp = "methods/%s/" % GSLUG[kid]
-        tiles.append('<a class=opt href="%s"><b>%s</b><p>%s</p><div class=ft><span class=ct>%s</span><span class=go>Open &rarr;</span></div></a>' % (
+        tiles.append('<a class=mopt href="%s"><b>%s</b><p>%s</p><div class=ft><span class=ct>%s</span><span class=go>Open &rarr;</span></div></a>' % (
             site.href(1, gp), E(kname), E(kdesc), plural(len(ms), "method", "methods")))
         grows = "".join('<tr><td><a href="%s">%s</a><span>%s</span></td><td class=n data-l="first reached">%s</td><td class=n data-l="best known">%s</td><td class=n data-l="arrays">%s</td></tr>' % (
             site.href(2, m["path"]), E(m["title"]), E(m["f"]["meaning"]), format(len(m["first"]), ","), format(len(m["head"]), ","), format(m["ver"], ","))
@@ -1365,7 +1365,7 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
             site.href(2, "methods/"), E(kname), E(kname), E(kdesc), plural(len(ms), "method", "methods"), grows)
         site.page(gp + "index.html", "%s: covering array methods" % kname, "%s %s." % (kdesc, plural(len(ms), "method", "methods")), gbody, "Methods")
     body = ('<div class=pageh><div class=in><div><h1>Methods</h1><p>Every way the sizes in the table were made. Choose a kind of method to see each one, the papers it rests on and where it gives a best known size.</p></div></div></div>'
-            '<main class=wrapw><nav class=opts aria-label="Kinds of method">%s</nav>%s<p class=mute style="margin-top:26px;font-size:.88rem">Each entry is placed in a method by its construction text, using the list in <a href="%s">table/lexicon.csv</a>. Corrections are welcome by issue or email.</p></main>') % (
+            '<main class=wrapw><nav class=mopts aria-label="Kinds of method">%s</nav>%s<p class=mute style="margin-top:26px;font-size:.88rem">Each entry is placed in a method by its construction text, using the list in <a href="%s">table/lexicon.csv</a>. Corrections are welcome by issue or email.</p></main>') % (
         "".join(tiles), "".join('<p class=mute style="margin-top:22px;font-size:.88rem">%s: <a href="%s">%s</a>, %s.</p>' % (
             "Entries with a name and no description", site.href(1, m["path"]), E(m["title"]), plural(m["rows"], "entry", "entries")) for m in other),
         REPO_URL + "/blob/main/table/lexicon.csv")
