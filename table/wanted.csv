@@ -3351,7 +3351,7 @@ t,v,k,best_N,smallest_array_N,proven_floor,status
 3,2,484,50,50,26,beat_best
 3,2,486,51,51,26,beat_best
 3,2,605,52,52,26,beat_best
-3,2,704,53,55,26,array_above_best
+3,2,704,53,53,26,beat_best
 3,2,968,54,55,28,array_above_best
 3,2,1331,55,55,29,beat_best
 3,2,1332,59,59,29,beat_best
@@ -7433,7 +7433,7 @@ t,v,k,best_N,smallest_array_N,proven_floor,status
 5,2,32,128,128,72,beat_best
 5,2,35,132,132,72,beat_best
 5,2,36,134,134,72,beat_best
-5,2,68,136,159,80,array_above_best
+5,2,68,136,136,80,beat_best
 5,2,72,144,159,80,array_above_best
 5,2,80,159,159,80,beat_best
 5,2,84,168,208,80,array_above_best
@@ -7442,8 +7442,8 @@ t,v,k,best_N,smallest_array_N,proven_floor,status
 5,2,102,202,208,80,array_above_best
 5,2,103,206,208,80,array_above_best
 5,2,104,208,208,80,beat_best
-5,2,108,214,225,80,array_above_best
-5,2,110,218,225,80,array_above_best
+5,2,108,214,218,80,array_above_best
+5,2,110,218,218,80,beat_best
 5,2,114,225,225,80,beat_best
 5,2,122,238,238,80,beat_best
 5,2,128,251,251,88,beat_best
