@@ -1,4 +1,4 @@
-# Conventions of the covering array table (version 1.12, November 2026)
+# Conventions of the covering array table (version 1.13, November 2026)
 
 Parts that describe files not built yet say "will" or "planned". Anything that changes what the CAs package
 reads is announced to its author before it goes live (section 5).
@@ -389,13 +389,23 @@ the frame file only.
   the array, or the SHA-256 of the array, was published in a deposit or paper on that date or sent to the
   maintainer by email on that date. A date without a time stands for the start of that day. The dates are
   kept in `table/priority.csv` (slug, date, basis, evidence), one line per piece of evidence, with basis
-  pull_request, pushed, email, deposit or paper. The table workflow writes the pull_request and pushed
+  pull_request, pushed, email, deposit, paper or table. The table workflow writes the pull_request and pushed
   lines. The maintainer adds the others with their evidence (a DOI or link, or for an email only the
   words "email to the maintainer" and the date, never its text). The date the maintainer merged or
   entered a submission never decides between two people.
 - The priority date of a row is the earliest of its entry date and the priority date of the submission
   its notes name, taken over every row that holds the same array or the same family, so an exact check
   entered later keeps the date of the array it checks.
+- A published paper is precedent. A CITED row whose snapshot_id is the DOI or arXiv id of a paper in
+  `references.csv` also takes that paper's publication date, kept in `table/priority.csv` under the
+  paper's id with basis paper and the date's source as evidence. A CITED row from a published table takes
+  the date of the table's snapshot, kept under the snapshot_id with basis table, which for Colbourn's
+  tables (`colbourn-2024-11-ug`, section 2) is 30 November 2024. Such a row also takes the date of the
+  newest paper in its builds_on, the paper the table's label credits for the value, when every paper
+  there has a date. The date is the earliest publication date Crossref (or DataCite, or the journal)
+  records for the paper, online or print. When only a month or a year is given, the last day of that
+  month or year is used, so a date may be later than the paper's first appearance but never earlier. An
+  arXiv paper has one date, that of the version its rows cite, named in the evidence.
 - First reached is the credit for being first to an N at a point. It goes to the row with the earliest
   priority date among those that reach it (the frame column first_reached), whatever the headline. An
   array that replaces another at the same N, for example one with more constant rows or one built by its
@@ -503,3 +513,5 @@ the frame file only.
 - Version 1.12 (November 2026). Wording only, after the audit of 2026-11-24; no rule changed. Section 5
   names the two releases that exist and what they hold, section 10 the site's JSON and CSV files, and
   section 11 the DOIs to cite and the two GPL folders of the code.
+- Version 1.13 (November 2026). Section 9 gives a CITED row the date of the paper or published table it is
+  cited from, so first reached goes to the earlier publication (audit of 2026-11-24, item 30).

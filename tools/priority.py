@@ -6,9 +6,15 @@ slug,date,basis,evidence. basis is one of BASIS_VALUES. date is YYYY-MM-DD or YY
 a date without a time stands for the start of that day. The priority date of a submission is the earliest
 date among its lines.
 
-The priority date of a row is the earliest of its entry date and the priority dates of the submission it
-names in its notes, taken over every row that holds the same array (array_sha256) or the same family
-(family_sha256), so an exact check entered later keeps the date of the array it checks.
+The priority date of a row is the earliest of its entry date, the priority dates of the submission it
+names in its notes and, for a CITED row, the date of the source it is cited from: the paper in
+references.csv whose doi is the row's snapshot_id (arXiv version suffixes ignored), dated by its lines in
+priority.csv under the reference id with basis paper, or a published table named by its snapshot_id, dated by
+its lines under that snapshot_id with basis table. A CITED row from a published table also takes the date of
+the newest paper its builds_on names, the paper the table's label credits for the value, when every paper there
+has a date. It is taken over every row that holds the same array
+(array_sha256) or the same family (family_sha256), so an exact check entered later keeps the date of the
+array it checks.
 
 Usage on main (table-page.yml): python3 tools/priority.py record [--table-dir table]
 adds a pull_request or pushed line for every submission named by a row that has neither yet. It reads git
@@ -23,7 +29,7 @@ import subprocess
 import sys
 
 HEADER = ["slug", "date", "basis", "evidence"]
-BASIS_VALUES = ("pull_request", "pushed", "email", "deposit", "paper")
+BASIS_VALUES = ("pull_request", "pushed", "email", "deposit", "paper", "table")
 AUTO_BASIS = ("pull_request", "pushed")
 SLUG = r"[A-Za-z0-9._-]+"
 SLUG_RE = re.compile(r"^%s$" % SLUG)
@@ -86,10 +92,12 @@ def check_file(table_dir):
     return ["%s: %s" % (p, x) for x in problems(read(table_dir), header)]
 
 
-def submission_dates(table_dir):
-    """{slug: earliest date}"""
+def submission_dates(table_dir, bases=None):
+    """{slug: earliest date}, over the lines whose basis is in bases (all when None)"""
     out = {}
     for d in read(table_dir):
+        if bases is not None and d["basis"] not in bases:
+            continue
         if d["slug"] not in out or d["date"] < out[d["slug"]]:
             out[d["slug"]] = d["date"]
     return out
@@ -114,15 +122,43 @@ def known_slugs(repo):
     return out
 
 
+def norm_ref(s):
+    s = (s or "").strip().lower()
+    s = re.sub(r"^(doi:|https?://(dx\.)?doi\.org/)", "", s)
+    return re.sub(r"^(arxiv:\d{4}\.\d{4,5})v\d+$", r"\1", s)
+
+
+def paper_ids(table_dir):
+    """{normalised doi or arXiv id: reference id} from references.csv"""
+    p = os.path.join(table_dir, "references.csv")
+    if not os.path.exists(p):
+        return {}
+    with open(p, newline="", encoding="utf-8") as f:
+        return {norm_ref(r["doi"]): r["id"] for r in csv.DictReader(f) if (r.get("doi") or "").strip()}
+
+
 def row_dates(rows, table_dir, known=None):
     """the priority date of every row, in file order; known: the submission folder names, when the folders
     themselves are not checked out"""
     repo = os.path.dirname(os.path.abspath(table_dir))
     known = known_slugs(repo) if known is None else known
     sub = submission_dates(table_dir)
+    paper = submission_dates(table_dir, ("paper",))
+    table = submission_dates(table_dir, ("table",))
+    papers = paper_ids(table_dir)
     out = []
     for r in rows:
         ds = [r.get("entered") or ""] + [sub[s] for s in slugs_in(r.get("notes"), known) if s in sub]
+        if r.get("tier") == "CITED":
+            snap = (r.get("snapshot_id") or "").strip()
+            pid = papers.get(norm_ref(snap))
+            if pid in paper:
+                ds.append(paper[pid])
+            elif snap in table:
+                ds.append(table[snap])
+                bo = [b.strip() for b in (r.get("builds_on") or "").split(";") if b.strip()]
+                if bo and all(b in paper for b in bo):
+                    ds.append(max(paper[b] for b in bo))
         ds = [d for d in ds if d]
         out.append(min(ds) if ds else "")
     best = {}

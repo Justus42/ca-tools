@@ -5,7 +5,8 @@ Assertions: the submissions a row's notes name (anchored phrases only, existing 
 table/priority.csv, the priority date of a row (earliest of entry and submission, shared by rows holding the
 same array), the order of tied rows by priority date instead of entry date, first_reached kept apart from the
 named row when more constant rows win the headline, an empty first_reached on derived lines, and record()
-writing pull_request and pushed lines from git history with GitHub answers replaced by a stand-in.
+writing pull_request and pushed lines from git history with GitHub answers replaced by a stand-in, and the
+date of the paper a CITED row is cited from (basis paper, matched through references.csv).
 
 Usage: test_priority.py   (prints PASS/FAIL lines and a summary; exit 1 on a failure)
 """
@@ -197,8 +198,65 @@ def test_record():
     check(priority.problems(list(got.values()), priority.HEADER) == [], "the written file passes its own checks")
 
 
+def test_paper_dates():
+    rows = [row(7, 2, 8, 128, "CITED", "S7", "doi:10.1/LATER", entered="2026-11-24"),
+            row(7, 2, 8, 128, "CITED", "S7", "arXiv:2001.00001v3", entered="2026-11-24")]
+    refs = [["id", "keywords", "reference", "doi"], ["later-x2015", "", "A. Later, X (2015)", "10.1/later"],
+            ["early-y2010", "", "B. Early, Y, arXiv:2001.00001 (2010)", "arXiv:2001.00001"]]
+    prio = [["later-x2015", "2015-12-30", "paper", "doi:10.1/later"],
+            ["early-y2010", "2010-06-30", "paper", "arXiv:2001.00001v3"]]
+    with tempfile.TemporaryDirectory() as root:
+        table = tree(root, [])
+        write_table(table, rows)
+        with open(os.path.join(table, "references.csv"), "w", newline="", encoding="utf-8") as f:
+            csv.writer(f, lineterminator="\n").writerows(refs)
+        d = priority.row_dates(rows, table, known=set())
+        check(d == ["2026-11-24", "2026-11-24"], "without paper lines a cited row keeps its entry date")
+        write_priority(table, prio)
+        d = priority.row_dates(rows, table, known=set())
+        check(d == ["2015-12-30", "2010-06-30"], "a cited row takes the date of the paper its snapshot_id names (case and arXiv version ignored)")
+        lines, _, _ = bf.build(table)
+    l = [dict(zip(bf.FRAME_HEADER, x)) for x in lines]
+    l = [x for x in l if (x["t"], x["v"], x["k"]) == ("7", "2", "8")][0]
+    check(l["id"] == "t7-v2-k8-2" and l["first_reached"] == "t7-v2-k8-2",
+          "between two cited rows entered the same day, the earlier paper is named and first reached")
+    vr = [row(7, 2, 8, 128, "VERIFIED", "S7", "doi:10.1/later", "c" * 64, "2026-11-24")]
+    with tempfile.TemporaryDirectory() as root:
+        table = tree(root, [])
+        write_table(table, vr)
+        with open(os.path.join(table, "references.csv"), "w", newline="", encoding="utf-8") as f:
+            csv.writer(f, lineterminator="\n").writerows(refs)
+        write_priority(table, prio)
+        check(priority.row_dates(vr, table, known=set()) == ["2026-11-24"], "a VERIFIED row does not take a paper date")
+    tr = [row(3, 7, 2448, 2275, "CITED", "S1", "colbourn-2024-11-ug", entered="2026-08-23"),
+          row(3, 7, 2451, 2275, "CITED", "S7", "doi:10.1/later", entered="2026-11-09")]
+    with tempfile.TemporaryDirectory() as root:
+        table = tree(root, [])
+        write_table(table, tr)
+        with open(os.path.join(table, "references.csv"), "w", newline="", encoding="utf-8") as f:
+            csv.writer(f, lineterminator="\n").writerows(refs)
+        write_priority(table, prio + [["colbourn-2024-11-ug", "2024-11-30", "table", "test snapshot"]])
+        check(priority.row_dates(tr, table, known=set()) == ["2024-11-30", "2015-12-30"],
+              "a CITED row from a published table takes the snapshot's date (basis table)")
+    lr = [row(3, 7, 183, 1309, "CITED", "S1", "colbourn-2024-11-ug", entered="2026-08-23"),
+          row(3, 7, 183, 1309, "CITED", "S1", "colbourn-2024-11-ug", entered="2026-08-23")]
+    lr[0]["builds_on"] = "early-y2010;later-x2015"
+    lr[1]["builds_on"] = "early-y2010;unknown-z2020"
+    with tempfile.TemporaryDirectory() as root:
+        table = tree(root, [])
+        write_table(table, lr)
+        with open(os.path.join(table, "references.csv"), "w", newline="", encoding="utf-8") as f:
+            csv.writer(f, lineterminator="\n").writerows(refs)
+        write_priority(table, prio + [["colbourn-2024-11-ug", "2024-11-30", "table", "test snapshot"]])
+        check(priority.row_dates(lr, table, known=set()) == ["2015-12-30", "2024-11-30"],
+              "a table row takes the date of the newest paper its builds_on names, only when every paper there has a date")
+        write_priority(table, prio + [["colbourn-2024-11-ug", "2024-11-30", "paper", "wrong basis"]])
+        check(priority.row_dates(lr, table, known=set()) == ["2026-08-23", "2026-08-23"],
+              "a snapshot dates its rows only through a line with basis table")
+
+
 def main():
-    for fn in (test_slugs_in, test_file_checks, test_row_dates_and_same_array, test_tie_order_uses_priority,
+    for fn in (test_slugs_in, test_file_checks, test_row_dates_and_same_array, test_tie_order_uses_priority, test_paper_dates,
                test_first_reached_apart_from_headline, test_derived_lines_empty, test_record):
         fn()
     print("%d passed, %d failed" % (RESULTS["pass"], RESULTS["fail"]))
