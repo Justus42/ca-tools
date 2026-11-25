@@ -541,12 +541,11 @@ def builders_of(c):
     return b
 
 
-SOURCE_PEOPLE = {"TJ2level_CAs": ["J. Torres-Jimenez"], "CAEX_CAs": ["J. Torres-Jimenez", "B. Acevedo-Juarez", "H. Avila-George"], "S5": ["Aaron Dwyer"]}
+SOURCE_PEOPLE = {"TJ2level_CAs": ["J. Torres-Jimenez"], "CAEX_CAs": ["J. Torres-Jimenez", "B. Acevedo-Juarez", "H. Avila-George"]}
+KEEPERS = {"S5": "Aaron Dwyer"}
 
 
 def source_people(r):
-    if r.get("source_id") == "S5":
-        return SOURCE_PEOPLE["S5"]
     m = re.match(r"CAs data (\w+)", r.get("source_detail") or "") if r.get("source_id") == "S6" else None
     return SOURCE_PEOPLE.get(m.group(1), []) if m else []
 
@@ -1193,6 +1192,9 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
         seen = set()
         p["rows"] = [r for r in credited.get(id(p), []) if not (id(r) in seen or seen.add(id(r)))]
         p["role"] = roles.get(id(p), {})
+        p["kept"] = 0
+    for src, n in KEEPERS.items():
+        resolve(n)["kept"] = sum(1 for r in rows if r["source_id"] == src and r["tier"] == "VERIFIED")
     for c in cells.values():
         for x in c["rungs"]:
             got = {}
@@ -1216,7 +1218,7 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
     def shown_name(p):
         return max(p["names"], key=lambda n: (len(re.sub(r"[^A-Za-z]", "", name_parts(n)[1])), sum(1 for ch in n if ord(ch) > 127), len(n)))
 
-    ppl = [p for p in people.values() if p["rows"] or p["papers"]]
+    ppl = [p for p in people.values() if p["rows"] or p["papers"] or p["kept"]]
     for p in ppl:
         p["name"] = shown_name(p)
         p["sur"], p["given"] = name_parts(p["name"])
@@ -1236,7 +1238,8 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
         return "%s %s" % (format(n, ","), one if n == 1 else (many or one + "s"))
 
     def summary(p):
-        return ", ".join(s for s in [plural(p["ver"], "array built", "arrays built") if p["ver"] else "", plural(p["cit"], "credited size") if p["cit"] else "",
+        return ", ".join(s for s in [plural(p["ver"], "array built", "arrays built") if p["ver"] else "",
+                                     plural(p["kept"], "array from their collection", "arrays from their collection") if p["kept"] else "", plural(p["cit"], "credited size") if p["cit"] else "",
                                      plural(len(p["held"]), "best known size first reached", "best known sizes first reached") if p["held"] else "",
                                      plural(p["used"], "entry uses their work", "entries use their work") if p["used"] and not (p["ver"] or p["cit"] or p["papers"]) else "",
                                      plural(len(p["papers"]), "paper") if p["papers"] else "", plural(len(p["floors"]), "lower bound") if p["floors"] else ""] if s)
@@ -1256,7 +1259,7 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
     az = "".join(('<a href="#l-%s">%s</a>' % (L.lower(), L)) if L in letters else '<span aria-hidden="true">%s</span>' % L for L in "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
     body = ('<div class=pageh><div class=in><div><h1>Contributors</h1><p>Everyone whose arrays, constructions, papers or proofs the table rests on, with what each contributed. '
             'Built from the table\'s own credits and its library.</p>'
-            '<p class=mute style="font-size:.9rem">How the counts are made, from each entry\'s credit. Arrays built: verified arrays whose credit names the person as builder, and three collections whose arrays carry no credit: the binary arrays of Torres-Jimenez and the CA Extender arrays of Torres-Jimenez, Acevedo-Juarez and Avila-George, both kept in the CAs package, and Aaron Dwyer\'s CA_Database. '
+            '<p class=mute style="font-size:.9rem">How the counts are made, from each entry\'s credit. Arrays built: verified arrays whose credit names the person as builder, and two collections whose arrays carry no credit: the binary arrays of Torres-Jimenez and the CA Extender arrays of Torres-Jimenez, Acevedo-Juarez and Avila-George, both kept in the CAs package. Arrays from their collection: arrays the table took from a collection the person keeps (Aaron Dwyer\'s CA_Database), credited to their builders. '
             'Credited sizes: entries whose credit names their construction, method or result. Entries that use their work: their array or method was an ingredient or a tool. '
             'Best known sizes first reached: the people the credit of the first row to reach the size names for the size; when it names no one for the size, its builder; when it names no builder, the authors of its method or result. An entry with no credit counts for the authors of the papers it builds on, as on the table pages, and otherwise for the collections above.</p></div></div></div>'
             '<main class=wrapw><nav class=az aria-label="Jump to letter">%s</nav>'
@@ -1265,7 +1268,7 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
 
     for p in ppl:
         h = lambda q: site.href(2, q)
-        st = [(p["ver"], "array built", "arrays built"), (p["cit"], "credited size", "credited sizes"), (p["used"], "entry uses their work", "entries use their work"), (len(p["held"]), "best known size first reached", "best known sizes first reached"),
+        st = [(p["ver"], "array built", "arrays built"), (p["kept"], "array from their collection", "arrays from their collection"), (p["cit"], "credited size", "credited sizes"), (p["used"], "entry uses their work", "entries use their work"), (len(p["held"]), "best known size first reached", "best known sizes first reached"),
               (len(p["papers"]), "paper in the library", "papers in the library"), (p["built"], "entry builds on their papers", "entries build on their papers"),
               (len(p["floors"]), "lower bound from their papers", "lower bounds from their papers")]
         stats = "".join('<div><b class=num>%s</b><span>%s</span></div>' % (format(n, ","), one if n == 1 else many) for n, one, many in st if n)
