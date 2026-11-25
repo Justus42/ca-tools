@@ -118,6 +118,16 @@ each filled in:
     Program: the program or recipe that rebuilds the arrays, as a link
       to the code or as the commands, with seeds and settings for a search
 
+and one line that says whether AI tools were used to find or build the
+arrays:
+
+    AI tools used: yes, or no
+
+Which tools is not needed. The line fills the table's `ai_tools`
+column (`../CHANGES.md`, from 2026-12-25). It is asked of submissions
+opened after 2026-11-24; the check does not fail a submission without
+it yet.
+
 One `HOW.md` covers the whole submission; per array details stay in
 `claims.csv`. The check fails a submission without it, or with a part
 left empty. Submissions opened before 2026-11-04 are listed in
@@ -722,8 +732,9 @@ write access to your fork.
 
 1. Say how the arrays were built, so they can be rebuilt: `HOW.md`
    (above, "How it was built") with the construction, what it was
-   built from and the program or recipe. This is checked. Naming other
-   tools, AI systems included, is welcome but not required. A person
+   built from and the program or recipe. This is checked. Say whether
+   AI tools were used (the line "AI tools used" in `HOW.md`); naming
+   the tools is not required. A person
    takes responsibility for every submission (rule 5).
 2. Arrays, not assertions. A claim is accepted only with an array the
    check can verify, or a certificate the table can check with its own

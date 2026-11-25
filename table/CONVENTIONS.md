@@ -142,8 +142,8 @@ which is why none is entered without notice. Readers are asked to filter on tier
 
 ## 5. Stability: what may be relied on
 
-The promises below hold from now on. Of the files they name, the gzipped copy exists. The legend,
-CHANGES.md and the releases are planned and do not exist yet.
+The promises below hold from now on. Of the files they name, the gzipped copy and CHANGES.md exist.
+The legend and the releases are planned and do not exist yet.
 
 This section is the promise to everyone who reads the table by program, CAs first.
 
@@ -153,7 +153,7 @@ This section is the promise to everyone who reads the table by program, CAs firs
 - Every new column holds an integer, an empty field, a value from a closed list, or, for id only, a
   value of the fixed grammar of section 7. Never free text,
   because R's read.table types a whole column from its values.
-- Closed lists (tier, get, constant_rows_basis, and later family) only grow. A new value is announced
+- Closed lists (tier, get, constant_rows_basis, ai_tools, and later family) only grow. A new value is announced
   at least 30 days before its first use, in `CHANGES.md`, in the release notes, and by email to
   the maintainer of the CAs package. `tools/consistency.py` refuses any value not in its list (tier
   today, the others once their columns exist).
