@@ -189,25 +189,18 @@ table.lg tbody tr:hover td,.cl tbody tr:hover td{background:#f3f8f4}
 .lfind input:focus{outline:2px solid #1f6b45;outline-offset:1px;border-color:#1f6b45}.lfind span{order:-1;display:block;font-size:.8rem;margin:0 0 6px;text-align:right}
 #lib>div[hidden]{display:none}.lnone{margin:10px 0 0;color:var(--mute)}
 @media (max-width:900px){.lfind{width:100%}}
-.msec{margin:0 0 34px}.msec h2{font-size:1.25rem;margin:0 0 4px}.msec>p{margin:0 0 14px}.msec[hidden]{display:none}
-.ml{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}.mi{display:flex;flex-direction:column;gap:4px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:14px 16px;text-decoration:none;color:var(--fg);position:relative}
-.mi[hidden]{display:none}.mi:hover,.mi:focus-visible{border-color:#1f6b45;transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.06)}.mi:after{content:"";position:absolute;left:0;right:0;top:100%;height:5px}
-.mi b{font-size:1rem}.mi span{color:var(--mute);font-size:.84rem;line-height:1.4}.mi .mm{color:var(--fg);opacity:.8}
+.opts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin:6px 0 10px}.opt{display:flex;flex-direction:column;gap:8px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:20px 20px 18px;text-decoration:none;color:var(--fg);min-height:190px;position:relative}.opt:after{content:"";position:absolute;left:0;right:0;top:100%;height:5px}
+.opt:hover,.opt:focus-visible{border-color:#1f6b45;box-shadow:0 6px 18px rgba(0,0,0,.08);transform:translateY(-2px)}.opt b{font-size:1.08rem;line-height:1.3}.opt p{margin:0;color:var(--mute);font-size:.88rem;line-height:1.45}.opt .ft{margin-top:auto;display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--line);padding-top:12px;font-size:.84rem}.opt .go{color:#1f6b45;font-weight:600;background:none;padding:0}.opt .ct{color:var(--fg);font-weight:600}
+@media (max-width:1100px){.opts{grid-template-columns:repeat(3,minmax(0,1fr))}}@media (max-width:700px){.opts{grid-template-columns:repeat(2,minmax(0,1fr))}.opt{min-height:0}}@media (max-width:440px){.opts{grid-template-columns:1fr}}
+.gmw{overflow-x:auto}table.gm{width:100%;border-collapse:collapse;font-size:.92rem}table.gm th{text-align:left;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);font-weight:600;border-bottom:1px solid var(--fg);padding:10px}table.gm th.n,table.gm td.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+table.gm td{border-bottom:1px solid var(--line);padding:14px 10px;vertical-align:top}table.gm td a{font-weight:600;font-size:1rem;display:inline-block;padding:2px 0}table.gm td span{display:block;color:var(--mute);font-size:.84rem;margin-top:3px;line-height:1.4}table.gm tr:hover td{background:#fff}@media (max-width:560px){table.gm thead{display:none}table.gm tr{display:flex;flex-wrap:wrap;gap:4px 16px;border-bottom:1px solid var(--line);padding:12px 0}table.gm td{display:block;border:0;padding:0}table.gm td:first-child{width:100%}table.gm td.n{text-align:left;font-size:.84rem}table.gm td.n:before{content:attr(data-l) " ";color:var(--mute)}}
 table.mt{width:100%;border-collapse:collapse;margin:0 0 26px}table.mt th{text-align:left;font-size:.74rem;letter-spacing:.06em;text-transform:uppercase;color:var(--mute);font-weight:600;border-bottom:1px solid var(--fg);padding:6px 8px}
 table.mt td{border-bottom:1px solid var(--line);padding:7px 8px}table.mt .n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}table.mt td a{display:inline-block;padding:3px 0}
-@media (max-width:1100px){.ml{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (max-width:560px){.ml{grid-template-columns:1fr}}
 @media (min-width:561px){.top .in .srch{z-index:6;transition:width .22s ease,margin-left .22s ease,border-color .15s ease,background-color .15s ease}.top .in .srch.open{margin-left:-256px}.top .in .srch.open:before{content:"";position:absolute;right:100%;top:-2px;bottom:-2px;width:56px;background:linear-gradient(to right,rgba(255,255,255,0),#fff 70%);pointer-events:none}}
 @media (min-width:561px) and (max-width:1310px){.top .in .srch.open{margin-left:auto}.top .in .srch.open:before{display:none}}
 .ctw{overflow-x:auto;margin:18px 0}table.ctg{border-collapse:separate;border-spacing:6px}table.ctg th{font-size:.8rem;color:var(--mute);font-weight:600;padding:2px 6px;text-align:center;white-space:nowrap}
 table.ctg td{padding:0;min-width:92px}a.ct{display:flex;flex-direction:column;align-items:flex-start;gap:2px;background:#b9dcc6;border-radius:6px;padding:8px 10px;text-decoration:none;color:var(--fg);position:relative}
 a.ct:hover,a.ct:focus-visible{background:#8fc5a4}a.ct b{font-size:1.25rem}a.ct span{font-size:.75rem}
-.hub{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;margin:0 0 36px}.hub a{display:flex;flex-direction:column;gap:6px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;text-decoration:none;color:var(--fg);position:relative}
-.hub a:hover,.hub a:focus-visible{border-color:#1f6b45;transform:translateY(-2px);box-shadow:0 6px 18px rgba(0,0,0,.06)}.hub a:after{content:"";position:absolute;left:0;right:0;top:100%;height:5px}
-.hub a.hl{background:#eef6f0;border-color:#5fa77d}.hub b{font-size:1.05rem}.hub .big{font-size:1.7rem;font-weight:800;line-height:1;color:var(--fg)}.hub span{color:var(--mute);font-size:.84rem;line-height:1.4}.hub em{font-style:normal;font-size:.8rem;color:#1f6b45;margin-top:auto;padding-top:6px}
-.msec{scroll-margin-top:16px}
-@media (max-width:1100px){.hub{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media (max-width:700px){.hub{grid-template-columns:repeat(2,minmax(0,1fr))}.hub a{padding:14px}.hub span:not(.big){display:none}.hub em{display:none}}
 .sztop{display:grid;grid-template-columns:1fr 560px;gap:24px 48px;align-items:end;margin:0 0 8px}.szf{margin:0}.szh h1{font-size:2.4rem;margin:4px 0 8px}.szh p{max-width:46rem}.szg{display:grid;grid-template-columns:3fr 2fr;gap:20px 48px;margin-top:22px}
 dl.szd{display:grid;grid-template-columns:11em 1fr;gap:0;margin:0}dl.szd dt{color:var(--mute);font-size:.8rem;letter-spacing:.06em;text-transform:uppercase;padding:10px 0;border-bottom:1px solid var(--line)}dl.szd dd{margin:0;padding:10px 0;border-bottom:1px solid var(--line);line-height:1.5}
 .szg h2{font-size:1rem;margin:0 0 10px}.nb{display:grid;grid-template-columns:1fr 1fr;gap:10px}.nb a{display:flex;flex-direction:column;gap:2px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px 14px;text-decoration:none;color:var(--fg)}
@@ -1301,32 +1294,33 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
                                      plural(len(m["head"]), "best known size", "best known sizes") if m["head"] else "",
                                      plural(m["ver"], "array on file", "arrays on file") if m["ver"] else ""] if s) or plural(m["rows"], "entry", "entries")
 
-    sections = []
-    hub = []
+    GSLUG = {"direct": "direct-constructions", "recursive": "built-from-smaller-arrays", "search": "computer-search", "data": "collections"}
+    tiles = []
     cert_n = len({c["file"] for c in certs.values()})
     if cert_n:
-        hub.append('<a class=hl href="%s"><b>Covering perfect hash families</b><span class=big>%s</span><span>families on file, each checked exactly. %s best known sizes in the table come from families like these.</span><em>Open the CPHF tables</em></a>' % (
-            site.href(1, "cphf/"), format(cert_n, ","), format(sum(len(M[f]["head"]) for f in ("cphfCA", "scphfCA") if f in M), ",")))
+        tiles.append('<a class=opt href="%s"><b>Covering perfect hash families</b><p>Families on file, each checked, and the arrays they give.</p><div class=ft><span class=ct>%s</span><span class=go>Open &rarr;</span></div></a>' % (
+            site.href(1, "cphf/"), plural(cert_n, "family", "families")))
+    other = [m for m in mlist if m["f"]["kind"] not in GSLUG]
     for kid, kname, kdesc in KIND:
         ms = sorted((m for m in mlist if m["f"]["kind"] == kid), key=lambda m: (-len(m["first"]), -len(m["head"]), -m["rows"], m["title"]))
-        if not ms:
+        if not ms or kid not in GSLUG:
             continue
-        if kid:
-            hub.append('<a href="#g-%s"><b>%s</b><span class=big>%d</span><span>%s, %s. %s</span><em>%s and more</em></a>' % (
-                kid, E(kname), len(ms), "method" if len(ms) == 1 else "methods", plural(sum(len(m["first"]) for m in ms), "size first reached", "sizes first reached"), E(kdesc), E(", ".join(m["title"] for m in ms[:2]))))
-        sections.append('<section class=msec id="g-%s"><h2>%s</h2><p class=mute>%s</p><div class=ml>%s</div></section>' % (kid or "other", E(kname), E(kdesc), "".join(
-            '<a class=mi href="%s"><b>%s</b><span>%s</span><span class=mm>%s</span></a>' % (site.href(1, m["path"]), E(m["title"]), E(mline(m)), E(m["f"]["meaning"]))
-            for m in ms)))
-    body = ('<div class=pageh><div class=in><div><h1>Methods</h1><p>Every way the sizes in the table were made, grouped by kind. Each method lists the papers it rests on and every cell where it gives a best known size.</p></div>'
-            '<div class=lfind><label for=mq class=vh>Search the methods</label><svg width="17" height="17" viewBox="0 0 17 17" aria-hidden="true"><circle cx="7" cy="7" r="5.5" fill="none" stroke="currentColor" stroke-width="1.9"/><path d="M11.2 11.2l4.3 4.3" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"/></svg>'
-            '<input id=mq type=search autocomplete=off spellcheck=false placeholder="Method, author or idea"><span id=mn class=mute aria-live=polite>%d methods</span></div></div></div>'
-            '<main class=wrapw><nav class=hub aria-label="Kinds of method">%s</nav>%s<p class=mute style="margin-top:26px;font-size:.88rem">The covering perfect hash families on file are listed on their own: <a href="%s">CPHFs</a>. Each entry is placed in a method by its construction text, using the list in <a href="%s">table/lexicon.csv</a>. Corrections are welcome by issue or email.</p></main>') % (
-        len(mlist), "".join(hub), "".join(sections), site.href(1, "cphf/"), REPO_URL + "/blob/main/table/lexicon.csv")
-    mscript = ("<script>(function(){var q=document.getElementById('mq'),cs=document.querySelectorAll('.mi'),n=document.getElementById('mn'),all=cs.length;"
-               "q.addEventListener('input',function(){var t=q.value.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase().split(/\\s+/).filter(Boolean),k=0;"
-               "cs.forEach(function(c){var s=c.textContent.normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').toLowerCase(),on=t.every(function(w){return s.indexOf(w)>=0});c.hidden=!on;if(on)k++});"
-               "document.querySelectorAll('.msec').forEach(function(s){s.hidden=!s.querySelector('.mi:not([hidden])')});n.textContent=t.length?k+' of '+all+' methods':all+' methods'})})()</script>")
-    site.page("methods/index.html", "Methods: how the covering arrays in the table are made", "Every construction behind the best known covering array sizes, grouped by kind, with its papers and where it is used.", body, "Methods", None, mscript)
+        gp = "methods/%s/" % GSLUG[kid]
+        tiles.append('<a class=opt href="%s"><b>%s</b><p>%s</p><div class=ft><span class=ct>%s</span><span class=go>Open &rarr;</span></div></a>' % (
+            site.href(1, gp), E(kname), E(kdesc), plural(len(ms), "method", "methods")))
+        grows = "".join('<tr><td><a href="%s">%s</a><span>%s</span></td><td class=n data-l="first reached">%s</td><td class=n data-l="best known">%s</td><td class=n data-l="arrays">%s</td></tr>' % (
+            site.href(2, m["path"]), E(m["title"]), E(m["f"]["meaning"]), format(len(m["first"]), ","), format(len(m["head"]), ","), format(m["ver"], ","))
+            for m in ms)
+        gbody = ('<div class=pageh><div class=in><div><p class=crumb><a href="%s">Methods</a> / %s</p><h1>%s</h1><p>%s %s.</p></div></div></div>'
+                 '<main class=wrapw><div class=gmw><table class=gm><thead><tr><th>method</th><th class=n>sizes first reached</th><th class=n>best known sizes</th><th class=n>arrays on file</th></tr></thead><tbody>%s</tbody></table></div></main>') % (
+            site.href(2, "methods/"), E(kname), E(kname), E(kdesc), plural(len(ms), "method", "methods"), grows)
+        site.page(gp + "index.html", "%s: covering array methods" % kname, "%s %s." % (kdesc, plural(len(ms), "method", "methods")), gbody, "Methods")
+    body = ('<div class=pageh><div class=in><div><h1>Methods</h1><p>Every way the sizes in the table were made. Choose a kind of method to see each one, the papers it rests on and where it gives a best known size.</p></div></div></div>'
+            '<main class=wrapw><nav class=opts aria-label="Kinds of method">%s</nav>%s<p class=mute style="margin-top:26px;font-size:.88rem">Each entry is placed in a method by its construction text, using the list in <a href="%s">table/lexicon.csv</a>. Corrections are welcome by issue or email.</p></main>') % (
+        "".join(tiles), "".join('<p class=mute style="margin-top:22px;font-size:.88rem">%s: <a href="%s">%s</a>, %s.</p>' % (
+            "Entries with a name and no description", site.href(1, m["path"]), E(m["title"]), plural(m["rows"], "entry", "entries")) for m in other),
+        REPO_URL + "/blob/main/table/lexicon.csv")
+    site.page("methods/index.html", "Methods: how the covering arrays in the table are made", "Every construction behind the best known covering array sizes, grouped by kind, with its papers and where it is used.", body, "Methods")
 
     for m in mlist:
         h = lambda q: site.href(2, q)
@@ -1344,9 +1338,10 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
         cas = ('<p class=mute>In the CAs R package this is %s.</p>' % E(m["f"]["cas_label"])) if m["f"]["cas_label"] else ""
         if m["f"]["family"] in ("cphfCA", "scphfCA"):
             cas += '<p><a href="%s">The covering perfect hash families on file</a></p>' % h("cphf/")
+        kcrumb = ('<a href="%s">%s</a>' % (h("methods/%s/" % GSLUG[m["f"]["kind"]]), E(kname))) if m["f"]["kind"] in GSLUG else E(kname)
         pbody = ('<div class=pageh><div class=in><div><p class=crumb><a href="%s">Methods</a> / %s</p><h1>%s</h1><p>%s</p>%s</div></div></div>'
                  '<div class=stats>%s</div><main class=wrapw><div class=two3><div><h2>Where it gives a best known size</h2>%s</div><div>%s</div></div></main>') % (
-            h("methods/"), E(kname), E(m["title"]), E(m["f"]["meaning"]), cas, stats,
+            h("methods/"), kcrumb, E(m["title"]), E(m["f"]["meaning"]), cas, stats,
             ('<table class=mt><thead><tr><th>cell</th><th class=n>first reached</th><th class=n>best known</th><th class=n>k</th></tr></thead><tbody>%s</tbody></table>' % trs) if trs else '<p class=mute>No best known size in the table uses it at present.</p>',
             ('<h2>Papers it rests on</h2><ul class=pap>%s</ul>' % refs) if refs else '<h2>Papers it rests on</h2><p class=mute>No paper is linked to these entries yet.</p>')
         site.page(m["path"] + "index.html", "%s: covering array method" % m["title"], "%s. %s" % (m["title"], m["f"]["meaning"]), pbody, "Methods")
