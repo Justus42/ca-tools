@@ -25,6 +25,17 @@ The table covers strengths 2 to 6 with at most 25 symbols, binary arrays at stre
 - Arrays withdrawn from the table cannot be submitted or used as a start or an ingredient. The check compares every submission against them.
 - The table takes arrays and certificates, not code.
 
+## Rules for agents
+
+- A named person with an email and affiliation answers for every submission, never an AI alone.
+- HOW.md says how the arrays were built and has the line "AI tools used: yes" or "AI tools used: no". Naming the AI system is welcome. The line fills the table's ai_tools column from 2026-12-25 (CHANGES.md).
+- Submit only arrays the named person built or may submit, and credit whoever actually built each one.
+- Sizes and arrays from the table belong to the authors their rows name. Never present them as new results.
+- Read the tiers as written. A CITED size has no array here. A SCREENED array is not yet proven and does not count as best known. A size is optimal only where the best known size equals its proven floor and a checked array is on file.
+- Read the CSV and JSON files rather than the HTML pages. They hold the same data and are updated on every merge.
+- Withdrawn arrays are never submitted or used as a start or an ingredient.
+- Any use of the data cites the table's DOI and the authors of the rows used (see Licence and citation below).
+
 ## Data
 
 - [table/ca_table.csv](https://raw.githubusercontent.com/chrispbsmolen/ca-tools/main/table/ca_table.csv): every row of the table.

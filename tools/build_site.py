@@ -133,7 +133,7 @@ table.lg td.big{font-weight:800;font-size:1rem}table.lg td.a{white-space:nowrap}
 .ftl b{display:block;font-family:ui-monospace,Menlo,monospace;font-size:.85rem;margin:4px 0}.ftl span{font-size:.8rem;color:var(--mute)}
 .code{background:#1d1d1f;color:#e8e8e3;border-radius:10px;padding:18px 20px;font-family:ui-monospace,Menlo,monospace;font-size:.82rem;line-height:1.7;margin:0 0 10px;white-space:pre;overflow:auto}
 .code .c{color:#8fd0a8}
-.rules{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px}
+.rules{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
 .rules div{border-top:3px solid #1f6b45;background:#fff;border-radius:0 0 8px 8px;padding:14px 14px 16px;font-size:.88rem}.rules b{display:block;margin-bottom:4px}
 a,button,.el,.pg,.ftl,.fl4,.card,.rules div,.lv div,.statc div,.btns a,.cta a,.go,.dlb,.dls a,.top nav a,table.lg tr,.cl tr,.pr,.rule{transition:transform .15s ease,box-shadow .15s ease,background-color .15s ease,color .15s ease,border-color .15s ease,filter .15s ease}
 a:hover{color:#1f6b45}
@@ -1614,13 +1614,17 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
              '<a class="fl4 f1" href="%s"><span class=no>4</span><b>Submit</b><span>One folder in a pull request</span></a></div>'
              '<div class=grid2><div><p class=sech id=data style="margin-top:0">Data</p><div class=ft>%s%s%s%s%s%s</div></div>'
              '<div><p class=sech id=check style="margin-top:0">Check and submit</p>'
-             '<div class=code><span class=c># check one array exactly</span>\npython3 ca_verify.py CA_33_3_6_3.txt 3 3\n<span class=c># run the pull request check locally</span>\npython3 tools/check_submission.py submissions/your-name</div>'
-             '<div class=code><span class=c># one new folder, nothing else changed</span>\nsubmissions/your-name/\n  claims.csv   t,v,k,N,file,source_detail,construction,builds_on,credit,notes\n  HOW.md       how the arrays were built\n  CA_33_3_6_3.txt</div>'
+             '<div class=code tabindex=0 role=region aria-label="Commands to check and test a submission"><span class=c># check one array exactly</span>\npython3 ca_verify.py CA_33_3_6_3.txt 3 3\n<span class=c># run the pull request check locally</span>\npython3 tools/check_submission.py submissions/your-name</div>'
+             '<div class=code tabindex=0 role=region aria-label="Layout of a submission folder"><span class=c># one new folder, nothing else changed</span>\nsubmissions/your-name/\n  claims.csv   t,v,k,N,file,source_detail,construction,builds_on,credit,notes\n  HOW.md       how the arrays were built\n  CA_33_3_6_3.txt</div>'
              '<p class=mute style="font-size:.88rem">Full guide: <a href="%s/blob/main/submissions/README.md">submissions/README.md</a></p></div></div>'
              '<p class=sech>Rules</p><div class=rules>'
              '<div><b>Checked or cited</b>A size enters as verified only with an array or a certificate the table can check. A size from a paper enters as cited, with credit to its authors.</div>'
-             '<div><b>Say how</b>HOW.md is required. Naming the AI system is welcome.</div>'
+             '<div><b>Say how</b>HOW.md is required, with the line <span class=mono>AI tools used: yes</span> or <span class=mono>no</span>. Naming the AI system is welcome.</div>'
              '<div><b>A person answers</b>A named person with an email and affiliation, never an AI alone.</div>'
+             '<div><b>Credit the builder</b>Submit only arrays the named person built or may submit, and credit whoever actually built each one.</div>'
+             '<div><b>Not your result</b>Sizes and arrays from the table belong to the authors their rows name. Never present them as new.</div>'
+             '<div><b>Read the tiers</b>A cited size has no array here. A screened array is not yet proven. Optimal means the best known size equals its proven floor, with a checked array on file.</div>'
+             '<div><b>Use the files</b>Read the CSV and JSON files above rather than the pages. They hold the same data and are updated on every merge.</div>'
              '<div><b>Withdrawn arrays</b>Never submitted or used as a start or ingredient. The check compares against them.</div>'
              '<div><b>Licence</b>Opening a pull request licenses the arrays under CC BY 4.0.</div></div>'
              '<div class=citebox id=cite><div><p class=sech style="margin:0 0 6px">Cite</p><h2>Any use of this data cites the DOI</h2>'
