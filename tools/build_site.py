@@ -535,6 +535,30 @@ def builders_of(c):
     return b
 
 
+SOURCE_PEOPLE = {"TJ2level_CAs": ["J. Torres-Jimenez"], "CAEX_CAs": ["J. Torres-Jimenez", "B. Acevedo-Juarez", "H. Avila-George"], "S5": ["Aaron Dwyer"]}
+
+
+def source_people(r):
+    if r.get("source_id") == "S5":
+        return SOURCE_PEOPLE["S5"]
+    m = re.match(r"CAs data (\w+)", r.get("source_detail") or "") if r.get("source_id") == "S6" else None
+    return SOURCE_PEOPLE.get(m.group(1), []) if m else []
+
+
+def builder_segs(segs):
+    b = [s for s in segs if s["kind"] == "builder"]
+    return b or ([s for s in segs if s["kind"] == "plain"] if all(s["kind"] == "plain" for s in segs) else [])
+
+
+def reach_segs(c):
+    segs = segments(c)
+    for ks in (("size",), None, ("author", "method", "plain"), ("ingredient",), ("tool",)):
+        got = builder_segs(segs) if ks is None else [s for s in segs if s["kind"] in ks]
+        if got:
+            return got
+    return []
+
+
 def array_by_text(R, r):
     c = R.credit_of(r) if r else ""
     if not c:
@@ -1104,23 +1128,43 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
 
     index_names()
     credited = collections.defaultdict(list)
+    roles = collections.defaultdict(dict)
     for r in rows:
+        if r["tier"] not in ("VERIFIED", "CITED"):
+            continue
         c = R.credit_of(r)
-        if c and r["tier"] in ("VERIFIED", "CITED"):
-            for n in credit_names(c):
-                credited[id(resolve(n))].append(r)
+        if c:
+            segs = segments(c)
+            bset = {id(x) for x in builder_segs(segs)}
+            for sg in segs:
+                role = "built" if id(sg) in bset else "own" if sg["kind"] in ("size", "author", "plain", "method") else "used"
+                for n in credit_names(sg["name"]):
+                    p = resolve(n)
+                    old = roles[id(p)].get(id(r))
+                    if old is None or ("built", "own", "used").index(role) < ("built", "own", "used").index(old):
+                        roles[id(p)][id(r)] = role
+                    credited[id(p)].append(r)
+        else:
+            for n in source_people(r):
+                p = resolve(n)
+                roles[id(p)].setdefault(id(r), "built")
+                credited[id(p)].append(r)
     for p in people.values():
         seen = set()
         p["rows"] = [r for r in credited.get(id(p), []) if not (id(r) in seen or seen.add(id(r)))]
+        p["role"] = roles.get(id(p), {})
     for c in cells.values():
         for x in c["rungs"]:
-            cr = R.credit_of(x["first"])
-            if cr:
-                got = {id(resolve(n)): resolve(n) for n in credit_names(cr)}
-            else:
-                got = {id(p): p for rid in reached_by(R, x["first"])[1] for p in people.values() if rid in p["papers"]}
-            for p in got.values():
-                p["held"].append(x)
+            got = {}
+            for pc in x["pieces"]:
+                w = pc[2]
+                cr = R.credit_of(w)
+                ns = [n for sg in reach_segs(cr) for n in credit_names(sg["name"])] if cr else source_people(w)
+                for n in ns:
+                    q = resolve(n)
+                    got[id(q)] = q
+            for q in got.values():
+                q["held"].append(x)
     for p in people.values():
         for rid in p["papers"]:
             p["floors"].update(id(r) for r in flo[rid])
@@ -1132,8 +1176,9 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
     for p in ppl:
         p["name"] = shown_name(p)
         p["sur"], p["given"] = name_parts(p["name"])
-        p["ver"] = sum(1 for r in p["rows"] if r["tier"] == "VERIFIED")
-        p["cit"] = len(p["rows"]) - p["ver"]
+        p["ver"] = sum(1 for r in p["rows"] if r["tier"] == "VERIFIED" and p["role"].get(id(r)) == "built")
+        p["cit"] = sum(1 for r in p["rows"] if p["role"].get(id(r)) == "own" or (r["tier"] == "CITED" and p["role"].get(id(r)) == "built"))
+        p["used"] = sum(1 for r in p["rows"] if p["role"].get(id(r)) == "used")
         p["built"] = len({id(r) for rid in p["papers"] for r in use[rid]})
         p["cells"] = sorted({(x["row"]["t"], x["row"]["v"]) for x in p["held"]} | {(r["t"], r["v"]) for r in p["rows"]})
     ppl.sort(key=lambda p: (fold(p["sur"]).lower(), fold(p["given"]).lower()))
@@ -1147,11 +1192,12 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
         return "%s %s" % (format(n, ","), one if n == 1 else (many or one + "s"))
 
     def summary(p):
-        return ", ".join(s for s in [plural(p["ver"], "array") if p["ver"] else "", plural(p["cit"], "published size") if p["cit"] else "",
+        return ", ".join(s for s in [plural(p["ver"], "array built", "arrays built") if p["ver"] else "", plural(p["cit"], "credited size") if p["cit"] else "",
+                                     plural(p["used"], "entry uses their work", "entries use their work") if p["used"] and not (p["ver"] or p["cit"] or p["papers"]) else "",
                                      plural(len(p["papers"]), "paper") if p["papers"] else "", plural(len(p["floors"]), "lower bound") if p["floors"] else ""] if s)
 
     def initials(p):
-        w = [x for x in re.split(r"[\s.-]+", p["name"]) if x[:1].isalpha()]
+        w = [x for x in re.split(r"[\s.]+", p["name"]) if x[:1].isalpha()]
         return (w[0][0] + w[-1][0]).upper() if len(w) > 1 else w[0][0].upper()
 
     h1 = lambda q: site.href(1, q)
@@ -1159,15 +1205,18 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
     cards = []
     for p in ppl:
         L = fold(p["sur"])[0].upper()
-        kinds = " ".join(k for k, n in (("a", p["ver"]), ("s", p["cit"]), ("p", len(p["papers"])), ("f", len(p["floors"]))) if n)
+        kinds = " ".join(k for k, n in (("a", p["ver"]), ("s", p["cit"] + p["used"]), ("p", len(p["papers"])), ("f", len(p["floors"]))) if n)
         cards.append('<a class=pc href="%s" data-k="%s"%s><i aria-hidden="true">%s</i><span><b>%s</b><span>%s</span></span></a>' % (
             h1(p["path"]), kinds, (' id="l-%s"' % L.lower()) if L not in letters else "", initials(p), E(p["name"]), summary(p)))
         letters.setdefault(L, p)
     az = "".join(('<a href="#l-%s">%s</a>' % (L.lower(), L)) if L in letters else '<span aria-hidden="true">%s</span>' % L for L in "ABCDEFGHIJKLMNOPQRSTUVWXYZ")
     chips = "".join('<button type=button data-f="%s" aria-pressed="%s">%s</button>' % (f, "true" if not f else "false", n) for f, n in
-                    (("", "Everyone"), ("a", "Arrays"), ("s", "Published sizes"), ("p", "Papers"), ("f", "Lower bounds")))
-    body = ('<div class=pageh><div class=in><div><h1>Contributors</h1><p>Everyone whose arrays, published sizes, papers or proofs the table rests on, with what each contributed. '
-            'Built from the table\'s own credits and its library; nobody signs up and nobody is ranked. %d people.</p></div></div></div>'
+                    (("", "Everyone"), ("a", "Arrays built"), ("s", "Credited work"), ("p", "Papers"), ("f", "Lower bounds")))
+    body = ('<div class=pageh><div class=in><div><h1>Contributors</h1><p>Everyone whose arrays, constructions, papers or proofs the table rests on, with what each contributed. '
+            'Built from the table\'s own credits and its library; nobody signs up and nobody is ranked. %d people.</p>'
+            '<p class=mute style="font-size:.9rem">How the counts are made, from each entry\'s credit. Arrays built: verified arrays whose credit names the person as builder, and three collections whose arrays carry no credit: the binary arrays of Torres-Jimenez and the CA Extender arrays of Torres-Jimenez, Acevedo-Juarez and Avila-George, both kept in the CAs package, and Aaron Dwyer\'s CA_Database. '
+            'Credited sizes: entries whose credit names their construction, method or result. Entries that use their work: their array or method was an ingredient or a tool. '
+            'Best known sizes first reached: the people the credit of the first row to reach the size names for the size; when it names no one for the size, its builder; when it names no builder, the authors of its method or result. An entry with no credit, outside those collections, counts for nobody, even when it builds on their papers.</p></div></div></div>'
             '<main class=wrapw><div class=chips role=group aria-label="Show"><span class=l>Show</span>%s</div><nav class=az aria-label="Jump to letter">%s</nav>'
             '<div class=pp id=pp>%s</div><p class=mute id=pn aria-live=polite></p></main>') % (len(ppl), chips, az, "".join(cards))
     pscript = ("<script>(function(){var bs=document.querySelectorAll('.chips button'),cs=document.querySelectorAll('#pp .pc'),pn=document.getElementById('pn');"
@@ -1177,7 +1226,7 @@ nb.forEach(function(n,i){J('t'+n[1]+'/v'+n[3]+'.json').then(function(dd){var y=r
 
     for p in ppl:
         h = lambda q: site.href(2, q)
-        st = [(p["ver"], "array", "arrays"), (p["cit"], "published size", "published sizes"), (len(p["held"]), "best known size first reached", "best known sizes first reached"),
+        st = [(p["ver"], "array built", "arrays built"), (p["cit"], "credited size", "credited sizes"), (p["used"], "entry uses their work", "entries use their work"), (len(p["held"]), "best known size first reached", "best known sizes first reached"),
               (len(p["papers"]), "paper in the library", "papers in the library"), (p["built"], "entry builds on their papers", "entries build on their papers"),
               (len(p["floors"]), "lower bound from their papers", "lower bounds from their papers")]
         stats = "".join('<div><b class=num>%s</b><span>%s</span></div>' % (format(n, ","), one if n == 1 else many) for n, one, many in st if n)
