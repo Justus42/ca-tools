@@ -154,6 +154,7 @@ t,v,k_min,k_max,bound,rule,theorem,reference,derivation
 3,4,100000,100000,172,R2,"CAN(t,k,v) >= v CAN(t-1,k-1,v) (fixing a symbol)",lb-lkklf2011;lb-smm1998,"R2 4 x CAN(2,99999,4) >= 43 [R16 Stevens, Moura and Mendelsohn 1998, Theorem 4, eq. (4)]"
 3,5,4,6,125,R0,"CAN(t,k,v) >= v^t",,R0 v^t
 3,5,7,7,135,R15,"CAN(3,v+2,v) >= v^3 + c(v), v odd (Colbourn, Keri, Rivas Soriano and Schlage-Puchta 2010, Theorem 8.1)",fuse-ckrs2010,"R15 Colbourn, Keri, Rivas Soriano and Schlage-Puchta 2010, Theorem 8.1: v^3+10"
+3,5,8,8,145,R2,"CAN(t,k,v) >= v CAN(t-1,k-1,v) (fixing a symbol)",lb-lkklf2011;lb-khks2023;lb-kmnnos2020,"R2 5 x CAN(2,7,5) >= 29 [R5 CAN(2,7,5) >= 29: Kokkala et al.; SBA balca (CAK(28;2,5)=6)]"
 3,5,10,439,150,R2,"CAN(t,k,v) >= v CAN(t-1,k-1,v) (fixing a symbol)",lb-lkklf2011;lb-kmnnos2020,"R2 5 x CAN(2,9,5) >= 30 [R5 CAN(2,8,5) >= 30: Kokkala et al. Table 2; R1]"
 3,5,500,845,170,R2,"CAN(t,k,v) >= v CAN(t-1,k-1,v) (fixing a symbol)",lb-lkklf2011;lb-smm1998,"R2 5 x CAN(2,499,5) >= 34 [R16 Stevens, Moura and Mendelsohn 1998, Theorem 4, eq. (4)]"
 3,5,863,1689,175,R2,"CAN(t,k,v) >= v CAN(t-1,k-1,v) (fixing a symbol)",lb-lkklf2011;lb-pt1989,"R2 5 x CAN(2,862,5) >= 35 [R10 Poljak and Tuza 1989, Theorem 1, p. 113]"

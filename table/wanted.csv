@@ -3661,6 +3661,7 @@ t,v,k,best_N,smallest_array_N,proven_floor,status
 3,4,90723,964,964,160,beat_best
 3,4,100000,1024,1024,172,beat_best
 3,5,7,165,165,135,beat_best
+3,5,8,165,165,145,beat_best
 3,5,10,185,185,150,beat_best
 3,5,12,225,225,150,beat_best
 3,5,15,245,245,150,beat_best

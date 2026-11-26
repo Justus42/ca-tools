@@ -101,6 +101,7 @@ power-ct2010,2010-12-31,paper,"doi:10.1090/conm/523/10309, Crossref published-pr
 power-cz2012,2012-03-31,paper,"doi:10.1080/15598608.2012.647489, Crossref published-print, month only, last day of the month used"
 product-cmmssy2006,2005-06-24,paper,"doi:10.1002/jcd.20065, Crossref published-online, exact day"
 proj-c2008,2008-03-31,paper,"doi:10.1016/j.disc.2007.07.050, Crossref published-print, month only, last day of the month used"
+project-lattice-2026-11,2026-11-26T05:46:15Z,pull_request,https://github.com/chrispbsmolen/ca-tools/pull/89
 recur-mc2005,2005-12-31,paper,"Bayreuth. Math. Schr. 74 (2005) 266-275 (no DOI; year only, last day of the year used)"
 recur-mtvt2004,2004-05-31,paper,"doi:10.1023/B:DESI.0000029232.40302.6d, Crossref published-print, month only, last day of the month used"
 roux-cmtw2006,2006-10-31,paper,"doi:10.1007/s10623-006-0020-8, Crossref published-print, month only, last day of the month used"
