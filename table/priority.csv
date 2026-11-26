@@ -82,6 +82,7 @@ group-ms2005,2004-10-28,paper,"doi:10.1002/jcd.20035, Crossref published-online,
 hdm-ljy2009,2008-09-11,paper,"doi:10.1007/s10623-008-9235-1, Crossref published-online, exact day"
 ipo-wcs2022,2022-05-31,paper,"doi:10.1016/j.amc.2022.126952, Crossref published-print, month only, last day of the month used"
 ipogf-fllkk2008,2008-09-30,paper,"doi:10.6028/jres.113.022, Crossref published-print, month only, last day of the month used"
+jeserigk-pgl-ccl-2026-11,2026-11-25T14:44:16Z,pull_request,https://github.com/chrispbsmolen/ca-tools/pull/88
 kim-t3-v4-2026-11,2026-11-13,email,email to the maintainer with the array and its SHA-256
 kim-t3-v4-2026-11,2026-11-15T10:20:20Z,pull_request,https://github.com/chrispbsmolen/ca-tools/pull/81
 laverdi-2026-11,2026-11-24T04:14:54Z,pull_request,https://github.com/chrispbsmolen/ca-tools/pull/87
