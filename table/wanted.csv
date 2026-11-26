@@ -3381,7 +3381,7 @@ t,v,k,best_N,smallest_array_N,proven_floor,status
 3,3,24,69,69,45,beat_best
 3,3,26,69,69,45,beat_best
 3,3,27,72,72,45,beat_best
-3,3,28,74,74,45,beat_best
+3,3,28,73,73,45,beat_best
 3,3,32,81,82,45,array_above_best
 3,3,34,82,82,45,beat_best
 3,3,38,84,84,45,beat_best
