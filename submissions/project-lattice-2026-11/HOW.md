@@ -1,0 +1,4 @@
+Construction: column extension — the parent array held fixed, an eighth column found by focused tabu search (ca_extend) minimizing the number of uncovered 3-way interactions involving the new column
+Built from: arrays/CA_165_3_7_5.txt — CA(165; 3, 7, 5) by Bai XunDi (Zenodo deposit doi:10.5281/zenodo.23787055; table row (3,5,7) N=165, VERIFIED)
+Program: ca_extend.c (Project Lattice source, C, single file, no dependencies beyond libc/libm): read the parent array, tabu-search the new column's 165 entries against the 2,625 interaction requirements of the 21 parent column pairs; the successful run reached 0 uncovered in 0.4 s. Verification: exact set-based checker (0 uncovered), reproduced by two further independent checkers. The submitted array file is itself the artifact; no seed is needed to use it.
+AI tools used: yes
