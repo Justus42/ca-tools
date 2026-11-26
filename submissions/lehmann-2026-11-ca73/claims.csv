@@ -1,0 +1,2 @@
+t,v,k,N,file,source_detail,construction,builds_on,credit,notes
+3,3,28,73,CA_73_3_28_3.txt,From Alexander LaVerdi’s table/arrays/CA_74_3_28_3.txt at ca-tools c5f447da; paired.cpp seed 17521; https://alexanderlehmann.dev/assets/covering-array-73-materials.zip,Paired-column ternary backbone with weighted tabu repair of the lower block and extension columns,lfsr-sm2025;postop-nck2013;new https://alexanderlehmann.dev/posts/73-row-covering-array/,Alexander Lehmann (Independent researcher),"Starting array by Alexander LaVerdi, based on a starting array by Christopher Smolen."
